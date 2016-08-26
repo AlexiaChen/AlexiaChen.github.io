@@ -29,7 +29,7 @@
 
 
 
-  <meta name="keywords" content="生活,技术," />
+  <meta name="keywords" content="软件调试," />
 
 
 
@@ -38,16 +38,31 @@
   <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="不知道说啥，昨天搭好的博客，现在才push上来。好久没有写Blog了，总是难以坚持下来，现在决定要开始好好写Blog了。以前用过tumblr（国内的点点网是仿照它的），也能绑定域名地址，很好用，有很多主题，但是现在被TG墙了，墙外写Blog比较麻烦，最终只能自己搭建一个Blog，平时来上面吐槽，说说心事，聊以慰藉。该Blog是用Hexo搭建的，Hexo比较不错，Node.js开发的轻量级博客框架。">
+<meta name="description" content="主要是在知乎看到龚敏敏大神的一篇文章才引发的思考。文章的评论中有个回复比较有意思：
+
+clang里有个bug，在windows平台上编译出来的dll，类的导出函数都多了个下划线前缀，从2011年开始被喷了4年，无效。ms一push，3天就修好了。（然而那个补丁超级邪恶。检测到下划线就去掉，而不是找到为什么会多一个下划线）
+
+以上的回复我有一些删改。 
+对此我引发的一些思考是，对于大型的复杂精密的系">
 <meta property="og:type" content="article">
-<meta property="og:title" content="新的开始">
-<meta property="og:url" content="http://mathxh-love.org/blog/2016/07/24/first-post/index.html">
+<meta property="og:title" content="有关于修BUG的一个思考">
+<meta property="og:url" content="http://mathxh-love.org/blog/2016/08/26/fix-bug/index.html">
 <meta property="og:site_name" content="永恒未知处">
-<meta property="og:description" content="不知道说啥，昨天搭好的博客，现在才push上来。好久没有写Blog了，总是难以坚持下来，现在决定要开始好好写Blog了。以前用过tumblr（国内的点点网是仿照它的），也能绑定域名地址，很好用，有很多主题，但是现在被TG墙了，墙外写Blog比较麻烦，最终只能自己搭建一个Blog，平时来上面吐槽，说说心事，聊以慰藉。该Blog是用Hexo搭建的，Hexo比较不错，Node.js开发的轻量级博客框架。">
-<meta property="og:updated_time" content="2016-08-26T04:56:37.818Z">
+<meta property="og:description" content="主要是在知乎看到龚敏敏大神的一篇文章才引发的思考。文章的评论中有个回复比较有意思：
+
+clang里有个bug，在windows平台上编译出来的dll，类的导出函数都多了个下划线前缀，从2011年开始被喷了4年，无效。ms一push，3天就修好了。（然而那个补丁超级邪恶。检测到下划线就去掉，而不是找到为什么会多一个下划线）
+
+以上的回复我有一些删改。 
+对此我引发的一些思考是，对于大型的复杂精密的系">
+<meta property="og:updated_time" content="2016-08-26T05:06:35.617Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="新的开始">
-<meta name="twitter:description" content="不知道说啥，昨天搭好的博客，现在才push上来。好久没有写Blog了，总是难以坚持下来，现在决定要开始好好写Blog了。以前用过tumblr（国内的点点网是仿照它的），也能绑定域名地址，很好用，有很多主题，但是现在被TG墙了，墙外写Blog比较麻烦，最终只能自己搭建一个Blog，平时来上面吐槽，说说心事，聊以慰藉。该Blog是用Hexo搭建的，Hexo比较不错，Node.js开发的轻量级博客框架。">
+<meta name="twitter:title" content="有关于修BUG的一个思考">
+<meta name="twitter:description" content="主要是在知乎看到龚敏敏大神的一篇文章才引发的思考。文章的评论中有个回复比较有意思：
+
+clang里有个bug，在windows平台上编译出来的dll，类的导出函数都多了个下划线前缀，从2011年开始被喷了4年，无效。ms一push，3天就修好了。（然而那个补丁超级邪恶。检测到下划线就去掉，而不是找到为什么会多一个下划线）
+
+以上的回复我有一些删改。 
+对此我引发的一些思考是，对于大型的复杂精密的系">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -57,7 +72,7 @@
   };
 </script>
 
-  <title> 新的开始 | 永恒未知处 </title>
+  <title> 有关于修BUG的一个思考 | 永恒未知处 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -314,7 +329,7 @@
           
           
             
-              新的开始
+              有关于修BUG的一个思考
             
           
         </h1>
@@ -323,8 +338,8 @@
       <div class="post-meta">
         <span class="post-time">
           Posted on
-          <time itemprop="dateCreated" datetime="2016-07-24T08:30:48+08:00" content="2016-07-24">
-            2016-07-24
+          <time itemprop="dateCreated" datetime="2016-08-26T10:14:16+08:00" content="2016-08-26">
+            2016-08-26
           </time>
         </span>
 
@@ -342,8 +357,28 @@
       
 
       
-        <span itemprop="articleBody"><p>不知道说啥，昨天搭好的博客，现在才push上来。好久没有写Blog了，总是难以坚持下来，现在决定要开始好好写Blog了。以前用过tumblr（国内的点点网是仿照它的），也能绑定域名地址，很好用，有很多主题，但是现在被TG墙了，墙外写Blog比较麻烦，最终只能自己搭建一个Blog，平时来上面吐槽，说说心事，聊以慰藉。该Blog是用Hexo搭建的，Hexo比较不错，Node.js开发的轻量级博客框架。</p>
-<p>新的生活又开始了 :)</p>
+        <span itemprop="articleBody"><p>主要是在知乎看到龚敏敏大神的一篇<a href="https://zhuanlan.zhihu.com/p/22182269" target="_blank" rel="external">文章</a>才引发的思考。文章的评论中有个回复比较有意思：</p>
+<blockquote>
+<p><em>clang里有个bug，在windows平台上编译出来的dll，类的导出函数都多了个下划线前缀，从2011年开始被喷了4年，无效。ms一push，3天就修好了。（然而那个补丁超级邪恶。检测到下划线就去掉，而不是找到为什么会多一个下划线）</em></p>
+</blockquote>
+<p>以上的回复我有一些删改。 </p>
+<p>对此我引发的一些思考是，对于大型的复杂精密的系统软件的BUG修复问题：修BUG是找到出现BUG的本质原因，还是可以在适当的情形下考虑从其他角度规避造成BUG这个现象就可以了？简单来说，就是只要让该现象不出现就可以了。</p>
+<p>如果是正常情况下，在我们的工作中这样修复BUG是万万不行的，因为这只是隐藏问题，而不是解决问题，这是一种不负责任的做法。我相信只要是一个负责人的工程师都不会这样做。</p>
+<p>但从以上微软修复BUG的例子来看，工程师们选择的是后者。因为编译器是一个很精密复杂的工程，在没经过严格的单元测试下不会发布，所以测试编译器的正确性也是含金量很高的活。对于这种精密复杂的系统修改它的BUG就不是那么容易的，而且又在极其有限的时间内修复，那么就难上加难了，因为很容易牵一发而动全身，一旦出现一些诡异难缠的BUG，即使是经验丰富的工程师短时间内很难找到问题症结所在。</p>
+<p>最后，我对这种方式的修BUG行为做个总结，如果要以这种方式解决问题，那么你应该明确评估以下几点</p>
+<ul>
+<li>衡量修复BUG的复杂度，真正修复它需要多长时间，技术难度大不大，是否紧急</li>
+<li>评估出现该BUG的模块对于整个项目的重要程度，如果短期不修复，会对用户造成多大影响</li>
+<li>是否存在朴素笨拙的办法规避BUG现象，如果存在，那么可以。（当然，对于我的工程经验来说，有些时候用笨办法解决问题非常符合实际）</li>
+</ul>
+<p>最最后，真的是最后了 = =！ 分享一个我平时Debug的方式：</p>
+<ul>
+<li>程序业务逻辑采用日志系统输出打印，出现这类的BUG，往往可以通过log就能定位了</li>
+<li>出现BUG，首先一定要复现BUG，不然，都不知道怎么Debug。再然后，简化场景分析，不断的验证或推翻自己的想法，最终解决。</li>
+<li>出现程序crash的BUG，这种BUG太好了，90%是内存访问违例，空指针或者数组copy越界等这个只要用相关工具分析程序崩溃时候的CoreDump基本就可以解决了</li>
+<li>一定不要瞎猜，一定不要瞎猜！！！先Profile！特别是遇到性能瓶颈问题！</li>
+<li>明确目标，你要的是解决问题。</li>
+</ul>
 </span>
       
     </div>
@@ -352,9 +387,7 @@
       
         <div class="post-tags">
           
-            <a href="/blog/tags/生活/" rel="tag">#生活</a>
-          
-            <a href="/blog/tags/技术/" rel="tag">#技术</a>
+            <a href="/blog/tags/软件调试/" rel="tag">#软件调试</a>
           
         </div>
       
@@ -363,11 +396,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/blog/2016/07/30/foot-print/" rel="prev">我的足迹</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2016/08/05/open-source-power/" rel="next">软件的未来</a>
             
           </div>
         </div>
