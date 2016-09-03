@@ -31,7 +31,7 @@
 
 
 
-  <meta name="keywords" content="软件调试," />
+  <meta name="keywords" content="C/C++,错误处理," />
 
 
 
@@ -40,31 +40,19 @@
   <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="主要是在知乎看到龚敏敏大神的一篇文章才引发的思考。文章的评论中有个回复比较有意思：
-
-clang里有个bug，在windows平台上编译出来的dll，类的导出函数都多了个下划线前缀，从2011年开始被喷了4年，无效。ms一push，3天就修好了。（然而那个补丁超级邪恶。检测到下划线就去掉，而不是找到为什么会多一个下划线）
-
-以上的回复我有一些删改。 
-对此我引发的一些思考是，对于大型的复杂精密的系">
+<meta name="description" content="我们平时有这样的需求，可能是C语言用户的老习惯了，在底层的组件中更喜欢用返回错误码的形式来告知函数的调用结果，一般来说，简单用#define 一个宏来包装下返回值。1#define ERR_SYSTEM_INIT -23 // system initailized fail
+以上定义了一个错误码返回-23，意味着系统初始化失败。但是宏包含的信息太少，有些时候，用户不能知道错误的详细原因。必须给这错">
 <meta property="og:type" content="article">
-<meta property="og:title" content="有关于修BUG的一个思考">
-<meta property="og:url" content="https://alexiachen.github.io/blog/2016/08/26/fix-bug/index.html">
+<meta property="og:title" content="C++返回码的定义">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2015/11/09/error-code/index.html">
 <meta property="og:site_name" content="西域不夜城">
-<meta property="og:description" content="主要是在知乎看到龚敏敏大神的一篇文章才引发的思考。文章的评论中有个回复比较有意思：
-
-clang里有个bug，在windows平台上编译出来的dll，类的导出函数都多了个下划线前缀，从2011年开始被喷了4年，无效。ms一push，3天就修好了。（然而那个补丁超级邪恶。检测到下划线就去掉，而不是找到为什么会多一个下划线）
-
-以上的回复我有一些删改。 
-对此我引发的一些思考是，对于大型的复杂精密的系">
-<meta property="og:updated_time" content="2016-08-26T06:34:44.103Z">
+<meta property="og:description" content="我们平时有这样的需求，可能是C语言用户的老习惯了，在底层的组件中更喜欢用返回错误码的形式来告知函数的调用结果，一般来说，简单用#define 一个宏来包装下返回值。1#define ERR_SYSTEM_INIT -23 // system initailized fail
+以上定义了一个错误码返回-23，意味着系统初始化失败。但是宏包含的信息太少，有些时候，用户不能知道错误的详细原因。必须给这错">
+<meta property="og:updated_time" content="2016-09-03T03:28:14.676Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="有关于修BUG的一个思考">
-<meta name="twitter:description" content="主要是在知乎看到龚敏敏大神的一篇文章才引发的思考。文章的评论中有个回复比较有意思：
-
-clang里有个bug，在windows平台上编译出来的dll，类的导出函数都多了个下划线前缀，从2011年开始被喷了4年，无效。ms一push，3天就修好了。（然而那个补丁超级邪恶。检测到下划线就去掉，而不是找到为什么会多一个下划线）
-
-以上的回复我有一些删改。 
-对此我引发的一些思考是，对于大型的复杂精密的系">
+<meta name="twitter:title" content="C++返回码的定义">
+<meta name="twitter:description" content="我们平时有这样的需求，可能是C语言用户的老习惯了，在底层的组件中更喜欢用返回错误码的形式来告知函数的调用结果，一般来说，简单用#define 一个宏来包装下返回值。1#define ERR_SYSTEM_INIT -23 // system initailized fail
+以上定义了一个错误码返回-23，意味着系统初始化失败。但是宏包含的信息太少，有些时候，用户不能知道错误的详细原因。必须给这错">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -74,7 +62,7 @@ clang里有个bug，在windows平台上编译出来的dll，类的导出函数�
   };
 </script>
 
-  <title> 有关于修BUG的一个思考 | 西域不夜城 </title>
+  <title> C++返回码的定义 | 西域不夜城 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -331,7 +319,7 @@ clang里有个bug，在windows平台上编译出来的dll，类的导出函数�
           
           
             
-              有关于修BUG的一个思考
+              C++返回码的定义
             
           
         </h1>
@@ -340,8 +328,8 @@ clang里有个bug，在windows平台上编译出来的dll，类的导出函数�
       <div class="post-meta">
         <span class="post-time">
           Posted on
-          <time itemprop="dateCreated" datetime="2016-08-26T10:14:16+08:00" content="2016-08-26">
-            2016-08-26
+          <time itemprop="dateCreated" datetime="2015-11-09T11:04:42+08:00" content="2015-11-09">
+            2015-11-09
           </time>
         </span>
 
@@ -352,11 +340,11 @@ clang里有个bug，在windows平台上编译出来的dll，类的导出函数�
             <span class="post-comments-count">
               &nbsp; | &nbsp;
               <!--
-              <a href="/blog/2016/08/26/fix-bug/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/26/fix-bug/" itemprop="commentsCount"></span>
+              <a href="/blog/2015/11/09/error-code/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/09/error-code/" itemprop="commentsCount"></span>
               </a>
               -->
-              <a href="/blog/2016/08/26/fix-bug/#comments" itemprop="discussionUrl">
+              <a href="/blog/2015/11/09/error-code/#comments" itemprop="discussionUrl">
                 <span>评论</span>
               </a>
             </span>
@@ -371,29 +359,11 @@ clang里有个bug，在windows平台上编译出来的dll，类的导出函数�
       
 
       
-        <span itemprop="articleBody"><p>主要是在知乎看到龚敏敏大神的一篇<a href="https://zhuanlan.zhihu.com/p/22182269" target="_blank" rel="external">文章</a>才引发的思考。文章的评论中有个回复比较有意思：</p>
-<blockquote>
-<p><em><a href="http://clang.llvm.org/" target="_blank" rel="external">clang</a>里有个bug，在windows平台上编译出来的dll，类的导出函数都多了个下划线前缀，从2011年开始被喷了4年，无效。ms一push，3天就修好了。（然而那个补丁超级邪恶。检测到下划线就去掉，而不是找到为什么会多一个下划线）</em></p>
-</blockquote>
-<p>以上的回复我有一些删改。 </p>
-<p>对此我引发的一些思考是，对于大型的复杂精密的系统软件的BUG修复问题：修BUG是找到出现BUG的本质原因，还是可以在适当的情形下考虑从其他角度规避造成BUG这个现象就可以了？简单来说，就是只要让该现象不出现就可以了。</p>
-<p>如果是正常情况下，在我们的工作中这样修复BUG是万万不行的，因为这只是隐藏问题，而不是解决问题，这是一种不负责任的做法。我相信只要是一个负责任的工程师都不会这样做。</p>
-<p>但从以上微软修复BUG的例子来看，工程师们选择的是后者。因为编译器是一个很精密复杂的工程，在没经过严格的单元测试下不会发布，所以测试编译器的正确性也是含金量很高的活。对于这种精密复杂的系统修改它的BUG就不是那么容易的，而且又在极其有限的时间内修复，那么就难上加难了，因为很容易牵一发而动全身，一旦出现一些诡异难缠的BUG，即使是经验丰富的工程师短时间内很难找到问题症结所在。</p>
-<p>最后，我对这种方式的修BUG行为做个总结，如果要以这种方式解决问题，那么你应该明确评估以下几点</p>
-<ul>
-<li>衡量修复BUG的复杂度，真正修复它需要多长时间，技术难度大不大，是否紧急</li>
-<li>评估出现该BUG的模块对于整个项目的重要程度，如果短期不修复，会对用户造成多大影响</li>
-<li>是否存在朴素笨拙的办法规避BUG现象，如果存在，那么可以。（当然，对于我的工程经验来说，有些时候用笨办法解决问题非常符合实际）</li>
-</ul>
-<p>最最后，真的是最后了 = =！ 分享一个我平时Debug的方式：</p>
-<ul>
-<li>程序业务逻辑采用日志系统输出打印，出现这类的BUG，往往可以通过log就能定位了</li>
-<li>出现BUG，首先一定要复现BUG，不然，都不知道怎么Debug。再然后，简化场景分析，不断的验证或推翻自己的想法，最终解决。</li>
-<li>出现程序crash的BUG，这种BUG太好了，90%是内存访问违例，空指针或者数组copy越界等这个只要用相关工具分析程序崩溃时候的<a href="https://en.wikipedia.org/wiki/Core_dump" target="_blank" rel="external">CoreDump</a>基本就可以解决了</li>
-<li>一定不要瞎猜，一定不要瞎猜！！！先Profile！特别是遇到性能瓶颈问题！</li>
-<li>明确目标，你要的是解决问题。</li>
-</ul>
-</span>
+        <span itemprop="articleBody"><p>我们平时有这样的需求，可能是C语言用户的老习惯了，在底层的组件中更喜欢用返回错误码的形式来告知函数的调用结果，一般来说，简单用#define 一个宏来包装下返回值。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> ERR_SYSTEM_INIT -23 <span class="comment">// system initailized fail</span></span></div></pre></td></tr></table></figure></p>
+<p>以上定义了一个错误码返回-23，意味着系统初始化失败。但是宏包含的信息太少，有些时候，用户不能知道错误的详细原因。必须给这错误加以说明。所以就索性写了一个Error类可以定义错误码和相关错误描述信息，并通过类似于Win32 API <strong>GetLastError</strong>这样的函数让错误码返回更详细的说明：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cassert&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">class</span> Error</div><div class="line">&#123;</div><div class="line">  <span class="keyword">public</span>:</div><div class="line">   Error(<span class="keyword">int</span> value, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; str)</div><div class="line">   &#123;</div><div class="line">     m_value = value;</div><div class="line">     m_message =    str;</div><div class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG</span></div><div class="line">     ErrorMap::iterator found = GetErrorMap().find(value);</div><div class="line">     <span class="keyword">if</span> (found != GetErrorMap().end())</div><div class="line">     assert(found-&gt;second == m_message);</div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line">     GetErrorMap()[m_value] = m_message;</div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="comment">// auto-cast Error to integer error code</span></div><div class="line">   <span class="function"><span class="keyword">operator</span> <span class="title">int</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_value; &#125;</div><div class="line">  <span class="keyword">private</span>:</div><div class="line">    <span class="keyword">int</span> m_value;</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> m_message;</div><div class="line"></div><div class="line">    <span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="keyword">int</span>, <span class="built_in">std</span>::<span class="built_in">string</span>&gt; ErrorMap;</div><div class="line">    <span class="function"><span class="keyword">static</span> ErrorMap&amp; <span class="title">GetErrorMap</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">       <span class="keyword">static</span> ErrorMap errMap;</div><div class="line">       <span class="keyword">return</span> errMap;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"> <span class="keyword">public</span>:</div><div class="line"></div><div class="line">    <span class="keyword">static</span> <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">GetErrorString</span><span class="params">(<span class="keyword">int</span> value)</span></span></div><div class="line">    &#123;</div><div class="line">       ErrorMap::iterator found = GetErrorMap().find(value);</div><div class="line">       <span class="keyword">if</span> (found == GetErrorMap().end())</div><div class="line">       &#123;</div><div class="line">          assert(<span class="literal">false</span>);</div><div class="line">          <span class="keyword">return</span> <span class="string">""</span>;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">else</span></div><div class="line">       &#123;</div><div class="line">          <span class="keyword">return</span> found-&gt;second;</div><div class="line">       &#125;</div><div class="line">    &#125;   </div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>以下是该类的使用方法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;isotream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"ErrorHandle.h"</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> Error <span class="title">SYSTEM_NOT_INIT</span><span class="params">(<span class="number">-23</span>,<span class="string">"system initailized fail,because some reason"</span>)</span></span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">  <span class="keyword">return</span> SYSTEM_NOT_INIT;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> err_code = foo();</div><div class="line">    <span class="comment">// print error details</span></div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; Error::GetErrorString(err_code) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></span>
       
     </div>
 
@@ -401,7 +371,9 @@ clang里有个bug，在windows平台上编译出来的dll，类的导出函数�
       
         <div class="post-tags">
           
-            <a href="/blog/tags/软件调试/" rel="tag">#软件调试</a>
+            <a href="/blog/tags/C-C/" rel="tag">#C/C++</a>
+          
+            <a href="/blog/tags/错误处理/" rel="tag">#错误处理</a>
           
         </div>
       
@@ -410,13 +382,11 @@ clang里有个bug，在windows平台上编译出来的dll，类的导出函数�
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/blog/2016/08/27/ioccc-code/" rel="prev">我的C语言混乱代码</a>
+              <a href="/blog/2016/04/28/logic-equivalence/" rel="prev">软件设计中的逻辑等价</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
-            
-              <a href="/blog/2016/08/05/open-source-power/" rel="next">软件的未来</a>
             
           </div>
         </div>
@@ -498,10 +468,10 @@ clang里有个bug，在windows平台上编译出来的dll，类的导出函数�
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/08/26/fix-bug/"
-     data-title="有关于修BUG的一个思考"
+        <div class="ds-share flat" data-thread-key="2015/11/09/error-code/"
+     data-title="C++返回码的定义"
      data-content=""
-     data-url="https://alexiachen.github.io/blog/blog/2016/08/26/fix-bug/">
+     data-url="https://alexiachen.github.io/blog/blog/2015/11/09/error-code/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -531,8 +501,8 @@ clang里有个bug，在windows平台上编译出来的dll，类的导出函数�
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2016/08/26/fix-bug/"
-                   data-title="有关于修BUG的一个思考" data-url="https://alexiachen.github.io/blog/blog/2016/08/26/fix-bug/">
+              <div class="ds-thread" data-thread-key="2015/11/09/error-code/"
+                   data-title="C++返回码的定义" data-url="https://alexiachen.github.io/blog/blog/2015/11/09/error-code/">
               </div>
             
           </div>
