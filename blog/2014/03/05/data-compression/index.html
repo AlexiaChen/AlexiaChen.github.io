@@ -31,7 +31,7 @@
 
 
 
-  <meta name="keywords" content="Hexo,next" />
+  <meta name="keywords" content="数据压缩," />
 
 
 
@@ -40,15 +40,22 @@
   <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="系统软件工程师">
-<meta property="og:type" content="website">
-<meta property="og:title" content="西域不夜城">
-<meta property="og:url" content="https://alexiachen.github.io/blog/archives/2016/09/index.html">
+<meta name="description" content="首先解释一个原理：就无损压缩来说，如果一个算法能压缩一个文件，就必然存在另一个文件是压缩之后比原文件还要大的，这个原理还想不通的话可以参考抽屉原理。
+于是，设计一个压缩算法，首先就要考虑什么文件是能压缩的，什么文件是不能压缩的。对通用压缩算法来说，我们通常只会做一个基本的假设：在文件中如果出现了一个串Sx，那么其它地方出现Sx的概率相对会比别的串概率要高。
+就目前来说，ZIP/RAR这一类算法都是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据压缩的基本常识">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2014/03/05/data-compression/index.html">
 <meta property="og:site_name" content="西域不夜城">
-<meta property="og:description" content="系统软件工程师">
+<meta property="og:description" content="首先解释一个原理：就无损压缩来说，如果一个算法能压缩一个文件，就必然存在另一个文件是压缩之后比原文件还要大的，这个原理还想不通的话可以参考抽屉原理。
+于是，设计一个压缩算法，首先就要考虑什么文件是能压缩的，什么文件是不能压缩的。对通用压缩算法来说，我们通常只会做一个基本的假设：在文件中如果出现了一个串Sx，那么其它地方出现Sx的概率相对会比别的串概率要高。
+就目前来说，ZIP/RAR这一类算法都是">
+<meta property="og:updated_time" content="2016-09-03T03:43:47.171Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="西域不夜城">
-<meta name="twitter:description" content="系统软件工程师">
+<meta name="twitter:title" content="数据压缩的基本常识">
+<meta name="twitter:description" content="首先解释一个原理：就无损压缩来说，如果一个算法能压缩一个文件，就必然存在另一个文件是压缩之后比原文件还要大的，这个原理还想不通的话可以参考抽屉原理。
+于是，设计一个压缩算法，首先就要考虑什么文件是能压缩的，什么文件是不能压缩的。对通用压缩算法来说，我们通常只会做一个基本的假设：在文件中如果出现了一个串Sx，那么其它地方出现Sx的概率相对会比别的串概率要高。
+就目前来说，ZIP/RAR这一类算法都是">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -58,7 +65,7 @@
   };
 </script>
 
-  <title> Archive | 西域不夜城 </title>
+  <title> 数据压缩的基本常识 | 西域不夜城 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -76,7 +83,7 @@
 
 
 
-  <div class="container one-column  page-archive ">
+  <div class="container one-column page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -303,64 +310,207 @@
       <div class="main-inner">
         <div id="content" class="content"> 
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      Um..! 13 posts in total. Keep on posting.
-    </span>
-
+  <div id="posts" class="posts-expand">
     
 
-      
-      
-      
-
-      
-        
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2016">2016</h2>
-        </div>
-      
-      
-
-      
-
-  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
 
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/blog/2016/09/02/data-erasure/" itemprop="url">
-              <span itemprop="name">防止数据被恢复的可能</span>
-            </a>
-        
-      </h1>
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              数据压缩的基本常识
+            
+          
+        </h1>
+      
 
       <div class="post-meta">
-        <time class="post-time" datetime="2016-09-02T10:17:39.000Z" itemprop="dateCreated" content="2016-09-02"> 09-02 </time>
-      </div>
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2014-03-05T11:41:52+08:00" content="2014-03-05">
+            2014-03-05
+          </time>
+        </span>
 
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <!--
+              <a href="/blog/2014/03/05/data-compression/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2014/03/05/data-compression/" itemprop="commentsCount"></span>
+              </a>
+              -->
+              <a href="/blog/2014/03/05/data-compression/#comments" itemprop="discussionUrl">
+                <span>评论</span>
+              </a>
+            </span>
+          
+        
+      </div>
     </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>首先解释一个原理：就无损压缩来说，如果一个算法能压缩一个文件，就必然存在另一个文件是压缩之后比原文件还要大的，这个原理还想不通的话可以参考抽屉原理。</p>
+<p>于是，设计一个压缩算法，首先就要考虑什么文件是能压缩的，什么文件是不能压缩的。对通用压缩算法来说，我们通常只会做一个基本的假设：在文件中如果出现了一个串Sx，那么其它地方出现Sx的概率相对会比别的串概率要高。</p>
+<p>就目前来说，ZIP/RAR这一类算法都是基于这个原理，所以它们也无一例外不能压缩完全随机生成的文件。</p>
+<p>于是给出两个命题：</p>
+<ul>
+<li>如果你设计的一个压缩算法不是出于对重复串的建模，那么它基本不可能成为通用的压缩算法。</li>
+<li>如果你设计的算法〔能压缩任何文件〕，那么一定不存在有效的解压算法。</li>
+</ul>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/数据压缩/" rel="tag">#数据压缩</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2014/03/05/asm-function-call/" rel="prev">从底层角度看待函数的调用</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
 
-    
+    <div>
+      
+        <style type="text/css">
 
-  </section>
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
 
-  
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2014/03/05/data-compression/"
+     data-title="数据压缩的基本常识"
+     data-content=""
+     data-url="https://alexiachen.github.io/blog/blog/2014/03/05/data-compression/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
 
  </div>
 
         
+            <!-- 多说热评文章-->
+            <p>热评文章</p>
+            <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+        
 
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2014/03/05/data-compression/"
+                   data-title="数据压缩的基本常识" data-url="https://alexiachen.github.io/blog/blog/2014/03/05/data-compression/">
+              </div>
+            
+          </div>
         
       </div>
 
@@ -377,6 +527,15 @@
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
 
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
       
 
       <section class="site-overview">
@@ -445,6 +604,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">This post does not have a Table Of Contents</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
       
 
     </div>
@@ -528,12 +698,6 @@
   
   
   
-    <script type="text/javascript">
-      postMotionOptions = {stagger: 100, drag: true};
-    </script>
-  
-
-  
     
 
   
@@ -584,10 +748,163 @@
 
   
   
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
 
 
   <script type="text/javascript">
