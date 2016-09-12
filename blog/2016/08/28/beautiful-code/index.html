@@ -50,7 +50,7 @@
 <meta property="og:description" content="前言
 程序员是一个巨大多样的群体，可能论代码风格每个人有不同的理解，每个人对编写优雅简洁的代码的欣赏风格可能也不同。虽然每个人的个性和风格是有差异的，但是对于优美的代码同时也有普遍的共性和。优美的代码也是具有普适性的。
 因为这样，所以才有很多经验老道的工程师写了有关于代码编写风格规范的书籍。比如，《API Design for C++》,《编写可读代码的艺术》, 《重构:改善既有代码的设计》等。">
-<meta property="og:updated_time" content="2016-08-28T09:10:22.097Z">
+<meta property="og:updated_time" content="2016-09-12T01:33:44.319Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何写出优美的代码">
 <meta name="twitter:description" content="前言
@@ -380,7 +380,7 @@
 <p>知道了吧？ 影响代码可读性的书写反而需要用更多的注释来弥补。一个书写优美简洁的代码应该是“自解释”的，就是不需要写注释，程序员一眼就能明白大概是在干什么的。如果注释越来越多，那么维护性会越来越差，因为维护代码的同时还需要维护注释。但很显然，实际情况中，保持代码和注释的一致性非常难。你看看小公司的那些老古董项目，有一些注释都与代码意图完全不一样了，天知道是什么年代的注释。留着还会把人带歪路上呢，删了吧，也不好，谁知道留着这段注释你将来想干啥。 代码的<a href="http://baike.baidu.com/item/%E7%86%B5/19190273#viewPageContent" target="_blank" rel="external"><font color="red">熵</font></a>是越来越高的，代码的腐烂也是时时刻刻。</p>
 <p>上面只说到了过多嵌套的坏处，那么如何避免这类现象呢？其实万变不离其宗，与第一点本质一样。</p>
 <p>方法就是，把这些大量的循环或嵌套抽象成语义更明确的函数或方法把它提取出去调用，过多的嵌套就说明函数代码块的实现太复杂了，也表现了实现者的思路不清晰，当然也可能最终是公司加班赶项目进度的原因造成这样的结果。:)</p>
-<p><font color="red">注意一点</font>，不要为了<font color="red">避免嵌套</font>在循环中用break，continue 投机取巧（这里其实是暗指一些看似谦虚其实自以为是的工程师），好吧，即使这样的写法带来一定程度的避免过多嵌套，但是同时它也带来了更多的坏处，具体情况王垠的文章<a href="http://www.yinwang.org/blog-cn/2015/11/21/programming-philosophy" target="_blank" rel="external">《编程的智慧》</a>有讨论。我还可以举出一些讨论:</p>
+<p><font color="red">注意一点</font>，不要为了<font color="red">避免嵌套</font>在循环中用break，continue 投机取巧，好吧，即使这样的写法带来一定程度的避免过多嵌套，但是同时它也带来了更多的坏处，具体情况王垠的文章<a href="http://www.yinwang.org/blog-cn/2015/11/21/programming-philosophy" target="_blank" rel="external">《编程的智慧》</a>有讨论。我还可以举出一些讨论:</p>
 <ul>
 <li><p><a href="http://programmers.stackexchange.com/questions/58237/are-break-and-continue-bad-programming-practices" target="_blank" rel="external">Are <code>break</code> and <code>continue</code> bad programming practices?</a></p>
 </li>
