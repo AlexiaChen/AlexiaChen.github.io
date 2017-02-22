@@ -1,0 +1,87 @@
+// CSS Style Guide: http://codeguide.co/#css
+
+
+
+$scheme    = hexo-config('scheme') ? hexo-config('scheme') : 'default';
+$variables = base $scheme custom;
+$mixins    = base $scheme custom;
+
+
+
+// Variables Layer
+// --------------------------------------------------
+for $variable in $variables
+  @import "_variables/" + $variable
+
+
+// Mixins Layer
+// --------------------------------------------------
+for $mixin in $mixins
+  @import "_mixins/" + $mixin;
+
+
+
+// Common Layer
+// --------------------------------------------------
+
+
+// Reset using normalize.
+@import "_common/_core/normalize";
+
+
+// Core CSS
+@import "_common/_core/scaffolding";
+@import "_common/_core/base";
+@import "_common/_core/tables";
+@import "_common/_core/helpers";
+
+
+// Fonts
+@import "_common/_fonts/icon-font";
+@import "_common/_fonts/icon-" + hexo-config('icon_font');
+
+
+// Vendors
+@import "_common/_vendor/highlight/highlight";
+
+
+// Sections
+@import "_common/_section/layout";
+@import "_common/_section/header";
+@import "_common/_section/body";
+@import "_common/_section/sidebar";
+@import "_common/_section/footer";
+@import "_common/_section/media";
+
+
+// Components
+@import "_common/_component/buttons";
+@import "_common/_component/posts-expand";
+@import "_common/_component/posts-collapse";
+@import "_common/_component/posts-type";
+@import "_common/_component/pagination";
+@import "_common/_component/comments";
+@import "_common/_component/tag-cloud";
+@import "_common/_component/gallery";
+@import "_common/_component/back-to-top";
+@import "_common/_component/duoshuo";
+@import "_common/_component/jiathis";
+
+
+// Page specific styles
+@import "_common/_page/home";
+@import "_common/_page/archive";
+@import "_common/_page/post-detail";
+@import "_common/_page/categories";
+
+
+
+// Schemes Layer
+// --------------------------------------------------
+@import "_schemes/" + $scheme;
+
+
+
+// Custom Mala Layer
+// --------------------------------------------------
+@import "_custom/Mala";
