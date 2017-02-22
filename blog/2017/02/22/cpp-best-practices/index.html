@@ -1,0 +1,1002 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="系统软件工程师" />
+
+
+
+  <meta name="keywords" content="C/C++,软件工程," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="该篇文章是我自己的经验总结，不可能100%适合读者，当然相关的C++工程实践书籍类似《Effective C++》，《More Effective C++》，《Modern Effective C++》，《Learning C++ Best Practices》 《Google C++ Coding Style》等等可能都有类似描述,我这篇文章可能也是从以上的书籍文章汲取了一些。
+
+工欲善其事必">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++最佳实践">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2017/02/22/cpp-best-practices/index.html">
+<meta property="og:site_name" content="符号与人生">
+<meta property="og:description" content="该篇文章是我自己的经验总结，不可能100%适合读者，当然相关的C++工程实践书籍类似《Effective C++》，《More Effective C++》，《Modern Effective C++》，《Learning C++ Best Practices》 《Google C++ Coding Style》等等可能都有类似描述,我这篇文章可能也是从以上的书籍文章汲取了一些。
+
+工欲善其事必">
+<meta property="og:updated_time" content="2017-02-22T04:05:04.410Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++最佳实践">
+<meta name="twitter:description" content="该篇文章是我自己的经验总结，不可能100%适合读者，当然相关的C++工程实践书籍类似《Effective C++》，《More Effective C++》，《Modern Effective C++》，《Learning C++ Best Practices》 《Google C++ Coding Style》等等可能都有类似描述,我这篇文章可能也是从以上的书籍文章汲取了一些。
+
+工欲善其事必">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> C++最佳实践 | 符号与人生 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">符号与人生</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br />
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              C++最佳实践
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2017-02-22T08:58:23+08:00" content="2017-02-22">
+            2017-02-22
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <!--
+              <a href="/blog/2017/02/22/cpp-best-practices/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/22/cpp-best-practices/" itemprop="commentsCount"></span>
+              </a>
+              -->
+              <a href="/blog/2017/02/22/cpp-best-practices/#comments" itemprop="discussionUrl">
+                <span>评论</span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><blockquote>
+<p>该篇文章是我自己的经验总结，不可能100%适合读者，当然相关的C++工程实践书籍类似《Effective C++》，《More Effective C++》，《Modern Effective C++》，《Learning C++ Best Practices》 《Google C++ Coding Style》等等可能都有类似描述,我这篇文章可能也是从以上的书籍文章汲取了一些。</p>
+</blockquote>
+<h1 id="工欲善其事必先利其器"><a href="#工欲善其事必先利其器" class="headerlink" title="工欲善其事必先利其器"></a>工欲善其事必先利其器</h1><hr>
+<p>现在软件工程越来越发达，C++的标准也一直在改进更新，这门在大众来看的“古老”语言也在慢慢变得更加像现代编程语言一样了，现代软件工程持续交付，持续集成等工具概念层出不穷，这里我想推荐些工具给读者改进优化项目开发流程</p>
+<ul>
+<li><p><a href="https://cmake.org/" target="_blank" rel="external">Cmake</a>，最好的C++跨平台构建工具，没有之一，automake，qmake在它面前黯然失色。</p>
+</li>
+<li><p><a href="http://travis-ci.org/" target="_blank" rel="external">Travis CI</a>, 这个是持续集成工具，能在Github上很好的工作。</p>
+</li>
+<li><p><a href="http://cppcheck.sourceforge.net/" target="_blank" rel="external">CppCheck</a>, C/C++ 静态分析工具，免费的，能查出很多类型缺陷，内存泄漏和资源泄漏。当然还有很多语言的静态分析工具，如果有兴趣，请看<a href="https://en.wikipedia.org/wiki/List_of_tools_for_static_code_analysis" target="_blank" rel="external">这里</a></p>
+</li>
+</ul>
+<p>另外，在个人项目和公司项目中，C++编译器，无论在g++，MSVC，或者clang上，请把警告级别调整到最高。MSVC我是调整到W4级别，g++上，由于本人不熟悉g++的警告类型，那么请开-Wall -Wextra警告并严格观察，另外g++上还可以开-Weffc++选项，编译器会按照《Effective C++》的实践规范来检查代码的隐患。这些都是很重要，编译器的警告很<a href="https://www.zhihu.com/question/29155164" target="_blank" rel="external">重要</a>！！要好好利用静态类型语言带来的优点。最后把警告尽量消除到0 warnings为止！ 最后的最后，用C++的静态分析工具检查一遍所有的源码，选择性的消除工具报告出来的缺陷。这样你会发现，后期的软件的运行时的BUG会少很多，特别是不明不白的crash。</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><hr>
+<h4 id="基本C-命名规范"><a href="#基本C-命名规范" class="headerlink" title="基本C++命名规范"></a>基本C++命名规范</h4><ul>
+<li>类名用驼峰命名法: MyClass</li>
+<li>类的成员函数和变量名开头单词用小写：myMethod</li>
+<li>常量全用大写：const double PI = 3.1415926</li>
+</ul>
+<p>另外C++标准库和Boost采用另一种规范，如果你的代码与标准库和Boost混合写契合度很高，推荐用以下的规范：</p>
+<ul>
+<li>宏名称单词全用大写，单词之间用下划线隔开： INT_MAX</li>
+<li>模版参数使用驼峰命名法： InputInterator</li>
+<li>其他所有变量和函数名，类名全用小写单词加下划线隔开：make_shared,unordered_map,dynamic_cast</li>
+</ul>
+<h4 id="区分私有成员变量"><a href="#区分私有成员变量" class="headerlink" title="区分私有成员变量"></a>区分私有成员变量</h4><ul>
+<li>在私有成员变量前面加入m_前缀, m代表“member”： m_height</li>
+</ul>
+<p>当然，个别一些习惯，是在私有成员变量后加下划线后缀： object_</p>
+<h4 id="区分函数参数"><a href="#区分函数参数" class="headerlink" title="区分函数参数"></a>区分函数参数</h4><ul>
+<li>在函数参数名加入t_前缀： t_height</li>
+</ul>
+<p>当然，代码最重要的还是要与CodeBase一致，最终看公司的规范，这里只是一个样例，t可以认为是“the”的缩写。这只是区分函数参数与局部变量的一种策略。</p>
+<h4 id="任何命名不能是下划线开头"><a href="#任何命名不能是下划线开头" class="headerlink" title="任何命名不能是下划线开头"></a>任何命名不能是下划线开头</h4><p>如果你这么做，那么可能会与编译器的扩展关键字造成冲突。如果好奇，那么请看stackoverflow的这个<a href="http://stackoverflow.com/questions/228783/what-are-the-rules-about-using-an-underscore-in-a-c-identifier" target="_blank" rel="external">讨论</a>。</p>
+<h4 id="一个良好的样例"><a href="#一个良好的样例" class="headerlink" title="一个良好的样例"></a>一个良好的样例</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> MyClass</div><div class="line">&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">  MyClass(<span class="keyword">int</span> t_data, <span class="keyword">int</span> t_attr)</div><div class="line">    : m_data(t_data),m_attr(t_attr)</div><div class="line">  &#123;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">int</span> <span class="title">getData</span><span class="params">()</span> <span class="keyword">const</span></span></div><div class="line">  &#123;</div><div class="line">    <span class="keyword">return</span> m_data;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">int</span> <span class="title">attribute</span><span class="params">()</span> <span class="keyword">const</span></span></div><div class="line">  &#123;</div><div class="line">      <span class="keyword">return</span> m_attr;</div><div class="line">  &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">  <span class="keyword">int</span> m_data;</div><div class="line">  <span class="keyword">int</span> m_attr;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="空指针的表示请用nullptr"><a href="#空指针的表示请用nullptr" class="headerlink" title="空指针的表示请用nullptr"></a>空指针的表示请用nullptr</h4><p>C++ 11 中的空指针是一个特定的值，用以代替0或NULL。 如果好奇，请看知乎的<a href="https://www.zhihu.com/question/55936870" target="_blank" rel="external">讨论</a>, 不然值会有二义性。另外，知乎上还有<a href="https://www.zhihu.com/question/22203461" target="_blank" rel="external">讨论2</a>。</p>
+<h4 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h4><p>优先使用//来注释代码块，不要使用/**/</p>
+<h4 id="不要在头文件中使用using-namespace"><a href="#不要在头文件中使用using-namespace" class="headerlink" title="不要在头文件中使用using namespace"></a>不要在头文件中使用using namespace</h4><p>这会导致using的名字空间污染范围扩散，因为使用了这个头文件的源文件都隐式使用这个名字空间了，这将来容易造成名字空间的冲突，该错误查找困难。不利于后来开发人员维护。</p>
+<h4 id="头文件守护"><a href="#头文件守护" class="headerlink" title="头文件守护"></a>头文件守护</h4><p>这个想必很多人已经习惯了，不过如果不这样做的危害还是要说一下，这样可以防止头文件被重复包含多次而造成的问题,也能解决意外包含其他工程头文件的冲突。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> MYPROJECT_MYCLASS_HPP</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> MYPROJECT_MYCLASS_HPP</span></div><div class="line"></div><div class="line"><span class="keyword">namespace</span> MyProject &#123;</div><div class="line">  <span class="keyword">class</span> MyClass &#123;</div><div class="line">  &#125;;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div></pre></td></tr></table></figure>
+<h4 id="代码块一定要用"><a href="#代码块一定要用" class="headerlink" title="代码块一定要用{}"></a>代码块一定要用{}</h4><p>如果不这么做，可能会导致一些语义错误。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Bad Idea</span></div><div class="line"><span class="comment">// 这么做虽然没错，能按照预想运行，但是会给后来人员造成迷惑</span></div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">15</span>; ++i)</div><div class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line"></div><div class="line"><span class="comment">// Bad Idea</span></div><div class="line"><span class="comment">// 这就有错了，std::cout没在循环内，变量i也不是循环内的，与预想不一致</span></div><div class="line"><span class="keyword">int</span> sum = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">15</span>; ++i)</div><div class="line">  ++sum;</div><div class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// Good Idea</span></div><div class="line"><span class="comment">// 这个语义就完全正确了。</span></div><div class="line"><span class="keyword">int</span> sum = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">15</span>; ++i) &#123;</div><div class="line">  ++sum;</div><div class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="限制代码列的字符数"><a href="#限制代码列的字符数" class="headerlink" title="限制代码列的字符数"></a>限制代码列的字符数</h4><p>一般推荐是80-100个字符之间，我自己是80。一般IDE和文本编辑器都可以强制限制。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Bad Idea</span></div><div class="line"><span class="comment">// 难阅读</span></div><div class="line"><span class="keyword">if</span> (x &amp;&amp; y &amp;&amp; myFunctionThatReturnsBool() &amp;&amp; caseNumber3 &amp;&amp; (<span class="number">15</span> &gt; <span class="number">12</span> || <span class="number">2</span> &lt; <span class="number">3</span>)) &#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Good Idea</span></div><div class="line"><span class="comment">// 逻辑思路跟得上了，容易阅读</span></div><div class="line"><span class="keyword">if</span> (x &amp;&amp; y &amp;&amp; myFunctionThatReturnsBool()</div><div class="line">    &amp;&amp; caseNumber3</div><div class="line">    &amp;&amp; (<span class="number">15</span> &gt; <span class="number">12</span> || <span class="number">2</span> &lt; <span class="number">3</span>)) &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="使用””包含本地头文件"><a href="#使用””包含本地头文件" class="headerlink" title="使用””包含本地头文件"></a>使用””包含本地头文件</h4><p>&lt;&gt; 是保留给标准库和系统库头文件的，自己写的本地头文件#include “MyHeader.h”</p>
+<h4 id="初始化成员变量"><a href="#初始化成员变量" class="headerlink" title="初始化成员变量"></a>初始化成员变量</h4><p>最好用初始化成员列表来初始化。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Bad Idea</span></div><div class="line"><span class="keyword">class</span> MyClass</div><div class="line">&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">  MyClass(<span class="keyword">int</span> t_value)</div><div class="line">  &#123;</div><div class="line">    m_value = t_value; <span class="comment">//这是赋值，而不是初始化</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">  <span class="keyword">int</span> m_value;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// Good Idea</span></div><div class="line"><span class="comment">// C++ 初始化成员列表是C++语言特有的，这样写代码更加清晰干净，</span></div><div class="line"><span class="comment">// 而且还有潜在的性能提升，因为初始化和赋值不是一个概念。</span></div><div class="line"><span class="comment">// 《Effective C++》也提到过</span></div><div class="line"><span class="keyword">class</span> MyClass</div><div class="line">&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">  MyClass(<span class="keyword">int</span> t_value)</div><div class="line">    : m_value(t_value)</div><div class="line">  &#123;</div><div class="line">  &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">  <span class="keyword">int</span> m_value;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>好奇请戳知乎的<a href="https://www.zhihu.com/question/37345224" target="_blank" rel="external">讨论</a>。</p>
+<p>当然，在C++ 11中，你可以考虑总是给成员变量一个默认值，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ... //</span></div><div class="line"><span class="keyword">private</span>:</div><div class="line">  <span class="keyword">int</span> m_value = <span class="number">0</span>;</div><div class="line"><span class="comment">// ... //</span></div></pre></td></tr></table></figure>
+<p>使用大括号初始化,因为它在编译时不允许数据收窄。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Best Idea</span></div><div class="line"></div><div class="line"><span class="comment">// ... //</span></div><div class="line"><span class="keyword">private</span>:</div><div class="line">  <span class="keyword">int</span> m_value&#123; <span class="number">0</span> &#125;; <span class="comment">// allowed</span></div><div class="line">  <span class="keyword">unsigned</span> m_value_2 &#123; <span class="number">-1</span> &#125;; <span class="comment">// compile-time error, narrowing from signed to unsigned.</span></div><div class="line"><span class="comment">// ... //</span></div></pre></td></tr></table></figure>
+<p>优先使用大括号初始化，除非有原因的特殊要求不那么做。</p>
+<h4 id="总是使用名字空间"><a href="#总是使用名字空间" class="headerlink" title="总是使用名字空间"></a>总是使用名字空间</h4><p>在C语言时代，很多库的开发者，为了防止函数符号链接时冲突，就在函数名加入库名称的前缀，比如OpenCV的函数都是cv_xxxx。当然，这是历史原因，如果是采用C++ 编译器，就应该使用namespace防止符号冲突，采用boost库的方式。</p>
+<h4 id="使用标准库提供的正确的整型类型"><a href="#使用标准库提供的正确的整型类型" class="headerlink" title="使用标准库提供的正确的整型类型"></a>使用标准库提供的正确的整型类型</h4><p>在C++中，最好不要出现int类型，最好是intxxx_t , uintxxx_t。 表示大小请使用std::size_t。</p>
+<p>可以看这里的<a href="http://www.cplusplus.com/reference/cstdint/" target="_blank" rel="external">参考</a>，这样提高可移植性，因为在不同类型的平台上，这些类型会typedef到特定类型上去。</p>
+<p>注意： signed char 保证至少 8 位，int 保证至少 16 位，long 保证至少 32 位，long long 保证至少 64 位。</p>
+<p>如果还不明白，去看stackoverflow的<a href="http://stackoverflow.com/questions/13398630/why-are-c-int-and-long-types-both-4-bytes" target="_blank" rel="external">讨论</a></p>
+<h4 id="Tab和空格不要混合使用"><a href="#Tab和空格不要混合使用" class="headerlink" title="Tab和空格不要混合使用"></a>Tab和空格不要混合使用</h4><p>这个绝对禁止，应该从编辑器和IDE里面更改设置，比如让Tab等于4个空格。至于设置Tab等于多少个空格合理，这个是个人喜好问题，不然就是Emacs和Vim之争了。</p>
+<h4 id="不要害怕模版"><a href="#不要害怕模版" class="headerlink" title="不要害怕模版"></a>不要害怕模版</h4><p>这个，我对于C++的模版元编程不熟悉，就不做过多讨论了。模版可以说是另外一种语言，另一种“函数式”语言。它是图灵完备(Turing-Complete)的。</p>
+<p>感兴趣可以在网络上看到各种玩法：</p>
+<ul>
+<li><a href="https://www.zhihu.com/question/46612915" target="_blank" rel="external">玩模板元编程走火入魔是一种怎样的体验</a></li>
+<li><a href="https://www.zhihu.com/question/21656266" target="_blank" rel="external">C++ 模板元编程的应用有哪些，意义是什么</a></li>
+<li><a href="https://www.zhihu.com/question/39637015" target="_blank" rel="external">模板元编程和泛函编程都是函数式编程吗</a></li>
+<li><a href="https://www.zhihu.com/question/23463256" target="_blank" rel="external">如何正确的学习C++的模板和模板元编程</a></li>
+<li><a href="https://www.zhihu.com/question/19794858" target="_blank" rel="external">怎么样才算是精通 C++</a></li>
+</ul>
+<h4 id="慎用操作符重载"><a href="#慎用操作符重载" class="headerlink" title="慎用操作符重载"></a>慎用操作符重载</h4></span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/C-C/" rel="tag">#C/C++</a>
+          
+            <a href="/blog/tags/软件工程/" rel="tag">#软件工程</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/02/22/hello-world/" rel="prev">Hello World</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2016/10/20/scala-build-tool/" rel="next">烦人的Scala的构建工具</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/02/22/cpp-best-practices/"
+     data-title="C++最佳实践"
+     data-content=""
+     data-url="https://alexiachen.github.io/blog/blog/2017/02/22/cpp-best-practices/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+            <!-- 多说热评文章-->
+            <p>热评文章</p>
+            <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2017/02/22/cpp-best-practices/"
+                   data-title="C++最佳实践" data-url="https://alexiachen.github.io/blog/blog/2017/02/22/cpp-best-practices/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">系统软件工程师</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">37</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="https://dendise7engithub.github.io/" target="_blank">老唐的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#工欲善其事必先利其器"><span class="nav-number">1.</span> <span class="nav-text">工欲善其事必先利其器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本C-命名规范"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">基本C++命名规范</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区分私有成员变量"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">区分私有成员变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区分函数参数"><span class="nav-number">2.0.0.3.</span> <span class="nav-text">区分函数参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#任何命名不能是下划线开头"><span class="nav-number">2.0.0.4.</span> <span class="nav-text">任何命名不能是下划线开头</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个良好的样例"><span class="nav-number">2.0.0.5.</span> <span class="nav-text">一个良好的样例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空指针的表示请用nullptr"><span class="nav-number">2.0.0.6.</span> <span class="nav-text">空指针的表示请用nullptr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注释"><span class="nav-number">2.0.0.7.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不要在头文件中使用using-namespace"><span class="nav-number">2.0.0.8.</span> <span class="nav-text">不要在头文件中使用using namespace</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#头文件守护"><span class="nav-number">2.0.0.9.</span> <span class="nav-text">头文件守护</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码块一定要用"><span class="nav-number">2.0.0.10.</span> <span class="nav-text">代码块一定要用{}</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#限制代码列的字符数"><span class="nav-number">2.0.0.11.</span> <span class="nav-text">限制代码列的字符数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用””包含本地头文件"><span class="nav-number">2.0.0.12.</span> <span class="nav-text">使用””包含本地头文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化成员变量"><span class="nav-number">2.0.0.13.</span> <span class="nav-text">初始化成员变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总是使用名字空间"><span class="nav-number">2.0.0.14.</span> <span class="nav-text">总是使用名字空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用标准库提供的正确的整型类型"><span class="nav-number">2.0.0.15.</span> <span class="nav-text">使用标准库提供的正确的整型类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Tab和空格不要混合使用"><span class="nav-number">2.0.0.16.</span> <span class="nav-text">Tab和空格不要混合使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不要害怕模版"><span class="nav-number">2.0.0.17.</span> <span class="nav-text">不要害怕模版</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#慎用操作符重载"><span class="nav-number">2.0.0.18.</span> <span class="nav-text">慎用操作符重载</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"mathxh"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	  <script type="text/javascript">
+  		var duoshuo_user_ID = 2405394
+  	  </script>
+     
+  	<script src="/blog/js/ua-parser.min.js"></script>
+  	<script src="/blog/js/hook-duoshuo.js"></script>
+  
+
+    
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
