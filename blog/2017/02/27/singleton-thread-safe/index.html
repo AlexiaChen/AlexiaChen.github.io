@@ -31,7 +31,7 @@
 
 
 
-  <meta name="keywords" content="信息安全,数据恢复," />
+  <meta name="keywords" content="单例模式,线程安全,指令重排序," />
 
 
 
@@ -40,19 +40,37 @@
   <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="平时大家有没有好奇过，为什么硬盘上被删除的数据有时候还能被还原恢复呢？其中的原理是什么呢？
- 其实，如果操作系统学得不错的人应该知道，数据文件被删除只是操作系统把文件从文件系统中删除，也就是文件在文件系统中的索引（地址）被删除，意思就是，操作系统告诉文件系统：Hey，哥们儿，我不需要这个文件了，你把这文件从检索索引中删除吧，我不再需要了。其实真实的文件数据还会真实存在物理硬盘上，没有真正被消除，">
+<meta name="description" content="在写单例模式的时候，一般我们都需要保证这个单例类的线程安全，当然，网络上有大部分“解决方案了”，加锁和双重检查锁配合来“保证”单例类的线程安全，可是，如果把指令重排序也考虑到其中的话，这样的写法，就是非线程安全了。
+随便列出网络上几篇博文的单例模式都不是线程安全的：
+
+单例模式全面学习（C++版）
+C++的单例模式与线程安全单例模式（懒汉/饿汉）
+设计模式之单例模式(线程安全)
+
+以下是网络上大部">
 <meta property="og:type" content="article">
-<meta property="og:title" content="防止数据被恢复的可能">
-<meta property="og:url" content="https://alexiachen.github.io/blog/2016/09/02/data-erasure/index.html">
+<meta property="og:title" content="单例模式的线程安全">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2017/02/27/singleton-thread-safe/index.html">
 <meta property="og:site_name" content="符号与人生">
-<meta property="og:description" content="平时大家有没有好奇过，为什么硬盘上被删除的数据有时候还能被还原恢复呢？其中的原理是什么呢？
- 其实，如果操作系统学得不错的人应该知道，数据文件被删除只是操作系统把文件从文件系统中删除，也就是文件在文件系统中的索引（地址）被删除，意思就是，操作系统告诉文件系统：Hey，哥们儿，我不需要这个文件了，你把这文件从检索索引中删除吧，我不再需要了。其实真实的文件数据还会真实存在物理硬盘上，没有真正被消除，">
-<meta property="og:updated_time" content="2017-02-21T09:22:17.286Z">
+<meta property="og:description" content="在写单例模式的时候，一般我们都需要保证这个单例类的线程安全，当然，网络上有大部分“解决方案了”，加锁和双重检查锁配合来“保证”单例类的线程安全，可是，如果把指令重排序也考虑到其中的话，这样的写法，就是非线程安全了。
+随便列出网络上几篇博文的单例模式都不是线程安全的：
+
+单例模式全面学习（C++版）
+C++的单例模式与线程安全单例模式（懒汉/饿汉）
+设计模式之单例模式(线程安全)
+
+以下是网络上大部">
+<meta property="og:updated_time" content="2017-02-27T09:03:08.133Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="防止数据被恢复的可能">
-<meta name="twitter:description" content="平时大家有没有好奇过，为什么硬盘上被删除的数据有时候还能被还原恢复呢？其中的原理是什么呢？
- 其实，如果操作系统学得不错的人应该知道，数据文件被删除只是操作系统把文件从文件系统中删除，也就是文件在文件系统中的索引（地址）被删除，意思就是，操作系统告诉文件系统：Hey，哥们儿，我不需要这个文件了，你把这文件从检索索引中删除吧，我不再需要了。其实真实的文件数据还会真实存在物理硬盘上，没有真正被消除，">
+<meta name="twitter:title" content="单例模式的线程安全">
+<meta name="twitter:description" content="在写单例模式的时候，一般我们都需要保证这个单例类的线程安全，当然，网络上有大部分“解决方案了”，加锁和双重检查锁配合来“保证”单例类的线程安全，可是，如果把指令重排序也考虑到其中的话，这样的写法，就是非线程安全了。
+随便列出网络上几篇博文的单例模式都不是线程安全的：
+
+单例模式全面学习（C++版）
+C++的单例模式与线程安全单例模式（懒汉/饿汉）
+设计模式之单例模式(线程安全)
+
+以下是网络上大部">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -62,7 +80,7 @@
   };
 </script>
 
-  <title> 防止数据被恢复的可能 | 符号与人生 </title>
+  <title> 单例模式的线程安全 | 符号与人生 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -319,7 +337,7 @@
           
           
             
-              防止数据被恢复的可能
+              单例模式的线程安全
             
           
         </h1>
@@ -328,8 +346,8 @@
       <div class="post-meta">
         <span class="post-time">
           Posted on
-          <time itemprop="dateCreated" datetime="2016-09-02T18:17:39+08:00" content="2016-09-02">
-            2016-09-02
+          <time itemprop="dateCreated" datetime="2017-02-27T15:48:40+08:00" content="2017-02-27">
+            2017-02-27
           </time>
         </span>
 
@@ -340,11 +358,11 @@
             <span class="post-comments-count">
               &nbsp; | &nbsp;
               <!--
-              <a href="/blog/2016/09/02/data-erasure/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/02/data-erasure/" itemprop="commentsCount"></span>
+              <a href="/blog/2017/02/27/singleton-thread-safe/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/27/singleton-thread-safe/" itemprop="commentsCount"></span>
               </a>
               -->
-              <a href="/blog/2016/09/02/data-erasure/#comments" itemprop="discussionUrl">
+              <a href="/blog/2017/02/27/singleton-thread-safe/#comments" itemprop="discussionUrl">
                 <span>评论</span>
               </a>
             </span>
@@ -359,18 +377,89 @@
       
 
       
-        <span itemprop="articleBody"><p> 平时大家有没有好奇过，为什么硬盘上被删除的数据有时候还能被还原恢复呢？其中的原理是什么呢？</p>
-<p> 其实，如果操作系统学得不错的人应该知道，数据文件被删除只是操作系统把文件从文件系统中删除，也就是文件在文件系统中的索引（地址）被删除，意思就是，操作系统告诉文件系统：Hey，哥们儿，我不需要这个文件了，你把这文件从检索索引中删除吧，我不再需要了。其实真实的文件数据还会真实存在物理硬盘上，没有真正被消除，除非有新的文件数据被保存并恰好覆盖了之前的文件数据。数据恢复就是依赖这个原理工作的。</p>
-<p> 那么如何防止数据被恢复的可能呢？其实如果脑袋聪明的人一下子就能想到，我往原文件里面大量反复写入Dirty Data来覆盖之前的数据不就可以了么？答对，就是这个思路。其实现今无论多么先进的数据销毁软件都是基于这么个思路（甚至美国中央情报局销毁绝密数据也是这么干的）。只不过越要降低被恢复的可能性写入的次数随之增加，所以耗费的时间也越多。</p>
-<p> 垃圾数据只写入一次还不够，需要多次覆盖，这是因为，直观上理解，一次写入后，磁盘上的数据就变化了。其实在硬件层面，不是这样的，还是能够恢复的。恢复的技术有下面两种：</p>
+        <span itemprop="articleBody"><p>在写单例模式的时候，一般我们都需要保证这个单例类的线程安全，当然，网络上有大部分“解决方案了”，加锁和双重检查锁配合来“保证”单例类的线程安全，可是，如果把指令重排序也考虑到其中的话，这样的写法，就是非线程安全了。</p>
+<p>随便列出网络上几篇博文的单例模式都<font color="red">不是</font>线程安全的：</p>
 <ul>
-<li>第一种是：当硬盘读写头在硬盘上写入一位数据时，它使用的信号强度只是用来写入一位数据，并不会影响到相邻位的数据。由于这个写入信号并不是很强，因此你可以通过它写入的数据位的绝对信号强度来判断此前该数据位所保存的是何种数据。换句话说，如果二进制数据0被二进制数据1所覆盖，其信号强度会比二进制数据1被覆盖要弱一些。使用专门的硬件就可以检测出准确的信号强度。把被覆盖区域读出的信号减去所覆盖数据的标准信号强度，就能获得原先数据的一个副本。更令人吃惊的是，这一恢复过程可以被重复7次。因此如果想避免别人使用这种方法来窃取你的数据，至少要覆盖该数据区域7次，而且每次还应该使用不同的随机数据。</li>
+<li><a href="http://www.cnblogs.com/weixliu/p/3900764.html" target="_blank" rel="external">单例模式全面学习（C++版）</a></li>
+<li><a href="http://www.cnblogs.com/qiaoconglovelife/p/5851163.html" target="_blank" rel="external">C++的单例模式与线程安全单例模式（懒汉/饿汉）</a></li>
+<li><a href="http://www.cnblogs.com/xudong-bupt/p/3433643.html" target="_blank" rel="external">设计模式之单例模式(线程安全)</a></li>
 </ul>
+<p>以下是网络上大部分的“经典”的“线程安全”单例模式实现：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">@ actually not thread safe</div><div class="line"><span class="keyword">class</span> singleton</div><div class="line">&#123;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">static</span> singleton* p&#123;<span class="literal">nullptr</span>&#125;;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">static</span> <span class="built_in">std</span>::mutex m_mutex;</div><div class="line">    <span class="function"><span class="keyword">static</span> singleton* <span class="title">getInstance</span><span class="params">()</span></span>;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    singleton(<span class="keyword">const</span> singleton&amp; s) = <span class="keyword">delete</span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">singleton* singleton:: getInstance()</div><div class="line">&#123;</div><div class="line">    <span class="comment">// double-check locker</span></div><div class="line">    <span class="keyword">if</span> (p == <span class="literal">nullptr</span>) <span class="comment">// first check</span></div><div class="line">    &#123;</div><div class="line">        </div><div class="line">        &#123;</div><div class="line">            <span class="built_in">std</span>::lock_guard&lt;<span class="built_in">std</span>::mutex&gt; lock(m_mutex); <span class="comment">// lock</span></div><div class="line">            <span class="keyword">if</span> (p == <span class="literal">nullptr</span>)   <span class="comment">// second check</span></div><div class="line">                p = <span class="keyword">new</span> singleton(); <span class="comment">// but this may cause non-thread-safe</span></div><div class="line">        &#125;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> p;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>首先，先讲解一下，指令重排会发生在系统的好几个层面，我分别用C++和Java来讲解：</p>
 <ul>
-<li>第二种数据恢复技术则是利用了硬盘读写头的另一个特点：读写头每次进行写操作的位置并不一定对得十分精确。这就能让专家们在磁道的边缘侦测到原有的数据（也被称为影子数据）。只有重复地覆写数据才能消除这些磁道边缘的影子数据。由于硬件的这种特性，在销毁文件的时候，才会需要多次覆盖。</li>
+<li><p>C++ 被编译器编译成机器码的时候，机器码的顺序可能被重排过，在程序运行的时候，在CPU内部也可能会选择性的又进行一次重排，总共2次，重排是必定会发生的。</p>
+</li>
+<li><p>Java 被编译器编译成字节码的时候会重排一次，JVM执行字节码的时候又进行一次重排，JVM执行的字节码最终也是变成机器码在CPU内部又会进行重排，总共是3次。</p>
+</li>
 </ul>
-<p>所以根据以上的特性，才有了许多数据擦除算法的诞生，覆盖次数越多，随机垃圾数据越“随机”，被恢复的可能性也就越低，安全性也就越高。到了<a href="https://en.wikipedia.org/wiki/Gutmann_method" target="_blank" rel="external">Gutman method</a>这样的级别，理论上已经证明了，经过此算法处理过的数据，没可能恢复。 但是，弱点就是速度很慢，如果需要有大量机密数据要被销毁，这将是耗时的任务。</p>
-<p>我写过一个<a href="https://github.com/AlexiaChen/DataBlackHole" target="_blank" rel="external">数据擦除的库</a>，等级最高也就是支持到Gutman这个级别。其中<a href="https://ia.signal.army.mil/docs/DOD5220_22M/522022m.htm" target="_blank" rel="external">DOD5220_22M</a>算法是之前美国中央情报局采用的，不过现在被抛弃了，我猜测原因就是速度和安全性的权衡。至于他们为什么没有采用Gutman算法，其实也是速度和安全性的权衡，因为太慢了:) 这告诉我们，评价衡量一个工具需要综合考量。</p>
+<p>所以了，到头来，指令重排是不可能消除的，这是编译器和CPU优化的领域，就不进行过多的探讨。</p>
+<p>下面来讲解一下以上的单例类的代码，以及为什么它在指令重排序的情况下会变成非线程安全：</p>
+<p>我上面把代码的注释写了，问题就出现在new 那里，熟悉C++的开发者可能知道new语句的大概执行动作，我把它分解成如下几步：</p>
+<ol>
+<li>分配对象的内存空间，可以简单理解为malloc</li>
+<li>调用对象的构造函数初始化对象（内存空间上的对象状态此刻是合法的了）</li>
+<li>把内存空间的地址赋值给p指针</li>
+</ol>
+<p>注意了，如果编译器生成的代码，和CPU内部的执行顺序永远是按以上的顺序执行，那么永远都不用担心线程安全的问题，但是由于happens-before语义，2和3步骤没有严格的依赖顺序，编译器有些时候为了优化，完全可以把3放到2时候执行，2也会放到3时候执行。那么这样情况下，可以就会变成下面这样了：</p>
+<ol>
+<li>分配对象的内存空间，可以简单理解为malloc</li>
+<li>把内存空间的地址赋值给p指针 （此刻内存空间上的对象状态不合法，没初始化）</li>
+<li>调用对象的构造函数初始化对象（内存空间上的对象状态此刻是合法的了）</li>
+</ol>
+<p>那么，指令重排下，以上的单例代码可能变成以下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">@ actually not thread safe</div><div class="line"><span class="keyword">class</span> singleton</div><div class="line">&#123;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">static</span> singleton* p&#123;<span class="literal">nullptr</span>&#125;;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">static</span> <span class="built_in">std</span>::mutex m_mutex;</div><div class="line">    <span class="function"><span class="keyword">static</span> singleton* <span class="title">getInstance</span><span class="params">()</span></span>;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    singleton(<span class="keyword">const</span> singleton&amp; s) = <span class="keyword">delete</span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">singleton* singleton:: getInstance()</div><div class="line">&#123;</div><div class="line">    <span class="comment">// double-check locker</span></div><div class="line">    <span class="keyword">if</span> (p == <span class="literal">nullptr</span>) <span class="comment">// first check</span></div><div class="line">    &#123;</div><div class="line">        </div><div class="line">        &#123;</div><div class="line">            <span class="built_in">std</span>::lock_guard&lt;<span class="built_in">std</span>::mutex&gt; lock(m_mutex); <span class="comment">// lock</span></div><div class="line">            <span class="keyword">if</span> (p == <span class="literal">nullptr</span>)   <span class="comment">// second check</span></div><div class="line">             &#123;</div><div class="line">                    <span class="comment">//以下是抽象出来的伪代码</span></div><div class="line">                    memory_addr = <span class="built_in">malloc</span>();   <span class="comment">//1：分配对象的内存空间  </span></div><div class="line">                    p = memory_addr;     <span class="comment">//2：设置p指向刚分配的内存地址  </span></div><div class="line">                                 <span class="comment">//注意，此时对象还没有被初始化！  </span></div><div class="line">                    singleton_constructor(memory);  <span class="comment">//3：初始化对象  </span></div><div class="line">             &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> p;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>聪明的人，一下子就可以看出来以上的代码在多线程下可能会导致的问题了，<br>还不明白的话，我做了一个线程执行时间表：</p>
+<table>
+<thead>
+<tr>
+<th>时间序列</th>
+<th style="text-align:center">线程A</th>
+<th style="text-align:right">线程B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>t1</td>
+<td style="text-align:center">分配对象的内存空间</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>t2</td>
+<td style="text-align:center">设置p指向内存空间</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>t3</td>
+<td style="text-align:center"></td>
+<td style="text-align:right">判断p是否为nullptr</td>
+</tr>
+<tr>
+<td>t4</td>
+<td style="text-align:center"></td>
+<td style="text-align:right">由于p不为nullptr，线程B将访问p指向的对象（而这个时候对象还没有初始化）</td>
+</tr>
+<tr>
+<td>t5</td>
+<td style="text-align:center">初始化对象（调用构造函数）</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>t6</td>
+<td style="text-align:center">访问p指向的对象</td>
+</tr>
+</tbody>
+</table>
+<p>线程B拿到一个未初始化的对象（对象状态不合法）去操作，结果肯定就出错了。</p>
+<p>那么如何写才能保证线程安全呢？ 我给出几种方案:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">@ thread safe</div><div class="line"><span class="comment">// 以下代码虽然是C++ 11的，但是你可以把它理解非C++ 11，如果是C++ 11的话，从标准上就保证 静态初始化就是线程安全的，完全没必要像下面这样做了</span></div><div class="line"><span class="keyword">class</span> singleton</div><div class="line">&#123;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">static</span> atomic &lt; singleton* &gt; p&#123;<span class="literal">nullptr</span>&#125;;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">static</span> <span class="built_in">std</span>::mutex m_mutex;</div><div class="line">    <span class="function"><span class="keyword">static</span> singleton* <span class="title">getInstance</span><span class="params">()</span></span>;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    singleton(<span class="keyword">const</span> singleton&amp; s) = <span class="keyword">delete</span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">singleton* singleton:: getInstance()</div><div class="line">&#123;</div><div class="line">    <span class="comment">// double-check locker</span></div><div class="line">    <span class="keyword">if</span> (p == <span class="literal">nullptr</span>) <span class="comment">// first check</span></div><div class="line">    &#123;</div><div class="line">        </div><div class="line">        &#123;</div><div class="line">            <span class="built_in">std</span>::lock_guard&lt;<span class="built_in">std</span>::mutex&gt; lock(m_mutex); <span class="comment">// lock</span></div><div class="line">            <span class="keyword">if</span> (p == <span class="literal">nullptr</span>)   <span class="comment">// second check</span></div><div class="line">             &#123;</div><div class="line">                    p = <span class="keyword">new</span> singleton(); </div><div class="line">             &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> p;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果是C++ 11的代码，完全没必要这么繁琐了，可以直接像下面这么干：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// C++ 11标准保证这是线程安全的，当然也得看编译器产商怎么实现了，比如悲剧的是</span></div><div class="line"><span class="comment">// VS2013下这么做是非线程安全的,但VS2015下绝对是线程安全</span></div><div class="line"><span class="comment">// 参考： https://msdn.microsoft.com/en-gb/library/hh567368.aspx</span></div><div class="line"><span class="function">singleton*&amp; <span class="title">getInst</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">static</span> singleton* p = <span class="keyword">new</span> singleton();</div><div class="line">    <span class="keyword">return</span> p;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>详情请戳<a href="http://stackoverflow.com/questions/2576022/efficient-thread-safe-singleton-in-c" target="_blank" rel="external">这里</a>。</p>
+<p>如果是Java代码，建议按以下这么干，保证线程安全：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">singleton</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Holder</span> </span>&#123;</div><div class="line">        <span class="keyword">static</span> <span class="keyword">final</span> singleton INSTANCE = <span class="keyword">new</span> singleton();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> Holder.INSTANCE;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// rest of class omitted</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上Java代码完全不需要加锁，Java的类加载器已经保证必定会在访问类的时候，最先初始化singleton。</p>
+<p>详情请戳<a href="http://stackoverflow.com/questions/16106260/thread-safe-singleton-class" target="_blank" rel="external">这里</a>和<a href="http://stackoverflow.com/questions/4482533/thread-safe-efficient-way-to-implement-singleton-pattern-in-java" target="_blank" rel="external">这里</a>。</p>
+<p>EOF</p>
 </span>
       
     </div>
@@ -379,9 +468,11 @@
       
         <div class="post-tags">
           
-            <a href="/blog/tags/信息安全/" rel="tag">#信息安全</a>
+            <a href="/blog/tags/单例模式/" rel="tag">#单例模式</a>
           
-            <a href="/blog/tags/数据恢复/" rel="tag">#数据恢复</a>
+            <a href="/blog/tags/线程安全/" rel="tag">#线程安全</a>
+          
+            <a href="/blog/tags/指令重排序/" rel="tag">#指令重排序</a>
           
         </div>
       
@@ -390,13 +481,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/blog/2016/09/05/functional-programming/" rel="prev">谈谈函数式编程</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/blog/2016/08/31/tech-leader/" rel="next">谈谈技术领导者的基本素养</a>
+              <a href="/blog/2017/02/23/sqlite-concurrency/" rel="next">SQLite的并发</a>
             
           </div>
         </div>
@@ -478,10 +567,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/09/02/data-erasure/"
-     data-title="防止数据被恢复的可能"
+        <div class="ds-share flat" data-thread-key="2017/02/27/singleton-thread-safe/"
+     data-title="单例模式的线程安全"
      data-content=""
-     data-url="https://alexiachen.github.io/blog/blog/2016/09/02/data-erasure/">
+     data-url="https://alexiachen.github.io/blog/blog/2017/02/27/singleton-thread-safe/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -511,8 +600,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2016/09/02/data-erasure/"
-                   data-title="防止数据被恢复的可能" data-url="https://alexiachen.github.io/blog/blog/2016/09/02/data-erasure/">
+              <div class="ds-thread" data-thread-key="2017/02/27/singleton-thread-safe/"
+                   data-title="单例模式的线程安全" data-url="https://alexiachen.github.io/blog/blog/2017/02/27/singleton-thread-safe/">
               </div>
             
           </div>
