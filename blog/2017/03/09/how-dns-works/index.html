@@ -55,7 +55,7 @@ Episode 1—–网站是未知的
 先来陈述一个事实，计算机和其他设备在因特网上互相通信识别对方都是通过IP地址进行的。但是人们并不擅长记忆类似于10.0.0.1 192.168.1.0等这样的IP地址，所以就用了字符文字串（google.com, wikipidia.org）
 而域名系统（Domain Name System, DNS）,就是把IP地址和字符文">
 <meta property="og:image" content="http://wx1.sinaimg.cn/large/a1ac93f3gy1fdmgg2b0iwj207q04bt8o.jpg">
-<meta property="og:updated_time" content="2017-03-14T09:59:13.353Z">
+<meta property="og:updated_time" content="2017-03-14T10:11:47.696Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DNS是怎样工作的？">
 <meta name="twitter:description" content="直接开始正文算了，主要是总结。
@@ -382,6 +382,7 @@ Episode 1—–网站是未知的
 <h2 id="Episode-2—–漫漫长路"><a href="#Episode-2—–漫漫长路" class="headerlink" title="Episode 2—–漫漫长路"></a>Episode 2—–漫漫长路</h2><hr>
 <p>当当当，因为前一章节提到，cache里面没有mathxh.com的IP，所以这个请求到resolver了，resolver通常是你上网的ISP(Internet Service Provider)提供,也就是因特网服务提供商，你家办的是电信的宽带吗？ 这时候电信公司就是你的ISP。所有的Resolver必须知道一件事：<font color="red">根服务器在哪。</font></p>
 <p>根服务器又知道.com TLD 服务器(Top-Level Domain，顶级域名)在哪里。</p>
+<p>等等，Resolver到底是啥？还是没有说清楚，其实Resolver就是我们通常所说的DNS服务器，你需要知道配置DNS server的IP地址来的，通常这个server由ISP提供，当然，也可以采用免费的域名提供商提供的server。比如：<a href="https://www.opendns.com/" target="_blank" rel="external">OpenDNS</a>。至于，怎么使用，配置下它提供的DNS server的IP地址就可以了。所以中国封锁网站都是封IP，不是封域名。对于个别封锁域名的网站，用OpenDNS提供的服务既可以上被封的网站，因为OpenDNS找得倒被封域名的IP啊。</p>
 <h2 id="Episode-3—–层级结构的顶层"><a href="#Episode-3—–层级结构的顶层" class="headerlink" title="Episode 3—–层级结构的顶层"></a>Episode 3—–层级结构的顶层</h2><hr>
 <p>好了，咱的请求经过询问了根服务器后，得知了COM顶级域名服务器的地址（这个地址会缓存下来，下次就不必找根服务器了）。</p>
 <p>然后，刚刚我们请求到达的根服务器只是全球13个根服务器其中的一个。根服务器在DNS层级结构中的最顶层。</p>
