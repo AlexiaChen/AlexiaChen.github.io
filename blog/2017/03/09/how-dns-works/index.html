@@ -31,7 +31,7 @@
 
 
 
-  <meta name="keywords" content="互联网,传统行业,物联网," />
+  <meta name="keywords" content="DNS,计算机网络,TCP/IP," />
 
 
 
@@ -40,22 +40,30 @@
   <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="知乎上由于程序员居多，互联网火热，被一些小白搞得乌烟瘴气，个别还高喊着互联网颠覆传统行业，把程序员这职业吹上了天，听起来像是那么一回事，不过估计都初入行业的菜鸟，跟国内小编吹牛一个样
+<meta name="description" content="直接开始正文算了，主要是总结。
 
-尽管现在编程越来越日常化，各行各业的技术人员都可能接触编程，但是这并不代表互联网介入并颠覆了它。在传统工业中，显然程序员是种被边缘化的职业，虽然很多重要技术职业需要编写代码，比如自动化控制出身的，需要编写各种控制">
+Episode 1—–网站是未知的
+先来陈述一个事实，计算机和其他设备在因特网上互相通信识别对方都是通过IP地址进行的。但是人们并不擅长记忆类似于10.0.0.1 192.168.1.0等这样的IP地址，所以就用了字符文字串（google.com, wikipidia.org）
+而域名系统（Domain Name System, DNS）,就是把IP地址和字符文">
 <meta property="og:type" content="article">
-<meta property="og:title" content="互联网显然颠覆不了传统行业">
-<meta property="og:url" content="https://alexiachen.github.io/blog/2016/02/28/web-and-traditional-industries/index.html">
+<meta property="og:title" content="DNS是怎样工作的？">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2017/03/09/how-dns-works/index.html">
 <meta property="og:site_name" content="符号与人生">
-<meta property="og:description" content="知乎上由于程序员居多，互联网火热，被一些小白搞得乌烟瘴气，个别还高喊着互联网颠覆传统行业，把程序员这职业吹上了天，听起来像是那么一回事，不过估计都初入行业的菜鸟，跟国内小编吹牛一个样
+<meta property="og:description" content="直接开始正文算了，主要是总结。
 
-尽管现在编程越来越日常化，各行各业的技术人员都可能接触编程，但是这并不代表互联网介入并颠覆了它。在传统工业中，显然程序员是种被边缘化的职业，虽然很多重要技术职业需要编写代码，比如自动化控制出身的，需要编写各种控制">
-<meta property="og:updated_time" content="2017-02-21T09:22:17.443Z">
+Episode 1—–网站是未知的
+先来陈述一个事实，计算机和其他设备在因特网上互相通信识别对方都是通过IP地址进行的。但是人们并不擅长记忆类似于10.0.0.1 192.168.1.0等这样的IP地址，所以就用了字符文字串（google.com, wikipidia.org）
+而域名系统（Domain Name System, DNS）,就是把IP地址和字符文">
+<meta property="og:image" content="http://wx1.sinaimg.cn/large/a1ac93f3gy1fdmgg2b0iwj207q04bt8o.jpg">
+<meta property="og:updated_time" content="2017-03-14T09:59:13.353Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="互联网显然颠覆不了传统行业">
-<meta name="twitter:description" content="知乎上由于程序员居多，互联网火热，被一些小白搞得乌烟瘴气，个别还高喊着互联网颠覆传统行业，把程序员这职业吹上了天，听起来像是那么一回事，不过估计都初入行业的菜鸟，跟国内小编吹牛一个样
+<meta name="twitter:title" content="DNS是怎样工作的？">
+<meta name="twitter:description" content="直接开始正文算了，主要是总结。
 
-尽管现在编程越来越日常化，各行各业的技术人员都可能接触编程，但是这并不代表互联网介入并颠覆了它。在传统工业中，显然程序员是种被边缘化的职业，虽然很多重要技术职业需要编写代码，比如自动化控制出身的，需要编写各种控制">
+Episode 1—–网站是未知的
+先来陈述一个事实，计算机和其他设备在因特网上互相通信识别对方都是通过IP地址进行的。但是人们并不擅长记忆类似于10.0.0.1 192.168.1.0等这样的IP地址，所以就用了字符文字串（google.com, wikipidia.org）
+而域名系统（Domain Name System, DNS）,就是把IP地址和字符文">
+<meta name="twitter:image" content="http://wx1.sinaimg.cn/large/a1ac93f3gy1fdmgg2b0iwj207q04bt8o.jpg">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -65,7 +73,7 @@
   };
 </script>
 
-  <title> 互联网显然颠覆不了传统行业 | 符号与人生 </title>
+  <title> DNS是怎样工作的？ | 符号与人生 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -322,7 +330,7 @@
           
           
             
-              互联网显然颠覆不了传统行业
+              DNS是怎样工作的？
             
           
         </h1>
@@ -331,8 +339,8 @@
       <div class="post-meta">
         <span class="post-time">
           Posted on
-          <time itemprop="dateCreated" datetime="2016-02-28T08:52:10+08:00" content="2016-02-28">
-            2016-02-28
+          <time itemprop="dateCreated" datetime="2017-03-09T15:38:56+08:00" content="2017-03-09">
+            2017-03-09
           </time>
         </span>
 
@@ -343,11 +351,11 @@
             <span class="post-comments-count">
               &nbsp; | &nbsp;
               <!--
-              <a href="/blog/2016/02/28/web-and-traditional-industries/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/28/web-and-traditional-industries/" itemprop="commentsCount"></span>
+              <a href="/blog/2017/03/09/how-dns-works/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/09/how-dns-works/" itemprop="commentsCount"></span>
               </a>
               -->
-              <a href="/blog/2016/02/28/web-and-traditional-industries/#comments" itemprop="discussionUrl">
+              <a href="/blog/2017/03/09/how-dns-works/#comments" itemprop="discussionUrl">
                 <span>评论</span>
               </a>
             </span>
@@ -363,12 +371,42 @@
 
       
         <span itemprop="articleBody"><blockquote>
-<p><em>知乎上由于程序员居多，互联网火热，被一些小白搞得乌烟瘴气，个别还高喊着互联网颠覆传统行业，把程序员这职业吹上了天，听起来像是那么一回事，不过估计都初入行业的菜鸟，跟国内小编吹牛一个样</em></p>
+<p><em>直接开始正文算了，主要是总结。</em></p>
 </blockquote>
-<p>尽管现在编程越来越日常化，各行各业的技术人员都可能接触编程，但是这并不代表互联网介入并颠覆了它。在传统工业中，显然程序员是种被边缘化的职业，虽然很多重要技术职业需要编写代码，比如自动化控制出身的，需要编写各种控制算法，PID算法等，但是这些人可不自称程序员。计算机科学与自动控制是两码事，两种相差很大的领域，自动化毕业的优秀学生，能进宝马，轮船，电网负载等行业部门，也就是说自动化工程师比程序员分布在更广泛的领域，天上飞的，水里游的，马路上跑的，工厂里动的，你身处周围的绝大部分现代化设备里面都需要算法，包括特斯拉和火箭回收，一个简单的事实，用到这些算法都不是计算机专业学的，计算机专业也不开相关课程，专业都不在一个院，生产他们和写这些主要算法的人都叫xx工程师，但我们一般不叫他们程序员。例如，机械工程师会运用lisp语言作为cad的dsl辅助，但没人管他们叫程序员，他们都不是会像cs专业的程序员一样写代码，在任何国家行业分类上他们是100％的传统行业。如果以后不深入一个领域的知识技能，是不能立足的，互联网这种，都不叫啥领域，反而太泛泛了。一个程序员，会写几段代码，写了几段轮船，电网负载预测，航空遥感，车载系统的代码就敢说这个领域的？你难道没感觉出来你的代码实现和业务需求都是该领域的专家跟你描述指导的么？是不是互联网现在太火了，工资虚高，导致一些互联网程序员有些目中无人的样子，呵呵，去个电网公司写点代码，就敢说颠覆该领域，你开玩笑吧？请问你取代颠覆哪个部门了，你抢了那些领域人才的饭碗了？你真懂这些领域？电力专业的课程有这些，基础课不谈，电磁场与电磁波学三个学期，automatic control两个学期，power supply systems 1, optimization and operation of electricity and gas， components and devices of electicity supply， electrical machine1-2, power electricity 1-2……</p>
-<p>请问你的专业知识能取代颠覆谁啊，你在该领域价值多少？核心相关电控程序时你写的？搞清楚自己位置吧，合作分工才是本质。还有，你不了解那些知识，在相关专业还只是能称作传统行业cs部门的码农。等你真了解了那些知识，也在离cs的道路上越走越远了。</p>
-<p>最后，请问除了没技术门槛的服务业，互联网究竟颠覆哪个传统工业了？你看，不只有滴滴打车，饿了么，这些送饭，拉车，大型餐馆点餐的服务软件才能有颠覆的趋势么？</p>
-<p>互联网从来没有打算颠覆传统行业，只是从旁改善传统行业的业务效率，现如今都在弄企业信息化也是这么个道理，物联网的概念也是慢慢这么出来的。</p>
+<h2 id="Episode-1—–网站是未知的"><a href="#Episode-1—–网站是未知的" class="headerlink" title="Episode 1—–网站是未知的"></a>Episode 1—–网站是未知的</h2><hr>
+<p>先来陈述一个事实，计算机和其他设备在因特网上互相通信识别对方都是通过IP地址进行的。但是人们并不擅长记忆类似于10.0.0.1 192.168.1.0等这样的IP地址，所以就用了字符文字串（google.com, wikipidia.org）</p>
+<p>而域名系统（Domain Name System, DNS）,就是把IP地址和字符文本串关联在一起的系统，这样就能找到IP地址了。</p>
+<p>假设个场景： 小A在浏览器里输入的一串mathxh.com的网址</p>
+<p>首先，浏览器和操作系统会去它们各自的缓存中检查是否有mathxh.com的地址，如果没有，那么操作系统会去请求<strong>解析器</strong>(resolver)</p>
+<p>啥是resolver呀？请看下一章</p>
+<h2 id="Episode-2—–漫漫长路"><a href="#Episode-2—–漫漫长路" class="headerlink" title="Episode 2—–漫漫长路"></a>Episode 2—–漫漫长路</h2><hr>
+<p>当当当，因为前一章节提到，cache里面没有mathxh.com的IP，所以这个请求到resolver了，resolver通常是你上网的ISP(Internet Service Provider)提供,也就是因特网服务提供商，你家办的是电信的宽带吗？ 这时候电信公司就是你的ISP。所有的Resolver必须知道一件事：<font color="red">根服务器在哪。</font></p>
+<p>根服务器又知道.com TLD 服务器(Top-Level Domain，顶级域名)在哪里。</p>
+<h2 id="Episode-3—–层级结构的顶层"><a href="#Episode-3—–层级结构的顶层" class="headerlink" title="Episode 3—–层级结构的顶层"></a>Episode 3—–层级结构的顶层</h2><hr>
+<p>好了，咱的请求经过询问了根服务器后，得知了COM顶级域名服务器的地址（这个地址会缓存下来，下次就不必找根服务器了）。</p>
+<p>然后，刚刚我们请求到达的根服务器只是全球13个根服务器其中的一个。根服务器在DNS层级结构中的最顶层。</p>
+<p><img src="http://wx1.sinaimg.cn/large/a1ac93f3gy1fdmgg2b0iwj207q04bt8o.jpg" alt=""></p>
+<p>全球分散着13个独立的组织,他们与13个根服务器一一对应，这些服务器的名字是以[A-M].root-servers.net的形式存在，字符A-M，刚好是13个。<br>但是！这不是意味着全球只有13个物理根服务器来支撑整个互联网！这个13个根服务器每一个都会有多份自己的镜像服务器分布在全球各地。</p>
+<h2 id="Episode-4—–顶级域名的大杂烩"><a href="#Episode-4—–顶级域名的大杂烩" class="headerlink" title="Episode 4—–顶级域名的大杂烩"></a>Episode 4—–顶级域名的大杂烩</h2><hr>
+<p>当当当，我们的请求到达了.COM顶级域名服务器。</p>
+<p>先说个题外话:</p>
+<blockquote>
+<p><em>大部分顶级域名是归一个叫Internet Corporation for Assigned Names and Numbers(ICANN)的组织机构管理分配的。.COM这个顶级域名是世界上最早的一批创建的了，在1985年。现如今已成为互联网上最广泛的域名。</em></p>
+</blockquote>
+<p>当然了，还有很多其他类型的顶级域名，比如，.jp代表日本，.fr代表法国, .中国代表中国, 还有广为人知的.net,.org, .edu 。 最后还有一种域名,基础设施顶级域名(InfTLDs),比如, <a href="https://en.wikipedia.org/wiki/.arpa" target="_blank" rel="external">.ARPA</a>, 一般用来DNS反向查找,简单来说就是，从IP地址查域名。</p>
+<p>现今，还有很多杂七杂八的顶级域名被建立了：.hot , .pizza, .app, .health等等。</p>
+<p>现在回到之前的场景，我们的请求到达了.COM顶级域名服务器，.COM服务器为我们找到了一系列已授权的名字服务器：ns1.mathxh.com, ns2.mathxh.com …. ns6.mathxh.com （可能更多）。</p>
+<h2 id="Episode-5—–回家"><a href="#Episode-5—–回家" class="headerlink" title="Episode 5—–回家"></a>Episode 5—–回家</h2><hr>
+<p>由前一章节得知，问题来了，那么多个已授权的名字服务器，我到底该与哪个建立连接？（抓耳挠腮）。</p>
+<p>简单！ 这就需要域名注册商的帮助了。</p>
+<p>当买下域名的那一刻，域名注册商就联系顶级域名登记处预定这个名字,并把这个域名注册到已授权的名字服务器上（当然，这名字服务器有很多）。比如，一个域名example.com下面，就有多台对自己负责的名字服务器。</p>
+<p>请求会直接去找ns1.mathxh.com的名字服务器，然后使用<a href="https://en.wikipedia.org/wiki/WHOIS" target="_blank" rel="external">WHOIS查询</a>，一般电脑上都安装这个工具了，最后，由其中一台nsX.mathxh.com告诉了我们mathxh.com的IP地址。</p>
+<p>好了，完工了，请求记住了IP地址该原路返回回家了。请求把带回来的IP地址缓存了下来，以免下次需要使用又需要请求Resolver。最后，把IP地址告诉浏览器，浏览器就对IP地址开始真正请求访问了。</p>
+<h2 id="终章——–哎哎？-好像错过了什么"><a href="#终章——–哎哎？-好像错过了什么" class="headerlink" title="终章——–哎哎？ 好像错过了什么"></a>终章——–哎哎？ 好像错过了什么</h2><hr>
+<p>在找到mathxh.com的IP地址之前，是怎么找到ns1.mathxh.com的地址的？<br>不是要询问ns1.mathxh.com才找到mathxh.com的IP吗？还没有找到主域名的IP，就可以找到子域名ns1.mathxh.com的IP了吗？好矛盾呀。</p>
+<p>我们是不可能在找到主域名mathxh.com的IP前,就得到子域名的IP的，无解！</p>
+<p>其实实际情况是这样的：<br>当resolver询问.COM顶级域名服务器的时候，会有一个额外的信息response。这个response内就包含mathxh.com底下至少一个子域名的实际IP地址，所以resolver就知道nsX.mathxh.com的IP地址了。</p>
+<p>所以resolver不仅知道子域名的名字，还知道子域名的IP地址，所以就打破了之前无解的循环依赖，由子域名就可以找到主域名的IP地址，主域名也可以找到子域名IP。</p>
 </span>
       
     </div>
@@ -377,11 +415,11 @@
       
         <div class="post-tags">
           
-            <a href="/blog/tags/互联网/" rel="tag">#互联网</a>
+            <a href="/blog/tags/DNS/" rel="tag">#DNS</a>
           
-            <a href="/blog/tags/传统行业/" rel="tag">#传统行业</a>
+            <a href="/blog/tags/计算机网络/" rel="tag">#计算机网络</a>
           
-            <a href="/blog/tags/物联网/" rel="tag">#物联网</a>
+            <a href="/blog/tags/TCP-IP/" rel="tag">#TCP/IP</a>
           
         </div>
       
@@ -390,13 +428,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/blog/2016/04/28/logic-equivalence/" rel="prev">软件设计中的逻辑等价</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/blog/2015/11/09/error-code/" rel="next">C++返回码的定义</a>
+              <a href="/blog/2017/03/03/functional-programming-cpp11/" rel="next">C++11之函数式风格编程</a>
             
           </div>
         </div>
@@ -478,10 +514,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/02/28/web-and-traditional-industries/"
-     data-title="互联网显然颠覆不了传统行业"
+        <div class="ds-share flat" data-thread-key="2017/03/09/how-dns-works/"
+     data-title="DNS是怎样工作的？"
      data-content=""
-     data-url="https://alexiachen.github.io/blog/blog/2016/02/28/web-and-traditional-industries/">
+     data-url="https://alexiachen.github.io/blog/blog/2017/03/09/how-dns-works/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -511,8 +547,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2016/02/28/web-and-traditional-industries/"
-                   data-title="互联网显然颠覆不了传统行业" data-url="https://alexiachen.github.io/blog/blog/2016/02/28/web-and-traditional-industries/">
+              <div class="ds-thread" data-thread-key="2017/03/09/how-dns-works/"
+                   data-title="DNS是怎样工作的？" data-url="https://alexiachen.github.io/blog/blog/2017/03/09/how-dns-works/">
               </div>
             
           </div>
@@ -615,7 +651,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">This post does not have a Table Of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Episode-1—–网站是未知的"><span class="nav-number">1.</span> <span class="nav-text">Episode 1—–网站是未知的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Episode-2—–漫漫长路"><span class="nav-number">2.</span> <span class="nav-text">Episode 2—–漫漫长路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Episode-3—–层级结构的顶层"><span class="nav-number">3.</span> <span class="nav-text">Episode 3—–层级结构的顶层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Episode-4—–顶级域名的大杂烩"><span class="nav-number">4.</span> <span class="nav-text">Episode 4—–顶级域名的大杂烩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Episode-5—–回家"><span class="nav-number">5.</span> <span class="nav-text">Episode 5—–回家</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#终章——–哎哎？-好像错过了什么"><span class="nav-number">6.</span> <span class="nav-text">终章——–哎哎？ 好像错过了什么</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
