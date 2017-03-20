@@ -52,7 +52,7 @@
 有时候有些人说，Java是个类型安全的语言，那么这些人到底是在说什么？所有的类型安全的语言是一样的吗？
 事实上，一个语言类型安全的定义是取决于语言类型系统的定义。简而言之，类型安全能保证程序的行为是意义明确的（well-defined）。更广泛的来说，我将要讨论的话题就是，一个语言的类型系统是推导程序正确性，安全性的一个有利工具。类型系统也是程序语言理论一个热门的研究领域。
 思考">
-<meta property="og:updated_time" content="2017-03-20T05:23:12.551Z">
+<meta property="og:updated_time" content="2017-03-20T07:51:18.428Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="什么是类型安全?">
 <meta name="twitter:description" content="什么是类型安全？
@@ -411,6 +411,22 @@
 <blockquote>
 <p>给一个参考，<a href="http://stackoverflow.com/questions/964910/is-javascript-an-untyped-language" target="_blank" rel="external">JavaScript是无类型的语言吗?</a></p>
 </blockquote>
+<p>一个例子，Java的类型系统在1.5版本的时候引入了<a href="http://docs.oracle.com/javase/tutorial/java/generics/" target="_blank" rel="external">泛型的概念</a>，在1.4中，你需要类型转换来告诉java的类型系统来接受程序，1.5就不需要转化了。另一个例子是<a href="https://en.wikipedia.org/wiki/Lambda_calculus" target="_blank" rel="external">lambda演算</a>，函数式编程语言的基础，lambda演算其中一个加入类型的版本叫<a href="https://en.wikipedia.org/wiki/Simply_typed_lambda_calculus" target="_blank" rel="external">Simply Typed lambda calculus</a>，这个类型系统相对于<a href="https://courses.engr.illinois.edu/cs421/sp2013/project/milner-polymorphism.pdf" target="_blank" rel="external">Milner’s polymorphic type system</a>能接受更少的程序，而Milner’s type system又比支持<a href="https://wiki.haskell.org/Rank-N_types" target="_blank" rel="external">Rank-2 (or higher) polymorphism</a>的类型系统接受更少的程序。</p>
+<p>所以设计一个完备，表现力强大，可用的类型系统是程序语言理论的热门领域。</p>
+<h3 id="2-强制不变性"><a href="#2-强制不变性" class="headerlink" title="2.强制不变性"></a>2.强制不变性</h3><p>一些你所见过的经典编程语言都有类型声明，int，string等等。类型安全可以保证表达式的类型必须与类型所声明的一致。不必限于int类型，一个类型系统可以支持更加广泛丰富的类型，从而表达程序更加有趣的特性。</p>
+<p>比如在研究领域一个<a href="https://en.wikipedia.org/wiki/Refinement_(computing" target="_blank" rel="external">细化类型(refinement types)</a>#Refinement_types)有趣的例子，就是利用逻辑公式描述一个类型一组的可能的值。类型<strong>{v: int | 0 &lt;= v}</strong>,用公式<strong>0 &lt;= v</strong>细化了int类型，它简洁高效的定义了非负整数类型。细化类型允许程序员为数据结构的类型表达数据结构不变性，类型安全正是由于这些不变性保证的。细化类型系统已经有实例了，比如，在Haskell中的<a href="https://wiki.haskell.org/Liquid_Haskell" target="_blank" rel="external">Liquid Haskell</a>,F#中的<a href="http://research.microsoft.com/en-us/projects/f7/" target="_blank" rel="external">F7</a>。</p>
+<p>另一个例子,我们可以用类型系统(通过强制共享数据不变性)，来防止数据竞争(data race)。这个情况下，那么共享变量的类型本质上就是一个锁来保护它的不变性。这样叫Types for safe locking第一次是在Abadi 和Flanagan的<a href="https://users.soe.ucsc.edu/~cormac/papers/esop99.pdf" target="_blank" rel="external">文章</a>中第一次被提及。 这个特性有Java版本的实现,<a href="http://dl.acm.org/citation.cfm?id=1119480" target="_blank" rel="external">戳这里</a>。也有C语言版本的<a href="http://www.cs.umd.edu/projects/PL/locksmith/" target="_blank" rel="external">实现</a>。</p>
+<p>当然还有很多使用有趣类型系统的例子，<a href="http://www.cs.umd.edu/~jfoster/cqual/" target="_blank" rel="external">限制被污染数据的使用</a>，<a href="http://www.cs.cornell.edu/jif/" target="_blank" rel="external">防止私有信息的泄露</a>等等。</p>
+<h3 id="3-类型抽象和信息隐藏"><a href="#3-类型抽象和信息隐藏" class="headerlink" title="3.类型抽象和信息隐藏"></a>3.类型抽象和信息隐藏</h3><p>许多编程语言都允许数据抽象（也叫信息隐藏）。这些语言提供了一些抽象手段，比如提供类(classes)，模块(modules)，函数(functions)这样的概念。它们可以把内部的结构不暴露给使用者,面向接口编程，接口不变，实现变化。</p>
+<p>类型系统在这样的抽象中就扮演至关重要的角色。<a href="http://dl.acm.org/citation.cfm?id=512669" target="_blank" rel="external">表述独立(Representation independence)</a>说明了程序的运行只应该依赖其抽象，不应该依赖其实现。之后的<a href="https://en.wikipedia.org/wiki/John_C._Reynolds" target="_blank" rel="external">John Reynolds</a>在类型和抽象上又做出了开创性的工作，发表于他1983年的<a href="http://www.cse.chalmers.se/edu/year/2010/course/DAT140_Types/Reynolds_typesabpara.pdf" target="_blank" rel="external">一篇paper</a>，用一句简单的话来概括这论文就是，类型结构是维护抽象级别的一个语法工具，也就是说，<font color="red">类型是构建可维护系统的最基础重要(fundamental)的角色。</font></p>
+<p>所以！！！！</p>
+<p> 为啥Haskell写出来的代码在懂的开发人员面前更好维护？ 为啥Haskell编译通过的代码基本能保证正确？？  为什么需要给动态类型语言做静态分析工具？？ 为什么静态类型的语言有更智能的代码提示和重构工具？？ 为什么基于动态类型的语言开发的没有特别大型的开源项目？？为什么要在javascript之上还要再开发一个TypeScript语言用来支持大型项目的开发？？ 难道是闲着蛋疼？？ 所有的所有，都是因为，<font color="red">程序是类型上的证明。</font></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><hr>
+<ul>
+<li><a href="https://www.zhihu.com/question/19918532" target="_blank" rel="external">弱类型、强类型、动态类型、静态类型语言的区别是什么？</a></li>
+<li><a href="https://www.zhihu.com/question/22416404" target="_blank" rel="external">程序语言中的类型系统怎么理解，它有哪些要素？如何由它演化出一门编程语言的？</a></li>
+<li><a href="https://www.zhihu.com/question/23434097" target="_blank" rel="external">编程语言的类型系统为何如此重要？</a></li>
+</ul>
 </span>
       
     </div>
@@ -653,7 +669,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是类型安全？"><span class="nav-number">1.</span> <span class="nav-text">什么是类型安全？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本的类型安全"><span class="nav-number">2.</span> <span class="nav-text">基本的类型安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么语言才是类型安全的？"><span class="nav-number">3.</span> <span class="nav-text">什么语言才是类型安全的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深入点的探讨"><span class="nav-number">4.</span> <span class="nav-text">深入点的探讨</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-缩小鸿沟"><span class="nav-number">4.1.</span> <span class="nav-text">1.缩小鸿沟</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是类型安全？"><span class="nav-number">1.</span> <span class="nav-text">什么是类型安全？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本的类型安全"><span class="nav-number">2.</span> <span class="nav-text">基本的类型安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么语言才是类型安全的？"><span class="nav-number">3.</span> <span class="nav-text">什么语言才是类型安全的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深入点的探讨"><span class="nav-number">4.</span> <span class="nav-text">深入点的探讨</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-缩小鸿沟"><span class="nav-number">4.1.</span> <span class="nav-text">1.缩小鸿沟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-强制不变性"><span class="nav-number">4.2.</span> <span class="nav-text">2.强制不变性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-类型抽象和信息隐藏"><span class="nav-number">4.3.</span> <span class="nav-text">3.类型抽象和信息隐藏</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
