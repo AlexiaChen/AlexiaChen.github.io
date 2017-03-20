@@ -31,7 +31,7 @@
 
 
 
-  <meta name="keywords" content="生活," />
+  <meta name="keywords" content="类型系统,程序语言理论," />
 
 
 
@@ -40,18 +40,25 @@
   <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="女友给我买了SONY的游戏机——PSVita。系统是3.61的，不过上论坛查了下，只有3.60的系统被破解了。于是没办法，就花了100大洋买了《神秘海域—黄金深渊》。体验下传说中看电影的感觉 ：)">
+<meta name="description" content="什么是类型安全？
+有时候有些人说，Java是个类型安全的语言，那么这些人到底是在说什么？所有的类型安全的语言是一样的吗？
+事实上，一个语言类型安全的定义是取决于语言类型系统的定义。简而言之，类型安全能保证程序的行为是意义明确的（well-defined）。更广泛的来说，我将要讨论的话题就是，一个语言的类型系统是推导程序正确性，安全性的一个有利工具。类型系统也是程序语言理论一个热门的研究领域。
+思考">
 <meta property="og:type" content="article">
-<meta property="og:title" content="今天生日">
+<meta property="og:title" content="什么是类型安全?">
 <meta property="og:url" content="https://alexiachen.github.io/blog/2017/03/16/type-safety/index.html">
 <meta property="og:site_name" content="符号与人生">
-<meta property="og:description" content="女友给我买了SONY的游戏机——PSVita。系统是3.61的，不过上论坛查了下，只有3.60的系统被破解了。于是没办法，就花了100大洋买了《神秘海域—黄金深渊》。体验下传说中看电影的感觉 ：)">
-<meta property="og:image" content="http://wx3.sinaimg.cn/large/a1ac93f3gy1fdorpqikhvj20zk0qogqc.jpg">
-<meta property="og:updated_time" content="2017-03-16T08:37:51.875Z">
+<meta property="og:description" content="什么是类型安全？
+有时候有些人说，Java是个类型安全的语言，那么这些人到底是在说什么？所有的类型安全的语言是一样的吗？
+事实上，一个语言类型安全的定义是取决于语言类型系统的定义。简而言之，类型安全能保证程序的行为是意义明确的（well-defined）。更广泛的来说，我将要讨论的话题就是，一个语言的类型系统是推导程序正确性，安全性的一个有利工具。类型系统也是程序语言理论一个热门的研究领域。
+思考">
+<meta property="og:updated_time" content="2017-03-20T05:23:12.551Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="今天生日">
-<meta name="twitter:description" content="女友给我买了SONY的游戏机——PSVita。系统是3.61的，不过上论坛查了下，只有3.60的系统被破解了。于是没办法，就花了100大洋买了《神秘海域—黄金深渊》。体验下传说中看电影的感觉 ：)">
-<meta name="twitter:image" content="http://wx3.sinaimg.cn/large/a1ac93f3gy1fdorpqikhvj20zk0qogqc.jpg">
+<meta name="twitter:title" content="什么是类型安全?">
+<meta name="twitter:description" content="什么是类型安全？
+有时候有些人说，Java是个类型安全的语言，那么这些人到底是在说什么？所有的类型安全的语言是一样的吗？
+事实上，一个语言类型安全的定义是取决于语言类型系统的定义。简而言之，类型安全能保证程序的行为是意义明确的（well-defined）。更广泛的来说，我将要讨论的话题就是，一个语言的类型系统是推导程序正确性，安全性的一个有利工具。类型系统也是程序语言理论一个热门的研究领域。
+思考">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -61,7 +68,7 @@
   };
 </script>
 
-  <title> 今天生日 | 符号与人生 </title>
+  <title> 什么是类型安全? | 符号与人生 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -318,7 +325,7 @@
           
           
             
-              今天生日
+              什么是类型安全?
             
           
         </h1>
@@ -327,7 +334,7 @@
       <div class="post-meta">
         <span class="post-time">
           Posted on
-          <time itemprop="dateCreated" datetime="2017-03-16T08:30:48+08:00" content="2017-03-16">
+          <time itemprop="dateCreated" datetime="2017-03-16T15:30:48+08:00" content="2017-03-16">
             2017-03-16
           </time>
         </span>
@@ -358,8 +365,52 @@
       
 
       
-        <span itemprop="articleBody"><p>女友给我买了SONY的游戏机——PSVita。系统是3.61的，不过上论坛查了下，只有3.60的系统被破解了。于是没办法，就花了100大洋买了《神秘海域—黄金深渊》。体验下传说中看电影的感觉 ：)</p>
-<p><img src="http://wx3.sinaimg.cn/large/a1ac93f3gy1fdorpqikhvj20zk0qogqc.jpg" alt=""></p>
+        <span itemprop="articleBody"><h2 id="什么是类型安全？"><a href="#什么是类型安全？" class="headerlink" title="什么是类型安全？"></a>什么是类型安全？</h2><hr>
+<p>有时候有些人说，Java是个类型安全的语言，那么这些人到底是在说什么？所有的类型安全的语言是一样的吗？</p>
+<p>事实上，一个语言类型安全的定义是取决于语言类型系统的定义。简而言之，类型安全能保证程序的行为是意义明确的（well-defined）。更广泛的来说，我将要讨论的话题就是，一个语言的类型系统是推导程序正确性，安全性的一个有利工具。类型系统也是程序语言理论一个热门的研究领域。</p>
+<p>思考下，为什么动态类型的语言，比如，Python，Javascript这些语言没有良好的代码提示工具呢？也为什么没有良好的函数定义跳转工具呢？</p>
+<p>其实就是由于类型系统的影响，导致没有工具能非常正确分析程序结构，导致跳转，提示不正确。简单的程序可能可以分析出来，但是一旦程序结构复杂了，就难以作出代码的正确提示。所以为了弥补Javascript的不足，才有了静态类型的<a href="http://www.typescriptlang.org/" target="_blank" rel="external">TypeScript</a>，这样静态类型的语言在语言编译的时候就可以借助编译器或者静态分析工具分析出大量隐含的错误(警告)，也更利于为其开发良好的代码提示，重构工具，也更利于大型项目的开发维护。好处是不言自明了。</p>
+<h2 id="基本的类型安全"><a href="#基本的类型安全" class="headerlink" title="基本的类型安全"></a>基本的类型安全</h2><hr>
+<p>类型安全基本可以用一句话总结：<font color="red">有良好的类型系统的语言能保证自身程序不出错。</font></p>
+<p>这句话其实不是我创造的，是来自于<a href="https://en.wikipedia.org/wiki/Robin_Milner" target="_blank" rel="external">Robin Milner</a>他1978年的一篇论文，论文叫<a href="https://courses.engr.illinois.edu/cs421/sp2013/project/milner-polymorphism.pdf" target="_blank" rel="external">《A Theory of Type Polymorphism in Programming》</a>。翻译过来就是，编程中的类型多态理论。</p>
+<p>好，下面我们来逐步讲解这句话是什么意思。</p>
+<p><strong>1. 程序出错</strong></p>
+<p>编程语言是由其语法和语义定义的，语法就是程序该怎么写。 语义就是程序的表述意义。</p>
+<p>其实对于现实中的语言来讲，很多表达方法都是语法正确，但语义存在问题的。</p>
+<p>就拿一个顶级语言学家<a href="https://en.wikipedia.org/wiki/Noam_Chomsky" target="_blank" rel="external">乔姆斯基(Chomsky)</a>经典的英文例子来说，Colorless green ideals sleep furiously。这句英文语法上是完全正确的，但是句子表述的意义本身毫无意义，无颜色的绿色是什么鬼？ </p>
+<p>再来一个<a href="https://en.wikipedia.org/wiki/OCaml" target="_blank" rel="external">Ocaml</a>编程语言的例子，1 + “foo” , 根据Ocaml语言的语义这个句子毫无意义，数值和字符串做加法是什么鬼？ </p>
+<p>还有个C语言的例子：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> buffer[<span class="number">5</span>];</div><div class="line">buffer[<span class="number">5</span>] = <span class="string">'F'</span>;</div></pre></td></tr></table></figure></p>
+<p>以上代码语法完全正确，但是数组的下标越界了，在C语言规范中，这样的写法是<a href="https://en.wikipedia.org/wiki/Undefined_behavior" target="_blank" rel="external">未定义行为(undefined bahavior)</a>。这是毫无意义的，基于该语句所导致的任何后果现象作出讨论都是无意义的，程序可能崩溃，也可能看上去“运行良好”，但是实际上已经错了。无意义的程序就是错误。类型系统就是为了对这样的行为做出约束。</p>
+<p><strong>2. 良好的类型系统可以保证程序不出错</strong></p>
+<p>在类型安全的语言中，其类型系统能保证程序的正确运行，如果说，一个语言的类型系统能保证程序不出错,我们就可以说这个语言是良好类型的(well-typed)的。一个well-typed的语言肯定是well-defined的语言。<br>well-defined包含well-typed,well-typed包含于well-defined。</p>
+<p>在类型安全的语言中，well-typed的语言是well-defined语言的子集，它们都是语法正确的语言的子集。</p>
+<blockquote>
+<p>all langauge &gt; well defined language &gt; well typed language </p>
+</blockquote>
+<h2 id="什么语言才是类型安全的？"><a href="#什么语言才是类型安全的？" class="headerlink" title="什么语言才是类型安全的？"></a>什么语言才是类型安全的？</h2><hr>
+<p>我们来看看几种流行的语言是否是类型安全的。</p>
+<p><strong>1. C/C++</strong></p>
+<p>非类型安全，C语言的类型系统不对无意义的行为做约束，例子数组越界。而C++可以认为是C语言的超集（为了兼容垃圾C语言这个历史包袱不得不作出的妥协），也没有对数组下标越界作出约束，所以也是非类型安全的。当然还有为了兼容C，C++允许随意的强制类型转换很容易破坏类型系统。所以更加类型安全的类型转换，dynamic_cast, static_cast, const_cast等。</p>
+<p><strong>2. C#/Java</strong></p>
+<p>可能是类型安全的，因为很难通过观察对一个成熟的语言实现作出断言。例如，<a href="http://www.seas.upenn.edu/~sweirich/types/archive/1999-2003/msg00849.html" target="_blank" rel="external">早期的Java版本泛型的类型推导是不正确的</a>。当然一种叫<a href="http://dl.acm.org/citation.cfm?id=503505" target="_blank" rel="external">Featherweight Java</a>的方言就是类型安全的。至于为什么，可以告诉你，这是理论证明出来的。</p>
+<p>有趣的是，满足类型安全的一个要点就是，C语言的语义没有对数组越界作出约束，而C#和Java对于数组越界统统会抛ArrayBoundsException的异常。</p>
+<p><strong>3. Python/Ruby</strong></p>
+<p>它们是否是类型安全的值得商榷。Python和Ruby往往被人称作动态类型(也被称作<a href="https://en.wikipedia.org/wiki/Duck_typing" target="_blank" rel="external">鸭子类型</a>)语言，它们在执行中如果发生类型错误，就会抛出异常。就像Java对于数组越界在运行时会抛出异常，Ruby也一样，在运行时如果进行一个整数和字符串类型的加法也会抛异常。这样的行为是被语言的语义所规定约束的，所以它们都有良好的定义(well-defined)。</p>
+<p>事实上，正是语言的语义赋予程序以意义。所以就本身而言，这些语言都是类型安全的，这种类型安全依赖于一种<a href="https://en.wikipedia.org/wiki/Talk:Typed_and_untyped_languages" target="_blank" rel="external">“无类型”系统(null type system)</a>,因为它能接收任何程序并且不让程序出错稳定运行。因此，是类型安全的。</p>
+<p>这个结论看样子有点奇怪。在Java中，如果一个程序, object.method()被视为well-typed。那么类型安全会保证object是一个真正合法的对象，所以对method方法的调用总会成功。如果换做Ruby的话，那么object.method()依赖于Ruby的null type system保证是well-typed，虽然当我们运行Ruby的这段程序（没有任何保证object对象确实定义了一个叫method的方法），这段程序要么成功，要么会抛出异常，它确实会正常运行下去。如果是Java直接在编译时就报错了。</p>
+<p>所以简短来说，类型安全不是万能的，类型安全所作出的保证是依赖于语言的语义的，语义隐式定义了语言的错误的行为(wrong behavior)。在Java中，这样调用一个不存在的方法就是错误的行为，在Ruby中，就不是错误的，它仅仅是抛出一个异常。</p>
+<h2 id="深入点的探讨"><a href="#深入点的探讨" class="headerlink" title="深入点的探讨"></a>深入点的探讨</h2><hr>
+<p>一般来说，类型安全确确实实是有用的，如果没有它，我们就无法保证程序按照我们的意图，并像它们所定义的那样运行下去，这样程序就能做一些非法的事了。</p>
+<p>C/C++对未定义行为作出了一定程度的忍让，所以这也让C/C++编写的程序是导致很多漏洞，软件攻击的根源,比如<a href="https://en.wikipedia.org/wiki/Stack_buffer_overflow" target="_blank" rel="external">stack smashing</a>,利用栈溢出进行攻击， 再比如<a href="https://www.owasp.org/index.php/Format_string_attack" target="_blank" rel="external">格式化字符串攻击</a>。这种类型的漏洞和攻击是不可能发生在类型安全的语言编写的软件中的。</p>
+<p>上面只是简单对Java和Ruby作出了一定的阐述。下面来对类型系统做一些更深入的探索。不是所有语言的类型系统都一样，有些类型系统能保证的指标，其他类型系统却不能保证。所以，我们在探索一门语言的时候，不要只确认它是否是类型安全的，而是确认这个类型系统满足了哪些指标，哪些指标是你所关心的，哪些不是。  废话了这么多，下面开始吧。</p>
+<h3 id="1-缩小鸿沟"><a href="#1-缩小鸿沟" class="headerlink" title="1.缩小鸿沟"></a>1.缩小鸿沟</h3><p>之前文章提到过，well-defined &gt; well-typed，well-defined的语言不一定是well-typed。所以这两者类型系统之间有什么区别呢？从well defined到well typed的过渡是什么情况？先说结论，这类过渡的语言都是well defined的，但是这类语言的类型系统不会“拒绝”，举个例子，对于大多数类型系统会“拒绝”下面一段程序：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//虽然是javascript的语言的语法，但是不要理解成js语言，这里</span></div><div class="line"><span class="comment">//只是为了方便表述思想</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">p</span>)</span>&#123;</div><div class="line"> <span class="keyword">var</span> x;</div><div class="line"> </div><div class="line"> <span class="keyword">if</span> (p) x = <span class="number">5</span>;</div><div class="line"> <span class="keyword">else</span> x = <span class="string">"hello"</span>;</div><div class="line"> <span class="keyword">if</span> (p) <span class="keyword">return</span> x+<span class="number">5</span>;</div><div class="line"> <span class="keyword">else</span> <span class="keyword">return</span> strlen(x);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个函数，无论p的值是true，还是false，该函数都会返回一个int类型。<br>但是如果是非well typed语言的类型系统就不会会“拒绝”这段程序，而well typed语言的类型系统会“拒绝”这段程序。因为变量x的类型“同时”是String类型和int类型，用类型推导的理论就是，bool -&gt; int ^ bool -&gt; String，这种表示的是<a href="http://stackoverflow.com/questions/5653678/union-types-and-intersection-types" target="_blank" rel="external">intersection type</a>,而不是union type。intersection type表示的是变量x“同时”是String和int类型，而不是“有时”是String类型，“有时”是int类型。</p>
+<p>再举个类似的例子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">param</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> param;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> a = test(<span class="number">1</span>);</div><div class="line"><span class="keyword">var</span> b = test(<span class="literal">true</span>);</div><div class="line"><span class="keyword">var</span> c = test(<span class="string">"Hello"</span>);</div></pre></td></tr></table></figure></p>
+<p>以上的函数test类型就是intersection type的，bool -&gt; bool ^ String -&gt; String ^ int -&gt; int 。也就是函数的输出输入可以”同时”是这三种类型。如果是Union Type,那么调用test(1)就会报错，因为test函数类型还有可能是bool -&gt; bool ， String -&gt; String。 调用test(true),test(“Hello”)都会出错，原理一样的，左右不是人。<a href="http://www.yinwang.org/blog-cn/2016/04/07/cfa" target="_blank" rel="external">垠神的文章</a>也解释过。</p>
+<p>回过头来看第一段程序，根据静态分析工具其语言的类型系统是正确但不完备的。这不完备性也让很多程序员失望。一个补救的措施就是，让其类型系统能够处理，缩小well-defined与well typed的鸿沟。</p>
+<blockquote>
+<p>给一个参考，<a href="http://stackoverflow.com/questions/964910/is-javascript-an-untyped-language" target="_blank" rel="external">JavaScript是无类型的语言吗?</a></p>
+</blockquote>
 </span>
       
     </div>
@@ -368,7 +419,9 @@
       
         <div class="post-tags">
           
-            <a href="/blog/tags/生活/" rel="tag">#生活</a>
+            <a href="/blog/tags/类型系统/" rel="tag">#类型系统</a>
+          
+            <a href="/blog/tags/程序语言理论/" rel="tag">#程序语言理论</a>
           
         </div>
       
@@ -381,7 +434,7 @@
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/blog/2017/03/09/how-dns-works/" rel="next">DNS是怎样工作的？</a>
+              <a href="/blog/2017/03/16/my-birthday/" rel="next">今天生日</a>
             
           </div>
         </div>
@@ -464,7 +517,7 @@
     <div class="post-spread">
       
         <div class="ds-share flat" data-thread-key="2017/03/16/type-safety/"
-     data-title="今天生日"
+     data-title="什么是类型安全?"
      data-content=""
      data-url="https://alexiachen.github.io/blog/blog/2017/03/16/type-safety/">
   <div class="ds-share-inline">
@@ -497,7 +550,7 @@
           <div class="comments" id="comments">
             
               <div class="ds-thread" data-thread-key="2017/03/16/type-safety/"
-                   data-title="今天生日" data-url="https://alexiachen.github.io/blog/blog/2017/03/16/type-safety/">
+                   data-title="什么是类型安全?" data-url="https://alexiachen.github.io/blog/blog/2017/03/16/type-safety/">
               </div>
             
           </div>
@@ -537,7 +590,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/blog/archives">
-              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -551,7 +604,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/blog/tags">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">47</span>
               <span class="site-state-item-name">tags</span>
               </a>
           </div>
@@ -600,7 +653,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">This post does not have a Table Of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是类型安全？"><span class="nav-number">1.</span> <span class="nav-text">什么是类型安全？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本的类型安全"><span class="nav-number">2.</span> <span class="nav-text">基本的类型安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么语言才是类型安全的？"><span class="nav-number">3.</span> <span class="nav-text">什么语言才是类型安全的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深入点的探讨"><span class="nav-number">4.</span> <span class="nav-text">深入点的探讨</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-缩小鸿沟"><span class="nav-number">4.1.</span> <span class="nav-text">1.缩小鸿沟</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
