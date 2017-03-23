@@ -50,7 +50,7 @@
 <meta property="og:description" content="该篇文章是我自己的经验总结，不可能100%适合读者，当然相关的C++工程实践书籍类似《Effective C++》，《More Effective C++》，《Modern Effective C++》，《Learning C++ Best Practices》 《Google C++ Coding Style》等等可能都有类似描述,我这篇文章可能也是从以上的书籍文章汲取了一些。
 
 工欲善其事必">
-<meta property="og:updated_time" content="2017-02-23T05:59:04.534Z">
+<meta property="og:updated_time" content="2017-03-23T05:30:57.001Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++最佳实践">
 <meta name="twitter:description" content="该篇文章是我自己的经验总结，不可能100%适合读者，当然相关的C++工程实践书籍类似《Effective C++》，《More Effective C++》，《Modern Effective C++》，《Learning C++ Best Practices》 《Google C++ Coding Style》等等可能都有类似描述,我这篇文章可能也是从以上的书籍文章汲取了一些。
@@ -440,6 +440,7 @@
 <p>这个绝对禁止，应该从编辑器和IDE里面更改设置，比如让Tab等于4个空格。至于设置Tab等于多少个空格合理，这个是个人喜好问题，不然就是Emacs和Vim之争了。</p>
 <h4 id="17-不要害怕模版"><a href="#17-不要害怕模版" class="headerlink" title="17.不要害怕模版"></a>17.不要害怕模版</h4><hr>
 <p>这个，我对于C++的模版元编程不熟悉，就不做过多讨论了。模版可以说是另外一种语言，另一种“函数式”语言。它是图灵完备(Turing-Complete)的。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">// check specific class if it has foo() function</div><div class="line">template &lt;typename Ty&gt;</div><div class="line">class has_foo_function &#123;</div><div class="line"></div><div class="line">private:</div><div class="line">	typedef char yes[1];</div><div class="line">	typedef char no[2];</div><div class="line">	</div><div class="line">	template &lt;typename Inner&gt;</div><div class="line">	static yes&amp; test(Inner *I, decltype(I-&gt;foo()) * = nullptr);</div><div class="line">	</div><div class="line">	template &lt;typename&gt;</div><div class="line">	static no&amp; test(...);</div><div class="line">	</div><div class="line">public:</div><div class="line">	static const bool value =</div><div class="line">		sizeof(test&lt;Ty&gt;(nullptr)) == sizeof(yes);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">class MyTest1</div><div class="line">&#123;</div><div class="line">public:</div><div class="line">	void foo()&#123;&#125;;</div><div class="line">	</div><div class="line">&#125;;</div><div class="line"></div><div class="line">class MyTest2</div><div class="line">&#123;</div><div class="line">public:</div><div class="line">	</div><div class="line">&#125;;</div><div class="line"></div><div class="line">class MyTest3</div><div class="line">&#123;</div><div class="line">public:</div><div class="line">	int foo(int s)&#123; return s; &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">  std::cout &lt;&lt; has_foo_function&lt;MyTest1&gt;::value &lt;&lt; std::endl; // 1</div><div class="line">	std::cout &lt;&lt; has_foo_function&lt;MyTest2&gt;::value &lt;&lt; std::endl; // 0</div><div class="line">	std::cout &lt;&lt; has_foo_function&lt;MyTest3&gt;::value &lt;&lt; std::endl; // 0</div><div class="line">  return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>感兴趣可以在网络上看到各种玩法：</p>
 <ul>
 <li><a href="https://www.zhihu.com/question/46612915" target="_blank" rel="external">玩模板元编程走火入魔是一种怎样的体验</a></li>
@@ -750,7 +751,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/blog/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">31</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -764,7 +765,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/blog/tags">
-              <span class="site-state-item-count">47</span>
+              <span class="site-state-item-count">52</span>
               <span class="site-state-item-name">tags</span>
               </a>
           </div>
