@@ -31,7 +31,7 @@
 
 
 
-  <meta name="keywords" content="词法分析,编译原理," />
+  <meta name="keywords" content="编译原理,词法分析," />
 
 
 
@@ -48,7 +48,7 @@
 <meta property="og:site_name" content="符号与人生">
 <meta property="og:description" content="经过昨天一天的努力，我制作的Stone语言的Tokenizer已经完成了，之前不支持解析带有空格的String Literal，也不支持带有空格的注释(comments)。现在可以完美支持了，当然与其他语言工业级别的tokenizer，这个当然没法比，这仅仅是个玩具，为了方便之后的语法分析，Stone语言的本身设计也很简单，一些代码格式结构会强制要求，不然会解析错误。
 这个tokenzier设计原">
-<meta property="og:updated_time" content="2017-03-27T06:43:18.599Z">
+<meta property="og:updated_time" content="2017-03-28T04:39:42.189Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="词法分析器完成">
 <meta name="twitter:description" content="经过昨天一天的努力，我制作的Stone语言的Tokenizer已经完成了，之前不支持解析带有空格的String Literal，也不支持带有空格的注释(comments)。现在可以完美支持了，当然与其他语言工业级别的tokenizer，这个当然没法比，这仅仅是个玩具，为了方便之后的语法分析，Stone语言的本身设计也很简单，一些代码格式结构会强制要求，不然会解析错误。
@@ -361,9 +361,10 @@
       
         <span itemprop="articleBody"><p>经过昨天一天的努力，我制作的Stone语言的Tokenizer已经完成了，之前不支持解析带有空格的String Literal，也不支持带有空格的注释(comments)。现在可以完美支持了，当然与其他语言工业级别的tokenizer，这个当然没法比，这仅仅是个玩具，为了方便之后的语法分析，Stone语言的本身设计也很简单，一些代码格式结构会强制要求，不然会解析错误。</p>
 <p>这个tokenzier设计原理很简单，它根据文件按照行扫描的方式，逐行读取和解析，然后根据解析出来的token作分类，大致有String类，Identifier类，还有Number类，没有做更详细的细分，因为之后这个Stone语言的解释器会逐步完善添加功能，所以我把每个token都与它所在的行号做了关联，以后会有用处，类似于下面:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class Token</div><div class="line">&#123;</div><div class="line">public:</div><div class="line">    static const std::shared_ptr&lt;Token&gt; EOF_TOEKN; // end of file</div><div class="line">    static const std::string EOL_TOKEN; // end of line</div><div class="line">public:</div><div class="line">    virtual int32_t getLineNumber() const &#123; return m_line_number; &#125;</div><div class="line">    virtual bool isIdentifier() &#123; return false; &#125;</div><div class="line">    virtual bool isNumber() &#123; return false; &#125;</div><div class="line">    virtual bool isString() &#123; return false; &#125;</div><div class="line">    virtual int32_t getNumber() &#123; throw StoneException("not number token"); &#125;</div><div class="line">    virtual std::string getText()&#123; return std::string(""); &#125;</div><div class="line">public:</div><div class="line">    explicit Token(int32_t line):m_line_number(line)&#123;&#125;</div><div class="line">private:</div><div class="line">    int32_t m_line_number;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">class Token</div><div class="line">&#123;</div><div class="line">public:</div><div class="line">    static const std::shared_ptr&lt;Token&gt; EOF_TOEKN; // end of file</div><div class="line">    static const std::string EOL_TOKEN; // end of line</div><div class="line">public:</div><div class="line">    virtual int32_t getLineNumber() const &#123; return m_line_number; &#125;</div><div class="line">    virtual bool isIdentifier() &#123; return false; &#125;</div><div class="line">    virtual bool isNumber() &#123; return false; &#125;</div><div class="line">    virtual bool isString() &#123; return false; &#125;</div><div class="line">    virtual int32_t getNumber() &#123; throw StoneException("not number token"); &#125;</div><div class="line">    virtual std::string getText()&#123; return std::string(""); &#125;</div><div class="line">public:</div><div class="line">    explicit Token(int32_t line):m_line_number(line)&#123;&#125;</div><div class="line">private:</div><div class="line">    int32_t m_line_number;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>上面是Token的抽象类，如果需要自己实现特定的Token类，就子类化Token就可以了。</p>
 <p>该词法分析器依赖于C++ 11的正则表达式库。我的想法也是尽量使用C++ 11/14的特性来完成一些功能。就这样吧，还有很多要做，以后还要加入语言的闭包等等，挑战不小。</p>
+<p>这里是该项目的<a href="https://github.com/AlexiaChen/stone-lang-in-cpp" target="_blank" rel="external">Github地址</a>。</p>
 </span>
       
     </div>
@@ -372,9 +373,9 @@
       
         <div class="post-tags">
           
-            <a href="/blog/tags/词法分析/" rel="tag">#词法分析</a>
-          
             <a href="/blog/tags/编译原理/" rel="tag">#编译原理</a>
+          
+            <a href="/blog/tags/词法分析/" rel="tag">#词法分析</a>
           
         </div>
       
@@ -382,6 +383,8 @@
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/03/28/language-grammar/" rel="prev">出来混迟早是要还的之程序设计语言的文法</a>
             
           </div>
 
@@ -543,7 +546,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/blog/archives">
-              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -557,7 +560,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/blog/tags">
-              <span class="site-state-item-count">54</span>
+              <span class="site-state-item-count">55</span>
               <span class="site-state-item-name">tags</span>
               </a>
           </div>
