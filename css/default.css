@@ -18,4 +18,5 @@
 #errorMsg{width:100%;text-align:center;font-size:24px;position:absolute;top:100px;left:0}
 #copyright a{color:#666}
 
-#elapseClock .second{font-family:"digit";font-size:42px;color:red}
+#elapseClock .second{font-family:"digit";font-size:45px;color:red}
+#elapseClock .days{font-family:"digit";font-size:50px;color: rgb(126,211,204)}
