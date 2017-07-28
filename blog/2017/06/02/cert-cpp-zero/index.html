@@ -1,0 +1,1073 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="System Software Engineer" />
+
+
+
+  <meta name="keywords" content="C/C++,CERT," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="声明 本文翻译自CERT(计算机安全应急响应组)提供的C++安全编码规范（2016版），与其他规范不一样的是，该规范侧重软件安全的编码规范。翻译不完全逐字段翻译，可能有简化删改。 正文 声明与初始化（DCL）DCL50-CPP 不要定义C风格的可变参函数严重等级：高  C风格的可变参函数的参数没有类型安全保证，也就是说，编译器不检查参数的类型是否匹配，如果类型不匹配这样会导致运行时出现未定义行为。">
+<meta name="keywords" content="C&#x2F;C++,CERT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CERT C++编码规范翻译（DCL）">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2017/06/02/cert-cpp-zero/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="声明 本文翻译自CERT(计算机安全应急响应组)提供的C++安全编码规范（2016版），与其他规范不一样的是，该规范侧重软件安全的编码规范。翻译不完全逐字段翻译，可能有简化删改。 正文 声明与初始化（DCL）DCL50-CPP 不要定义C风格的可变参函数严重等级：高  C风格的可变参函数的参数没有类型安全保证，也就是说，编译器不检查参数的类型是否匹配，如果类型不匹配这样会导致运行时出现未定义行为。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-06-18T01:31:06.624Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CERT C++编码规范翻译（DCL）">
+<meta name="twitter:description" content="声明 本文翻译自CERT(计算机安全应急响应组)提供的C++安全编码规范（2016版），与其他规范不一样的是，该规范侧重软件安全的编码规范。翻译不完全逐字段翻译，可能有简化删改。 正文 声明与初始化（DCL）DCL50-CPP 不要定义C风格的可变参函数严重等级：高  C风格的可变参函数的参数没有类型安全保证，也就是说，编译器不检查参数的类型是否匹配，如果类型不匹配这样会导致运行时出现未定义行为。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> CERT C++编码规范翻译（DCL） | MathxH </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br />
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              CERT C++编码规范翻译（DCL）
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2017-06-02T17:16:53+08:00" content="2017-06-02">
+            2017-06-02
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h1 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h1><hr>
+<p>本文翻译自<a href="http://www.cert.org/" target="_blank" rel="external">CERT</a>(计算机安全应急响应组)提供的C++安全编码规范（2016版），与其他规范不一样的是，该规范侧重软件安全的编码规范。翻译不完全逐字段翻译，可能有简化删改。</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><hr>
+<h2 id="声明与初始化（DCL）"><a href="#声明与初始化（DCL）" class="headerlink" title="声明与初始化（DCL）"></a>声明与初始化（DCL）</h2><h3 id="DCL50-CPP-不要定义C风格的可变参函数"><a href="#DCL50-CPP-不要定义C风格的可变参函数" class="headerlink" title="DCL50-CPP 不要定义C风格的可变参函数"></a>DCL50-CPP 不要定义C风格的可变参函数</h3><p>严重等级：高</p>
+<ul>
+<li>C风格的可变参函数的参数没有类型安全保证，也就是说，编译器不检查参数的类型是否匹配，如果类型不匹配这样会导致运行时出现未定义行为。这样的未定义行为可以让黑客很容易构造非法运行的代码（exploit）。</li>
+</ul>
+<h4 id="不允许的代码样例"><a href="#不允许的代码样例" class="headerlink" title="不允许的代码样例"></a>不允许的代码样例</h4><p>这个函数读取参数直到0才会终止循环，如果不以0终止参数，那么这个函数就会出现未定义行为。如果不小心传递成了其他非int类型的参数，那么编译阶段不会报错，运行时将出现未定义行为。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdarg&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> first, <span class="keyword">int</span> second, ...)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">int</span> r = first + second;</div><div class="line">    va_list va;</div><div class="line">    va_start(va,second);</div><div class="line">    <span class="keyword">while</span>(<span class="keyword">int</span> v = va_arg(va, <span class="keyword">int</span>))</div><div class="line">    &#123;</div><div class="line">        r += v;</div><div class="line">    &#125;</div><div class="line">    va_end(va);</div><div class="line">    <span class="keyword">return</span> r;</div><div class="line">&#125;</div><div class="line"></div><div class="line">add(<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">0</span>); <span class="comment">// print 10</span></div><div class="line">add(<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>); <span class="comment">//can be any number or even crash your PC</span></div></pre></td></tr></table></figure></p>
+<h4 id="允许的代码样例（递归包扩展）"><a href="#允许的代码样例（递归包扩展）" class="headerlink" title="允许的代码样例（递归包扩展）"></a>允许的代码样例（递归包扩展）</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;type_traits&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Arg, <span class="keyword">typename</span> </div><div class="line"><span class="built_in">std</span>::enable_if&lt;<span class="built_in">std</span>::is_integral&lt;Arg&gt;::value&gt;::type * = <span class="literal">nullptr</span>&gt;</div><div class="line"><span class="keyword">int</span> add(Arg f, Arg s)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> f + s;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Arg, <span class="keyword">typename</span>... Ts, <span class="keyword">typename</span></div><div class="line"><span class="built_in">std</span>::enable_if&lt;<span class="built_in">std</span>::is_integral&lt;Arg&gt;::value&gt;::type * = <span class="literal">nullptr</span>&gt;</div><div class="line"><span class="keyword">int</span> add(Arg f, Ts... tail)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> f + add(tail...);</div><div class="line">&#125;</div><div class="line"></div><div class="line">add&lt;&gt;(<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>); <span class="comment">//print 12</span></div><div class="line">add&lt;&gt;(<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="string">'c'</span>); <span class="comment">// compile error</span></div></pre></td></tr></table></figure>
+<p>以上的样例利用了std::enable_if来保证任何非整型的参数会导致ill-formed的程序。</p>
+<h4 id="允许的代码样例（大括号初始化列表扩展）"><a href="#允许的代码样例（大括号初始化列表扩展）" class="headerlink" title="允许的代码样例（大括号初始化列表扩展）"></a>允许的代码样例（大括号初始化列表扩展）</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Arg, <span class="keyword">typename</span>... Ts, <span class="keyword">typename</span></div><div class="line"><span class="built_in">std</span>::enable_if&lt;<span class="built_in">std</span>::is_integral&lt;Arg&gt;::value&gt;::type * = <span class="literal">nullptr</span>&gt;</div><div class="line"><span class="keyword">int</span> add(Arg i, Arg j, Ts... all)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> values[] = &#123; i, j, all... &#125;;</div><div class="line">    <span class="keyword">int</span> r = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> v : values)</div><div class="line">    &#123;</div><div class="line">        r += v;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> r;</div><div class="line">&#125;</div><div class="line"></div><div class="line">add&lt;&gt;(<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>); <span class="comment">//print 12</span></div><div class="line">add&lt;&gt;(<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="string">'c'</span>); <span class="comment">// compile error</span></div></pre></td></tr></table></figure>
+<h3 id="DCL51-CPP-不要声明或定义保留标识符"><a href="#DCL51-CPP-不要声明或定义保留标识符" class="headerlink" title="DCL51-CPP 不要声明或定义保留标识符"></a>DCL51-CPP 不要声明或定义保留标识符</h3><p>严重等级：低</p>
+<ul>
+<li>避免与编译器的符号冲突</li>
+</ul>
+<h4 id="代码样例对比（Header-Guard）"><a href="#代码样例对比（Header-Guard）" class="headerlink" title="代码样例对比（Header Guard）"></a>代码样例对比（Header Guard）</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//bad</span></div><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _MY_HEADER_H_</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> _MY_HEADER_H_</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// _MY_HEADER_H_</span></span></div></pre></td></tr></table></figure>
+<p>以上样例，大部分C++ 头文件是这样写法，自己写的头文件加前缀后缀下划线容易冲突</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//good</span></div><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> MY_HEADER_H</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> MY_HEADER_H</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// MY_HEADER_H</span></span></div></pre></td></tr></table></figure>
+<h4 id="代码样例对比（自定义字面量）"><a href="#代码样例对比（自定义字面量）" class="headerlink" title="代码样例对比（自定义字面量）"></a>代码样例对比（自定义字面量）</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//bad</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt;</span></span></div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="keyword">operator</span><span class="string">""</span> x(<span class="keyword">const</span> <span class="keyword">char</span> *, <span class="built_in">std</span>::<span class="keyword">size_t</span>);</div></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//good</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt;</span></span></div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="keyword">operator</span><span class="string">""</span> _x(<span class="keyword">const</span> <span class="keyword">char</span> *, <span class="built_in">std</span>::<span class="keyword">size_t</span>);</div></pre></td></tr></table></figure>
+<h4 id="代码样例对比（文件作用域对象）"><a href="#代码样例对比（文件作用域对象）" class="headerlink" title="代码样例对比（文件作用域对象）"></a>代码样例对比（文件作用域对象）</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//bad</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt; // std::for size_t</span></span></div><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">std</span>::<span class="keyword">size_t</span> _max_limit = <span class="number">1024</span>;</div><div class="line"><span class="built_in">std</span>::<span class="keyword">size_t</span> _limit = <span class="number">100</span>;</div><div class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">get_value</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> count)</span> </span>&#123;</div><div class="line"><span class="keyword">return</span> count &lt; _limit ? count : _limit;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//good</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt; // for size_t</span></span></div><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">std</span>::<span class="keyword">size_t</span> max_limit = <span class="number">1024</span>;</div><div class="line"><span class="built_in">std</span>::<span class="keyword">size_t</span> limit = <span class="number">100</span>;</div><div class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">get_value</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> count)</span> </span>&#123;</div><div class="line"><span class="keyword">return</span> count &lt; limit ? count : limit;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="代码样例对比（保留的宏）"><a href="#代码样例对比（保留的宏）" class="headerlink" title="代码样例对比（保留的宏）"></a>代码样例对比（保留的宏）</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//bad</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cinttypes&gt; // for int_fast16_t</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="built_in">std</span>::<span class="keyword">int_fast16_t</span> val)</span> </span>&#123;</div><div class="line"><span class="keyword">enum</span> &#123; MAX_SIZE = <span class="number">80</span> &#125;;</div><div class="line"><span class="comment">// ...</span></div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//good</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cinttypes&gt; // for std::int_fast16_t</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="built_in">std</span>::<span class="keyword">int_fast16_t</span> val)</span> </span>&#123;</div><div class="line"><span class="keyword">enum</span> &#123; BufferSize = <span class="number">80</span> &#125;;</div><div class="line"><span class="comment">// ...</span></div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="DCL52-CPP-不要用const或volatile限定一个引用类型"><a href="#DCL52-CPP-不要用const或volatile限定一个引用类型" class="headerlink" title="DCL52-CPP 不要用const或volatile限定一个引用类型"></a>DCL52-CPP 不要用const或volatile限定一个引用类型</h3><p>严重等级：低</p>
+<ul>
+<li>C++会阻止或忽略这样的限定，只有非引用类型的值才能这样限定。</li>
+</ul>
+<h4 id="代码样例对比"><a href="#代码样例对比" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//bad</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">char</span> c)</span> </span>&#123;</div><div class="line"><span class="keyword">char</span> &amp;<span class="keyword">const</span> p = c; <span class="comment">// plz instead of char const &amp;p;  Or: const char &amp;p;</span></div><div class="line">p = <span class="string">'p'</span>;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; c &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码，会导致未定义行为，在VS2013 VS2015下，这段代码编译时会有警告warning C4227: anachronism used : qualifiers on reference are ignored。运行结果会是p，const 没有产生任何期望的作用。</p>
+<p>在Clang 3.9下，这段代码直接产生编译错误error: ‘const’ qualifier may not be applied to a reference</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//good</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">char</span> c)</span> </span>&#123;</div><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> &amp;p = c;</div><div class="line">p = <span class="string">'p'</span>; <span class="comment">//产生期望结果，编译错误，及时发现</span></div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; c &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div></pre></td></tr></table></figure>
+<h3 id="DCL53-CPP-不要写在语法上引起歧义的声明"><a href="#DCL53-CPP-不要写在语法上引起歧义的声明" class="headerlink" title="DCL53-CPP 不要写在语法上引起歧义的声明"></a>DCL53-CPP 不要写在语法上引起歧义的声明</h3><p>严重等级：低</p>
+<ul>
+<li>因为依赖编译器的起义规则来决定该声明的语义结果</li>
+</ul>
+<h4 id="代码样例对比-1"><a href="#代码样例对比-1" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//bad</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></div><div class="line"><span class="keyword">static</span> <span class="built_in">std</span>::mutex m;</div><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> shared_resource;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">increment_by_42</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::unique_lock&lt;<span class="built_in">std</span>::mutex&gt;(m);</div><div class="line">shared_resource += <span class="number">42</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上样例是一个匿名的std::unique_lock对象，这样的语法歧义可能会被编译器解释成：</p>
+<ul>
+<li>声明一个匿名std::unique_lock对象，并且调用自身的单参转化构造函数</li>
+<li>声明了一个名为m的std::unique_lock对象，然后调用默认的构造函数构造</li>
+</ul>
+<p>如果是情况2，那么m这个互斥量就永远不会被锁上了。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//good</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></div><div class="line"><span class="keyword">static</span> <span class="built_in">std</span>::mutex m;</div><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> shared_resource;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">increment_by_42</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::unique_lock&lt;<span class="built_in">std</span>::mutex&gt; lock(m); <span class="comment">//一定要加上对象名字</span></div><div class="line">shared_resource += <span class="number">42</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="代码样例对比-2"><a href="#代码样例对比-2" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Widget</span> &#123;</span></div><div class="line">Widget() &#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Constructed"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; &#125;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="function">Widget <span class="title">w</span><span class="params">()</span></span>; <span class="comment">// 有歧义</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上的代码本意是想声明一个类型为Widget局部变量w，然后执行它的默认构造函数。然而，这个声明有语法歧义，还可能是一个函数声明，这个函数是一个无参并且返回类型为Widget的函数。</p>
+<p>所以，如果是第二种，那么程序根本就不会如你预想的输出Constructed文本。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Widget</span> &#123;</span></div><div class="line">Widget() &#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Constructed"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; &#125;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</div><div class="line">Widget w1; <span class="comment">// Elide the parentheses</span></div><div class="line">Widget w2&#123;&#125;; <span class="comment">// Use direct initialization</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上使用正确的初始化方法才能如预想工作。</p>
+<h4 id="代码样例对比-3"><a href="#代码样例对比-3" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Widget</span> &#123;</span></div><div class="line"><span class="function"><span class="keyword">explicit</span> <span class="title">Widget</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Widget constructed"</span> &lt;&lt;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">endl</span>; &#125;</div><div class="line">&#125;;</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Gadget</span> &#123;</span></div><div class="line"><span class="function"><span class="keyword">explicit</span> <span class="title">Gadget</span><span class="params">(Widget wid)</span> </span>&#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Gadget constructed"</span></div><div class="line">&lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; &#125;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="keyword">int</span> i = <span class="number">3</span>;</div><div class="line">Gadget g(Widget(i));// 该声明有歧义</div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上的声明有歧义，不会被解释为一个Gadget类型的对象g，而是被解释成函数g，返回类型为Gadget。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Widget</span> &#123;</span></div><div class="line"><span class="function"><span class="keyword">explicit</span> <span class="title">Widget</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Widget constructed"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line">&#125;;</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Gadget</span> &#123;</span></div><div class="line"><span class="function"><span class="keyword">explicit</span> <span class="title">Gadget</span><span class="params">(Widget wid)</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Gadget constructed"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="keyword">int</span> i = <span class="number">3</span>;</div><div class="line">Gadget g1((Widget(i))); // Use extra parentheses</div><div class="line">Gadget g2&#123;Widget(i)&#125;; <span class="comment">// Use direct initialization</span></div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上的代码才会正确输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Widget constructed</div><div class="line">Gadget constructed</div><div class="line">Widget constructed</div><div class="line">Gadget constructed</div><div class="line">3</div></pre></td></tr></table></figure>
+<h3 id="DCL54-CPP-在同一个作用域同时重载alloc和dealloc的函数"><a href="#DCL54-CPP-在同一个作用域同时重载alloc和dealloc的函数" class="headerlink" title="DCL54-CPP 在同一个作用域同时重载alloc和dealloc的函数"></a>DCL54-CPP 在同一个作用域同时重载alloc和dealloc的函数</h3><p>严重等级：低</p>
+<ul>
+<li>比如，一个重载的alloc函数使用私有堆来创建它的分配，传递进去的指针的值被默认的dealloc函数返回可能会导致未定义行为。</li>
+</ul>
+<h4 id="代码样例对比-4"><a href="#代码样例对比-4" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Windows.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;new&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="built_in">std</span>::<span class="keyword">size_t</span> size)</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span> </span>&#123;</div><div class="line"><span class="comment">// Private, expandable heap.</span></div><div class="line"><span class="keyword">static</span> HANDLE h = ::HeapCreate(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line"><span class="keyword">if</span> (h) &#123;</div><div class="line"><span class="keyword">return</span> ::HeapAlloc(h, <span class="number">0</span>, size);</div><div class="line">&#125;</div><div class="line"><span class="keyword">throw</span> <span class="built_in">std</span>::bad_alloc();</div><div class="line">&#125;</div><div class="line"><span class="comment">// No corresponding global delete operator defined.</span></div><div class="line">``` </div><div class="line"></div><div class="line">以上样例中，alloc函数是在全局作用域中重载的，然而，与之匹配的dealloc函数却没有声明，如果有一个对象是这个重载的alloc函数分配的，那么用默认的<span class="keyword">delete</span> 删除对象的时候会导致未定义行为</div><div class="line"></div><div class="line">``` cpp</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Windows.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;new&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">HeapAllocator</span> &#123;</span></div><div class="line"><span class="keyword">static</span> HANDLE h;</div><div class="line"><span class="keyword">static</span> <span class="keyword">bool</span> init;</div><div class="line"><span class="keyword">public</span>:</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> *<span class="title">alloc</span><span class="params">(<span class="built_in">std</span>::<span class="keyword">size_t</span> size)</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span> </span>&#123;</div><div class="line"><span class="keyword">if</span> (!init) &#123;</div><div class="line">h = ::HeapCreate(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>); <span class="comment">// Private, expandable heap.</span></div><div class="line">init = <span class="literal">true</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">if</span> (h) &#123;</div><div class="line"><span class="keyword">return</span> ::HeapAlloc(h, <span class="number">0</span>, size);</div><div class="line">&#125;</div><div class="line"><span class="keyword">throw</span> <span class="built_in">std</span>::bad_alloc();</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">dealloc</span><span class="params">(<span class="keyword">void</span> *ptr)</span> <span class="keyword">noexcept</span> </span>&#123;</div><div class="line"><span class="keyword">if</span> (h) &#123;</div><div class="line">(<span class="keyword">void</span>)::HeapFree(h, <span class="number">0</span>, ptr);</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;;</div><div class="line">HANDLE HeapAllocator::h = <span class="literal">nullptr</span>;</div><div class="line"><span class="keyword">bool</span> HeapAllocator::init = <span class="literal">false</span>;</div><div class="line"><span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="built_in">std</span>::<span class="keyword">size_t</span> size)</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span> </span>&#123;</div><div class="line"><span class="keyword">return</span> HeapAllocator::alloc(size);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span> *ptr)</span> <span class="keyword">noexcept</span> </span>&#123;</div><div class="line"><span class="keyword">return</span> HeapAllocator::dealloc(ptr);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="代码样例对比-5"><a href="#代码样例对比-5" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;new&gt;</span></span></div><div class="line"><span class="keyword">extern</span> <span class="string">"C++"</span> <span class="function"><span class="keyword">void</span> <span class="title">update_bookkeeping</span><span class="params">(<span class="keyword">void</span> *allocated_ptr,</span></span></div><div class="line"><span class="function"><span class="params"><span class="built_in">std</span>::<span class="keyword">size_t</span> size, <span class="keyword">bool</span> alloc)</span></span>;</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span> &#123;</span></div><div class="line"><span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="built_in">std</span>::<span class="keyword">size_t</span> size)</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span> </span>&#123;</div><div class="line"><span class="keyword">void</span> *ptr = ::<span class="keyword">operator</span> <span class="keyword">new</span>(size);</div><div class="line">update_bookkeeping(ptr, size, <span class="literal">true</span>);</div><div class="line"><span class="keyword">return</span> ptr;</div><div class="line">&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>以上代码，operator new() 实在类作用域重载的，但是却没有与之匹配的在类作用域重载的delete，所以当然分配好的类S的对象，需要删除的时候，调用的是全局默认的delete函数，这样就会导致程序处于一个未确定状态（未定义行为）。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;new&gt;</span></span></div><div class="line"><span class="keyword">extern</span> <span class="string">"C++"</span> <span class="function"><span class="keyword">void</span> <span class="title">update_bookkeeping</span><span class="params">(<span class="keyword">void</span> *allocated_ptr,</span></span></div><div class="line"><span class="function"><span class="params"><span class="built_in">std</span>::<span class="keyword">size_t</span> size, <span class="keyword">bool</span> alloc)</span></span>;</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span> &#123;</span></div><div class="line"><span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="built_in">std</span>::<span class="keyword">size_t</span> size)</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span> </span>&#123;</div><div class="line"><span class="keyword">void</span> *ptr = ::<span class="keyword">operator</span> <span class="keyword">new</span>(size);</div><div class="line">update_bookkeeping(ptr, size, <span class="literal">true</span>);</div><div class="line"><span class="keyword">return</span> ptr;</div><div class="line">&#125;</div><div class="line"><span class="comment">//需要一个与之匹配的delete</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span> *ptr, <span class="built_in">std</span>::<span class="keyword">size_t</span> size)</span> <span class="keyword">noexcept</span> </span>&#123;</div><div class="line">::<span class="function"><span class="keyword">operator</span> <span class="title">delete</span><span class="params">(ptr)</span></span>;</div><div class="line">update_bookkeeping(ptr, size, <span class="literal">false</span>);</div><div class="line">&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="DCL55-CPP-当传递一个类对象需要跨边界的时候要避免信息泄露"><a href="#DCL55-CPP-当传递一个类对象需要跨边界的时候要避免信息泄露" class="headerlink" title="DCL55-CPP 当传递一个类对象需要跨边界的时候要避免信息泄露"></a>DCL55-CPP 当传递一个类对象需要跨边界的时候要避免信息泄露</h3><p>严重等级：低</p>
+<p>C++标准对于非union类的非静态数据成员的布局如下所述：</p>
+<blockquote>
+<p>Nonstatic data members of a (non-union) class with the same access control are<br>allocated so that later members have higher addresses within a class object. The order<br>of allocation of non-static data members with different access control is unspecified.<br>Implementation alignment requirements might cause two adjacent members not to be<br>allocated immediately after each other; so might requirements for space for managing<br>virtual functions and virtual base classes.</p>
+</blockquote>
+<p>还有，关于类位域（bit-fields）的声明如下：</p>
+<blockquote>
+<p>Allocation of bit-fields within a class object is implementation-defined. Alignment of bitfields is implementation-defined. Bit-fields are packed into some addressable allocation<br>unit.</p>
+</blockquote>
+<p>因此 padding bits可能出现在类对象实例中的任何内存地址上，这就导致其中可能包含一些敏感信息。</p>
+<h4 id="代码样例对比-6"><a href="#代码样例对比-6" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//bad</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">test</span> &#123;</span></div><div class="line"><span class="keyword">int</span> a;</div><div class="line"><span class="keyword">char</span> b;</div><div class="line"><span class="keyword">int</span> c;</div><div class="line">&#125;;</div><div class="line"><span class="comment">// Safely copy bytes to user space</span></div><div class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">int</span> <span class="title">copy_to_user</span><span class="params">(<span class="keyword">void</span> *dest, <span class="keyword">void</span> *src, <span class="built_in">std</span>::<span class="keyword">size_t</span> size)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_stuff</span><span class="params">(<span class="keyword">void</span> *usr_buf)</span> </span>&#123;</div><div class="line">test arg&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</div><div class="line">copy_to_user(usr_buf, &amp;arg, <span class="keyword">sizeof</span>(arg));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果以上代码运行在操作系统的内核空间，它把数据arg拷贝到用户空间，然而，这个test类型的对象可能有padding-bits（内存对齐），比如，为了保证类数据成员的对齐，这个padding-bits可能包含敏感信息，然后就导致这些信息从内核空间随着拷贝泄露到用户空间了。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">test</span> &#123;</span></div><div class="line"><span class="keyword">int</span> a;</div><div class="line"><span class="keyword">char</span> b;</div><div class="line"><span class="keyword">int</span> c;</div><div class="line">&#125;;</div><div class="line"><span class="comment">// Safely copy bytes to user space</span></div><div class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">int</span> <span class="title">copy_to_user</span><span class="params">(<span class="keyword">void</span> *dest, <span class="keyword">void</span> *src, <span class="built_in">std</span>::<span class="keyword">size_t</span> size)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_stuff</span><span class="params">(<span class="keyword">void</span> *usr_buf)</span> </span>&#123;</div><div class="line">test arg&#123;&#125;;</div><div class="line">arg.a = <span class="number">1</span>;</div><div class="line">arg.b = <span class="number">2</span>; <span class="comment">// 关键在这里</span></div><div class="line">arg.c = <span class="number">3</span>;</div><div class="line">copy_to_user(usr_buf, &amp;arg, <span class="keyword">sizeof</span>(arg));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上这段代码倒是在使用前用初始化保证了arg对象的字段都初始化为0了，用memset也可以达到同样效果。但是编译器对arg.b = 2 这个赋值的实现是自由的，也就是说，各个厂商的编译器实现可能不一样。可能有些编译器仅仅只是把最低8位赋值为2，高24位（padding-bits）没有变化，最后就导致高位字节随着拷贝泄漏到用户空间了。</p>
+<p>其实可以给出以下两种方案解决这个信息泄露问题</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">test</span> &#123;</span></div><div class="line"><span class="keyword">int</span> a;</div><div class="line"><span class="keyword">char</span> b;</div><div class="line"><span class="keyword">int</span> c;</div><div class="line">&#125;;</div><div class="line"><span class="comment">// Safely copy bytes to user space.</span></div><div class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">int</span> <span class="title">copy_to_user</span><span class="params">(<span class="keyword">void</span> *dest, <span class="keyword">void</span> *src, <span class="built_in">std</span>::<span class="keyword">size_t</span> size)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_stuff</span><span class="params">(<span class="keyword">void</span> *usr_buf)</span> </span>&#123;</div><div class="line">test arg&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</div><div class="line"><span class="comment">// May be larger than strictly needed.</span></div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> buf[<span class="keyword">sizeof</span>(arg)];</div><div class="line"><span class="built_in">std</span>::<span class="keyword">size_t</span> offset = <span class="number">0</span>;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">memcpy</span>(buf + offset, &amp;arg.a, <span class="keyword">sizeof</span>(arg.a));</div><div class="line">offset += <span class="keyword">sizeof</span>(arg.a);</div><div class="line"><span class="built_in">std</span>::<span class="built_in">memcpy</span>(buf + offset, &amp;arg.b, <span class="keyword">sizeof</span>(arg.b));</div><div class="line">offset += <span class="keyword">sizeof</span>(arg.b);</div><div class="line"><span class="built_in">std</span>::<span class="built_in">memcpy</span>(buf + offset, &amp;arg.c, <span class="keyword">sizeof</span>(arg.c));</div><div class="line">offset += <span class="keyword">sizeof</span>(arg.c);</div><div class="line">copy_to_user(usr_buf, buf, offset <span class="comment">/* size of info copied */</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上这段代码就保证了未初始化的padding-bits不会被拷贝到用户空间去。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">test</span> &#123;</span></div><div class="line"><span class="keyword">int</span> a;</div><div class="line"><span class="keyword">char</span> b;</div><div class="line"><span class="keyword">char</span> padding_1, padding_2, padding_3;</div><div class="line"><span class="keyword">int</span> c;</div><div class="line">test(<span class="keyword">int</span> a, <span class="keyword">char</span> b, <span class="keyword">int</span> c) : a(a), b(b),</div><div class="line">padding_1(<span class="number">0</span>), padding_2(<span class="number">0</span>), padding_3(<span class="number">0</span>),</div><div class="line">c(c) &#123;&#125;</div><div class="line">&#125;;</div><div class="line"><span class="comment">// Ensure c is the next byte after the last padding byte.</span></div><div class="line"><span class="keyword">static_assert</span>(offsetof(test, c) == offsetof(test, padding_3) + <span class="number">1</span>,</div><div class="line"><span class="string">"Object contains intermediate padding"</span>);</div><div class="line"><span class="comment">// Ensure there is no trailing padding.</span></div><div class="line"><span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(test) == offsetof(test, c) + <span class="keyword">sizeof</span>(<span class="keyword">int</span>),</div><div class="line"><span class="string">"Object contains trailing padding"</span>);</div><div class="line"><span class="comment">// Safely copy bytes to user space.</span></div><div class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">int</span> <span class="title">copy_to_user</span><span class="params">(<span class="keyword">void</span> *dest, <span class="keyword">void</span> *src, <span class="built_in">std</span>::<span class="keyword">size_t</span> size)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_stuff</span><span class="params">(<span class="keyword">void</span> *usr_buf)</span> </span>&#123;</div><div class="line">test arg&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</div><div class="line">copy_to_user(usr_buf, &amp;arg, <span class="keyword">sizeof</span>(arg));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码是通过显式声明padding-bits，但是这个方案不具有可移植性，因为依赖目标内存的架构与实现。以上代码是限定于x86-32的平台。</p>
+<h4 id="代码样例对比-7"><a href="#代码样例对比-7" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">base</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line"><span class="keyword">virtual</span> ~base() = <span class="keyword">default</span>;</div><div class="line">&#125;;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span> :</span> <span class="keyword">public</span> <span class="keyword">virtual</span> base &#123;</div><div class="line">alignas(<span class="number">32</span>) <span class="keyword">double</span> h;</div><div class="line"><span class="keyword">char</span> i;</div><div class="line"><span class="keyword">unsigned</span> j : <span class="number">80</span>;</div><div class="line"><span class="keyword">protected</span>:</div><div class="line"><span class="keyword">unsigned</span> k;</div><div class="line"><span class="keyword">unsigned</span> l : <span class="number">4</span>;</div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">short</span> m : <span class="number">3</span>;</div><div class="line"><span class="keyword">public</span>:</div><div class="line"><span class="keyword">char</span> n;</div><div class="line"><span class="keyword">double</span> o;</div><div class="line">test(<span class="keyword">double</span> h, <span class="keyword">char</span> i, <span class="keyword">unsigned</span> j, <span class="keyword">unsigned</span> k, <span class="keyword">unsigned</span> l,</div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">short</span> m, <span class="keyword">char</span> n, <span class="keyword">double</span> o) :</div><div class="line">h(h), i(i), j(j), k(k), l(l), m(m), n(n), o(o) &#123;&#125;</div><div class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span></span>;</div><div class="line">&#125;;</div><div class="line"><span class="comment">// Safely copy bytes to user space.</span></div><div class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">int</span> <span class="title">copy_to_user</span><span class="params">(<span class="keyword">void</span> *dest, <span class="keyword">void</span> *src, <span class="built_in">std</span>::<span class="keyword">size_t</span> size)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_stuff</span><span class="params">(<span class="keyword">void</span> *usr_buf)</span> </span>&#123;</div><div class="line">test arg&#123;<span class="number">0.0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7.0</span>&#125;;</div><div class="line">copy_to_user(usr_buf, &amp;arg, <span class="keyword">sizeof</span>(arg));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码可能还是会把padding-bits泄露到用户空间中，因为padding-bits是implementation-defined，所以对象内存布局在各个编译器下不一样。可能出现以下的情况：</p>
+<ul>
+<li><p>为了对齐产生的padding-bits在虚函数表之后，或者在虚基类的数据之后。之后才是各种数据成员</p>
+</li>
+<li><p>padding-bits可能在各个拥有不同访问控制权限的数据成员之间</p>
+</li>
+<li><p>可能编译器会在类的实例中开辟出一个专门存放padding-bits的数组，这个数组位置也是implementation-defined</p>
+</li>
+</ul>
+<p>以下给出解决方案：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">base</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line"><span class="keyword">virtual</span> ~base() = <span class="keyword">default</span>;</div><div class="line">&#125;;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span> :</span> <span class="keyword">public</span> <span class="keyword">virtual</span> base &#123;</div><div class="line">alignas(<span class="number">32</span>) <span class="keyword">double</span> h;</div><div class="line"><span class="keyword">char</span> i;</div><div class="line"><span class="keyword">unsigned</span> j : <span class="number">80</span>;</div><div class="line"><span class="keyword">protected</span>:</div><div class="line"><span class="keyword">unsigned</span> k;</div><div class="line"><span class="keyword">unsigned</span> l : <span class="number">4</span>;</div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">short</span> m : <span class="number">3</span>;</div><div class="line"><span class="keyword">public</span>:</div><div class="line"><span class="keyword">char</span> n;</div><div class="line"><span class="keyword">double</span> o;</div><div class="line">test(<span class="keyword">double</span> h, <span class="keyword">char</span> i, <span class="keyword">unsigned</span> j, <span class="keyword">unsigned</span> k, <span class="keyword">unsigned</span> l,</div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">short</span> m, <span class="keyword">char</span> n, <span class="keyword">double</span> o) :</div><div class="line">h(h), i(i), j(j), k(k), l(l), m(m), n(n), o(o) &#123;&#125;</div><div class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span></span>;</div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">serialize</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *buffer, <span class="built_in">std</span>::<span class="keyword">size_t</span> &amp;size)</span> </span>&#123;</div><div class="line"><span class="keyword">if</span> (size &lt; <span class="keyword">sizeof</span>(test)) &#123;</div><div class="line"><span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"><span class="built_in">std</span>::<span class="keyword">size_t</span> offset = <span class="number">0</span>;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">memcpy</span>(buffer + offset, &amp;h, <span class="keyword">sizeof</span>(h));</div><div class="line">offset += <span class="keyword">sizeof</span>(h);</div><div class="line"><span class="built_in">std</span>::<span class="built_in">memcpy</span>(buffer + offset, &amp;i, <span class="keyword">sizeof</span>(i));</div><div class="line">offset += <span class="keyword">sizeof</span>(i);</div><div class="line"><span class="comment">// Only sizeof(unsigned) bits are valid, so the following is</span></div><div class="line"><span class="comment">// not narrowing.</span></div><div class="line"><span class="keyword">unsigned</span> loc_j = j;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">memcpy</span>(buffer + offset, &amp;loc_j, <span class="keyword">sizeof</span>(loc_j));</div><div class="line">offset += <span class="keyword">sizeof</span>(loc_j);</div><div class="line"><span class="built_in">std</span>::<span class="built_in">memcpy</span>(buffer + offset, &amp;k, <span class="keyword">sizeof</span>(k));</div><div class="line">offset += <span class="keyword">sizeof</span>(k);</div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> loc_l = l &amp; <span class="number">0b1111</span>;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">memcpy</span>(buffer + offset, &amp;loc_l, <span class="keyword">sizeof</span>(loc_l));</div><div class="line">offset += <span class="keyword">sizeof</span>(loc_l);</div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">short</span> loc_m = m &amp; <span class="number">0b111</span>;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">memcpy</span>(buffer + offset, &amp;loc_m, <span class="keyword">sizeof</span>(loc_m));</div><div class="line">offset += <span class="keyword">sizeof</span>(loc_m);</div><div class="line"><span class="built_in">std</span>::<span class="built_in">memcpy</span>(buffer + offset, &amp;n, <span class="keyword">sizeof</span>(n));</div><div class="line">offset += <span class="keyword">sizeof</span>(n);</div><div class="line"><span class="built_in">std</span>::<span class="built_in">memcpy</span>(buffer + offset, &amp;o, <span class="keyword">sizeof</span>(o));</div><div class="line">offset += <span class="keyword">sizeof</span>(o);</div><div class="line">size -= offset;</div><div class="line"><span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;</div><div class="line">&#125;;</div><div class="line"><span class="comment">// Safely copy bytes to user space.</span></div><div class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">int</span> <span class="title">copy_to_user</span><span class="params">(<span class="keyword">void</span> *dest, <span class="keyword">void</span> *src, <span class="keyword">size_t</span> size)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_stuff</span><span class="params">(<span class="keyword">void</span> *usr_buf)</span> </span>&#123;</div><div class="line">test arg&#123;<span class="number">0.0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7.0</span>&#125;;</div><div class="line"><span class="comment">// May be larger than strictly needed, will be updated by</span></div><div class="line"><span class="comment">// calling serialize() to the size of the buffer remaining.</span></div><div class="line"><span class="built_in">std</span>::<span class="keyword">size_t</span> size = <span class="keyword">sizeof</span>(arg);</div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> buf[<span class="keyword">sizeof</span>(arg)];</div><div class="line"><span class="keyword">if</span> (arg.serialize(buf, size)) &#123;</div><div class="line">copy_to_user(usr_buf, buf, <span class="keyword">sizeof</span>(test) - size);</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line"><span class="comment">// Handle error</span></div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码就手工上保证没有初始化的padding-bits不会泄漏到用户空间了。</p>
+<h3 id="DCL56-CPP-静态对象的初始化期间避免循环初始化"><a href="#DCL56-CPP-静态对象的初始化期间避免循环初始化" class="headerlink" title="DCL56-CPP 静态对象的初始化期间避免循环初始化"></a>DCL56-CPP 静态对象的初始化期间避免循环初始化</h3><p>严重等级：低</p>
+<ul>
+<li>可能导致未指定行为（unspecified behavior）</li>
+<li>可能导致死锁</li>
+</ul>
+<h4 id="代码样例对比-8"><a href="#代码样例对比-8" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdexcept&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">fact</span><span class="params">(<span class="keyword">int</span> i)</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span> </span>&#123;</div><div class="line"><span class="keyword">if</span> (i &lt; <span class="number">0</span>) &#123;</div><div class="line"><span class="comment">// Negative factorials are undefined.</span></div><div class="line"><span class="keyword">throw</span> <span class="built_in">std</span>::domain_error(<span class="string">"i must be &gt;= 0"</span>);</div><div class="line">&#125;</div><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> cache[] = &#123;</div><div class="line">fact(<span class="number">0</span>), fact(<span class="number">1</span>), fact(<span class="number">2</span>), fact(<span class="number">3</span>), fact(<span class="number">4</span>), fact(<span class="number">5</span>),</div><div class="line">fact(<span class="number">6</span>), fact(<span class="number">7</span>), fact(<span class="number">8</span>), fact(<span class="number">9</span>), fact(<span class="number">10</span>), fact(<span class="number">11</span>),</div><div class="line">fact(<span class="number">12</span>), fact(<span class="number">13</span>), fact(<span class="number">14</span>), fact(<span class="number">15</span>), fact(<span class="number">16</span>)</div><div class="line">&#125;;</div><div class="line"><span class="keyword">if</span> (i &lt; (<span class="keyword">sizeof</span>(cache) / <span class="keyword">sizeof</span>(<span class="keyword">int</span>))) &#123;</div><div class="line"><span class="keyword">return</span> cache[i];</div><div class="line">&#125;</div><div class="line"><span class="keyword">return</span> i &gt; <span class="number">0</span> ? i * fact(i - <span class="number">1</span>) : <span class="number">1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上的代码本意是想用cache的思想实现一个高效的求阶乘的函数，但是静态数组cache的初始化包含了递归，这个行为是未定义的，即使这个递归是有边界的。</p>
+<p>从实现上看，VS2015和GCC 6.1.0 中，这个静态数组的初始化在线程安全的方式下可能死锁。而且还不一定能算出正确结果。</p>
+<p>下面给出解决方案</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdexcept&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">fact</span><span class="params">(<span class="keyword">int</span> i)</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span> </span>&#123;</div><div class="line"><span class="keyword">if</span> (i &lt; <span class="number">0</span>) &#123;</div><div class="line"><span class="comment">// Negative factorials are undefined.</span></div><div class="line"><span class="keyword">throw</span> <span class="built_in">std</span>::domain_error(<span class="string">"i must be &gt;= 0"</span>);</div><div class="line">&#125;</div><div class="line"><span class="comment">// Use the lazy-initialized cache.</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> cache[<span class="number">17</span>];</div><div class="line"><span class="keyword">if</span> (i &lt; (<span class="keyword">sizeof</span>(cache) / <span class="keyword">sizeof</span>(<span class="keyword">int</span>))) &#123;</div><div class="line"><span class="keyword">if</span> (<span class="number">0</span> == cache[i]) &#123;</div><div class="line">cache[i] = i &gt; <span class="number">0</span> ? i * fact(i - <span class="number">1</span>) : <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">return</span> cache[i];</div><div class="line">&#125;</div><div class="line"><span class="keyword">return</span> i &gt; <span class="number">0</span> ? i * fact(i - <span class="number">1</span>) : <span class="number">1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面代码使用了懒初始化的方式，本质上是把静态初始化变成赋值了。完全可以计算出正确结果。</p>
+<h4 id="代码样例对比-9"><a href="#代码样例对比-9" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// file.h</span></div><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> FILE_H</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> FILE_H</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> &#123;</span></div><div class="line"><span class="keyword">int</span> numWheels;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">Car() : numWheels(<span class="number">4</span>) &#123;&#125;</div><div class="line">explicit Car(int numWheels) : numWheels(numWheels) &#123;&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">get_num_wheels</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> numWheels; &#125;</div><div class="line">&#125;;</div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// FILE_H</span></span></div><div class="line"><span class="comment">// file1.cpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"file.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">extern</span> Car c;</div><div class="line"><span class="keyword">int</span> numWheels = c.get_num_wheels();</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; numWheels &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; <span class="comment">// 不一定输出6</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// file2.cpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"file.h"</span></span></div><div class="line"><span class="function">Car <span class="title">get_default_car</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> Car(<span class="number">6</span>); &#125;</div><div class="line">Car c = get_default_car();</div></pre></td></tr></table></figure>
+<p>file1.cpp中numWheels的值依赖于c的初始化，然而，c被定义在了不同的翻译单元中（file2.cpp），所以对于c，没有任何保证c通过get_default_car()初始化是在numWheels = c.get_num_wheels()之前，专业上这叫“静态初始化顺序失效”，导致的结果也是未指定的。</p>
+<p>从实现细节上说，打印到标准输出流上的值依赖于翻译单元的链接顺序，比如，在Clang 3.8.0（x86 Linux）下，clang++<br>file1.cpp file2.cpp &amp;&amp; ./a.out  这组命令会输出0， clang++ file2.cpp<br>file1.cpp &amp;&amp; ./a.out 才会输出所期望的结果6。</p>
+<p>下面给出解决办法</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// file.h</span></div><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> FILE_H</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> FILE_H</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> &#123;</span></div><div class="line"><span class="keyword">int</span> numWheels;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">Car() : numWheels(<span class="number">4</span>) &#123;&#125;</div><div class="line">explicit Car(int numWheels) : numWheels(numWheels) &#123;&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">get_num_wheels</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> numWheels; &#125;</div><div class="line">&#125;;</div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// FILE_H</span></span></div><div class="line"><span class="comment">// file1.cpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"file.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> &amp;<span class="title">get_num_wheels</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="keyword">extern</span> Car c;</div><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> numWheels = c.get_num_wheels();</div><div class="line"><span class="keyword">return</span> numWheels;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; get_num_wheels() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; <span class="comment">//一定是6</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// file2.cpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"file.h"</span></span></div><div class="line"><span class="function">Car <span class="title">get_default_car</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> Car(<span class="number">6</span>); &#125;</div><div class="line">Car c = get_default_car();</div></pre></td></tr></table></figure>
+<p>以上代码是用“construct on first use”的idiom来解决静态初始化顺序的问题的，file.h和file2.cpp的代码都没有变，只有静态的numWheels被移到了函数体内，结果就是numWheels的初始化会发生在它声明的时候，全局对象c在main函数执行之前就初始化完毕，所以最终结果一定是6。</p>
+<h3 id="DCL57-CPP-不要让异常逃离析构函数和dealloc函数的范围"><a href="#DCL57-CPP-不要让异常逃离析构函数和dealloc函数的范围" class="headerlink" title="DCL57-CPP 不要让异常逃离析构函数和dealloc函数的范围"></a>DCL57-CPP 不要让异常逃离析构函数和dealloc函数的范围</h3><p>严重等级：低</p>
+<p>通过抛出异常的方式终止析构函数,operator delete 和 operator delete []会触发未定义行为。</p>
+<p>在C++标准中， [basic.stc.dynamic.deallocation], paragraph 3 [ISO/IEC 14882-<br>2014]有如下声明：</p>
+<blockquote>
+<p>If a deallocation function terminates by throwing an exception, the behavior is undefined.</p>
+</blockquote>
+<p>所以在这些情况下，函数就必须声明为noexcept的，因为从一个函数抛出异常本来就不会有well-defined的行为，C++ 标准[except.spec]有如下声明：</p>
+<blockquote>
+<p>A deallocation function with no explicit exception-specification is treated as if it were<br>specified with noexcept(true).</p>
+</blockquote>
+<p>C++标准中，[class.dtor]部份有以下声明：</p>
+<blockquote>
+<p>A declaration of a destructor that does not have an exception-specification is implicitly<br>considered to have the same exception-specification as an implicit declaration.</p>
+</blockquote>
+<h4 id="代码样例对比-10"><a href="#代码样例对比-10" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdexcept&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">S</span> &#123;</span></div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">has_error</span><span class="params">()</span> <span class="keyword">const</span></span>;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">~S() <span class="keyword">noexcept</span>(<span class="literal">false</span>) &#123;</div><div class="line"><span class="comment">// Normal processing</span></div><div class="line"><span class="keyword">if</span> (has_error()) &#123;</div><div class="line"><span class="keyword">throw</span> <span class="built_in">std</span>::logic_error(<span class="string">"Something bad"</span>);</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>以上代码会触发未定义行为，因为类析构函数没有满足隐式保证noexcept，所以还是可能抛出异常。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;exception&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdexcept&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">S</span> &#123;</span></div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">has_error</span><span class="params">()</span> <span class="keyword">const</span></span>;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">~S() <span class="keyword">noexcept</span>(<span class="literal">false</span>) &#123;</div><div class="line"><span class="comment">// Normal processing</span></div><div class="line"><span class="keyword">if</span> (has_error() &amp;&amp; !<span class="built_in">std</span>::uncaught_exception()) &#123;</div><div class="line"><span class="keyword">throw</span> <span class="built_in">std</span>::logic_error(<span class="string">"Something bad"</span>);</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>以上代码在析构函数中使用了std::uncaught_exception()，通过避免异常扩展的方式解决了终止问题。但是还是会导致一些重要资源的泄露。</p>
+<p>再举个例子，比如以下代码存在于第三方库中，用户不能修改：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Assume that this class is provided by a 3rd party and it is not</span></div><div class="line"><span class="comment">//something</span></div><div class="line"><span class="comment">// that can be modified by the user.</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bad</span> &#123;</span></div><div class="line">~Bad() <span class="keyword">noexcept</span>(<span class="literal">false</span>);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>为了安全的使用Bad类，SomeClass的析构函数意图catch Bad类可能抛出的异常来阻止扩散。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span> &#123;</span></div><div class="line">Bad bad_member;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">~SomeClass()</div><div class="line">&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// ...</span></div><div class="line">    &#125; <span class="keyword">catch</span>(...) &#123;</div><div class="line">        <span class="comment">// Handle the exception thrown from the Bad destructor.</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>但是在C++ 标准中[except.handle]声明如下：</p>
+<blockquote>
+<p>The currently handled exception is rethrown if control reaches the end of a handler of<br>the function-try-block of a constructor or destructor.</p>
+</blockquote>
+<p>根据标准的说法，也就是在构造函数或析构函数中当控制流抵达catch块尾部的时候，异常还是会被重新抛出。结果还是不可避免的会被抛出异常。</p>
+<p>下面给出一个解决方案：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span> &#123;</span></div><div class="line">Bad bad_member;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">~SomeClass()</div><div class="line">&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// ...</span></div><div class="line">    &#125; <span class="keyword">catch</span>(...) &#123;</div><div class="line">        <span class="comment">// Catch exceptions thrown from noncompliant destructors of</span></div><div class="line">        <span class="comment">// member objects or base class subobjects.</span></div><div class="line">        <span class="comment">// <span class="doctag">NOTE:</span> Flowing off the end of a destructor function-try-block</span></div><div class="line">        <span class="comment">// causes the caught exception to be implicitly rethrown, but</span></div><div class="line">        <span class="comment">// an explicit return statement will prevent that from</span></div><div class="line">        <span class="comment">// happening.</span></div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>上面的代码使用显式的return语句阻止了控制流到达了catch块的尾部，这样做必然可以捕捉bad_member销毁时候所抛出的异常了，而且这么用法可以捕捉其他任何异常，异常也不会重新在SomeClass的析构函数中被重新抛出导致被终止的问题了。</p>
+<h4 id="代码样例对比-11"><a href="#代码样例对比-11" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdexcept&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">perform_dealloc</span><span class="params">(<span class="keyword">void</span> *)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span> *ptr)</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span> </span>&#123;</div><div class="line"><span class="keyword">if</span> (perform_dealloc(ptr)) &#123;</div><div class="line"><span class="keyword">throw</span> <span class="built_in">std</span>::logic_error(<span class="string">"Something bad"</span>);</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>经过了之前的分析，可以很简单的看出上面的代码，全局dealloc函数必然会导致未定义行为。需要改成下面这样。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdexcept&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">perform_dealloc</span><span class="params">(<span class="keyword">void</span> *)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">log_failure</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span> *ptr)</span> <span class="title">noexcept</span><span class="params">(<span class="literal">true</span>)</span> </span>&#123;</div><div class="line"><span class="keyword">if</span> (perform_dealloc(ptr)) &#123;</div><div class="line">log_failure(<span class="string">"Deallocation of pointer failed"</span>);</div><div class="line"><span class="built_in">std</span>::<span class="built_in">exit</span>(<span class="number">1</span>); <span class="comment">// Fail, but still call destructors</span></div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的代码通过不抛出异常，直接结束程序，而且也会正确调用析构函数。</p>
+<h3 id="DCL58-CPP-不要修改标准名字空间"><a href="#DCL58-CPP-不要修改标准名字空间" class="headerlink" title="DCL58-CPP. 不要修改标准名字空间"></a>DCL58-CPP. 不要修改标准名字空间</h3><p>严重等级：高</p>
+<p>C++ 标准[namespace.std]规定了：</p>
+<blockquote>
+<p>The behavior of a C++ program is undefined if it adds declarations or definitions to<br>namespace std or to a namespace within namespace std unless otherwise<br>specified. A program may add a template specialization for any standard library<br>template to namespace std only if the declaration depends on a user-defined type<br>and the specialization meets the standard library requirements for the original<br>template and is not explicitly prohibited.</p>
+<p>The behavior of a C++ program is undefined if it declares<br>an explicit specialization of any member function of a standard library class<br>template, or<br> an explicit specialization of any member function template of a standard library class<br>or class template, or<br> an explicit or partial specialization of any member class template of a standard<br>library class or class template.</p>
+</blockquote>
+<p>除了要限制对std名字空间的扩展，C++标准[namespace.posix]还规定限制对posix名字空间的扩展:</p>
+<blockquote>
+<p>The behavior of a C++ program is undefined if it adds declarations or definitions to<br>namespace posix or to a namespace within namespace posix unless otherwise<br>specified. The namespace posix is reserved for use by ISO/IEC 9945 and other POSIX<br>standards.</p>
+</blockquote>
+<h3 id="DCL59-CPP-不要在头文件中定义一个未命名的名字空间"><a href="#DCL59-CPP-不要在头文件中定义一个未命名的名字空间" class="headerlink" title="DCL59-CPP 不要在头文件中定义一个未命名的名字空间"></a>DCL59-CPP 不要在头文件中定义一个未命名的名字空间</h3><p>严重等级：中</p>
+<p>C++标准[namespace.unnamed]对此作出描述:</p>
+<blockquote>
+<p>An unnamed-namespace-definition behaves as if it were replaced by:<br>inline namespace unique { /<em> empty body </em>/ }<br>using namespace unique ;<br>namespace unique { namespace-body }<br>where inline appears if and only if it appears in the unnamed-namespace-definition,<br>all occurrences of unique in a translation unit are replaced by the same identifier, and<br>this identifier differs from all other identifiers in the entire program.</p>
+</blockquote>
+<p>因为定义在头文件中的未命名名字空间，可能通过#include 插入到任何.cpp文件中（任何翻译单元），会导致对未命名的名字空间在不同的翻译单元有自己的实例名字，所以可能导致奇怪的结果。</p>
+<h3 id="DCL60-CPP-遵循只有一个定义的原则"><a href="#DCL60-CPP-遵循只有一个定义的原则" class="headerlink" title="DCL60-CPP 遵循只有一个定义的原则"></a>DCL60-CPP 遵循只有一个定义的原则</h3><p>严重等级：高</p>
+<p>正经的C++项目一般都会把程序分割成多个翻译单元，然后通过链接器把多个翻译单元链接在一起成为一个可执行文件。为了支持这一种模型，C++限制已命名的对象定义，通过在跨所有翻译单元中只有一个定义来保证。这种模型叫one-definition rule(ODR)。 而且也在C++标准 [basic.def.odr] 中描述了：</p>
+<blockquote>
+<p>Every program shall contain exactly one definition of every non-inline function or variable<br>that is odr-used in that program; no diagnostic required. The definition can appear<br>explicitly in the program, it can be found in the standard or a user-defined library, or<br>(when appropriate) it is implicitly defined. An inline function shall be defined in every<br>translation unit in which it is odr-used.</p>
+</blockquote>
+<p>当然，多个翻译单元通常会包含多种声明，因为大部分是通过#include头文件被插入到翻译单元中的。在头文件中的这些声明也有可能也含有定义了。比如类和函数模板的定义。这些也在C++标准中描述了：</p>
+<blockquote>
+<p>There can be more than one definition of a class type, enumeration type, inline function<br>with external linkage, class template, non-static function template, static data member of<br>a class template, member function of a class template, or template specialization for<br>which some template parameters are not specified in a program provided that each<br>definition appears in a different translation unit, and provided the definitions satisfy the<br>following requirements. Given such an entity named D defined in more than one<br>translation unit….<br>If the definitions of D satisfy all these requirements, then the program shall behave as if<br>there were a single definition of D. If the definitions of D do not satisfy these<br>requirements, then the behavior is undefined.</p>
+</blockquote>
+<h4 id="代码样例对比-12"><a href="#代码样例对比-12" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// a.cpp</span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span> &#123;</span></div><div class="line"><span class="keyword">int</span> a;</div><div class="line">&#125;;</div><div class="line"><span class="comment">// b.cpp</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">S</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line"><span class="keyword">int</span> a;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>以上代码在两个不同的翻译单元中定义了一个相同的类，struct本质上也是类。而且这两个类都有一个非静态数据成员a。所以以上代码违反了ODR，并且会导致未定义行为。</p>
+<p>下面给出解决方案：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// S.h</span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span> &#123;</span></div><div class="line"><span class="keyword">int</span> a;</div><div class="line">&#125;;</div><div class="line"><span class="comment">// a.cpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"S.h"</span></span></div><div class="line"><span class="comment">// b.cpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"S.h"</span></span></div></pre></td></tr></table></figure>
+<p>以上代码就不会存在问题了，其实解决这种类似的问题依赖于编程者的意图，如果编程者需要在同样的类定义在不同的翻译单元中可见，那么就可以定义在头文件中，并且通过include插入。就像以上代码的做法。</p>
+<p>如果由于ODR原则导致了符号名字的冲突，那么可以通过名字空间来保证类是唯一的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// a.cpp</span></div><div class="line"><span class="keyword">namespace</span> &#123;</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span> &#123;</span></div><div class="line"><span class="keyword">int</span> a;</div><div class="line">&#125;;</div><div class="line">&#125;</div><div class="line"><span class="comment">// b.cpp</span></div><div class="line"><span class="keyword">namespace</span> &#123;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">S</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line"><span class="keyword">int</span> a;</div><div class="line">&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="代码样例对比（Visual-Studio）"><a href="#代码样例对比（Visual-Studio）" class="headerlink" title="代码样例对比（Visual Studio）"></a>代码样例对比（Visual Studio）</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// s.h</span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span> &#123;</span></div><div class="line"><span class="keyword">char</span> c;</div><div class="line"><span class="keyword">int</span> a;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">init_s</span><span class="params">(S &amp;s)</span></span>;</div><div class="line"><span class="comment">// s.cpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"s.h"</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">init_s</span><span class="params">(S &amp;s)</span></span>; &#123;</div><div class="line">s.c = <span class="string">'a'</span>;</div><div class="line">s.a = <span class="number">12</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">// a.cpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(push, 1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"s.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(pop)</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</div><div class="line">S s;</div><div class="line">init_s(s);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上的代码通过#include把一个类定义插入到了不同的翻译单元中，然而，其中一个翻译单元（a.cpp）通过implementation-defined的#pragma指令来实现了结构体成员对齐，所以导致了两个翻译单元（s.cpp a.cpp）S的定义具有了不同的二进制布局，这就违反了ODR原则，导致了未定义行为。</p>
+<p>要解决这个问题比较简单，把#pragma指令移除就可以了：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// s.h</span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span> &#123;</span></div><div class="line"><span class="keyword">char</span> c;</div><div class="line"><span class="keyword">int</span> a;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">init_s</span><span class="params">(S &amp;s)</span></span>;</div><div class="line"><span class="comment">// s.cpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"s.h"</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">init_s</span><span class="params">(S &amp;s)</span></span>; &#123;</div><div class="line">s.c = <span class="string">'a'</span>;</div><div class="line">s.a = <span class="number">12</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">// a.cpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"s.h"</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</div><div class="line">S s;</div><div class="line">init_s(s);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="代码样例对比-13"><a href="#代码样例对比-13" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> n = <span class="number">42</span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">g</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> &amp;lhs, <span class="keyword">const</span> <span class="keyword">int</span> &amp;rhs)</span></span>;</div><div class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</div><div class="line"><span class="keyword">return</span> g(k, n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码也违反了ODR，但是一下子难以看出来，下面来逐个分析：</p>
+<p>常量对象n有个内部链接，但是被函数f()依赖了，函数f()具有外部链接。因为函数f()被声明为了一个inline，所以f函数的定义在所有翻译单元中都是唯一的（在所有翻译单元中f的二进制布局都一样）。然而，对象n在每个翻译单元中都会具有一个唯一的实例（在所有翻译单元中n的实例不一样），所以由于n的不同导致了函数f违反了ODR。</p>
+<p>下面的代码解决了该问题:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> n = <span class="number">42</span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">g</span><span class="params">(<span class="keyword">int</span> lhs, <span class="keyword">int</span> rhs)</span></span>; <span class="comment">// 把常引用消除</span></div><div class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</div><div class="line"><span class="keyword">return</span> g(k, n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>或者像下面这样修改，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">enum</span> Constants &#123;</div><div class="line">N = <span class="number">42</span></div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">g</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> &amp;lhs, <span class="keyword">const</span> <span class="keyword">int</span> &amp;rhs)</span></span>;</div><div class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</div><div class="line"><span class="keyword">return</span> g(k, N);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>把常量N改为命名的enum类型，所以N在不同的翻译单元中布局都一样了，这样就不会影响函数f，它们具有同样的链接。不违反ODR。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/C-C/" rel="tag">#C/C++</a>
+          
+            <a href="/blog/tags/CERT/" rel="tag">#CERT</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/06/29/cert-cpp-one/" rel="prev">CERT C++编码规范翻译（EXP）</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/05/19/true-researcher/" rel="next">什么才是真正的研究者</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">40</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="https://dendise7engithub.github.io/" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#声明"><span class="nav-number">1.</span> <span class="nav-text">声明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#声明与初始化（DCL）"><span class="nav-number">2.1.</span> <span class="nav-text">声明与初始化（DCL）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DCL50-CPP-不要定义C风格的可变参函数"><span class="nav-number">2.1.1.</span> <span class="nav-text">DCL50-CPP 不要定义C风格的可变参函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#不允许的代码样例"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">不允许的代码样例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#允许的代码样例（递归包扩展）"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">允许的代码样例（递归包扩展）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#允许的代码样例（大括号初始化列表扩展）"><span class="nav-number">2.1.1.3.</span> <span class="nav-text">允许的代码样例（大括号初始化列表扩展）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DCL51-CPP-不要声明或定义保留标识符"><span class="nav-number">2.1.2.</span> <span class="nav-text">DCL51-CPP 不要声明或定义保留标识符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比（Header-Guard）"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">代码样例对比（Header Guard）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比（自定义字面量）"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">代码样例对比（自定义字面量）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比（文件作用域对象）"><span class="nav-number">2.1.2.3.</span> <span class="nav-text">代码样例对比（文件作用域对象）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比（保留的宏）"><span class="nav-number">2.1.2.4.</span> <span class="nav-text">代码样例对比（保留的宏）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DCL52-CPP-不要用const或volatile限定一个引用类型"><span class="nav-number">2.1.3.</span> <span class="nav-text">DCL52-CPP 不要用const或volatile限定一个引用类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DCL53-CPP-不要写在语法上引起歧义的声明"><span class="nav-number">2.1.4.</span> <span class="nav-text">DCL53-CPP 不要写在语法上引起歧义的声明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-1"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">代码样例对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-2"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">代码样例对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-3"><span class="nav-number">2.1.4.3.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DCL54-CPP-在同一个作用域同时重载alloc和dealloc的函数"><span class="nav-number">2.1.5.</span> <span class="nav-text">DCL54-CPP 在同一个作用域同时重载alloc和dealloc的函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-4"><span class="nav-number">2.1.5.1.</span> <span class="nav-text">代码样例对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-5"><span class="nav-number">2.1.5.2.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DCL55-CPP-当传递一个类对象需要跨边界的时候要避免信息泄露"><span class="nav-number">2.1.6.</span> <span class="nav-text">DCL55-CPP 当传递一个类对象需要跨边界的时候要避免信息泄露</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-6"><span class="nav-number">2.1.6.1.</span> <span class="nav-text">代码样例对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-7"><span class="nav-number">2.1.6.2.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DCL56-CPP-静态对象的初始化期间避免循环初始化"><span class="nav-number">2.1.7.</span> <span class="nav-text">DCL56-CPP 静态对象的初始化期间避免循环初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-8"><span class="nav-number">2.1.7.1.</span> <span class="nav-text">代码样例对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-9"><span class="nav-number">2.1.7.2.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DCL57-CPP-不要让异常逃离析构函数和dealloc函数的范围"><span class="nav-number">2.1.8.</span> <span class="nav-text">DCL57-CPP 不要让异常逃离析构函数和dealloc函数的范围</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-10"><span class="nav-number">2.1.8.1.</span> <span class="nav-text">代码样例对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-11"><span class="nav-number">2.1.8.2.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DCL58-CPP-不要修改标准名字空间"><span class="nav-number">2.1.9.</span> <span class="nav-text">DCL58-CPP. 不要修改标准名字空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DCL59-CPP-不要在头文件中定义一个未命名的名字空间"><span class="nav-number">2.1.10.</span> <span class="nav-text">DCL59-CPP 不要在头文件中定义一个未命名的名字空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DCL60-CPP-遵循只有一个定义的原则"><span class="nav-number">2.1.11.</span> <span class="nav-text">DCL60-CPP 遵循只有一个定义的原则</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-12"><span class="nav-number">2.1.11.1.</span> <span class="nav-text">代码样例对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比（Visual-Studio）"><span class="nav-number">2.1.11.2.</span> <span class="nav-text">代码样例对比（Visual Studio）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-13"><span class="nav-number">2.1.11.3.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

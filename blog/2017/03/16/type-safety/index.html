@@ -1,0 +1,946 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="System Software Engineer" />
+
+
+
+  <meta name="keywords" content="程序语言理论,类型系统," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="什么是类型安全？ 有时候有些人说，Java是个类型安全的语言，那么这些人到底是在说什么？所有的类型安全的语言是一样的吗？ 事实上，一个语言类型安全的定义是取决于语言类型系统的定义。简而言之，类型安全能保证程序的行为是意义明确的（well-defined）。更广泛的来说，我将要讨论的话题就是，一个语言的类型系统是推导程序正确性，安全性的一个有利工具。类型系统也是程序语言理论一个热门的研究领域。 思考">
+<meta name="keywords" content="程序语言理论,类型系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是类型安全?">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2017/03/16/type-safety/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="什么是类型安全？ 有时候有些人说，Java是个类型安全的语言，那么这些人到底是在说什么？所有的类型安全的语言是一样的吗？ 事实上，一个语言类型安全的定义是取决于语言类型系统的定义。简而言之，类型安全能保证程序的行为是意义明确的（well-defined）。更广泛的来说，我将要讨论的话题就是，一个语言的类型系统是推导程序正确性，安全性的一个有利工具。类型系统也是程序语言理论一个热门的研究领域。 思考">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-03-20T07:51:18.428Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="什么是类型安全?">
+<meta name="twitter:description" content="什么是类型安全？ 有时候有些人说，Java是个类型安全的语言，那么这些人到底是在说什么？所有的类型安全的语言是一样的吗？ 事实上，一个语言类型安全的定义是取决于语言类型系统的定义。简而言之，类型安全能保证程序的行为是意义明确的（well-defined）。更广泛的来说，我将要讨论的话题就是，一个语言的类型系统是推导程序正确性，安全性的一个有利工具。类型系统也是程序语言理论一个热门的研究领域。 思考">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> 什么是类型安全? | MathxH </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br />
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              什么是类型安全?
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2017-03-16T15:30:48+08:00" content="2017-03-16">
+            2017-03-16
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="什么是类型安全？"><a href="#什么是类型安全？" class="headerlink" title="什么是类型安全？"></a>什么是类型安全？</h2><hr>
+<p>有时候有些人说，Java是个类型安全的语言，那么这些人到底是在说什么？所有的类型安全的语言是一样的吗？</p>
+<p>事实上，一个语言类型安全的定义是取决于语言类型系统的定义。简而言之，类型安全能保证程序的行为是意义明确的（well-defined）。更广泛的来说，我将要讨论的话题就是，一个语言的类型系统是推导程序正确性，安全性的一个有利工具。类型系统也是程序语言理论一个热门的研究领域。</p>
+<p>思考下，为什么动态类型的语言，比如，Python，Javascript这些语言没有良好的代码提示工具呢？也为什么没有良好的函数定义跳转工具呢？</p>
+<p>其实就是由于类型系统的影响，导致没有工具能非常正确分析程序结构，导致跳转，提示不正确。简单的程序可能可以分析出来，但是一旦程序结构复杂了，就难以作出代码的正确提示。所以为了弥补Javascript的不足，才有了静态类型的<a href="http://www.typescriptlang.org/" target="_blank" rel="external">TypeScript</a>，这样静态类型的语言在语言编译的时候就可以借助编译器或者静态分析工具分析出大量隐含的错误(警告)，也更利于为其开发良好的代码提示，重构工具，也更利于大型项目的开发维护。好处是不言自明了。</p>
+<h2 id="基本的类型安全"><a href="#基本的类型安全" class="headerlink" title="基本的类型安全"></a>基本的类型安全</h2><hr>
+<p>类型安全基本可以用一句话总结：<font color="red">有良好的类型系统的语言能保证自身程序不出错。</font></p>
+<p>这句话其实不是我创造的，是来自于<a href="https://en.wikipedia.org/wiki/Robin_Milner" target="_blank" rel="external">Robin Milner</a>他1978年的一篇论文，论文叫<a href="https://courses.engr.illinois.edu/cs421/sp2013/project/milner-polymorphism.pdf" target="_blank" rel="external">《A Theory of Type Polymorphism in Programming》</a>。翻译过来就是，编程中的类型多态理论。</p>
+<p>好，下面我们来逐步讲解这句话是什么意思。</p>
+<p><strong>1. 程序出错</strong></p>
+<p>编程语言是由其语法和语义定义的，语法就是程序该怎么写。 语义就是程序的表述意义。</p>
+<p>其实对于现实中的语言来讲，很多表达方法都是语法正确，但语义存在问题的。</p>
+<p>就拿一个顶级语言学家<a href="https://en.wikipedia.org/wiki/Noam_Chomsky" target="_blank" rel="external">乔姆斯基(Chomsky)</a>经典的英文例子来说，Colorless green ideals sleep furiously。这句英文语法上是完全正确的，但是句子表述的意义本身毫无意义，无颜色的绿色是什么鬼？ </p>
+<p>再来一个<a href="https://en.wikipedia.org/wiki/OCaml" target="_blank" rel="external">Ocaml</a>编程语言的例子，1 + “foo” , 根据Ocaml语言的语义这个句子毫无意义，数值和字符串做加法是什么鬼？ </p>
+<p>还有个C语言的例子：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> buffer[<span class="number">5</span>];</div><div class="line">buffer[<span class="number">5</span>] = <span class="string">'F'</span>;</div></pre></td></tr></table></figure></p>
+<p>以上代码语法完全正确，但是数组的下标越界了，在C语言规范中，这样的写法是<a href="https://en.wikipedia.org/wiki/Undefined_behavior" target="_blank" rel="external">未定义行为(undefined bahavior)</a>。这是毫无意义的，基于该语句所导致的任何后果现象作出讨论都是无意义的，程序可能崩溃，也可能看上去“运行良好”，但是实际上已经错了。无意义的程序就是错误。类型系统就是为了对这样的行为做出约束。</p>
+<p><strong>2. 良好的类型系统可以保证程序不出错</strong></p>
+<p>在类型安全的语言中，其类型系统能保证程序的正确运行，如果说，一个语言的类型系统能保证程序不出错,我们就可以说这个语言是良好类型的(well-typed)的。一个well-typed的语言肯定是well-defined的语言。<br>well-defined包含well-typed,well-typed包含于well-defined。</p>
+<p>在类型安全的语言中，well-typed的语言是well-defined语言的子集，它们都是语法正确的语言的子集。</p>
+<blockquote>
+<p>all langauge &gt; well defined language &gt; well typed language </p>
+</blockquote>
+<h2 id="什么语言才是类型安全的？"><a href="#什么语言才是类型安全的？" class="headerlink" title="什么语言才是类型安全的？"></a>什么语言才是类型安全的？</h2><hr>
+<p>我们来看看几种流行的语言是否是类型安全的。</p>
+<p><strong>1. C/C++</strong></p>
+<p>非类型安全，C语言的类型系统不对无意义的行为做约束，例子数组越界。而C++可以认为是C语言的超集（为了兼容垃圾C语言这个历史包袱不得不作出的妥协），也没有对数组下标越界作出约束，所以也是非类型安全的。当然还有为了兼容C，C++允许随意的强制类型转换很容易破坏类型系统。所以更加类型安全的类型转换，dynamic_cast, static_cast, const_cast等。</p>
+<p><strong>2. C#/Java</strong></p>
+<p>可能是类型安全的，因为很难通过观察对一个成熟的语言实现作出断言。例如，<a href="http://www.seas.upenn.edu/~sweirich/types/archive/1999-2003/msg00849.html" target="_blank" rel="external">早期的Java版本泛型的类型推导是不正确的</a>。当然一种叫<a href="http://dl.acm.org/citation.cfm?id=503505" target="_blank" rel="external">Featherweight Java</a>的方言就是类型安全的。至于为什么，可以告诉你，这是理论证明出来的。</p>
+<p>有趣的是，满足类型安全的一个要点就是，C语言的语义没有对数组越界作出约束，而C#和Java对于数组越界统统会抛ArrayBoundsException的异常。</p>
+<p><strong>3. Python/Ruby</strong></p>
+<p>它们是否是类型安全的值得商榷。Python和Ruby往往被人称作动态类型(也被称作<a href="https://en.wikipedia.org/wiki/Duck_typing" target="_blank" rel="external">鸭子类型</a>)语言，它们在执行中如果发生类型错误，就会抛出异常。就像Java对于数组越界在运行时会抛出异常，Ruby也一样，在运行时如果进行一个整数和字符串类型的加法也会抛异常。这样的行为是被语言的语义所规定约束的，所以它们都有良好的定义(well-defined)。</p>
+<p>事实上，正是语言的语义赋予程序以意义。所以就本身而言，这些语言都是类型安全的，这种类型安全依赖于一种<a href="https://en.wikipedia.org/wiki/Talk:Typed_and_untyped_languages" target="_blank" rel="external">“无类型”系统(null type system)</a>,因为它能接收任何程序并且不让程序出错稳定运行。因此，是类型安全的。</p>
+<p>这个结论看样子有点奇怪。在Java中，如果一个程序, object.method()被视为well-typed。那么类型安全会保证object是一个真正合法的对象，所以对method方法的调用总会成功。如果换做Ruby的话，那么object.method()依赖于Ruby的null type system保证是well-typed，虽然当我们运行Ruby的这段程序（没有任何保证object对象确实定义了一个叫method的方法），这段程序要么成功，要么会抛出异常，它确实会正常运行下去。如果是Java直接在编译时就报错了。</p>
+<p>所以简短来说，类型安全不是万能的，类型安全所作出的保证是依赖于语言的语义的，语义隐式定义了语言的错误的行为(wrong behavior)。在Java中，这样调用一个不存在的方法就是错误的行为，在Ruby中，就不是错误的，它仅仅是抛出一个异常。</p>
+<h2 id="深入点的探讨"><a href="#深入点的探讨" class="headerlink" title="深入点的探讨"></a>深入点的探讨</h2><hr>
+<p>一般来说，类型安全确确实实是有用的，如果没有它，我们就无法保证程序按照我们的意图，并像它们所定义的那样运行下去，这样程序就能做一些非法的事了。</p>
+<p>C/C++对未定义行为作出了一定程度的忍让，所以这也让C/C++编写的程序是导致很多漏洞，软件攻击的根源,比如<a href="https://en.wikipedia.org/wiki/Stack_buffer_overflow" target="_blank" rel="external">stack smashing</a>,利用栈溢出进行攻击， 再比如<a href="https://www.owasp.org/index.php/Format_string_attack" target="_blank" rel="external">格式化字符串攻击</a>。这种类型的漏洞和攻击是不可能发生在类型安全的语言编写的软件中的。</p>
+<p>上面只是简单对Java和Ruby作出了一定的阐述。下面来对类型系统做一些更深入的探索。不是所有语言的类型系统都一样，有些类型系统能保证的指标，其他类型系统却不能保证。所以，我们在探索一门语言的时候，不要只确认它是否是类型安全的，而是确认这个类型系统满足了哪些指标，哪些指标是你所关心的，哪些不是。  废话了这么多，下面开始吧。</p>
+<h3 id="1-缩小鸿沟"><a href="#1-缩小鸿沟" class="headerlink" title="1.缩小鸿沟"></a>1.缩小鸿沟</h3><p>之前文章提到过，well-defined &gt; well-typed，well-defined的语言不一定是well-typed。所以这两者类型系统之间有什么区别呢？从well defined到well typed的过渡是什么情况？先说结论，这类过渡的语言都是well defined的，但是这类语言的类型系统不会“拒绝”，举个例子，对于大多数类型系统会“拒绝”下面一段程序：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//虽然是javascript的语言的语法，但是不要理解成js语言，这里</span></div><div class="line"><span class="comment">//只是为了方便表述思想</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">p</span>)</span>&#123;</div><div class="line"> <span class="keyword">var</span> x;</div><div class="line"> </div><div class="line"> <span class="keyword">if</span> (p) x = <span class="number">5</span>;</div><div class="line"> <span class="keyword">else</span> x = <span class="string">"hello"</span>;</div><div class="line"> <span class="keyword">if</span> (p) <span class="keyword">return</span> x+<span class="number">5</span>;</div><div class="line"> <span class="keyword">else</span> <span class="keyword">return</span> strlen(x);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个函数，无论p的值是true，还是false，该函数都会返回一个int类型。<br>但是如果是非well typed语言的类型系统就不会会“拒绝”这段程序，而well typed语言的类型系统会“拒绝”这段程序。因为变量x的类型“同时”是String类型和int类型，用类型推导的理论就是，bool -&gt; int ^ bool -&gt; String，这种表示的是<a href="http://stackoverflow.com/questions/5653678/union-types-and-intersection-types" target="_blank" rel="external">intersection type</a>,而不是union type。intersection type表示的是变量x“同时”是String和int类型，而不是“有时”是String类型，“有时”是int类型。</p>
+<p>再举个类似的例子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">param</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> param;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> a = test(<span class="number">1</span>);</div><div class="line"><span class="keyword">var</span> b = test(<span class="literal">true</span>);</div><div class="line"><span class="keyword">var</span> c = test(<span class="string">"Hello"</span>);</div></pre></td></tr></table></figure></p>
+<p>以上的函数test类型就是intersection type的，bool -&gt; bool ^ String -&gt; String ^ int -&gt; int 。也就是函数的输出输入可以”同时”是这三种类型。如果是Union Type,那么调用test(1)就会报错，因为test函数类型还有可能是bool -&gt; bool ， String -&gt; String。 调用test(true),test(“Hello”)都会出错，原理一样的，左右不是人。<a href="http://www.yinwang.org/blog-cn/2016/04/07/cfa" target="_blank" rel="external">垠神的文章</a>也解释过。</p>
+<p>回过头来看第一段程序，根据静态分析工具其语言的类型系统是正确但不完备的。这不完备性也让很多程序员失望。一个补救的措施就是，让其类型系统能够处理，缩小well-defined与well typed的鸿沟。</p>
+<blockquote>
+<p>给一个参考，<a href="http://stackoverflow.com/questions/964910/is-javascript-an-untyped-language" target="_blank" rel="external">JavaScript是无类型的语言吗?</a></p>
+</blockquote>
+<p>一个例子，Java的类型系统在1.5版本的时候引入了<a href="http://docs.oracle.com/javase/tutorial/java/generics/" target="_blank" rel="external">泛型的概念</a>，在1.4中，你需要类型转换来告诉java的类型系统来接受程序，1.5就不需要转化了。另一个例子是<a href="https://en.wikipedia.org/wiki/Lambda_calculus" target="_blank" rel="external">lambda演算</a>，函数式编程语言的基础，lambda演算其中一个加入类型的版本叫<a href="https://en.wikipedia.org/wiki/Simply_typed_lambda_calculus" target="_blank" rel="external">Simply Typed lambda calculus</a>，这个类型系统相对于<a href="https://courses.engr.illinois.edu/cs421/sp2013/project/milner-polymorphism.pdf" target="_blank" rel="external">Milner’s polymorphic type system</a>能接受更少的程序，而Milner’s type system又比支持<a href="https://wiki.haskell.org/Rank-N_types" target="_blank" rel="external">Rank-2 (or higher) polymorphism</a>的类型系统接受更少的程序。</p>
+<p>所以设计一个完备，表现力强大，可用的类型系统是程序语言理论的热门领域。</p>
+<h3 id="2-强制不变性"><a href="#2-强制不变性" class="headerlink" title="2.强制不变性"></a>2.强制不变性</h3><p>一些你所见过的经典编程语言都有类型声明，int，string等等。类型安全可以保证表达式的类型必须与类型所声明的一致。不必限于int类型，一个类型系统可以支持更加广泛丰富的类型，从而表达程序更加有趣的特性。</p>
+<p>比如在研究领域一个<a href="https://en.wikipedia.org/wiki/Refinement_(computing" target="_blank" rel="external">细化类型(refinement types)</a>#Refinement_types)有趣的例子，就是利用逻辑公式描述一个类型一组的可能的值。类型<strong>{v: int | 0 &lt;= v}</strong>,用公式<strong>0 &lt;= v</strong>细化了int类型，它简洁高效的定义了非负整数类型。细化类型允许程序员为数据结构的类型表达数据结构不变性，类型安全正是由于这些不变性保证的。细化类型系统已经有实例了，比如，在Haskell中的<a href="https://wiki.haskell.org/Liquid_Haskell" target="_blank" rel="external">Liquid Haskell</a>,F#中的<a href="http://research.microsoft.com/en-us/projects/f7/" target="_blank" rel="external">F7</a>。</p>
+<p>另一个例子,我们可以用类型系统(通过强制共享数据不变性)，来防止数据竞争(data race)。这个情况下，那么共享变量的类型本质上就是一个锁来保护它的不变性。这样叫Types for safe locking第一次是在Abadi 和Flanagan的<a href="https://users.soe.ucsc.edu/~cormac/papers/esop99.pdf" target="_blank" rel="external">文章</a>中第一次被提及。 这个特性有Java版本的实现,<a href="http://dl.acm.org/citation.cfm?id=1119480" target="_blank" rel="external">戳这里</a>。也有C语言版本的<a href="http://www.cs.umd.edu/projects/PL/locksmith/" target="_blank" rel="external">实现</a>。</p>
+<p>当然还有很多使用有趣类型系统的例子，<a href="http://www.cs.umd.edu/~jfoster/cqual/" target="_blank" rel="external">限制被污染数据的使用</a>，<a href="http://www.cs.cornell.edu/jif/" target="_blank" rel="external">防止私有信息的泄露</a>等等。</p>
+<h3 id="3-类型抽象和信息隐藏"><a href="#3-类型抽象和信息隐藏" class="headerlink" title="3.类型抽象和信息隐藏"></a>3.类型抽象和信息隐藏</h3><p>许多编程语言都允许数据抽象（也叫信息隐藏）。这些语言提供了一些抽象手段，比如提供类(classes)，模块(modules)，函数(functions)这样的概念。它们可以把内部的结构不暴露给使用者,面向接口编程，接口不变，实现变化。</p>
+<p>类型系统在这样的抽象中就扮演至关重要的角色。<a href="http://dl.acm.org/citation.cfm?id=512669" target="_blank" rel="external">表述独立(Representation independence)</a>说明了程序的运行只应该依赖其抽象，不应该依赖其实现。之后的<a href="https://en.wikipedia.org/wiki/John_C._Reynolds" target="_blank" rel="external">John Reynolds</a>在类型和抽象上又做出了开创性的工作，发表于他1983年的<a href="http://www.cse.chalmers.se/edu/year/2010/course/DAT140_Types/Reynolds_typesabpara.pdf" target="_blank" rel="external">一篇paper</a>，用一句简单的话来概括这论文就是，类型结构是维护抽象级别的一个语法工具，也就是说，<font color="red">类型是构建可维护系统的最基础重要(fundamental)的角色。</font></p>
+<p>所以！！！！</p>
+<p> 为啥Haskell写出来的代码在懂的开发人员面前更好维护？ 为啥Haskell编译通过的代码基本能保证正确？？  为什么需要给动态类型语言做静态分析工具？？ 为什么静态类型的语言有更智能的代码提示和重构工具？？ 为什么基于动态类型的语言开发的没有特别大型的开源项目？？为什么要在javascript之上还要再开发一个TypeScript语言用来支持大型项目的开发？？ 难道是闲着蛋疼？？ 所有的所有，都是因为，<font color="red">程序是类型上的证明。</font></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><hr>
+<ul>
+<li><a href="https://www.zhihu.com/question/19918532" target="_blank" rel="external">弱类型、强类型、动态类型、静态类型语言的区别是什么？</a></li>
+<li><a href="https://www.zhihu.com/question/22416404" target="_blank" rel="external">程序语言中的类型系统怎么理解，它有哪些要素？如何由它演化出一门编程语言的？</a></li>
+<li><a href="https://www.zhihu.com/question/23434097" target="_blank" rel="external">编程语言的类型系统为何如此重要？</a></li>
+</ul>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/程序语言理论/" rel="tag">#程序语言理论</a>
+          
+            <a href="/blog/tags/类型系统/" rel="tag">#类型系统</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/03/23/about-computation/" rel="prev">有关于计算机科学</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/03/16/my-birthday/" rel="next">今天生日</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">40</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="https://dendise7engithub.github.io/" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是类型安全？"><span class="nav-number">1.</span> <span class="nav-text">什么是类型安全？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本的类型安全"><span class="nav-number">2.</span> <span class="nav-text">基本的类型安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么语言才是类型安全的？"><span class="nav-number">3.</span> <span class="nav-text">什么语言才是类型安全的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深入点的探讨"><span class="nav-number">4.</span> <span class="nav-text">深入点的探讨</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-缩小鸿沟"><span class="nav-number">4.1.</span> <span class="nav-text">1.缩小鸿沟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-强制不变性"><span class="nav-number">4.2.</span> <span class="nav-text">2.强制不变性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-类型抽象和信息隐藏"><span class="nav-number">4.3.</span> <span class="nav-text">3.类型抽象和信息隐藏</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

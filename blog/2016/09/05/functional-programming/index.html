@@ -1,0 +1,936 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="System Software Engineer" />
+
+
+
+  <meta name="keywords" content="函数式编程,lambda演算,Y组合子," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="什么是函数式编程 其实有关于函数式编程我有在之前的博文《编程语言为何如此众多》提到过，有兴趣的可以去看看 :) 那么到底什么是函数式呢？听上去好厉害，好高大上的样子。 大家都知道面向对象编程提到的几个特性：封装，继承，多态，一切皆对象。那么其实函数式编程也有它固有的几个特点：不可变量，惰性求值，高阶函数，无副作用，一切皆函数。 从停机问题开始调程序的时候经常会遇到死循环的Bug，聪明的你有没有想过">
+<meta name="keywords" content="函数式编程,lambda演算,Y组合子">
+<meta property="og:type" content="article">
+<meta property="og:title" content="谈谈函数式编程">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2016/09/05/functional-programming/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="什么是函数式编程 其实有关于函数式编程我有在之前的博文《编程语言为何如此众多》提到过，有兴趣的可以去看看 :) 那么到底什么是函数式呢？听上去好厉害，好高大上的样子。 大家都知道面向对象编程提到的几个特性：封装，继承，多态，一切皆对象。那么其实函数式编程也有它固有的几个特点：不可变量，惰性求值，高阶函数，无副作用，一切皆函数。 从停机问题开始调程序的时候经常会遇到死循环的Bug，聪明的你有没有想过">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-02-21T09:22:17.336Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="谈谈函数式编程">
+<meta name="twitter:description" content="什么是函数式编程 其实有关于函数式编程我有在之前的博文《编程语言为何如此众多》提到过，有兴趣的可以去看看 :) 那么到底什么是函数式呢？听上去好厉害，好高大上的样子。 大家都知道面向对象编程提到的几个特性：封装，继承，多态，一切皆对象。那么其实函数式编程也有它固有的几个特点：不可变量，惰性求值，高阶函数，无副作用，一切皆函数。 从停机问题开始调程序的时候经常会遇到死循环的Bug，聪明的你有没有想过">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> 谈谈函数式编程 | MathxH </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br />
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              谈谈函数式编程
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2016-09-05T15:38:56+08:00" content="2016-09-05">
+            2016-09-05
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h1 id="什么是函数式编程"><a href="#什么是函数式编程" class="headerlink" title="什么是函数式编程"></a>什么是函数式编程</h1><hr>
+<p>其实有关于函数式编程我有在之前的博文<a href="http://mathxh-love.org/blog/2016/05/19/programming-language/" target="_blank" rel="external">《编程语言为何如此众多》</a>提到过，有兴趣的可以去看看 :)</p>
+<p>那么到底什么是函数式呢？听上去好厉害，好高大上的样子。</p>
+<p>大家都知道面向对象编程提到的几个特性：封装，继承，多态，一切皆对象。那么其实函数式编程也有它固有的几个特点：不可变量，惰性求值，高阶函数，无副作用，一切皆函数。</p>
+<h2 id="从停机问题开始"><a href="#从停机问题开始" class="headerlink" title="从停机问题开始"></a>从停机问题开始</h2><p>调程序的时候经常会遇到死循环的Bug，聪明的你有没有想过发明一个自动检查程序里面有没有死循环的工具呢？不管你有没有过这种想法，反正我有过，可惜答案是，没有！</p>
+<p>停机问题在<a href="https://en.wikipedia.org/wiki/Halting_problem" target="_blank" rel="external">wiki</a>上的描述比较学术，又是什么图灵机，又是数学中的集合。因为涉及到<a href="https://en.wikipedia.org/wiki/Theory_of_computation" target="_blank" rel="external">计算理论</a>的东西，为了防止小白看不懂，下面用一个小白话来讲，</p>
+<p>停机问题：<strong><font color="red">给定任意一个程序及其输入，判断该程序是否能够在有限次计算以内结束。</font></strong></p>
+<h2 id="假设存在停机算法"><a href="#假设存在停机算法" class="headerlink" title="假设存在停机算法"></a>假设存在停机算法</h2><p>如果存在停机算法，那么对于给定任意一个函数以及这个函数的输入,停机算法就能告诉你这个函数会不会结束。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isHalting</span>(<span class="params">func,input</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> if_func_will_halt_on_input;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="利用停机判定"><a href="#利用停机判定" class="headerlink" title="利用停机判定"></a>利用停机判定</h2><p>设一个函数，并调用它自身:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">func</span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span>(isHalting(func,func))&#123;</div><div class="line">        <span class="keyword">while</span>(<span class="literal">true</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 判定自身</span></div><div class="line">foo(foo);</div></pre></td></tr></table></figure></p>
+<p>这是一个悖论：<strong><font color="red">当函数foo以foo为输入时，到底停机还是不停机？ </font></strong></p>
+<h2 id="lambda演算语法"><a href="#lambda演算语法" class="headerlink" title="lambda演算语法"></a>lambda演算语法</h2><p>停机问题只是个引子，接下来让我们步入正题。</p>
+<p>用形式化的表述，<a href="https://en.wikipedia.org/wiki/Lambda_calculus" target="_blank" rel="external">λ演算</a>的语法只有三条：</p>
+<ul>
+<li>&lt;表达式&gt; ::= &lt;标识符&gt;</li>
+<li>&lt;表达式&gt; ::= λ &lt;标识符+&gt; . &lt;表达式&gt;</li>
+<li>&lt;表达式&gt; ::= (&lt;表达式&gt; &lt;表达式&gt;)</li>
+</ul>
+<p>例如，根据以上语法，可以写一个加法函数。注意，这个函数是<strong>匿名</strong>的:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">λ x y. x + y</div></pre></td></tr></table></figure></p>
+<p>之前定义的3条语法，前二条是用于产生函数，第三条用于函数调用。</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">; 输出5 </span></div><div class="line">((λx y. x + y) <span class="number">2</span> <span class="number">3</span>) </div><div class="line"></div><div class="line"><span class="comment">;为了方便，把匿名函数绑定到一个变量</span></div><div class="line">let add = λ x y. x + y</div><div class="line"><span class="comment">;输出5</span></div><div class="line">(<span class="name">add</span> <span class="number">2</span> <span class="number">3</span>)</div></pre></td></tr></table></figure>
+<p>看到这里，其实知道Lisp语言的同学可能就有种似曾相识的感觉了。Lisp语言就是一种函数式编程语言，函数式编程语言就是基于lambda演算发展起来的。细心的人已经发觉，lambda演算与图灵机模型对比，它其实更加侧重于计算的描述，甚至表达式不需要关心函数名，它仅仅是个描述计算过程的计算体。所谓的lambda表达式就是这种计算体的一种叫法，只是在各种编程语言环境下，lambda表达式换了个语法而已。</p>
+<h2 id="lambda演算公理"><a href="#lambda演算公理" class="headerlink" title="lambda演算公理"></a>lambda演算公理</h2><p>以下是lambda演算的公理系统:</p>
+<p>置换公理</p>
+<ul>
+<li>λ x y. x + y =&gt; λ a b. a + b</li>
+</ul>
+<p>代入公理</p>
+<ul>
+<li>(λx y. x + y) a b =&gt; a + b </li>
+</ul>
+<h2 id="函数生成器"><a href="#函数生成器" class="headerlink" title="函数生成器"></a>函数生成器</h2><p>lambda演算相当于一个函数生成器:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">let mul = λx y. x*y</div><div class="line">let con = λx y. xy</div><div class="line"></div><div class="line"><span class="comment">; 代入</span></div><div class="line"></div><div class="line">mul 3 5  -­‐&gt; 3 * 5 </div><div class="line">con 'fu' 'ck' --&gt;  'fuck'</div></pre></td></tr></table></figure></p>
+<h2 id="定义IF函数"><a href="#定义IF函数" class="headerlink" title="定义IF函数"></a>定义IF函数</h2><p>大家都知道在函数式编程里，一切皆函数，就连什么平时接触到的for，if等语句都不例外。那么在函数式编程里面如何构造一个IF函数呢？</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">;第一个参数condition为if函数的判断条件，如为真，则执行true_value,反之，false_value</span></div><div class="line"></div><div class="line">let if = λ condition true_value false_value .</div><div class="line">         (<span class="name">condition</span> and true_value) or (<span class="name">not</span> condition and false_value)</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">;调用if,输出15</span></div><div class="line"></div><div class="line">if true (<span class="name">mul</span> <span class="number">3</span> <span class="number">5</span>) (<span class="name">add</span> <span class="number">2</span> <span class="number">3</span>)</div><div class="line"></div><div class="line">=&gt; (<span class="name">true</span> and (<span class="name">mul</span> <span class="number">3</span> <span class="number">5</span>)) or (<span class="name">not</span> true and (<span class="name">add</span> <span class="number">2</span> <span class="number">3</span>))</div><div class="line">=&gt; (<span class="name">mul</span> <span class="number">3</span> <span class="number">5</span>) or false </div><div class="line">=&gt; (<span class="name">mul</span> <span class="number">3</span> <span class="number">5</span>)</div><div class="line">=&gt; <span class="number">15</span></div><div class="line"></div><div class="line"><span class="comment">;调用if,输出5</span></div><div class="line"></div><div class="line">if false (<span class="name">mul</span> <span class="number">3</span> <span class="number">5</span>) (<span class="name">add</span> <span class="number">2</span> <span class="number">3</span>)</div><div class="line"></div><div class="line">=&gt; (<span class="name">false</span> and (<span class="name">mul</span> <span class="number">3</span> <span class="number">5</span>)) or (<span class="name">not</span> false and (<span class="name">add</span> <span class="number">2</span> <span class="number">3</span>))</div><div class="line">=&gt; false or (<span class="name">add</span> <span class="number">2</span> <span class="number">3</span>) </div><div class="line">=&gt; (<span class="name">add</span> <span class="number">2</span> <span class="number">3</span>)</div><div class="line">=&gt; <span class="number">5</span></div></pre></td></tr></table></figure>
+<h1 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h1><hr>
+<p>来个有意思点的计算，定义一个计算n的阶乘的函数:<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">let fact = λ n .</div><div class="line">          if (<span class="name">n</span> == <span class="number">0</span>) <span class="number">1</span> </div><div class="line">                     (<span class="name">mul</span> (<span class="name">n</span> </div><div class="line">                          (<span class="name">fact</span> n - <span class="number">1</span>)))</div></pre></td></tr></table></figure></p>
+<p>问题出现了，我们在定义fact的时候引用的自身（废话，递归不调用自身还叫递归？）。虽然在实际的编译器处理过程中，编译器都可以识别这种定义，但是这不符合严谨的数学公理体系。</p>
+<h2 id="如何表达递归"><a href="#如何表达递归" class="headerlink" title="如何表达递归"></a>如何表达递归</h2><p>之前的fact函数不是无法引用自身吗？那么我们把“自身”参数化，那么函数内部就可以引用了。<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">let P = λ self n .</div><div class="line">        if ( <span class="name">n</span> == <span class="number">0</span>) <span class="number">1</span> (<span class="name">mul</span> </div><div class="line">                        (<span class="name">n</span></div><div class="line">                         (<span class="name">self</span> n - <span class="number">1</span>))</div></pre></td></tr></table></figure></p>
+<p>然后，再令:<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">let fact n = P (<span class="name">P</span> n)</div><div class="line"></div><div class="line"><span class="comment">; 然后调用,输出24</span></div><div class="line">fact <span class="number">4</span></div><div class="line">-&gt; P (<span class="name">P</span> <span class="number">4</span>)</div><div class="line">-&gt; if (<span class="number">4</span> == <span class="number">0</span>) <span class="number">1</span> (<span class="name">mul</span> <span class="number">4</span> (<span class="name">P</span> (<span class="name">P</span> n-1)))</div><div class="line">-&gt; (<span class="name">mul</span> <span class="number">4</span> (<span class="name">P</span> (<span class="name">P</span> <span class="number">3</span>)))</div><div class="line">-&gt; <span class="number">4</span> * P (<span class="name">P</span> <span class="number">3</span>)</div><div class="line">-&gt; <span class="number">4</span> * <span class="number">3</span> * P (<span class="name">P</span> <span class="number">2</span>)</div><div class="line">-&gt; <span class="number">4</span> * <span class="number">3</span> * <span class="number">2</span> * P (<span class="name">P</span> <span class="number">1</span>)</div><div class="line">-&gt; <span class="number">4</span> * <span class="number">3</span> * <span class="number">2</span> * <span class="number">1</span></div><div class="line">-&gt; <span class="number">24</span></div></pre></td></tr></table></figure></p>
+<p>可惜，以上还不是真正的递归,只是每次额外多传入了一个参数，反复调用而已。我们的目的是要一个真正的递归函数,但是lambda演算没有这样一个公理可以在定义函数的时候引用自身，怎么办？</p>
+<h2 id="Y组合子与不动点"><a href="#Y组合子与不动点" class="headerlink" title="Y组合子与不动点"></a>Y组合子与不动点</h2><p>不管之前的说法，我们就认定真正的fact是存在的:<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">;之前的函数P，为了方便，乘法表示就不用自定义的函数mul了</span></div><div class="line">let P = λ self n .</div><div class="line">        if ( <span class="name">n</span> == <span class="number">0</span>) <span class="number">1</span> ( <span class="name">n</span> * self (n - 1))</div><div class="line">                         </div><div class="line">; 函数P接收2个参数，但是我们可以让函数柯里化(Currying),有时候又称部分求值(Partial Evaluation)</div><div class="line">; P接收一个fact，本质上又产生了一个新的单参函数</div><div class="line"></div><div class="line">P (fact) -&gt; λ n .</div><div class="line">        if ( n == 0) 1 ( n * fact (<span class="name">n</span> - <span class="number">1</span>))</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p><em>注: <a href="https://en.wikipedia.org/wiki/Currying" target="_blank" rel="external">函数柯里化</a>本质的意义是把一个多参的函数转换成单参函数作为返回值的形式,这样方便优化，有兴趣可以看知乎的讨论，<a href="https://www.zhihu.com/question/20037482" target="_blank" rel="external">柯里化对函数式编程有何意义？</a>, <a href="https://www.zhihu.com/question/30097211" target="_blank" rel="external">如何理解functional programming里的currying与partial application?</a></em></p>
+</blockquote>
+<p>然后，神奇的事发生了,细心的人发现，函数 P (fact) 与之前定义的函数fact相等，</p>
+<ul>
+<li>P (fact) = fact</li>
+</ul>
+<p>我们发现了函数P的一个<a href="https://en.wikipedia.org/wiki/Fixed-point_combinator" target="_blank" rel="external">不动点</a>,什么是不动点呢？就是一个点（广义上的）在一个函数的映射下,函数的值仍然为这个点: f(x) = x 。所以，思路就是找到不动点，如果找到了不动点，就可以把“伪递归”函数P转化为真正的递归函数了。</p>
+<p>所以，我们假设需要一个函数Y，</p>
+<p>（ To be continue, 时间不够）</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/函数式编程/" rel="tag">#函数式编程</a>
+          
+            <a href="/blog/tags/lambda演算/" rel="tag">#lambda演算</a>
+          
+            <a href="/blog/tags/Y组合子/" rel="tag">#Y组合子</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2016/10/20/scala-build-tool/" rel="prev">烦人的Scala的构建工具</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2016/09/02/data-erasure/" rel="next">防止数据被恢复的可能</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">40</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="https://dendise7engithub.github.io/" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是函数式编程"><span class="nav-number">1.</span> <span class="nav-text">什么是函数式编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#从停机问题开始"><span class="nav-number">1.1.</span> <span class="nav-text">从停机问题开始</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#假设存在停机算法"><span class="nav-number">1.2.</span> <span class="nav-text">假设存在停机算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用停机判定"><span class="nav-number">1.3.</span> <span class="nav-text">利用停机判定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lambda演算语法"><span class="nav-number">1.4.</span> <span class="nav-text">lambda演算语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lambda演算公理"><span class="nav-number">1.5.</span> <span class="nav-text">lambda演算公理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数生成器"><span class="nav-number">1.6.</span> <span class="nav-text">函数生成器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义IF函数"><span class="nav-number">1.7.</span> <span class="nav-text">定义IF函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#递归"><span class="nav-number">2.</span> <span class="nav-text">递归</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何表达递归"><span class="nav-number">2.1.</span> <span class="nav-text">如何表达递归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Y组合子与不动点"><span class="nav-number">2.2.</span> <span class="nav-text">Y组合子与不动点</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

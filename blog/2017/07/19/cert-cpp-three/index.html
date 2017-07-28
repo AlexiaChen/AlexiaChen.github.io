@@ -1,0 +1,973 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="System Software Engineer" />
+
+
+
+  <meta name="keywords" content="C/C++,CERT," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="容器类CTR50-CPP. 保证容器的索引和迭代器在合法的范围内严重程度： 高。 会导致任意内存地址的数据被覆盖，从而导致程序不正常终止。 这个主要内容没什么可以说明的。越界一定是开发人员的错。 代码样例对比123456789#include &amp;lt;cstddef&amp;gt;void insert_in_table(int *table, std::size_t tableSize, int pos">
+<meta name="keywords" content="C&#x2F;C++,CERT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CERT C++编码规范翻译（CTR）">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2017/07/19/cert-cpp-three/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="容器类CTR50-CPP. 保证容器的索引和迭代器在合法的范围内严重程度： 高。 会导致任意内存地址的数据被覆盖，从而导致程序不正常终止。 这个主要内容没什么可以说明的。越界一定是开发人员的错。 代码样例对比123456789#include &amp;lt;cstddef&amp;gt;void insert_in_table(int *table, std::size_t tableSize, int pos">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-07-22T03:45:32.655Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CERT C++编码规范翻译（CTR）">
+<meta name="twitter:description" content="容器类CTR50-CPP. 保证容器的索引和迭代器在合法的范围内严重程度： 高。 会导致任意内存地址的数据被覆盖，从而导致程序不正常终止。 这个主要内容没什么可以说明的。越界一定是开发人员的错。 代码样例对比123456789#include &amp;lt;cstddef&amp;gt;void insert_in_table(int *table, std::size_t tableSize, int pos">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> CERT C++编码规范翻译（CTR） | MathxH </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br />
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              CERT C++编码规范翻译（CTR）
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2017-07-19T14:30:46+08:00" content="2017-07-19">
+            2017-07-19
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="容器类"><a href="#容器类" class="headerlink" title="容器类"></a>容器类</h2><h3 id="CTR50-CPP-保证容器的索引和迭代器在合法的范围内"><a href="#CTR50-CPP-保证容器的索引和迭代器在合法的范围内" class="headerlink" title="CTR50-CPP. 保证容器的索引和迭代器在合法的范围内"></a>CTR50-CPP. 保证容器的索引和迭代器在合法的范围内</h3><p>严重程度： 高。 会导致任意内存地址的数据被覆盖，从而导致程序不正常终止。</p>
+<p>这个主要内容没什么可以说明的。越界一定是开发人员的错。</p>
+<h4 id="代码样例对比"><a href="#代码样例对比" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert_in_table</span><span class="params">(<span class="keyword">int</span> *table, <span class="built_in">std</span>::<span class="keyword">size_t</span> tableSize, <span class="keyword">int</span> pos,</span></span></div><div class="line"><span class="function"><span class="params"><span class="keyword">int</span> value)</span> </span>&#123;</div><div class="line"><span class="keyword">if</span> (pos &gt;= tableSize) &#123;</div><div class="line"><span class="comment">// Handle error</span></div><div class="line"><span class="keyword">return</span>;</div><div class="line">&#125;</div><div class="line">table[pos] = value;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上的代码实现是需要在一个table的特定下标插入一个值。函数还有个下标检测的越界判断，看似合理。但是pos参数被声明了为int，int类型是默认有符号数，而tableSize的类型是无符号的std::size_t，这两个类型比较在某些极端情况下会失效。一旦pos被不小心赋值为负数，那么if判断失效，导致table访问越界。所以改成以下为好:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert_in_table</span><span class="params">(<span class="keyword">int</span> *table, <span class="built_in">std</span>::<span class="keyword">size_t</span> tableSize, <span class="built_in">std</span>::<span class="keyword">size_t</span></span></span></div><div class="line"><span class="function"><span class="params">pos, <span class="keyword">int</span> value)</span> </span>&#123;</div><div class="line"><span class="keyword">if</span> (pos &gt;= tableSize) &#123;</div><div class="line"><span class="comment">// Handle error</span></div><div class="line"><span class="keyword">return</span>;</div><div class="line">&#125;</div><div class="line">table[pos] = value;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>pos最好也声明为std:size_t，这样就可以防止负数被传入进函数了。</p>
+<p>还可以用以下办法:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;new&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert_in_table</span><span class="params">(<span class="keyword">int</span> *table, <span class="built_in">std</span>::<span class="keyword">size_t</span> tableSize, <span class="built_in">std</span>::<span class="keyword">size_t</span></span></span></div><div class="line"><span class="function"><span class="params">pos, <span class="keyword">int</span> value)</span> </span>&#123;</div><div class="line"><span class="comment">// #1</span></div><div class="line"><span class="keyword">if</span> (pos &gt;= tableSize) &#123;</div><div class="line"><span class="comment">// Handle error</span></div><div class="line"><span class="keyword">return</span>;</div><div class="line">&#125;</div><div class="line">table[pos] = value;</div><div class="line">&#125;</div><div class="line"><span class="keyword">template</span> &lt;<span class="built_in">std</span>::<span class="keyword">size_t</span> N&gt;</div><div class="line">void insert_in_table(int (&amp;table)[N], std::size_t pos, int value) &#123;</div><div class="line"><span class="comment">// #2</span></div><div class="line">insert_in_table(table, N, pos, value);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="comment">// Exposition only</span></div><div class="line"><span class="keyword">int</span> table1[<span class="number">100</span>];</div><div class="line"><span class="keyword">int</span> *table2 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100</span>];</div><div class="line">insert_in_table(table1, <span class="number">0</span>, <span class="number">0</span>); <span class="comment">// Calls #2</span></div><div class="line">insert_in_table(table2, <span class="number">0</span>, <span class="number">0</span>); <span class="comment">// Error, no matching func. call</span></div><div class="line">insert_in_table(table1, <span class="number">100</span>, <span class="number">0</span>, <span class="number">0</span>); <span class="comment">// Calls #1</span></div><div class="line">insert_in_table(table2, <span class="number">100</span>, <span class="number">0</span>, <span class="number">0</span>); <span class="comment">// Calls #1</span></div><div class="line"><span class="keyword">delete</span> [] table2;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码是使用无类型模版的手段把数组越界检测提前到编译时。</p>
+<h4 id="代码样列对比-std-vector"><a href="#代码样列对比-std-vector" class="headerlink" title="代码样列对比(std::vector)"></a>代码样列对比(std::vector)</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert_in_table</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;table, <span class="keyword">long</span> <span class="keyword">long</span> pos, <span class="keyword">int</span></span></span></div><div class="line"><span class="function"><span class="params">value)</span> </span>&#123;</div><div class="line"><span class="keyword">if</span> (pos &gt;= table.size()) &#123;</div><div class="line"><span class="comment">// Handle error</span></div><div class="line"><span class="keyword">return</span>;</div><div class="line">&#125;</div><div class="line">table[pos] = value;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上的代码与之前一个的代码样例中所反映的问题是一样的。long long类型的pos是有符号类型，比较可能失效，导致越界。应该改成:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert_in_table</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;table, <span class="built_in">std</span>::<span class="keyword">size_t</span> pos, <span class="keyword">int</span></span></span></div><div class="line"><span class="function"><span class="params">value)</span> </span>&#123;</div><div class="line"><span class="keyword">if</span> (pos &gt;= table.size()) &#123;</div><div class="line"><span class="comment">// Handle error</span></div><div class="line"><span class="keyword">return</span>;</div><div class="line">&#125;</div><div class="line">table[pos] = value;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其实还可以巧妙利用vector的at成员函数来访问特定下标，这个成员函数提供越界检测，越界会抛出std::out_of_range的异常：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert_in_table</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;table, <span class="built_in">std</span>::<span class="keyword">size_t</span> pos, <span class="keyword">int</span></span></span></div><div class="line"><span class="function"><span class="params">value)</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span> </span>&#123;</div><div class="line">table.at(pos) = value;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>至于insert_in_table 之后声明有noexcept(false)，就是表明该函数可能抛出异常，遵循C++的Honor Exception Spec。 当然不写也可以，但是最好是写上。</p>
+<h4 id="代码样例对比-iterators"><a href="#代码样例对比-iterators" class="headerlink" title="代码样例对比(iterators)"></a>代码样例对比(iterators)</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> ForwardIterator&gt;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f_imp</span><span class="params">(ForwardIterator b, ForwardIterator e, <span class="keyword">int</span> val,</span></span></div><div class="line"><span class="function"><span class="params"><span class="built_in">std</span>::forward_iterator_tag)</span> </span>&#123;</div><div class="line"><span class="keyword">do</span> &#123;</div><div class="line">*b++ = val;</div><div class="line">&#125; <span class="keyword">while</span> (b != e);</div><div class="line">&#125;</div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> ForwardIterator&gt;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(ForwardIterator b, ForwardIterator e, <span class="keyword">int</span> val)</span> </span>&#123;</div><div class="line"><span class="keyword">typename</span> <span class="built_in">std</span>::iterator_traits&lt;ForwardIterator&gt;::iterator_category</div><div class="line">cat;</div><div class="line">f_imp(b, e, val, cat);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上对于f_imp函数通过迭代器访问一个容器，参数e是end迭代器，假设e永远是传入正确的，但是也会造成迭代器解引用错误，因为一旦容器是空的，参数b就等于e。但是do while循环是先计算，后比较。这就引入问题了，所以得改成以下:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> ForwardIterator&gt;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f_imp</span><span class="params">(ForwardIterator b, ForwardIterator e, <span class="keyword">int</span> val,</span></span></div><div class="line"><span class="function"><span class="params"><span class="built_in">std</span>::forward_iterator_tag)</span> </span>&#123;</div><div class="line"><span class="keyword">while</span> (b != e) &#123;</div><div class="line">*b++ = val;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> ForwardIterator&gt;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(ForwardIterator b, ForwardIterator e, <span class="keyword">int</span> val)</span> </span>&#123;</div><div class="line"><span class="keyword">typename</span> <span class="built_in">std</span>::iterator_traits&lt;ForwardIterator&gt;::iterator_category</div><div class="line">cat;</div><div class="line">f_imp(b, e, val, cat);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>先比较迭代器的合法性，再进行解引用b。</p>
+<h3 id="CTR51-CPP-使用合法的引用，指针，迭代器来引用容器的元素"><a href="#CTR51-CPP-使用合法的引用，指针，迭代器来引用容器的元素" class="headerlink" title="CTR51-CPP. 使用合法的引用，指针，迭代器来引用容器的元素"></a>CTR51-CPP. 使用合法的引用，指针，迭代器来引用容器的元素</h3><p>严重等级：高。一旦持有一个不合法的引用并进行访问容器，那么就直接导致未定义行为。</p>
+<p>迭代器就是指针的泛化。它允许通过统一的方式来访问不同的数据结构容器。</p>
+<p>C++标准[container.requirements.general]有如下声明：</p>
+<blockquote>
+<p>Unless otherwise specified (either explicitly or by defining a function in terms of other<br>functions), invoking a container member function or passing a container as an argument<br>to a library function shall not invalidate iterators to, or change the values of, objects<br>within that container.</p>
+</blockquote>
+<p>也就是说，C++标准是允许引用和指针无效化的，当你通过容器类提供的操作函数。举个例子，当你从容器中得到一个指向某元素的指针，然后erase了那个元素，然后又在删除元素的位置insert一个新的元素，就会导致现存的指针虽然合法，但是指向了不同的对象。所以任何操作都可能会使指针或引用无效化，要慎重对待。</p>
+<p>以下列出容器的哪些操作会使引用，指针，迭代器无效化。</p>
+<ul>
+<li><p>std::queue  insert() emplace_front() emplace_back() emplace() push_front() push_back() erase() pop_back() resize() clear()</p>
+</li>
+<li><p>std::forward_list erase_after() pop_front() resize() remove() unique() clear()</p>
+</li>
+<li><p>std::list earse() pop_front() pop_back() clear() remove() remove_if() unique() </p>
+</li>
+<li><p>std::vector reserve() insert() emplace_back() emplace() push_back() erase() pop_back() resize() clear()</p>
+</li>
+<li><p>std::set,std::multiset std::map std::multimap earse() clear()</p>
+</li>
+<li><p>std::unordered_set std::unordered_multiset std::unordered_map std::unordered_multimap erase() clear() insert() emplace() rehash() reserve() </p>
+</li>
+<li><p>std::valarray resize()</p>
+</li>
+</ul>
+<h4 id="代码样例对比-1"><a href="#代码样例对比-1" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;deque&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="keyword">double</span> *items, <span class="built_in">std</span>::<span class="keyword">size_t</span> count)</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">deque</span>&lt;<span class="keyword">double</span>&gt; d;</div><div class="line"><span class="keyword">auto</span> pos = d.begin();</div><div class="line"><span class="keyword">for</span> (<span class="built_in">std</span>::<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; count; ++i, ++pos) &#123;</div><div class="line">d.insert(pos, items[i] + <span class="number">41.0</span>);</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码在第一次调用insert的时候pos迭代器失效了，所以就导致后续的循环导致未定义行为。可以通过插入后更新失效迭代器杜绝未定义行为:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;deque&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="keyword">double</span> *items, <span class="built_in">std</span>::<span class="keyword">size_t</span> count)</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">deque</span>&lt;<span class="keyword">double</span>&gt; d;</div><div class="line"><span class="keyword">auto</span> pos = d.begin();</div><div class="line"><span class="keyword">for</span> (<span class="built_in">std</span>::<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; count; ++i, ++pos) &#123;</div><div class="line">pos = d.insert(pos, items[i] + <span class="number">41.0</span>);</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>还有一种通过泛型算法的方案来解决迭代器失效的问题:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;deque&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="keyword">double</span> *items, <span class="built_in">std</span>::<span class="keyword">size_t</span> count)</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">deque</span>&lt;<span class="keyword">double</span>&gt; d;</div><div class="line"><span class="built_in">std</span>::transform(items, items + count, <span class="built_in">std</span>::inserter(d, d.begin()),</div><div class="line">[](<span class="keyword">double</span> d) &#123; <span class="keyword">return</span> d + <span class="number">41.0</span>; &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="CTR52-CPP-保证库函数不溢出"><a href="#CTR52-CPP-保证库函数不溢出" class="headerlink" title="CTR52-CPP. 保证库函数不溢出"></a>CTR52-CPP. 保证库函数不溢出</h3><p>严重程度: 高。buffer overflow会导致攻击者经过一定的构造条件执行任意的恶意代码</p>
+<p>把数据拷贝到不足够放下数据的容器会导致buffer overflow，覆写不合法的内存区块。避免这样的问题，需要限制目标容器的size，最好与数据的size一样大。或者更大一点也可以。</p>
+<p>在C语言时代，std::memcpy std::memmove std::memset都可能导致内存区块被覆盖，而且它们不检测内存区块的合法性。所以建议使用C++ STL中提供的std::copy std::fill std::transform等函数来操作,尽管使用C++ 的STL也可以同样导致buffer overflow。</p>
+<h4 id="代码样例对比-2"><a href="#代码样例对比-2" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;src)</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dest;</div><div class="line"><span class="built_in">std</span>::copy(src.begin(), src.end(), dest.begin());</div><div class="line"><span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>虽然dest是动态数组会随着push append增加存储空间，但是上面代码使用了std::copy，该函数不会扩展dest的空间，所以在拷贝src中第一个元素的时候，dest就buffer overflow了。</p>
+<p>所以就有了以下方案解决，初始化dest的时候就把它的存储空间扩大到与src一样：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;src)</span> </span>&#123;</div><div class="line"><span class="comment">// Initialize dest with src.size() default-inserted elements</span></div><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dest(src.size());</div><div class="line"><span class="built_in">std</span>::copy(src.begin(), src.end(), dest.begin());</div><div class="line"><span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，还有一个方案，就是用std::back_insetr_iterator作为目标参数。这个迭代器它会根据std::copy这个算法一个一个拷贝元素的时候，自动扩展复制目标容器，这就保证目标容器与源容器一样大。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;src)</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dest;</div><div class="line"><span class="built_in">std</span>::copy(src.begin(), src.end(), <span class="built_in">std</span>::back_inserter(dest));</div><div class="line"><span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最简单的是用vector提供的拷贝构造函数:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;src)</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dest(src);</div><div class="line"><span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="代码样例对比-3"><a href="#代码样例对比-3" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</div><div class="line"><span class="built_in">std</span>::fill_n(v.begin(), <span class="number">10</span>, <span class="number">0x42</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上这个代码意图让填充10个0x42在vector中，但是vector默认没分配空间，这样直接填充就造成buffer overflow。改成以下方式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f1</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v(<span class="number">10</span>);</div><div class="line"><span class="built_in">std</span>::fill_n(v.begin(), <span class="number">10</span>, <span class="number">0x42</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/////////////////</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f2</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v(<span class="number">10</span>, <span class="number">0x42</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="CTR53-CPP-使用合法的迭代器范围"><a href="#CTR53-CPP-使用合法的迭代器范围" class="headerlink" title="CTR53-CPP. 使用合法的迭代器范围"></a>CTR53-CPP. 使用合法的迭代器范围</h3><p>严重程度： 高。造成buffer overflow，导致运行任意代码</p>
+<p>当迭代器遍历一个容器的时候，迭代器必须处于一个合法范围，一个迭代器的范围是一对迭代器，其中一个指向第一个元素，另一个指向最后一个元素的后一位。这两个迭代器形成的范围，就是合法的迭代器范围。</p>
+<p>一个合法的迭代器范围需要包含以下所有特征：</p>
+<ul>
+<li>所有的迭代器必须指向同一个容器</li>
+<li>迭代器指向容器的开始和结尾</li>
+</ul>
+<p>一个空的迭代器范围也是合法的（开始迭代器和尾部迭代器相等）</p>
+<p>使用两个迭代器分别指向不同的容器，会导致未定义行为。</p>
+<h4 id="代码样例对比-4"><a href="#代码样例对比-4" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;c)</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::for_each(c.end(), c.begin(), [](<span class="keyword">int</span> i) &#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i; &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码看似正确了，但是for_each的第一参数需要是容器的begin迭代器，而它设成了end。整个迭代器反了。而且end迭代器指向的是最后一个元素的后一位，一旦解引用，立即造成未定义行为。应该改成以下正确的迭代顺序:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;c)</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::for_each(c.begin(), c.end(), [](<span class="keyword">int</span> i) &#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i; &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你非得需要反向迭代，那么可以这样：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;c)</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::for_each(c.rbegin(), c.rend(), [](<span class="keyword">int</span> i) &#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i; &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="代码样例对比-5"><a href="#代码样例对比-5" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;c)</span> </span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::const_iterator e;</div><div class="line"><span class="built_in">std</span>::for_each(c.begin(), e, [](<span class="keyword">int</span> i) &#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i; &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码明显这两个迭代器指向了不同的容器，但是由于STL的实现原因，编译器检测不出来这样的语义错误，没有任何的标准表明迭代器e会初始化为容器c的end()迭代器。这个知道原因后，就知道怎么改了，改成以上的代码样例对比就可以了，不作示范。</p>
+<h3 id="CTR54-CPP-没有指向相同容器的迭代器之间不要做减法"><a href="#CTR54-CPP-没有指向相同容器的迭代器之间不要做减法" class="headerlink" title="CTR54-CPP. 没有指向相同容器的迭代器之间不要做减法"></a>CTR54-CPP. 没有指向相同容器的迭代器之间不要做减法</h3><p>严重程度：中等。</p>
+<p>这个与指针本质一样。如果指针指向不同的对象数组，它们之间也不能做减法。类似std:distance就是两个迭代器做减法，需要迭代器指向同一个容器。如果不这么做，那么会直接导致未定义行为。</p>
+<h4 id="代码样例对比-6"><a href="#代码样例对比-6" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Ty&gt;</div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">in_range</span><span class="params">(<span class="keyword">const</span> Ty *test, <span class="keyword">const</span> Ty *r, <span class="keyword">size_t</span> n)</span> </span>&#123;</div><div class="line"><span class="keyword">return</span> <span class="number">0</span> &lt; (test - r) &amp;&amp; (test - r) &lt; (<span class="built_in">std</span>::<span class="keyword">ptrdiff_t</span>)n;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="keyword">double</span> foo[<span class="number">10</span>];</div><div class="line"><span class="keyword">double</span> *x = &amp;foo[<span class="number">0</span>];</div><div class="line"><span class="keyword">double</span> bar;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::boolalpha &lt;&lt; in_range(&amp;bar, x, <span class="number">10</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码意图测试指针test，是否在[r,r+n]这个迭代器范围内，然而test并没有指向这个合法的范围容器中，所以test与r相减导致未定义行为。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Ty&gt;</div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">in_range</span><span class="params">(<span class="keyword">const</span> Ty *test, <span class="keyword">const</span> Ty *r, <span class="keyword">size_t</span> n)</span> </span>&#123;</div><div class="line"><span class="keyword">return</span> test &gt;= r &amp;&amp; test &lt; (r + n);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="keyword">double</span> foo[<span class="number">10</span>];</div><div class="line"><span class="keyword">double</span> *x = &amp;foo[<span class="number">0</span>];</div><div class="line"><span class="keyword">double</span> bar;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::boolalpha &lt;&lt; in_range(&amp;bar, x, <span class="number">10</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码试图整改，用比较运算符让test和r不必做减法，但是还是有问题的。因为C++标准有以下描述:</p>
+<blockquote>
+<p>If two operands p and q compare equal, p&lt;=q and p&gt;=q both yield true and p<q and="" p="">q both yield false. Otherwise, if a pointer p compares greater than a pointer q,<br>p&gt;=q, p&gt;q, q&lt;=p, and q<p all="" yield="" true="" and="" p<="q," p<q,="" q="">=p, and q&gt;p all yield<br>false. Otherwise, the result of each of the operators is unspecified.</p>
+</q></p></blockquote>
+<p>所以比较两个不指向同一个容器的指针会导致未指定行为(unspecified hebavior)。尽管与之前的代码有所改善,但是还是不会产生可移植性的代码，可能在其他的硬件平台上就会失败(x86以外的平台)。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/C-C/" rel="tag">#C/C++</a>
+          
+            <a href="/blog/tags/CERT/" rel="tag">#CERT</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/07/27/sync-async-block-nonblock/" rel="prev">再次理解同步异步和阻塞非阻塞</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/07/18/modesty-may-not-virtue/" rel="next">谦虚也许并不是一种美德</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">40</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="https://dendise7engithub.github.io/" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#容器类"><span class="nav-number">1.</span> <span class="nav-text">容器类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CTR50-CPP-保证容器的索引和迭代器在合法的范围内"><span class="nav-number">1.1.</span> <span class="nav-text">CTR50-CPP. 保证容器的索引和迭代器在合法的范围内</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比"><span class="nav-number">1.1.1.</span> <span class="nav-text">代码样例对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样列对比-std-vector"><span class="nav-number">1.1.2.</span> <span class="nav-text">代码样列对比(std::vector)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-iterators"><span class="nav-number">1.1.3.</span> <span class="nav-text">代码样例对比(iterators)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CTR51-CPP-使用合法的引用，指针，迭代器来引用容器的元素"><span class="nav-number">1.2.</span> <span class="nav-text">CTR51-CPP. 使用合法的引用，指针，迭代器来引用容器的元素</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CTR52-CPP-保证库函数不溢出"><span class="nav-number">1.3.</span> <span class="nav-text">CTR52-CPP. 保证库函数不溢出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">代码样例对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-3"><span class="nav-number">1.3.2.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CTR53-CPP-使用合法的迭代器范围"><span class="nav-number">1.4.</span> <span class="nav-text">CTR53-CPP. 使用合法的迭代器范围</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-4"><span class="nav-number">1.4.1.</span> <span class="nav-text">代码样例对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-5"><span class="nav-number">1.4.2.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CTR54-CPP-没有指向相同容器的迭代器之间不要做减法"><span class="nav-number">1.5.</span> <span class="nav-text">CTR54-CPP. 没有指向相同容器的迭代器之间不要做减法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-6"><span class="nav-number">1.5.1.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
