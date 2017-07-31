@@ -40,18 +40,20 @@
   <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   首先,同步你可以简单理解为步骤执行是严格按照顺序执行的，你做完了Step 1， 才能接着做Step 2，最后才能做Step 3。 Step 3在同步过程中，永远不可能先于Step 2执行，Step 2执行结束才会开始Step 3。 异步（非同步）可以理解为上述的几个步骤在异步过程中，可能没按顺序执行，也就是Step 3可能在Step 1">
+<meta name="description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   生活例子首先,同步你可以简单理解为步骤执行是严格按照顺序执行的，你做完了Step 1， 才能接着做Step 2，最后才能做Step 3。 Step 3在同步过程中，永远不可能先于Step 2执行，Step 2执行结束才会开始Step 3。 异步（非同步）可以理解为上述的几个步骤在异步过程中，可能没按顺序执行，也就是Step 3可能在St">
 <meta name="keywords" content="IO,同步异步,阻塞非阻塞">
 <meta property="og:type" content="article">
 <meta property="og:title" content="再次理解同步异步和阻塞非阻塞">
 <meta property="og:url" content="https://alexiachen.github.io/blog/2017/07/27/sync-async-block-nonblock/index.html">
 <meta property="og:site_name" content="MathxH">
-<meta property="og:description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   首先,同步你可以简单理解为步骤执行是严格按照顺序执行的，你做完了Step 1， 才能接着做Step 2，最后才能做Step 3。 Step 3在同步过程中，永远不可能先于Step 2执行，Step 2执行结束才会开始Step 3。 异步（非同步）可以理解为上述的几个步骤在异步过程中，可能没按顺序执行，也就是Step 3可能在Step 1">
+<meta property="og:description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   生活例子首先,同步你可以简单理解为步骤执行是严格按照顺序执行的，你做完了Step 1， 才能接着做Step 2，最后才能做Step 3。 Step 3在同步过程中，永远不可能先于Step 2执行，Step 2执行结束才会开始Step 3。 异步（非同步）可以理解为上述的几个步骤在异步过程中，可能没按顺序执行，也就是Step 3可能在St">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-07-27T05:09:47.746Z">
+<meta property="og:image" content="http://wx4.sinaimg.cn/large/a1ac93f3gy1fi3136mbg4j20bj046t8m.jpg">
+<meta property="og:updated_time" content="2017-07-31T06:12:12.376Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="再次理解同步异步和阻塞非阻塞">
-<meta name="twitter:description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   首先,同步你可以简单理解为步骤执行是严格按照顺序执行的，你做完了Step 1， 才能接着做Step 2，最后才能做Step 3。 Step 3在同步过程中，永远不可能先于Step 2执行，Step 2执行结束才会开始Step 3。 异步（非同步）可以理解为上述的几个步骤在异步过程中，可能没按顺序执行，也就是Step 3可能在Step 1">
+<meta name="twitter:description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   生活例子首先,同步你可以简单理解为步骤执行是严格按照顺序执行的，你做完了Step 1， 才能接着做Step 2，最后才能做Step 3。 Step 3在同步过程中，永远不可能先于Step 2执行，Step 2执行结束才会开始Step 3。 异步（非同步）可以理解为上述的几个步骤在异步过程中，可能没按顺序执行，也就是Step 3可能在St">
+<meta name="twitter:image" content="http://wx4.sinaimg.cn/large/a1ac93f3gy1fi3136mbg4j20bj046t8m.jpg">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -350,11 +352,11 @@
 <p><em>唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。</em></p>
 </blockquote>
 <hr>
-<p>首先,同步你可以简单理解为步骤执行是严格按照顺序执行的，你做完了Step 1， 才能接着做Step 2，最后才能做Step 3。 Step 3在同步过程中，永远不可能先于Step 2执行，Step 2执行结束才会开始Step 3。</p>
+<h3 id="生活例子"><a href="#生活例子" class="headerlink" title="生活例子"></a>生活例子</h3><p>首先,同步你可以简单理解为步骤执行是严格按照顺序执行的，你做完了Step 1， 才能接着做Step 2，最后才能做Step 3。 Step 3在同步过程中，永远不可能先于Step 2执行，Step 2执行结束才会开始Step 3。</p>
 <p>异步（非同步）可以理解为上述的几个步骤在异步过程中，可能没按顺序执行，也就是Step 3可能在Step 1和Step 2执行完成前，就开始或结束了。</p>
 <p>让我们来举个例子，你要去杂货店买50件物品。正常情况下，如果你自己去购物，你首先需要拿到一个购物车，然后开始依次购买这个50件商品，一次只把一件商品放入购物车。这个完成以后，你去收银台，购物元依次扫描这些商品的价格，并且一次只扫描一个，并放入袋子里面。最后你提着袋子回家了。到目前为止一切良好，所有的这些步骤都是同步的，不能颠倒次序，所以，这过程中的每一个步骤都是阻塞的。</p>
 <p>现在，我们再来延续上述的例子，但是有变化了。这时你叫了10个朋友来帮助你。然后，你把50件物品的清单分割成50份，每份只列出其中一个物品。然后抽出其中的10份分别给你的10个朋友，然后你的10个朋友在杂货店中帮你分别买了10件物品，并放入他们各自的购物车，然后他们又回来找你拿10份清单（从剩下的40份清单抽出10份）继续购买各自的物品并放入购物车依次类推，直到清单分发完。这10个朋友帮你买东西的过程就是异步执行的。因为他们买东西的时候都是各自独立，不依赖顺序。最后他们分开在三个收银台排队结账，因为一个收银台一次只能给一个人结账，结账完毕后才到下一个人结账，这个过程就是阻塞的，必须等待。</p>
-<p>我们分别用以上的例子说明了同步异步阻塞非阻塞。下面用编程的概念来解释上述例子。你的10个朋友可以当作10个进程或线程，他们的每个购物车可以理解为一个个阻塞队列，然后每个线程把自己的“数据”插入属于自己的阻塞队列（FIFO），之后再把“数据”从队列中取出来。然后三个收银台也可以理解成三个线程或进程，来处理10个队列的物品，收银台的数量显然不可能同时处理这些队列中的数据，所以只能按照先来先处理的顺序，一步一步处理结账，这个过程就是阻塞的。</p>
+<h3 id="从编程角度阐释"><a href="#从编程角度阐释" class="headerlink" title="从编程角度阐释"></a>从编程角度阐释</h3><p>我们分别用以上的例子说明了同步异步阻塞非阻塞。下面用编程的概念来解释上述例子。你的10个朋友可以当作10个进程或线程，他们的每个购物车可以理解为一个个阻塞队列，然后每个线程把自己的“数据”插入属于自己的阻塞队列（FIFO），之后再把“数据”从队列中取出来。然后三个收银台也可以理解成三个线程或进程，来处理10个队列的物品，收银台的数量显然不可能同时处理这些队列中的数据，所以只能按照先来先处理的顺序，一步一步处理结账，这个过程就是阻塞的。</p>
 <p>当然，异步与同步与单线程或多线程都无关，是以任务的执行顺序有关，是更加高层次的抽象概念，下面以线程举例子：</p>
 <p>同步（一个任务的开始必须依赖另一个任务的完成）</p>
 <ul>
@@ -373,13 +375,27 @@
 <li>多线程：</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">thread A: -&gt; / &lt;- Task 1 -&gt; /</div><div class="line">thread B: -----&gt; / &lt;-------- Task 2 --------&gt; /</div><div class="line">thread C: -----------&gt; / &lt;- Task 3 -&gt; /</div></pre></td></tr></table></figure>
+</li>
+</ul>
 <p>所以说，单线程也可以异步，多线程也可以同步。在多线程同步中，一个线程需要等待另一个线程的完成，所以会阻塞当前线程（操作系统会挂起当前线程），也就是多线程同步过程中，一般会有阻塞。单线程同步一般就不会有阻塞，所以在Socket编程中，在创建socket的时候，一般有block和non-block选项，系统会为了等待数据阻塞当前等待数据的线程，并由其他读取数据完毕的线程唤醒等待的recv线程，而继续运行。如果是选择non-block，那么等待数据的线程不会被挂起，无论网络数据是否到达会继续recv返回执行，需要调用者不停地轮询数据是否到达，到达再读取。</p>
 <p>block和non-block也只是概念，它的底层大部分是由锁来实现的，是锁概念的延伸和高层次的概念映射，比如读写锁，如果写锁被上锁了，那么读操作会被阻塞（读线程被挂起），等到写锁释放，才能继续读。所以，在谈到block和non-block的时候就会涉及到多线程的概念，肯定底层会有多线程的操作。单线程是不可能有阻塞和非阻塞的概念的。</p>
 <p>当然，有人说node.js中的readFile和readFileSync就分别是是异步非阻塞和同步阻塞。而node是单线程的为什么会有block和non-block的概念？因为涉及到阻塞和非阻塞一般是底层可能会有多线程处理IO的操作，nodejs的应用层面是看不到的，因为阻塞的线程是不会自动醒来的，必须要另一个线程来唤醒（Resume）以提示IO的完成。也就是nodejs的应用代码确实是单线程执行的，但是在发起文件IO的时候，肯定会有个IO线程来对文件进行读写，最后通知应用层的js代码。其实以上的说法是不准确的，因为对于文件读写是没有非阻塞这以说法的，因为底层肯定会有阻塞操作等待数据读进缓冲区，还是有锁来阻塞。所以在谈及文件IO的时候我们一般只谈及同步和异步，在谈及网络IO的时候只谈及阻塞和非阻塞。</p>
-<p>不信可以去查看各种语言的文件API和Socket API的详细文档描述。</p>
-<p>windows的文件读写： <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365467(v=vs.85" target="_blank" rel="external">ReadFile</a>.aspx)  <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365747(v=vs.85" target="_blank" rel="external">WriteFile</a>.aspx)</p>
+<p>当然我也觉得<a href="https://www.zhihu.com/question/19732473" target="_blank" rel="external">同步异步和阻塞非阻塞不能单从字面意义上理解</a>。同步和异步关注的是消息通信机制，所谓同步就是caller主动等待callee的结果，也就是说在没有得到调用结果之前，callee就不返回，一旦callee返回了，一定得到返回结果了。异步正好相反，callee被调用之后，caller对于callee的调用就直接返回了，callee通过状态，或者消息，回调函数等机制来把调用的处理结果通知给caller。</p>
+<p>阻塞和非阻塞关注的是caller在等待调用结果（返回值，消息等）时的状态，也就是caller当时的状态。阻塞调用是指callee的被调用结果返回之前，当前的caller线程会被挂起，只有得到结果了，callee才会返回，caller线程被唤醒并继续执行。非阻塞调用是指callee不能得到结果之前，对callee的调用不会阻塞caller的当前线程。</p>
+<p>据知乎上的<a href="https://www.zhihu.com/people/giantchen" target="_blank" rel="external">陈硕</a>所说，在处理 IO 的时候，阻塞和非阻塞都是同步 IO。只有使用了特殊的 API 才是异步 IO。</p>
+<p><img src="http://wx4.sinaimg.cn/large/a1ac93f3gy1fi3136mbg4j20bj046t8m.jpg" alt=""></p>
+<p>怎样理解他这句话呢？《Unix网络编程》这大部经典著作其中有段原文：</p>
+<blockquote>
+<p>POSIX defines these two terms as follows:</p>
+<ul>
+<li><p>A synchronous I/O operation causes the requesting process to be blocked until that I/O operation completes.</p>
+</li>
+<li><p>An asynchronous I/O operation does not cause the requesting process to be blocked.</p>
 </li>
 </ul>
+<p>Using these definitions, the first four I/O models—blocking, nonblocking, I/O multiplexing, and signal-driven I/O—are all synchronous because the actual I/O operation (recvfrom) blocks the process. Only the asynchronous I/O model matches the asynchronous I/O definition.</p>
+</blockquote>
+<p>简单来说就是，对Unix-Like的系统来讲：阻塞式I/O(默认)，非阻塞式I/O(nonblock)，I/O复用(select/poll/epoll)都属于同步I/O，因为它们在数据由内核空间复制回进程缓冲区时都是阻塞的(不能干别的事)。只有异步I/O模型(AIO)是符合异步I/O操作的含义的，即在1数据准备完成、2由内核空间拷贝回缓冲区后 通知进程，在等待通知的这段时间里可以干别的事。</p>
 </span>
       
     </div>
@@ -613,7 +629,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">This post does not have a Table Of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#生活例子"><span class="nav-number">1.</span> <span class="nav-text">生活例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从编程角度阐释"><span class="nav-number">2.</span> <span class="nav-text">从编程角度阐释</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
