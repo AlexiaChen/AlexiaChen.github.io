@@ -31,7 +31,7 @@
 
 
 
-  <meta name="keywords" content="生活,旅行," />
+  <meta name="keywords" content="CERT,C/C++," />
 
 
 
@@ -40,61 +40,18 @@
   <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="自从毕业以来，就去了好多地方。人生就是要来一场说走就走的旅行不是吗？！在大学里面一直没有机会去，尽管以前也随亲人旅游过，不过印象都不深刻了:) 工作了也有经济来源了，就走一遭了。有时间就来这里更新我的足迹。   第一站: 白洋淀时间: 2014年8月10日就冲着《小兵张嘎》中的芦苇荡去的。是5A景区，我真觉得不值。但是有张照片拍得不错，我还是比较有摄影天赋的 :)   第二站: 五台山时间：20">
-<meta name="keywords" content="生活,旅行">
+<meta name="description" content="文件IOFIO50-CPP. 在使用文件流输入输出的时候不要不使用中介定位调用严重程度:低。如果在使用文件流做输入输出的时候没有调用中介flush和中介定位那么就是未定义行为。 C++标准[filebuf]有如下声明:  The restrictions on reading and writing a sequence controlled by an object of classbasic_">
+<meta name="keywords" content="CERT,C&#x2F;C++">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我的足迹">
-<meta property="og:url" content="https://alexiachen.github.io/blog/2016/07/30/foot-print/index.html">
+<meta property="og:title" content="CERT C++编码规范翻译(FIO)">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2017/08/09/cert-cpp-six/index.html">
 <meta property="og:site_name" content="MathxH">
-<meta property="og:description" content="自从毕业以来，就去了好多地方。人生就是要来一场说走就走的旅行不是吗？！在大学里面一直没有机会去，尽管以前也随亲人旅游过，不过印象都不深刻了:) 工作了也有经济来源了，就走一遭了。有时间就来这里更新我的足迹。   第一站: 白洋淀时间: 2014年8月10日就冲着《小兵张嘎》中的芦苇荡去的。是5A景区，我真觉得不值。但是有张照片拍得不错，我还是比较有摄影天赋的 :)   第二站: 五台山时间：20">
+<meta property="og:description" content="文件IOFIO50-CPP. 在使用文件流输入输出的时候不要不使用中介定位调用严重程度:低。如果在使用文件流做输入输出的时候没有调用中介flush和中介定位那么就是未定义行为。 C++标准[filebuf]有如下声明:  The restrictions on reading and writing a sequence controlled by an object of classbasic_">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/a1ac93f3gw1f6c1i0oe5hj218g0tjn50.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/a1ac93f3gw1f6c0foffvnj218g0tjdrn.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/a1ac93f3gw1f6c0gwhjd7j218g0tjwyn.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/a1ac93f3gw1f6c0i8pfqlj218g0tjnck.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/a1ac93f3gw1f6c0k5o7z4j20tj18g1cw.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/a1ac93f3gw1f6c1oodp7hj218g0tj7hz.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/a1ac93f3gw1f6c1zp6nlwj218g0tjk8l.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a1ac93f3gw1f6c1qm4unpj218g0tjtqp.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a1ac93f3gw1f6c1yeof71j218g0tjwsn.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/a1ac93f3gw1f6c1xl8zn9j218g0tjnb1.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/a1ac93f3gw1f6c1vkhqm1j218g0tjwz2.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a1ac93f3gw1f6c1smar4bj218g0tjkea.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a1ac93f3gw1f6c1ryb0j8j218g0tjncp.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/a1ac93f3gw1f6c1ukce0ij20tj18gamj.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/a1ac93f3gw1f6c1w404u1j218g0tjtmn.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/a1ac93f3gw1f6c1pqnc45j218g0tj13s.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a1ac93f3gw1f6c1tloilzj218g0tj47f.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/a1ac93f3gw1f74vvx08tpj20tj18g17g.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/a1ac93f3gw1f74vx6d91kj218g0tjatn.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/a1ac93f3gw1f74vxqfpzpj218g0tjk6x.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/a1ac93f3gw1f74vxjk60ej218g0tjqhm.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/a1ac93f3gw1f74vxfzn1fj218g0tjh4d.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/a1ac93f3gw1f74vy110twj218g0tjh03.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/a1ac93f3gw1f74vxvprjdj218g0tjtlf.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/a1ac93f3gw1f74vy91gs3j218g0tjh87.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a1ac93f3gw1f8agevz0tnj218g0oze26.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/a1ac93f3gw1f8ageyuhgxj218g0oz4oh.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a1ac93f3gw1f8agf1x1sgj218g0oz7wh.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/a1ac93f3gw1f8agf4dqr9j218g0ozaz0.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/a1ac93f3gw1f8ahfy1mwpj218g0oz4ld.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a1ac93f3gw1f8ahfx8blxj218g0oztu0.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/a1ac93f3gw1f8ahr7ulc5j218g0oz7nj.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/a1ac93f3gw1f8ahr6tzbnj218g0oz1bj.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/a1ac93f3gw1f8ahr8pg5tj218g0ozhco.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/a1ac93f3gw1f8ahravl6lj218g0oze81.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/a1ac93f3gw1f8bhot61rqj218g0oz7ss.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a1ac93f3gw1f8bhou6wqrj218g0oz4qp.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/a1ac93f3gw1f8bhovcdsej218g0oz1dv.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/a1ac93f3gw1f8bhovpdv0j218g0oz4kb.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/a1ac93f3gw1f8bhp5z10yj20hs0qo406.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/a1ac93f3gw1f8bhox193cj218g0ozkbn.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/a1ac93f3gw1f8bhow4ou1j218g0oz4h2.jpg">
-<meta property="og:updated_time" content="2017-02-21T09:22:17.326Z">
+<meta property="og:updated_time" content="2017-08-09T02:24:18.812Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我的足迹">
-<meta name="twitter:description" content="自从毕业以来，就去了好多地方。人生就是要来一场说走就走的旅行不是吗？！在大学里面一直没有机会去，尽管以前也随亲人旅游过，不过印象都不深刻了:) 工作了也有经济来源了，就走一遭了。有时间就来这里更新我的足迹。   第一站: 白洋淀时间: 2014年8月10日就冲着《小兵张嘎》中的芦苇荡去的。是5A景区，我真觉得不值。但是有张照片拍得不错，我还是比较有摄影天赋的 :)   第二站: 五台山时间：20">
-<meta name="twitter:image" content="http://ww2.sinaimg.cn/large/a1ac93f3gw1f6c1i0oe5hj218g0tjn50.jpg">
+<meta name="twitter:title" content="CERT C++编码规范翻译(FIO)">
+<meta name="twitter:description" content="文件IOFIO50-CPP. 在使用文件流输入输出的时候不要不使用中介定位调用严重程度:低。如果在使用文件流做输入输出的时候没有调用中介flush和中介定位那么就是未定义行为。 C++标准[filebuf]有如下声明:  The restrictions on reading and writing a sequence controlled by an object of classbasic_">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -104,7 +61,7 @@
   };
 </script>
 
-  <title> 我的足迹 | MathxH </title>
+  <title> CERT C++编码规范翻译(FIO) | MathxH </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -361,7 +318,7 @@
           
           
             
-              我的足迹
+              CERT C++编码规范翻译(FIO)
             
           
         </h1>
@@ -370,8 +327,8 @@
       <div class="post-meta">
         <span class="post-time">
           Posted on
-          <time itemprop="dateCreated" datetime="2016-07-30T13:30:56+08:00" content="2016-07-30">
-            2016-07-30
+          <time itemprop="dateCreated" datetime="2017-08-09T09:25:46+08:00" content="2017-08-09">
+            2017-08-09
           </time>
         </span>
 
@@ -389,48 +346,35 @@
       
 
       
-        <span itemprop="articleBody"><blockquote>
-<p><em>自从毕业以来，就去了好多地方。人生就是要来一场说走就走的旅行不是吗？！在大学里面一直没有机会去，尽管以前也随亲人旅游过，不过印象都不深刻了:) 工作了也有经济来源了，就走一遭了。有时间就来这里更新我的足迹。</em></p>
+        <span itemprop="articleBody"><h2 id="文件IO"><a href="#文件IO" class="headerlink" title="文件IO"></a>文件IO</h2><h3 id="FIO50-CPP-在使用文件流输入输出的时候不要不使用中介定位调用"><a href="#FIO50-CPP-在使用文件流输入输出的时候不要不使用中介定位调用" class="headerlink" title="FIO50-CPP. 在使用文件流输入输出的时候不要不使用中介定位调用"></a>FIO50-CPP. 在使用文件流输入输出的时候不要不使用中介定位调用</h3><p>严重程度:低。如果在使用文件流做输入输出的时候没有调用中介flush和中介定位那么就是未定义行为。</p>
+<p>C++标准[filebuf]有如下声明:</p>
+<blockquote>
+<p>The restrictions on reading and writing a sequence controlled by an object of class<br>basic_filebuf<chart, traits=""> are the same as for reading and writing with the<br>Standard C library FILEs.</chart,></p>
 </blockquote>
-<hr>
-<h1 id="第一站-白洋淀"><a href="#第一站-白洋淀" class="headerlink" title="第一站: 白洋淀"></a>第一站: 白洋淀</h1><h3 id="时间-2014年8月10日"><a href="#时间-2014年8月10日" class="headerlink" title="时间: 2014年8月10日"></a>时间: 2014年8月10日</h3><p>就冲着《小兵张嘎》中的芦苇荡去的。是5A景区，我真觉得不值。但是有张照片拍得不错，我还是比较有摄影天赋的 :)</p>
-<p><img src="http://ww2.sinaimg.cn/large/a1ac93f3gw1f6c1i0oe5hj218g0tjn50.jpg" alt="" title="白洋淀的荷花"></p>
-<hr>
-<h1 id="第二站-五台山"><a href="#第二站-五台山" class="headerlink" title="第二站: 五台山"></a>第二站: 五台山</h1><h3 id="时间：2014年8月20日"><a href="#时间：2014年8月20日" class="headerlink" title="时间：2014年8月20日"></a>时间：2014年8月20日</h3><p>主要是去徒步去了，顺便看看文殊菩萨的道场，五大佛教圣地呢。</p>
-<p><img src="http://ww2.sinaimg.cn/large/a1ac93f3gw1f6c0foffvnj218g0tjdrn.jpg" alt="" title="五台山顶的马"><br><img src="http://ww2.sinaimg.cn/large/a1ac93f3gw1f6c0gwhjd7j218g0tjwyn.jpg" alt="" title="山顶的草坪和石头"><br><img src="http://ww3.sinaimg.cn/large/a1ac93f3gw1f6c0i8pfqlj218g0tjnck.jpg" alt="" title="我的徒步队友"><br><img src="http://ww4.sinaimg.cn/large/a1ac93f3gw1f6c0k5o7z4j20tj18g1cw.jpg" alt="" title="塔院寺，五台山的标志建筑"></p>
-<hr>
-<h1 id="第三站-内蒙古锡林郭勒"><a href="#第三站-内蒙古锡林郭勒" class="headerlink" title="第三站: 内蒙古锡林郭勒"></a>第三站: 内蒙古锡林郭勒</h1><h3 id="时间-2014年8月24日"><a href="#时间-2014年8月24日" class="headerlink" title="时间: 2014年8月24日"></a>时间: 2014年8月24日</h3><p>之前去过一次内蒙，是鄂尔多斯，真没看到什么美景草原湖泊，那时候也不是季节。这次是去弥补遗憾的。这次好照片更多。</p>
-<p><img src="http://ww4.sinaimg.cn/large/a1ac93f3gw1f6c1oodp7hj218g0tj7hz.jpg" alt="" title="草原上直通天际的公路"><br><img src="http://ww4.sinaimg.cn/large/a1ac93f3gw1f6c1zp6nlwj218g0tjk8l.jpg" alt="" title="住了一晚的蒙古包，吃了烤全羊，一起参加了篝火晚会"><br><img src="http://ww1.sinaimg.cn/large/a1ac93f3gw1f6c1qm4unpj218g0tjtqp.jpg" alt="" title="风吹草低见牛羊"><br><img src="http://ww1.sinaimg.cn/large/a1ac93f3gw1f6c1yeof71j218g0tjwsn.jpg" alt="" title="曼陀山远眺达里诺尔湖"><br><img src="http://ww2.sinaimg.cn/large/a1ac93f3gw1f6c1xl8zn9j218g0tjnb1.jpg" alt="" title="曼陀山上的树木"><br><img src="http://ww2.sinaimg.cn/large/a1ac93f3gw1f6c1vkhqm1j218g0tjwz2.jpg" alt="" title="曼陀山上的铁丝栅栏1"><br><img src="http://ww1.sinaimg.cn/large/a1ac93f3gw1f6c1smar4bj218g0tjkea.jpg" alt="" title="曼陀山上的铁丝栅栏2"><br><img src="http://ww1.sinaimg.cn/large/a1ac93f3gw1f6c1ryb0j8j218g0tjncp.jpg" alt="" title="曼陀山的草"><br><img src="http://ww3.sinaimg.cn/large/a1ac93f3gw1f6c1ukce0ij20tj18gamj.jpg" alt="" title="曼陀山上的风车"><br><img src="http://ww3.sinaimg.cn/large/a1ac93f3gw1f6c1w404u1j218g0tjtmn.jpg" alt="" title="湖边的栈道"><br><img src="http://ww3.sinaimg.cn/large/a1ac93f3gw1f6c1pqnc45j218g0tj13s.jpg" alt="" title="达里诺尔湖的日落"><br><img src="http://ww1.sinaimg.cn/large/a1ac93f3gw1f6c1tloilzj218g0tj47f.jpg" alt="" title="日落余晖与水草，看到这，就想起倚天屠龙记的第一章标题&lt;天涯思君不可忘&gt;"></p>
-<hr>
-<h1 id="第四站：-下江南"><a href="#第四站：-下江南" class="headerlink" title="第四站： 下江南"></a>第四站： 下江南</h1><h3 id="时间：2014年9月8日-（中秋节）"><a href="#时间：2014年9月8日-（中秋节）" class="headerlink" title="时间：2014年9月8日 （中秋节）"></a>时间：2014年9月8日 （中秋节）</h3><p>没白来，真是上有天堂，下有苏杭。第一天就在杭州落脚的，白天去了趟西溪湿地（电影《非诚勿扰》的拍摄地之一），晚上游了圈西湖，见到了传说中的断桥，白素贞与许仙就在这里相会。</p>
-<p>杭州的小吃真心不错。当然，这次我就不放图来馋大家了:) </p>
-<p><img src="http://ww4.sinaimg.cn/large/a1ac93f3gw1f74vvx08tpj20tj18g17g.jpg" alt="" title="西溪湿地的塔"><br><img src="http://ww3.sinaimg.cn/large/a1ac93f3gw1f74vx6d91kj218g0tjatn.jpg" alt="" title="在塔上眺望西溪湿地，很美"></p>
-<p>之后就在杭州周边的西塘和乌镇玩了一天，乌镇的夜景太赞，土菜馆的水乡菜特好吃！！！</p>
-<p><img src="http://ww4.sinaimg.cn/large/a1ac93f3gw1f74vxqfpzpj218g0tjk6x.jpg" alt="" title="西塘，烟雨长廊"><br><img src="http://ww2.sinaimg.cn/large/a1ac93f3gw1f74vxjk60ej218g0tjqhm.jpg" alt="" title="诗情画意就是这样了吧"><br><img src="http://ww4.sinaimg.cn/large/a1ac93f3gw1f74vxfzn1fj218g0tjh4d.jpg" alt="" title="水乡的画面就这样静止下来"></p>
-<p><img src="http://ww4.sinaimg.cn/large/a1ac93f3gw1f74vy110twj218g0tjh03.jpg" alt="" title="乌镇的夜，灯红酒绿"><br><img src="http://ww4.sinaimg.cn/large/a1ac93f3gw1f74vxvprjdj218g0tjtlf.jpg" alt="" title="乌镇的夜，在这里吃的晚饭"></p>
-<p>最后是玩的周庄，大名鼎鼎的沈万三的老家就在这里，不过感觉周庄没啥玩的，沈厅和张厅值得看</p>
-<p><img src="http://ww4.sinaimg.cn/large/a1ac93f3gw1f74vy91gs3j218g0tjh87.jpg" alt="" title="周庄"></p>
-<hr>
-<h1 id="第五站：-一路向西"><a href="#第五站：-一路向西" class="headerlink" title="第五站： 一路向西"></a>第五站： 一路向西</h1><h3 id="时间：2014年10月1日"><a href="#时间：2014年10月1日" class="headerlink" title="时间：2014年10月1日"></a>时间：2014年10月1日</h3><p>终于到毕业以后属于自己的一个国庆假日，早就做好了出去远行的打算，考虑国庆节出去旅行到处都是游客，所以就没有到国内有名人多的景点，于是乎就去大西边，不是很西 :P 。 西北一点，主要是青海，甘肃，内蒙古西部一带地区，地广人稀，更方便我拍照。</p>
-<p>首先第一站肯定目标是西宁，是坐大巴车去的，你没看错，就是坐大巴！！！从帝都到西宁，远死了！我们一路往返都是这一辆大巴，当时觉得走这种西部路线还是坐大巴爽，周边的风景会更美，当然这不假。不过我的腿真心是被折腾的够够的了 T_T。 </p>
-<p>离西宁近的景点也就是青海湖和塔尔寺，大清早起床就坐车出发青海湖 :)</p>
-<p><img src="http://ww1.sinaimg.cn/large/a1ac93f3gw1f8agevz0tnj218g0oze26.jpg" alt="" title="去青海湖的路上"><br><img src="http://ww2.sinaimg.cn/large/a1ac93f3gw1f8ageyuhgxj218g0oz4oh.jpg" alt="" title="路上长长的柏油马路，还有牦牛"></p>
-<p><img src="http://ww1.sinaimg.cn/large/a1ac93f3gw1f8agf1x1sgj218g0oz7wh.jpg" alt="" title="青海湖景区"><br><img src="http://ww3.sinaimg.cn/large/a1ac93f3gw1f8agf4dqr9j218g0ozaz0.jpg" alt="" title="除了海，我第一次见到这么大的内陆湖泊"></p>
-<p>之后，就去了塔尔寺，我不感兴趣，所以就没有进去，在旁边的一家地摊上吃了<a href="http://baike.baidu.com/link?url=3fQUi6D-eJMJPLdz9H74L-eDAt29gaKMjOELaIMRivfMT3na8gz4W_quLahG7SgAeJRjX0QvJ3quKtNdp6UiNOMfl8mWLoz4_v6Ftb2X5Um" target="_blank" rel="external">酿皮</a>，是用青稞做的，很好吃，是西北地区的特色风味之一。其实这东西跟我老家的一种叫“凉粉”的东西很像，只是材料不同而已。</p>
-<p>第二站就是从西宁北上了，甘肃的张掖，是去那里看丹霞地貌。不过由于天气原因，好冷，没拍出什么能看得过去的照片。</p>
-<p><img src="http://ww3.sinaimg.cn/large/a1ac93f3gw1f8ahfy1mwpj218g0oz4ld.jpg" alt="" title="张掖丹霞，有点像火焰山似的"><br><img src="http://ww1.sinaimg.cn/large/a1ac93f3gw1f8ahfx8blxj218g0oztu0.jpg" alt="" title="丹霞公园比较大，所以里面都需要做摆渡车"></p>
-<p>第三站，敦煌地区的莫高窟和月牙泉，鸣沙山来啦！！！</p>
-<p><img src="http://ww2.sinaimg.cn/large/a1ac93f3gw1f8ahr7ulc5j218g0oz7nj.jpg" alt="" title="鸣沙山，这条沙线太美"><br><img src="http://ww4.sinaimg.cn/large/a1ac93f3gw1f8ahr6tzbnj218g0oz1bj.jpg" alt="" title="这沙漠比之前去的库布其沙漠大得多"></p>
-<p><img src="http://ww2.sinaimg.cn/large/a1ac93f3gw1f8ahr8pg5tj218g0ozhco.jpg" alt="" title="月牙泉与鸣沙山孤寂守护了丝绸之路上千年"><br><img src="http://ww4.sinaimg.cn/large/a1ac93f3gw1f8ahravl6lj218g0oze81.jpg" alt="" title="莫高窟"></p>
-<p>莫高窟里面的壁画真是美轮美奂，集艺术的大成。这里讲个故事，小时候我们看的《九色鹿》其实就是根据莫高窟的壁画改编的。</p>
-<p>第西站，就是玩内蒙古西部地区额济纳旗，有很多景点从西夏古国城池黑水城遗址到胡杨林，都是绝美的风景。</p>
-<p><img src="http://ww2.sinaimg.cn/large/a1ac93f3gw1f8bhot61rqj218g0oz7ss.jpg" alt="" title="行役尚未已，日暮居延城。这里就是居延海"><br><img src="http://ww1.sinaimg.cn/large/a1ac93f3gw1f8bhou6wqrj218g0oz4qp.jpg" alt="" title="岂伊车辙间，曾有千军行。"></p>
-<p>之后是黑水城遗址，只能见到几个城墙角落了。</p>
-<p><img src="http://ww3.sinaimg.cn/large/a1ac93f3gw1f8bhovcdsej218g0oz1dv.jpg" alt="" title="只能见到残垣断壁"></p>
-<p><img src="http://ww3.sinaimg.cn/large/a1ac93f3gw1f8bhovpdv0j218g0oz4kb.jpg" alt="" title="黑水城深处戈壁大漠之间，周边一片荒凉，不知道曾经如何的繁华"></p>
-<p><img src="http://ww4.sinaimg.cn/large/a1ac93f3gw1f8bhp5z10yj20hs0qo406.jpg" alt="" title="黑水城旁边我的日落剪影"></p>
-<p>然后是黑水城旁边的怪树林，都是老死的胡杨树，经过千百年估计才形成的。游览怪树林的时候，正好天也黑了，看了次日落，虽然日落看了无数次了。</p>
-<p><img src="http://ww2.sinaimg.cn/large/a1ac93f3gw1f8bhox193cj218g0ozkbn.jpg" alt="" title="怪树林"><br><img src="http://ww3.sinaimg.cn/large/a1ac93f3gw1f8bhow4ou1j218g0oz4h2.jpg" alt="" title="怪树林的日落"></p>
+<p>当然C++是兼容C的，C标准也有类似以下声明:</p>
+<blockquote>
+<p>When a file is opened with update mode . . ., both input and output may be performed on<br>the associated stream. However, output shall not be directly followed by input without an<br>intervening call to the fflush function or to a file positioning function (fseek,<br>fsetpos, or rewind), and input shall not be directly followed by output without an<br>intervening call to a file positioning function, unless the input operation encounters endof-file.</p>
+</blockquote>
+<p>所以，结果以下场景就会导致未定义行为:</p>
+<ul>
+<li><p>Receiving input from a stream directly following an output to that stream without an intervening call to std::basic_filebuf<t>::seekoff() if the file is not at end-offile</t></p>
+</li>
+<li><p>Outputting to a stream after receiving input from that stream without a call to std::basic_filebuf<t>::seekoff() if the file is not at end-of-file</t></p>
+</li>
+</ul>
+<h4 id="代码样例对比"><a href="#代码样例对比" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;fileName)</span> </span>&#123;</div><div class="line">  <span class="built_in">std</span>::<span class="function">fstream <span class="title">file</span><span class="params">(fileName)</span></span>;</div><div class="line">  <span class="keyword">if</span> (!file.is_open()) &#123;</div><div class="line">    <span class="comment">// Handle error</span></div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  file &lt;&lt; <span class="string">"Output some data"</span>;</div><div class="line">  <span class="built_in">std</span>::<span class="built_in">string</span> str;</div><div class="line">  file &gt;&gt; str;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码通过文件流试图把”Output some data”写入文件尾，然后并把该字符串又重新读出到str对象中，然而，这输入输出的中间并没有调用中介定位函数，所以行为是未定义的。所以改成以下:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;fileName)</span> </span>&#123;</div><div class="line">  <span class="built_in">std</span>::<span class="function">fstream <span class="title">file</span><span class="params">(fileName)</span></span>;</div><div class="line">  <span class="keyword">if</span> (!file.is_open()) &#123;</div><div class="line">    <span class="comment">// Handle error</span></div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  file &lt;&lt; <span class="string">"Output some data"</span>;</div><div class="line"></div><div class="line">  <span class="built_in">std</span>::<span class="built_in">string</span> str;</div><div class="line">  file.seekg(<span class="number">0</span>, <span class="built_in">std</span>::ios::beg);</div><div class="line">  file &gt;&gt; str;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码通过std::basic_istream<t>::seekg()把文件流指针调整到了文件的开头，这样才能读取到写入的字符串。</t></p>
+<h3 id="FIO51-CPP-当不需要操作文件的时候一定要关闭文件"><a href="#FIO51-CPP-当不需要操作文件的时候一定要关闭文件" class="headerlink" title="FIO51-CPP. 当不需要操作文件的时候一定要关闭文件"></a>FIO51-CPP. 当不需要操作文件的时候一定要关闭文件</h3><p>严重程度: 中等。容易导致系统资源浪费，造成程序不正常终止。</p>
+<p>对std::basic_filebuf<t>::open()的调用一定要有std::basic_filebuf<t>::close()来关闭文件，至少都要在程序结束之前关闭。 </t></t></p>
+<p>注意，std::basic_ifstream<t>, std::basic_ofstream<t>和std::basic_fstream<t>这三个类底层都依赖std::basic_filebuf<t>对象提供的open和close来打开关闭文件。</t></t></t></t></p>
+<h4 id="代码样例对比-1"><a href="#代码样例对比-1" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;exception&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;fileName)</span> </span>&#123;</div><div class="line">  <span class="built_in">std</span>::<span class="function">fstream <span class="title">file</span><span class="params">(fileName)</span></span>;</div><div class="line">  <span class="keyword">if</span> (!file.is_open()) &#123;</div><div class="line">    <span class="comment">// Handle error</span></div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">  <span class="built_in">std</span>::terminate();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码显然有问题，因为用文件流对象打开了一个文件，但是file对象没有正确关闭，因为代码用std::terminate()强制终止了程序，导致file对象的析构函数没有调用，自然就没有正确关闭文件。std::terminate()本质上是调用了std::abort()才导致的问题。</p>
+<p>当然，如果非要在f()函数中强制终止程序，那么需要手工保证文件关闭，不能依赖RAII来关闭资源:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;exception&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;fileName)</span> </span>&#123;</div><div class="line">  <span class="built_in">std</span>::<span class="function">fstream <span class="title">file</span><span class="params">(fileName)</span></span>;</div><div class="line">  <span class="keyword">if</span> (!file.is_open()) &#123;</div><div class="line">    <span class="comment">// Handle error</span></div><div class="line">    <span class="keyword">return</span>;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// ...</span></div><div class="line">  file.close(); <span class="comment">//在调用terminate之前手工调用close关闭文件</span></div><div class="line">  <span class="keyword">if</span> (file.fail()) &#123;</div><div class="line">    <span class="comment">// Handle error</span></div><div class="line">  &#125;</div><div class="line">  <span class="built_in">std</span>::terminate();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，还可以通过RAII机制来关闭文件，这样的方式是C++主推的一种手段，方便安全:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;exception&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;fileName)</span> </span>&#123;</div><div class="line">  &#123;</div><div class="line">    <span class="built_in">std</span>::<span class="function">fstream <span class="title">file</span><span class="params">(fileName)</span></span>;</div><div class="line">    <span class="keyword">if</span> (!file.is_open()) &#123;</div><div class="line">      <span class="comment">// Handle error</span></div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">  &#125; <span class="comment">// 文件正确关闭，因为文件流对象file到这里退出作用域，自动调用了file对象的析构函数</span></div><div class="line">  <span class="built_in">std</span>::terminate();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </span>
       
     </div>
@@ -439,9 +383,9 @@
       
         <div class="post-tags">
           
-            <a href="/blog/tags/生活/" rel="tag">#生活</a>
+            <a href="/blog/tags/CERT/" rel="tag">#CERT</a>
           
-            <a href="/blog/tags/旅行/" rel="tag">#旅行</a>
+            <a href="/blog/tags/C-C/" rel="tag">#C/C++</a>
           
         </div>
       
@@ -450,13 +394,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/blog/2016/08/05/open-source-power/" rel="prev">软件的未来</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/blog/2016/07/24/first-post/" rel="next">新的开始</a>
+              <a href="/blog/2017/08/01/cert-cpp-five/" rel="next">CERT C++编码规范翻译（MEM）</a>
             
           </div>
         </div>
@@ -664,7 +606,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第一站-白洋淀"><span class="nav-number">1.</span> <span class="nav-text">第一站: 白洋淀</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#时间-2014年8月10日"><span class="nav-number">1.0.1.</span> <span class="nav-text">时间: 2014年8月10日</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第二站-五台山"><span class="nav-number">2.</span> <span class="nav-text">第二站: 五台山</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#时间：2014年8月20日"><span class="nav-number">2.0.1.</span> <span class="nav-text">时间：2014年8月20日</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三站-内蒙古锡林郭勒"><span class="nav-number">3.</span> <span class="nav-text">第三站: 内蒙古锡林郭勒</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#时间-2014年8月24日"><span class="nav-number">3.0.1.</span> <span class="nav-text">时间: 2014年8月24日</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第四站：-下江南"><span class="nav-number">4.</span> <span class="nav-text">第四站： 下江南</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#时间：2014年9月8日-（中秋节）"><span class="nav-number">4.0.1.</span> <span class="nav-text">时间：2014年9月8日 （中秋节）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第五站：-一路向西"><span class="nav-number">5.</span> <span class="nav-text">第五站： 一路向西</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#时间：2014年10月1日"><span class="nav-number">5.0.1.</span> <span class="nav-text">时间：2014年10月1日</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#文件IO"><span class="nav-number">1.</span> <span class="nav-text">文件IO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FIO50-CPP-在使用文件流输入输出的时候不要不使用中介定位调用"><span class="nav-number">1.1.</span> <span class="nav-text">FIO50-CPP. 在使用文件流输入输出的时候不要不使用中介定位调用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比"><span class="nav-number">1.1.1.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FIO51-CPP-当不需要操作文件的时候一定要关闭文件"><span class="nav-number">1.2.</span> <span class="nav-text">FIO51-CPP. 当不需要操作文件的时候一定要关闭文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
