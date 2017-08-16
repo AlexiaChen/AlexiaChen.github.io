@@ -31,7 +31,7 @@
 
 
 
-  <meta name="keywords" content="C/C++,CERT," />
+  <meta name="keywords" content="CERT,C/C++," />
 
 
 
@@ -41,14 +41,14 @@
 
 
 <meta name="description" content="异常和错误处理ERR50-CPP. 不要突然的终止程序严重程度: 低。 允许程序在运行中非正常终止会导致一些资源没有被释放，容易遭受服务拒绝攻击。 std::abort(),std::quick_exit()和std::_Exit()函数通常用来快速突然的终止程序运行。一旦它们被调用，那么是不会调用std::atexit()函数注册的exit handler的，也不会自动调用程序中各类对象的析构函">
-<meta name="keywords" content="C&#x2F;C++,CERT">
+<meta name="keywords" content="CERT,C&#x2F;C++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CERT C++编码规范翻译（ERR）">
 <meta property="og:url" content="https://alexiachen.github.io/blog/2017/08/09/cert-cpp-seven/index.html">
 <meta property="og:site_name" content="MathxH">
 <meta property="og:description" content="异常和错误处理ERR50-CPP. 不要突然的终止程序严重程度: 低。 允许程序在运行中非正常终止会导致一些资源没有被释放，容易遭受服务拒绝攻击。 std::abort(),std::quick_exit()和std::_Exit()函数通常用来快速突然的终止程序运行。一旦它们被调用，那么是不会调用std::atexit()函数注册的exit handler的，也不会自动调用程序中各类对象的析构函">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-08-11T04:26:20.147Z">
+<meta property="og:updated_time" content="2017-08-11T05:38:55.887Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CERT C++编码规范翻译（ERR）">
 <meta name="twitter:description" content="异常和错误处理ERR50-CPP. 不要突然的终止程序严重程度: 低。 允许程序在运行中非正常终止会导致一些资源没有被释放，容易遭受服务拒绝攻击。 std::abort(),std::quick_exit()和std::_Exit()函数通常用来快速突然的终止程序运行。一旦它们被调用，那么是不会调用std::atexit()函数注册的exit handler的，也不会自动调用程序中各类对象的析构函">
@@ -539,7 +539,7 @@
 <p>• if T is a base class of E, the variable is copy-initialized from the corresponding base class subobject of the exception object;</p>
 <p>• otherwise, the variable is copy-initialized from the exception object.</p>
 </blockquote>
-<p>也就是说catch代码的输入参数可以是引用捕获，或者是值传递的捕获方式，但是值传递的话，又会调用临时异常对象的拷贝构造函数，极端情况会发生对象分片，因为异常对象是有继承关系的，这样会导致异常对象的完整状态需要分多次拷贝，导致不可恢复的错误，需要遵守OOP51-CPP规范，而且以值传递会调用临时异常对象的拷贝构造函数，万一其拷贝构造函数发生异常，那么程序又非正常终止了，这样违背了ERR60-CPP规范了。</p>
+<p>也就是说catch代码的输入参数可以是引用捕获，或者是值传递的捕获方式，但是值传递的话，又会调用临时异常对象的拷贝构造函数，极端情况会发生对象分片，因为异常对象是有继承关系的，这样会导致继承类的异常对象的完整状态通过值赋值拷贝的方式发生信息丢失，导致不可恢复的错误，需要遵守OOP51-CPP规范，而且以值传递会调用临时异常对象的拷贝构造函数，万一其拷贝构造函数发生异常，那么程序又非正常终止了，这样违背了ERR60-CPP规范了。</p>
 <p>所以总应该以左值引用捕获异常对象，除非异常类的类型是trivial type的。C++标准[basic.types]对trivial types作出了如下声明:</p>
 <blockquote>
 <p>Arithmetic types, enumeration types, pointer types, pointer to member types,std::nullptr_t, and cv-qualified versions of these types are collectively called scalar types…. Scalar types, trivial class types, arrays of such types and cv-qualified versions of these types are collectively called trivial types.</p>
@@ -573,9 +573,9 @@
       
         <div class="post-tags">
           
-            <a href="/blog/tags/C-C/" rel="tag">#C/C++</a>
-          
             <a href="/blog/tags/CERT/" rel="tag">#CERT</a>
+          
+            <a href="/blog/tags/C-C/" rel="tag">#C/C++</a>
           
         </div>
       
@@ -583,6 +583,8 @@
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/08/11/cert-cpp-eight/" rel="prev">CERT C++编码规范翻译（OOP）</a>
             
           </div>
 
@@ -729,7 +731,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/blog/archives">
-              <span class="site-state-item-count">44</span>
+              <span class="site-state-item-count">45</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
