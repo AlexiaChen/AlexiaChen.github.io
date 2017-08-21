@@ -3398,6 +3398,78 @@
           
           
             
+              <a class="post-title-link" href="/blog/2017/08/21/cert-cpp-ten/" itemprop="url">
+                CERT C++ 编码规范翻译（MSC）
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2017-08-21T13:52:26+08:00" content="2017-08-21">
+            2017-08-21
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            其他功能杂项MSC50-CPP. 不要使用std::rand()生成伪随机数严重程度： 中等。使用std::rand()函数可能直接造成可预测的随机数。
+伪随机数生成器使用了数学算法来生成统计学上较好的随机数序列，但是产生的随机数序列不是真正意义上的随机。
+C标准库提供的rand()函数通过C++ 
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/blog/2017/08/21/cert-cpp-ten/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/blog/2017/08/16/cert-cpp-nine/" itemprop="url">
                 CERT C++ 编码规范翻译（CON）
               </a>
@@ -4035,77 +4107,6 @@ C风格的字符串数组要求字符串结尾隐式包含一个null结束符(�
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/blog/2017/07/17/cert-cpp-two/" itemprop="url">
-                CERT C++编码规范翻译（INT）
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2017-07-17T15:55:53+08:00" content="2017-07-17">
-            2017-07-17
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-            整型数INT50-CPP. 不要转换超出枚举值的范围严重程度：中等。由于转换带来的未指定值导致的buffer溢出，从而给攻击者制造运行任意恶意代码的场景。数据完整性违例等等。
-在C++中枚举有两种形式： 区域枚举，底层的类型是固定的。非区域枚举底层的类型可能是也可能不是固定的。枚举类型的合法值的范围
-            ...
-          </span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/blog/2017/07/17/cert-cpp-two/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -4144,7 +4145,7 @@ C风格的字符串数组要求字符串结尾隐式包含一个null结束符(�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/blog/archives">
-              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-count">47</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
