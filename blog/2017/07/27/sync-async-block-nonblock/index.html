@@ -40,19 +40,19 @@
   <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   生活例子首先,同步你可以简单理解为步骤执行是严格按照顺序执行的，你做完了Step 1， 才能接着做Step 2，最后才能做Step 3。 Step 3在同步过程中，永远不可能先于Step 2执行，Step 2执行结束才会开始Step 3。 异步（非同步）可以理解为上述的几个步骤在异步过程中，可能没按顺序执行，也就是Step 3可能在St">
+<meta name="description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   从编程角度阐释异步与同步与单线程或多线程都无关，是以任务的执行顺序有关，是更加高层次的抽象概念，下面以线程举例子： 同步（一个任务的开始必须依赖另一个任务的完成）  单线程： 1231 thread: / &amp;lt;- Task 1 -&amp;gt; / |                           | / &amp;lt;- Task 2">
 <meta name="keywords" content="IO,同步异步,阻塞非阻塞">
 <meta property="og:type" content="article">
 <meta property="og:title" content="再次理解同步异步和阻塞非阻塞">
 <meta property="og:url" content="https://alexiachen.github.io/blog/2017/07/27/sync-async-block-nonblock/index.html">
 <meta property="og:site_name" content="MathxH">
-<meta property="og:description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   生活例子首先,同步你可以简单理解为步骤执行是严格按照顺序执行的，你做完了Step 1， 才能接着做Step 2，最后才能做Step 3。 Step 3在同步过程中，永远不可能先于Step 2执行，Step 2执行结束才会开始Step 3。 异步（非同步）可以理解为上述的几个步骤在异步过程中，可能没按顺序执行，也就是Step 3可能在St">
+<meta property="og:description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   从编程角度阐释异步与同步与单线程或多线程都无关，是以任务的执行顺序有关，是更加高层次的抽象概念，下面以线程举例子： 同步（一个任务的开始必须依赖另一个任务的完成）  单线程： 1231 thread: / &amp;lt;- Task 1 -&amp;gt; / |                           | / &amp;lt;- Task 2">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://wx4.sinaimg.cn/large/a1ac93f3gy1fi3136mbg4j20bj046t8m.jpg">
-<meta property="og:updated_time" content="2017-07-31T06:12:12.376Z">
+<meta property="og:updated_time" content="2017-08-30T05:08:54.170Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="再次理解同步异步和阻塞非阻塞">
-<meta name="twitter:description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   生活例子首先,同步你可以简单理解为步骤执行是严格按照顺序执行的，你做完了Step 1， 才能接着做Step 2，最后才能做Step 3。 Step 3在同步过程中，永远不可能先于Step 2执行，Step 2执行结束才会开始Step 3。 异步（非同步）可以理解为上述的几个步骤在异步过程中，可能没按顺序执行，也就是Step 3可能在St">
+<meta name="twitter:description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   从编程角度阐释异步与同步与单线程或多线程都无关，是以任务的执行顺序有关，是更加高层次的抽象概念，下面以线程举例子： 同步（一个任务的开始必须依赖另一个任务的完成）  单线程： 1231 thread: / &amp;lt;- Task 1 -&amp;gt; / |                           | / &amp;lt;- Task 2">
 <meta name="twitter:image" content="http://wx4.sinaimg.cn/large/a1ac93f3gy1fi3136mbg4j20bj046t8m.jpg">
 
 
@@ -352,12 +352,7 @@
 <p><em>唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。</em></p>
 </blockquote>
 <hr>
-<h3 id="生活例子"><a href="#生活例子" class="headerlink" title="生活例子"></a>生活例子</h3><p>首先,同步你可以简单理解为步骤执行是严格按照顺序执行的，你做完了Step 1， 才能接着做Step 2，最后才能做Step 3。 Step 3在同步过程中，永远不可能先于Step 2执行，Step 2执行结束才会开始Step 3。</p>
-<p>异步（非同步）可以理解为上述的几个步骤在异步过程中，可能没按顺序执行，也就是Step 3可能在Step 1和Step 2执行完成前，就开始或结束了。</p>
-<p>让我们来举个例子，你要去杂货店买50件物品。正常情况下，如果你自己去购物，你首先需要拿到一个购物车，然后开始依次购买这个50件商品，一次只把一件商品放入购物车。这个完成以后，你去收银台，购物元依次扫描这些商品的价格，并且一次只扫描一个，并放入袋子里面。最后你提着袋子回家了。到目前为止一切良好，所有的这些步骤都是同步的，不能颠倒次序，所以，这过程中的每一个步骤都是阻塞的。</p>
-<p>现在，我们再来延续上述的例子，但是有变化了。这时你叫了10个朋友来帮助你。然后，你把50件物品的清单分割成50份，每份只列出其中一个物品。然后抽出其中的10份分别给你的10个朋友，然后你的10个朋友在杂货店中帮你分别买了10件物品，并放入他们各自的购物车，然后他们又回来找你拿10份清单（从剩下的40份清单抽出10份）继续购买各自的物品并放入购物车依次类推，直到清单分发完。这10个朋友帮你买东西的过程就是异步执行的。因为他们买东西的时候都是各自独立，不依赖顺序。最后他们分开在三个收银台排队结账，因为一个收银台一次只能给一个人结账，结账完毕后才到下一个人结账，这个过程就是阻塞的，必须等待。</p>
-<h3 id="从编程角度阐释"><a href="#从编程角度阐释" class="headerlink" title="从编程角度阐释"></a>从编程角度阐释</h3><p>我们分别用以上的例子说明了同步异步阻塞非阻塞。下面用编程的概念来解释上述例子。你的10个朋友可以当作10个进程或线程，他们的每个购物车可以理解为一个个阻塞队列，然后每个线程把自己的“数据”插入属于自己的阻塞队列（FIFO），之后再把“数据”从队列中取出来。然后三个收银台也可以理解成三个线程或进程，来处理10个队列的物品，收银台的数量显然不可能同时处理这些队列中的数据，所以只能按照先来先处理的顺序，一步一步处理结账，这个过程就是阻塞的。</p>
-<p>当然，异步与同步与单线程或多线程都无关，是以任务的执行顺序有关，是更加高层次的抽象概念，下面以线程举例子：</p>
+<h3 id="从编程角度阐释"><a href="#从编程角度阐释" class="headerlink" title="从编程角度阐释"></a>从编程角度阐释</h3><p>异步与同步与单线程或多线程都无关，是以任务的执行顺序有关，是更加高层次的抽象概念，下面以线程举例子：</p>
 <p>同步（一个任务的开始必须依赖另一个任务的完成）</p>
 <ul>
 <li><p>单线程：</p>
@@ -396,6 +391,9 @@
 <p>Using these definitions, the first four I/O models—blocking, nonblocking, I/O multiplexing, and signal-driven I/O—are all synchronous because the actual I/O operation (recvfrom) blocks the process. Only the asynchronous I/O model matches the asynchronous I/O definition.</p>
 </blockquote>
 <p>简单来说就是，对Unix-Like的系统来讲：阻塞式I/O(默认)，非阻塞式I/O(nonblock)，I/O复用(select/poll/epoll)都属于同步I/O，因为它们在数据由内核空间复制回进程缓冲区时都是阻塞的(不能干别的事)。只有异步I/O模型(AIO)是符合异步I/O操作的含义的，即在1数据准备完成、2由内核空间拷贝回缓冲区后 通知进程，在等待通知的这段时间里可以干别的事。</p>
+<h3 id="Reactor模式和Proactor模式"><a href="#Reactor模式和Proactor模式" class="headerlink" title="Reactor模式和Proactor模式"></a>Reactor模式和Proactor模式</h3><p>通常我们谈论事件驱动思想的时候会提到这两个模式，那么这两个模式到底有什么区别呢？</p>
+<p>在Unix标准中的同步IO中的非阻塞IO，也就是NIO（non-block IO），就是基于事件驱动思想的，实现上采用<a href="https://en.wikipedia.org/wiki/Reactor_pattern" target="_blank" rel="external">Reactor模式</a>，从程序角度而言，当发起IO的读或写操作时，是非阻塞的；当Socket有流可读或可写入Socket时，操作系统会相应地通知应用程序进行处理，应用再将流读取到缓冲区或写入操作系统。对于网络IO而言，主要有连接建立、流读取及流写入三种事件，Linux 2.6以后的版本采用epoll 方式来实现NIO。</p>
+<p>对于另一种异步IO，也就是AIO（asyn IO），同样是基于事件驱动的思想，实现上通常采用<a href="https://en.wikipedia.org/wiki/Proactor_pattern" target="_blank" rel="external">Proactor模式</a>。从程序角度而言，和NIO不同，当进行读写操作时，只需要直接调用API的read或write方法即可。这两种方法均为异步，对于读操作而言，当有流可读取时，操作系统会将可读的流传入read方法的缓冲区，并通知应用程序。对于写操作而言，当操作系统将write方法的流写入完毕时，操作系统主动通知应用程序。与NIO比较而言，AIO一方面简化了程序的编写，流的读取和写入都由操作系统来代替完成，另一方面省去了NIO中程序遍历事件通知队列的代价。windows基于<a href="https://en.wikipedia.org/wiki/Input/output_completion_port" target="_blank" rel="external">IOCP</a>实现了AIO，对，IOCP就是异步的，但是Linux目前只有基于Epoll模拟实现的AIO。显然，Linux从Epoll到AIO有一层转换，就是用同步的Epoll来模拟异步，Epoll是Reactor模式，AIO是Proactor模式。  所以这两个模式的关系，你可以简单理解为，Proactor模式是同步Reactor模式的异步体现，Proactor模式的层次更高，简化了程序编写。从复杂度来将，Reactor更反人类，因为Reactor是通知程序员有数据可以读写了，程序员再主动读写数据。Proactor模式是数据读写完毕了，再主动通知程序员。</p>
 </span>
       
     </div>
@@ -631,7 +629,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#生活例子"><span class="nav-number">1.</span> <span class="nav-text">生活例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从编程角度阐释"><span class="nav-number">2.</span> <span class="nav-text">从编程角度阐释</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#从编程角度阐释"><span class="nav-number">1.</span> <span class="nav-text">从编程角度阐释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactor模式和Proactor模式"><span class="nav-number">2.</span> <span class="nav-text">Reactor模式和Proactor模式</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
