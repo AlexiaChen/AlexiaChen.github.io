@@ -49,7 +49,7 @@
 <meta property="og:description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   从编程角度阐释异步与同步与单线程或多线程都无关，是以任务的执行顺序有关，是更加高层次的抽象概念，下面以线程举例子： 同步（一个任务的开始必须依赖另一个任务的完成）  单线程： 1231 thread: / &amp;lt;- Task 1 -&amp;gt; / |                           | / &amp;lt;- Task 2">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://wx4.sinaimg.cn/large/a1ac93f3gy1fi3136mbg4j20bj046t8m.jpg">
-<meta property="og:updated_time" content="2017-08-30T05:08:54.170Z">
+<meta property="og:updated_time" content="2017-08-30T05:56:01.265Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="再次理解同步异步和阻塞非阻塞">
 <meta name="twitter:description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   从编程角度阐释异步与同步与单线程或多线程都无关，是以任务的执行顺序有关，是更加高层次的抽象概念，下面以线程举例子： 同步（一个任务的开始必须依赖另一个任务的完成）  单线程： 1231 thread: / &amp;lt;- Task 1 -&amp;gt; / |                           | / &amp;lt;- Task 2">
@@ -394,6 +394,7 @@
 <h3 id="Reactor模式和Proactor模式"><a href="#Reactor模式和Proactor模式" class="headerlink" title="Reactor模式和Proactor模式"></a>Reactor模式和Proactor模式</h3><p>通常我们谈论事件驱动思想的时候会提到这两个模式，那么这两个模式到底有什么区别呢？</p>
 <p>在Unix标准中的同步IO中的非阻塞IO，也就是NIO（non-block IO），就是基于事件驱动思想的，实现上采用<a href="https://en.wikipedia.org/wiki/Reactor_pattern" target="_blank" rel="external">Reactor模式</a>，从程序角度而言，当发起IO的读或写操作时，是非阻塞的；当Socket有流可读或可写入Socket时，操作系统会相应地通知应用程序进行处理，应用再将流读取到缓冲区或写入操作系统。对于网络IO而言，主要有连接建立、流读取及流写入三种事件，Linux 2.6以后的版本采用epoll 方式来实现NIO。</p>
 <p>对于另一种异步IO，也就是AIO（asyn IO），同样是基于事件驱动的思想，实现上通常采用<a href="https://en.wikipedia.org/wiki/Proactor_pattern" target="_blank" rel="external">Proactor模式</a>。从程序角度而言，和NIO不同，当进行读写操作时，只需要直接调用API的read或write方法即可。这两种方法均为异步，对于读操作而言，当有流可读取时，操作系统会将可读的流传入read方法的缓冲区，并通知应用程序。对于写操作而言，当操作系统将write方法的流写入完毕时，操作系统主动通知应用程序。与NIO比较而言，AIO一方面简化了程序的编写，流的读取和写入都由操作系统来代替完成，另一方面省去了NIO中程序遍历事件通知队列的代价。windows基于<a href="https://en.wikipedia.org/wiki/Input/output_completion_port" target="_blank" rel="external">IOCP</a>实现了AIO，对，IOCP就是异步的，但是Linux目前只有基于Epoll模拟实现的AIO。显然，Linux从Epoll到AIO有一层转换，就是用同步的Epoll来模拟异步，Epoll是Reactor模式，AIO是Proactor模式。  所以这两个模式的关系，你可以简单理解为，Proactor模式是同步Reactor模式的异步体现，Proactor模式的层次更高，简化了程序编写。从复杂度来将，Reactor更反人类，因为Reactor是通知程序员有数据可以读写了，程序员再主动读写数据。Proactor模式是数据读写完毕了，再主动通知程序员。</p>
+<p>需要注意的一点就是Reactor模式一般是单线程实现，几乎所有的Reactor实现的系统都是单线程的，尽管Reactor模式也可以工作在多线程环境下，因为Proactor模式是Reactor的异步形式的变种，所以Proactor模式一般也是单线程实现的，而非多线程。</p>
 </span>
       
     </div>
@@ -562,7 +563,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/blog/archives">
-              <span class="site-state-item-count">47</span>
+              <span class="site-state-item-count">48</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
