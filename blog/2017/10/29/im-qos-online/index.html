@@ -1,0 +1,967 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="System Software Engineer" />
+
+
+
+  <meta name="keywords" content="IM,Qos," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="前言 IM应用发展至今，基于都需要实现一种叫Qos的机制，主要目的就是保证消息的可靠性，简而言之就是消息不会丢失，必然会到达对方目标地址上。这篇文章的正文会整理讲解其实现Qos的思路，所以在此之前，我们可以从问题本身出发，网络本身是不可靠的，那么我们应该怎样采用在应用层的手段来保证消息的可靠，不丢失，不重复呢？那么很简单，可以商量一个协议，就是发送给对方消息的一段时间内（超时）如果收到对方回复“我">
+<meta name="keywords" content="IM,Qos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="即时通信消息的可靠性保证---在线篇">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2017/10/29/im-qos-online/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="前言 IM应用发展至今，基于都需要实现一种叫Qos的机制，主要目的就是保证消息的可靠性，简而言之就是消息不会丢失，必然会到达对方目标地址上。这篇文章的正文会整理讲解其实现Qos的思路，所以在此之前，我们可以从问题本身出发，网络本身是不可靠的，那么我们应该怎样采用在应用层的手段来保证消息的可靠，不丢失，不重复呢？那么很简单，可以商量一个协议，就是发送给对方消息的一段时间内（超时）如果收到对方回复“我">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-10-29T13:17:58.979Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="即时通信消息的可靠性保证---在线篇">
+<meta name="twitter:description" content="前言 IM应用发展至今，基于都需要实现一种叫Qos的机制，主要目的就是保证消息的可靠性，简而言之就是消息不会丢失，必然会到达对方目标地址上。这篇文章的正文会整理讲解其实现Qos的思路，所以在此之前，我们可以从问题本身出发，网络本身是不可靠的，那么我们应该怎样采用在应用层的手段来保证消息的可靠，不丢失，不重复呢？那么很简单，可以商量一个协议，就是发送给对方消息的一段时间内（超时）如果收到对方回复“我">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> 即时通信消息的可靠性保证---在线篇 | MathxH </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br />
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              即时通信消息的可靠性保证---在线篇
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2017-10-29T19:26:00+08:00" content="2017-10-29">
+            2017-10-29
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p>IM应用发展至今，基于都需要实现一种叫<a href="https://en.wikipedia.org/wiki/Quality_of_service" target="_blank" rel="external">Qos</a>的机制，主要目的就是保证消息的可靠性，简而言之就是消息不会丢失，必然会到达对方目标地址上。这篇文章的正文会整理讲解其实现Qos的思路，所以在此之前，我们可以从问题本身出发，网络本身是不可靠的，那么我们应该怎样采用在应用层的手段来保证消息的可靠，不丢失，不重复呢？那么很简单，可以商量一个协议，就是发送给对方消息的一段时间内（超时）如果收到对方回复“我收到你的消息啦”那么就说明消息到达，如果在一定时间内没有收到，那么就认为消息没有被对方收到，就需要重发消息，这个就是ACK机制。一般的MQ等中间件就是类似这样的思路实现的Qos。</p>
+<h2 id="可靠性的概念"><a href="#可靠性的概念" class="headerlink" title="可靠性的概念"></a>可靠性的概念</h2><hr>
+<p>消息的可靠性，简而言之就是消息的不丢失（ACK机制）和不重复（去重），是IM类应用的一个重点和难点。</p>
+<h2 id="消息报文的类型"><a href="#消息报文的类型" class="headerlink" title="消息报文的类型"></a>消息报文的类型</h2><hr>
+<p>IM的Client端与Server端通过发送报文来完成消息的传递。</p>
+<p>为了简化问题，暂时把报文分为三种，实际情况不会那么简单：</p>
+<ul>
+<li>请求报文（Request）</li>
+<li>应答报文 （Acknowledge，简称ACK）</li>
+<li>通知报文（notify）</li>
+</ul>
+<p>Request报文是Client端主动向Server端发出的报文。</p>
+<p>Ack报文是Server端被动应答Client端的报文，一个Request肯定有一个与之对应的Ack，http协议就是这样一种类似的协议。</p>
+<p>Notify报文是Server端主动发送给客户端的报文。</p>
+<h2 id="最简单的普通消息投递的流程"><a href="#最简单的普通消息投递的流程" class="headerlink" title="最简单的普通消息投递的流程"></a>最简单的普通消息投递的流程</h2><hr>
+<ol>
+<li><p>Client-A向IM-Server发送一个Reuqest消息。</p>
+</li>
+<li><p>IM-Server在成功处理了Request消息之后，回复给Client-A一个Ack消息</p>
+</li>
+<li><p>如果此刻Client-B在线（这个状态由Server端来判断），则IM-Server就主动向Client-B发送一个Notify的消息，如果Client-B不在线，则消息内容会离线存储在IM-Server上。</p>
+</li>
+</ol>
+<p>看了上面的流程的之后，这样的一个流程有没有BUG呢？ 答案是，有！</p>
+<p>比如IM-Server发送Notify消息给Client-B的过程中，消息丢失了怎么办？（由于网络抖动等复杂原因） IM-Server是不知道Client-B收到没收到消息的，所以Client-B需要有一个Ack包来告诉IM-Server说明Notify消息已经收到。</p>
+<p>还有概率更小的事情，IM-Server崩溃了，导致Notify消息没有发送给Client-B。又或者Client-B崩溃了，Notify消息直接未接收到，这时候Client-B连Ack消息都不可能回发给IM-Server。</p>
+<p>最后导致一个严重的问题就是，接收方Client-B是否能收到Notify消息，发送方Client-A完全不可控，那怎么办呢？</p>
+<h2 id="应用层确认和IM消息可靠投递的六个报文"><a href="#应用层确认和IM消息可靠投递的六个报文" class="headerlink" title="应用层确认和IM消息可靠投递的六个报文"></a>应用层确认和IM消息可靠投递的六个报文</h2><hr>
+<p>在解决问题之前，先回顾下网络传输层的协议基本概念： UDP是一种不可靠的传输层协议，会乱序，会丢包。TCP是一种可靠的传输层协议，那么TCP的可靠性是怎么做到的呢？ 答案是：超时，重传，确认。 </p>
+<p>在实际的IM应用中，无论在传输层采用是UDP还是TCP协议，都需要在应用层保证Qos机制，原因在于IM的通信是两个Client端与Server端的通信，而非传统的C/S或B/S只有两方参与的通信。所以即使底层采用TCP这样的可靠协议，也需要应用层来保证消息的可靠，因为TCP的消息可靠<strong>只保证双方参与的通信</strong>。</p>
+<p>想要实现应用层的消息可靠性，必须加入应用层的确认机制。所以想要之前那样的场景，想要让发送方Client-A确保接收方Client-B一定收到了消息，必须让接收方Client-B给一个消息确认。</p>
+<p>这样应用层的通信流程得基于之前的流程增加3个步骤：</p>
+<ol>
+<li><p>Client-B在接收到IM-Server的Notify消息后，一定要向Server回复一个ACK消息</p>
+</li>
+<li><p>IM-Server在成功处理了Client-B回复的Ack消息后，又会回复一个Ack给Client-B</p>
+</li>
+<li><p>然后IM-Server再主动向Client-A发送一个Ack消息，表示Client-B接收到了消息</p>
+</li>
+</ol>
+<p>至此，Client-A才知道自己最初给Client-B的消息，Client-B已经收到，可以放心了。这6个步骤有严格的顺序，必须一步一步的发起，以下是六个步骤的整理，每个步骤对应一种属于它自己的类型的报文：</p>
+<ol>
+<li><p>Client-A向IM-Server发送一个Reuqest消息。（Message:Request）</p>
+</li>
+<li><p>IM-Server在成功处理了Request消息之后，回复给Client-A一个Ack消息 (Message: Ack)</p>
+</li>
+<li><p>如果此刻Client-B在线（这个状态由Server端来判断），则IM-Server就主动向Client-B发送一个Notify的消息，如果Client-B不在线，则消息内容会离线存储在IM-Server上。(Message: Notify)</p>
+</li>
+<li><p>Client-B在接收到IM-Server的Notify消息后，一定要向Server回复一个ACK消息 (Ack: Request)</p>
+</li>
+<li><p>IM-Server在成功处理了Client-B回复的Ack消息后，又会回复一个Ack给Client-B (Ack : Ack)</p>
+</li>
+<li><p>然后IM-Server再主动向Client-A发送一个Ack消息，表示Client-B接收到了消息 (Ack: notify)</p>
+</li>
+</ol>
+<p>以上是最核心关键的6种类型的消息报文，如果某个IM应用系统没有实现类似的6种类型的报文和步骤，那么是不可能保证消息可靠的。当然，实际IM应用肯定是还有其他基于这6种报文的扩展，或者增添其他类型的消息报文。</p>
+<h2 id="上述六个步骤存在的问题"><a href="#上述六个步骤存在的问题" class="headerlink" title="上述六个步骤存在的问题"></a>上述六个步骤存在的问题</h2><hr>
+<p>虽然以上的六种类似的报文是保证消息可靠性的基础，但是由于网络的复杂性，还是会出现问题：</p>
+<ul>
+<li><p>Message:Request, Message:Ack报文可能丢失。 没关系，直接提示Client-A消息发送失败即可</p>
+</li>
+<li><p>Message：Notify, Ack:Request, Ack:Ack, Ack:Notify这四种类型的报文都可能丢失。 这样千万不能提示Client-A发送失败了，因为网络的不可靠发生的概率稍大了，此时Client-A会收不到Ack：Notify的报文，就不能确认Client-B是否收到了自己发出的消息，需要引入消息的超时和重传。</p>
+</li>
+</ul>
+<h2 id="消息的超时和重传"><a href="#消息的超时和重传" class="headerlink" title="消息的超时和重传"></a>消息的超时和重传</h2><hr>
+<p>Client-A发出了Message:Reuqest并之后收到了Message：Ack之后，在一个期待的时间内，如果没有收到IM-Server发过来的Ack:Notify，那么Client-A会尝试将Message:Request重发。由于即时聊天是不停地在交流打字或者语音。所以可能Client-A会“同时”发出了很多Message:Reuqest，所以需要Client-A在本地内存中维护一个等待Ack:Notify的队列，并配合Timer超时机制，来记录哪些Message:Request没有收到对应的Ack:Notify，以定时重发。</p>
+<p>一旦Client-A收到了Ack:Notify，说明Client-B收到了，就将对应的Message:Request从“等待Ack:Notify的队列”中移除。</p>
+<p>注意， <font color="red">消息重传一定需要Client端来实现，以保证Server端的无状态。不然Server端还需要记录一些收到或者没收到等状态信息在数据库中，这样增大复杂度，也很没必要。</font></p>
+<h2 id="消息的去重"><a href="#消息的去重" class="headerlink" title="消息的去重"></a>消息的去重</h2><hr>
+<p>方法很简单，由发送方Client-A生成一个消息去重的Message ID，这个ID可以是MD5，SHA1等Hash算法，为了优化可以Hash算法生成的字符串的后5位或者前5位来表示Message ID。</p>
+<p>这个Message ID保存在“等待Ack:Notify队列”里面，同一条消息使用相同的Message ID来重传，Client-B依据这些ID来去重，而不影响用户体验。</p>
+<h2 id="其他注意的地方"><a href="#其他注意的地方" class="headerlink" title="其他注意的地方"></a>其他注意的地方</h2><hr>
+<ul>
+<li><p>如果Client-B不在线，IM-Server保存了离线消息以后，要伪造一个Ack-Notify消息发送给Client-A</p>
+</li>
+<li><p>离线消息的拉取，为了保证消息的可靠性，也需要有Ack机制，但是由于拉取离线消息不存在Ack:Notify报文，故实现逻辑要简单，就是当Client-B登录Server的时候，向Server先发送offline:Request拉取消息，当收到Server端发过来的offline：Notify消息后（里面包含Client-A发来的消息内容），再发送offline：Ack给Server端，Server端成功处理该消息就删除数据库中对应的这条离线消息。</p>
+</li>
+<li><p>文章目前讨论的都是一对一的单聊，而不是群聊，群聊的情况复杂得多，暂时不作讨论。</p>
+</li>
+<li><p>文章目前主要讨论的是对端Client-B在线的情况，离线的处理方式没有过多论述，下一篇会讲解离线对端的处理情况。</p>
+</li>
+</ul>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/IM/" rel="tag">#IM</a>
+          
+            <a href="/blog/tags/Qos/" rel="tag">#Qos</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/10/29/im-qos-offline/" rel="prev">即时通信消息的可靠性保证---离线篇</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/10/15/program-semantic/" rel="next">程序的含义</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">68</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="https://dendise7engithub.github.io/" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可靠性的概念"><span class="nav-number">2.</span> <span class="nav-text">可靠性的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息报文的类型"><span class="nav-number">3.</span> <span class="nav-text">消息报文的类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最简单的普通消息投递的流程"><span class="nav-number">4.</span> <span class="nav-text">最简单的普通消息投递的流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用层确认和IM消息可靠投递的六个报文"><span class="nav-number">5.</span> <span class="nav-text">应用层确认和IM消息可靠投递的六个报文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上述六个步骤存在的问题"><span class="nav-number">6.</span> <span class="nav-text">上述六个步骤存在的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息的超时和重传"><span class="nav-number">7.</span> <span class="nav-text">消息的超时和重传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息的去重"><span class="nav-number">8.</span> <span class="nav-text">消息的去重</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他注意的地方"><span class="nav-number">9.</span> <span class="nav-text">其他注意的地方</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
