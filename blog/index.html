@@ -3398,6 +3398,77 @@
           
           
             
+              <a class="post-title-link" href="/blog/2017/11/18/nginx-queue/" itemprop="url">
+                对Nginx队列源码ngx_queue_t的一次分析
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2017-11-18T13:30:00+08:00" content="2017-11-18">
+            2017-11-18
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            前言
+前几天公司的群里讨论了Nginx内部实现的一个数据结构，ngx_queue_t。 实质上是一个双向链表，但是当时讨论没有讨论出结果来，原因我自己也被绕晕了，今天本着从问题本身出发，不被别人的想法思路所左右，不看网络上任何文章的分析，好好写测试用例来证明自己的想法，其实那天的问题是围绕着两个C语
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/blog/2017/11/18/nginx-queue/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/blog/2017/10/29/im-qos-offline/" itemprop="url">
                 即时通信消息的可靠性保证---离线篇
               </a>
@@ -4045,77 +4116,6 @@ C++标准
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/blog/2017/08/09/cert-cpp-seven/" itemprop="url">
-                CERT C++编码规范翻译（ERR）
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2017-08-09T10:32:21+08:00" content="2017-08-09">
-            2017-08-09
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-            异常和错误处理ERR50-CPP. 不要突然的终止程序严重程度: 低。 允许程序在运行中非正常终止会导致一些资源没有被释放，容易遭受服务拒绝攻击。
-std::abort(),std::quick_exit()和std::_Exit()函数通常用来快速突然的终止程序运行。一旦它们被调用，那么是不会调用
-            ...
-          </span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/blog/2017/08/09/cert-cpp-seven/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -4154,7 +4154,7 @@ std::abort(),std::quick_exit()和std::_Exit()函数通常用来快速突然的�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/blog/archives">
-              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-count">54</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -4168,7 +4168,7 @@ std::abort(),std::quick_exit()和std::_Exit()函数通常用来快速突然的�
 
           <div class="site-state-item site-state-tags">
             <a href="/blog/tags">
-              <span class="site-state-item-count">68</span>
+              <span class="site-state-item-count">70</span>
               <span class="site-state-item-name">tags</span>
               </a>
           </div>
