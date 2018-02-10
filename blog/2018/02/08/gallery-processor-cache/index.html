@@ -1,0 +1,950 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="System Software Engineer" />
+
+
+
+  <meta name="keywords" content="计算机体系结构,缓存,性能优化," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="前言 大部分看过《CSAPP》这本经典的人，一般都能理解CPU缓存的大概机制，并能简单通过CPU的缓存机制来优化程序性能。 我这篇文章主要也是用一些代码样例来从一些不同的角度演示缓存的工作机制和实战中的代码优化。 Example 1：内存访问和性能 比较以下两种不同的循环，哪种循环相对更快？(不用管是什么语言的代码) 123456789int[] arr = new int[64 * 1024 *">
+<meta name="keywords" content="计算机体系结构,缓存,性能优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="处理器缓存效果概要">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2018/02/08/gallery-processor-cache/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="前言 大部分看过《CSAPP》这本经典的人，一般都能理解CPU缓存的大概机制，并能简单通过CPU的缓存机制来优化程序性能。 我这篇文章主要也是用一些代码样例来从一些不同的角度演示缓存的工作机制和实战中的代码优化。 Example 1：内存访问和性能 比较以下两种不同的循环，哪种循环相对更快？(不用管是什么语言的代码) 123456789int[] arr = new int[64 * 1024 *">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://wx1.sinaimg.cn/large/a1ac93f3gy1fo92i2adf9j20df0833yj.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/large/a1ac93f3gy1fobbmcbq3rj20df0833yj.jpg">
+<meta property="og:updated_time" content="2018-02-10T08:34:33.778Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="处理器缓存效果概要">
+<meta name="twitter:description" content="前言 大部分看过《CSAPP》这本经典的人，一般都能理解CPU缓存的大概机制，并能简单通过CPU的缓存机制来优化程序性能。 我这篇文章主要也是用一些代码样例来从一些不同的角度演示缓存的工作机制和实战中的代码优化。 Example 1：内存访问和性能 比较以下两种不同的循环，哪种循环相对更快？(不用管是什么语言的代码) 123456789int[] arr = new int[64 * 1024 *">
+<meta name="twitter:image" content="http://wx1.sinaimg.cn/large/a1ac93f3gy1fo92i2adf9j20df0833yj.jpg">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> 处理器缓存效果概要 | MathxH </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br />
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              处理器缓存效果概要
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2018-02-08T17:16:53+08:00" content="2018-02-08">
+            2018-02-08
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p>大部分看过<a href="https://book.douban.com/subject/1230413/" target="_blank" rel="external">《CSAPP》</a>这本经典的人，一般都能理解CPU缓存的大概机制，并能简单通过CPU的缓存机制来优化程序性能。</p>
+<p>我这篇文章主要也是用一些代码样例来从一些不同的角度演示缓存的工作机制和实战中的代码优化。</p>
+<h2 id="Example-1：内存访问和性能"><a href="#Example-1：内存访问和性能" class="headerlink" title="Example 1：内存访问和性能"></a>Example 1：内存访问和性能</h2><hr>
+<p>比较以下两种不同的循环，哪种循环相对更快？(不用管是什么语言的代码)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span>[] arr = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">64</span> * <span class="number">1024</span> * <span class="number">1024</span>]; <span class="comment">// 128MB</span></div><div class="line"></div><div class="line"><span class="comment">// Loop 1</span></div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.Length; i++) </div><div class="line">    arr[i] *= <span class="number">3</span>;</div><div class="line"></div><div class="line"><span class="comment">// Loop 2</span></div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.Length; i += <span class="number">16</span>) </div><div class="line">    arr[i] *= <span class="number">3</span>;</div></pre></td></tr></table></figure>
+<p>如果不出意外，只要写过代码的人，直观上就可以判断出来，哪段更快，很明显，Loop 2中的循环的步长为16，每16个进行一次乘法运算，而Loop 1中是每一个元素都需要进行乘法运算。显然易见，Loop 2只做了Loop 1的工作量的6%（（64/16）/64）。</p>
+<p>以上对代码的分析貌似是正确的，但是在现代处理器体系架构下从实际代码运行性能的分析，这两个循环花费的时间差不多（Loop 1是80ms，Loop 2是78ms）。显然Loop 2花费的时间不是Loop 1的6%。为什么？ 怎么与设想的不符呢？</p>
+<p>原因是，两个循环都在内存访问上花费了大致相同的时间。运行时花费的代价反而是对数组的内存访问上，而不是循环体内的整型乘法运算。</p>
+<h2 id="Example-2-缓存行（Cache-Line）的影响"><a href="#Example-2-缓存行（Cache-Line）的影响" class="headerlink" title="Example 2: 缓存行（Cache Line）的影响"></a>Example 2: 缓存行（Cache Line）的影响</h2><hr>
+<p>来，下面我们来对以上例子代码进行一次更深入的探索，循环步长的值不再是1和16了，而把其改为一个变量，设为K：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.Length; i += K) </div><div class="line">    arr[i] *= <span class="number">3</span>;</div></pre></td></tr></table></figure>
+<p>对K设不同的值，观察循环性能的变化曲线：</p>
+<p><img src="http://wx1.sinaimg.cn/large/a1ac93f3gy1fo92i2adf9j20df0833yj.jpg" alt=""></p>
+<p>由上图看到了，K值在1到16之间，性能的变化不明显，耗费的时间都相差不大。</p>
+<p>但是，在16以后，步长每增加2倍，运行耗费的时间几乎减半。为什么？</p>
+<p>这种现象背后的原因是当今的现代CPU不会一个字节一个字节的访问内存。相反，CPU它一般会直接把内存中相邻的内存以64字节每块（chunk）组成的块状数据取到缓存中，这种就叫缓存行。（64字节算一个缓存行，缓存行可以一次取多个）。当你在读取一个特定的内存地址上的数据的时候，CPU就会把以当前内存地址开始以后的64字节读入到缓存中，所以访问在一个相同的缓存行中的任何数据，所花费的时间都差不多，而且代价小很多。</p>
+<p>讲解到这里，你应该就能理解为什么当步长为1和16时，循环所花费的时间差不多了，因为步长1到16之间的数据都在一个相同的缓存行中，16*sizeof(int)=64字节。 正好是一个缓存行。你可以想象CPU已经把这个128MB的数组全部放到了缓存中，每64字节组成一个缓存行。所以步长为32的时候，每一次循环就访问一个新的缓存行，当步长为64的时候，循环以一次每4个缓存行来访问。</p>
+<p>所以理解缓存行的机制，对于程序优化很重要。比如，数据对齐可能会决定一个CPU的操作会触碰到1个还是2个缓存行。如果数据没对齐，那么一次取数可能对于CPU要做2次操作。</p>
+<h2 id="Example-3-L1-和-L2缓存的大小"><a href="#Example-3-L1-和-L2缓存的大小" class="headerlink" title="Example 3: L1 和 L2缓存的大小"></a>Example 3: L1 和 L2缓存的大小</h2><hr>
+<p>当今计算机，一般都有二级缓存了，L1和L2，甚至还有L3缓存了。如果你想知道不同缓存和缓存行的大小，你还需要用工具和系统提供相关的API来细致分析。因为缓存行真不一定是64字节。windows上你可以通过<a href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/coreinfo" target="_blank" rel="external">CoreInfo</a>这个工具来查看缓存详细信息，或者通过调用<a href="https://msdn.microsoft.com/en-us/library/ms683194\(VS.85\" target="_blank" rel="external">GetLogicalProcessorInformation</a>.aspx)这个Win32 API来实现查找缓存相关详情。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">D:\MathxH\tools\Coreinfo&gt;Coreinfo.exe -c -l</div><div class="line"></div><div class="line">Coreinfo v3.31 - Dump information on system CPU and memory topology</div><div class="line">Copyright (C) 2008-2014 Mark Russinovich</div><div class="line">Sysinternals - www.sysinternals.com</div><div class="line"></div><div class="line">Logical to Physical Processor Map:</div><div class="line">**--  Physical Processor 0 (Hyperthreaded)</div><div class="line">--**  Physical Processor 1 (Hyperthreaded)</div><div class="line"></div><div class="line">Logical Processor to Cache Map:</div><div class="line">**--  Data Cache          0, Level 1,   32 KB, Assoc   8, LineSize  64</div><div class="line">**--  Instruction Cache   0, Level 1,   32 KB, Assoc   8, LineSize  64</div><div class="line">**--  Unified Cache       0, Level 2,  256 KB, Assoc   8, LineSize  64</div><div class="line">****  Unified Cache       1, Level 3,    3 MB, Assoc  12, LineSize  64</div><div class="line">--**  Data Cache          1, Level 1,   32 KB, Assoc   8, LineSize  64</div><div class="line">--**  Instruction Cache   1, Level 1,   32 KB, Assoc   8, LineSize  64</div><div class="line">--**  Unified Cache       2, Level 2,  256 KB, Assoc   8, LineSize  64</div></pre></td></tr></table></figure>
+<p>在我这台ThinkPad破本上用windows相关命令行查看到的缓存信息是，有三级缓存，并且缓存行的大小都是64字节。32KB的L1数据缓存，32KB的L1指令缓存还有3MB的L3缓存等。</p>
+<p>好我们再来分析一下下面的代码程序:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> steps = <span class="number">64</span> * <span class="number">1024</span> * <span class="number">1024</span>; <span class="comment">// 64MB</span></div><div class="line"><span class="keyword">int</span> lengthMod = arr.Length - <span class="number">1</span>;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; steps; i++)</div><div class="line">&#123;</div><div class="line">    arr[(i * <span class="number">16</span>) &amp; lengthMod]++; <span class="comment">// (x &amp; lengthMod) 相当于 (x % arr.Length)</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以下是以上代码片段随着数组大小增大的性能曲线图:</p>
+<p><img src="http://wx1.sinaimg.cn/large/a1ac93f3gy1fobbmcbq3rj20df0833yj.jpg" alt=""></p>
+<p>因为L1是32KB, L2是256KB，L3是3MB。所以你可以看到大约在数组大小超过32KB，256KB，3MB或4MB以后会有明显的性能下降，也就是耗费的时间越多。</p>
+<h2 id="Example-4-指令级并行"><a href="#Example-4-指令级并行" class="headerlink" title="Example 4 指令级并行"></a>Example 4 指令级并行</h2><hr>
+<p>现在，我们来看看一些不一样的地方。以下两个循环，谁会更快？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> steps = <span class="number">256</span> * <span class="number">1024</span> * <span class="number">1024</span>; <span class="comment">//256MB</span></div><div class="line"></div><div class="line"><span class="keyword">int</span> [] a = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</div><div class="line"></div><div class="line"><span class="comment">//Loop 1</span></div><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; steps; ++i)</div><div class="line">&#123;</div><div class="line">    a[<span class="number">0</span>]++; <span class="comment">// op1</span></div><div class="line">    a[<span class="number">0</span>]++;  <span class="comment">// op2</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Loop 2</span></div><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; steps; ++i)</div><div class="line">&#123;</div><div class="line">    a[<span class="number">0</span>]++;  <span class="comment">// op1</span></div><div class="line">    a[<span class="number">1</span>]++;  <span class="comment">// op2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>很多人一眼看上去貌似是一样快，但是我几乎在所有的机器上测试过，几乎都是Loop 2快过Loop 1。为什么？ 这就需要认真分析两个循环体里面的操作依赖性了。</p>
+<p>在Loop 1的循环体中op1和op2是有依赖关系的，op2的操作执行必须等到op1完成才能开始。而Loop 2的循环体中，op1和op2没有依赖关系，理论上可以同时完成，这个就为处理器提供了优化的可行性。</p>
+<p>现代处理器对Loop 2这种情况有多种的并发处理方式，他可以在L1缓存中同时访问a[0]和a[1]，并同时执行op1和op2这两个算数运算。但是在Loop 1中，处理器就没有机会利用指令级并行了。</p>
+<h2 id="Example-5-缓存相联"><a href="#Example-5-缓存相联" class="headerlink" title="Example 5 缓存相联"></a>Example 5 缓存相联</h2><hr>
+<p>在缓存的设计中，有一个关键的决定就是是否要把主内存的每个chunk都存储到每个缓存中，或者只是选择多个缓存的其中几个。</p>
+<p>在现代处理器体系中，就有如下几种方式来把多个缓存映射到主内存的块中：</p>
+<ul>
+<li><p>直接映射缓存，每个内存块只可能被映射到其中一个特定的缓存槽中，是一对一的关系。这种算法就简单的实现方式就是，把主内存的块的index映射到缓存中(chunk index % 缓存槽数)。块下标对缓存槽数取模运算。两个内存块不可能同时都存放在一个相同的缓存槽中。</p>
+</li>
+<li><p>N路相联缓存（组相联缓存），每一个主内存上的块能被存储到N个特定缓存槽中的其中一个槽中。例如，在16路相联缓存中，每个内存块被存储到特定的16个不同的缓存槽中（16个槽的其中一个）。通常的实现是块的index的最低序列位来表示16个不同的槽</p>
+</li>
+<li><p>全相联缓存， 每个内存块可能会被存储到任何一个缓存槽中。类似于操作Hash表这样的数据结构。</p>
+</li>
+</ul>
+<p>直接映射缓存容易造成冲突，因为可能会有多个内存块都被映射到相同的内存槽中了，这样会造成缓存频繁的抖动（内存块不停地换入换出，命中率下降）。另一方面，对于全相联缓存比较复杂，硬件实现成本也高。所以N路相联缓存是现代处理器缓存典型的解决方案，它在实现成本和友好的命中率上做了很好的折中和取舍。</p>
+<p>例如，在我的电脑上，3MB的L3缓存就是12路相联，32KB的L1缓存和256KB的L2缓存都是8路相联。对于L3缓存，所有的64字节的内存块都会基于自身的index被映射到L3缓存中的特定的12个不同的槽中。</p>
+<p>因为L3缓存有4096（2^12 = 4096）个槽，那么每个集合就有12个槽相联,那么就有341个集合。2^8 约等于 341 。 所以chunk index的低8位就决定了这个块存放在那个集合中。</p>
+<p>显然，缓存的相联方案也会影响性能，但是这里就不再深入，这方面知识也不是本篇文章的重点。还有一个原因就是我目前暂时不能给大家讲解清楚。</p>
+<h2 id="Example-6-缓存行伪共享"><a href="#Example-6-缓存行伪共享" class="headerlink" title="Example 6 缓存行伪共享"></a>Example 6 缓存行伪共享</h2><hr>
+<p>在多核机器上，缓存就有遭遇到另一个问题—–并发一致性。不同的核一般来说都有属于自己的缓存。我的机器上L1一般都有属于自己的核，L2是多个核共享的缓存。在现代多核架构中缓存一般有多个层级，速度越快越“接近”核的缓存约属于单个核所有。</p>
+<p>当一个核修改了它自身缓存中的一个值的时候，那么其他处理器的核就不能再使用原来的值了，这就导致了缓存失效。</p>
+<p>为了演示这个问题，考虑下面的代码样例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span>[] s_counter = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">1024</span>];</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">UpdateCounter</span><span class="params">(<span class="keyword">int</span> position)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">100000000</span>; j++)</div><div class="line">    &#123;</div><div class="line">        s_counter[position] = s_counter[position] + <span class="number">3</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上这段代码如果在多核机器上，用四个不同的线程分别执行UpdateCounter(0),UpdateCounter(1),UpdateCounter(2),UpdateCounter(3)等到四个线程的结束时所花费的时间记为T1。</p>
+<p>如果你用四个线程分别执行UpdateCounter(16),UpdateCounter(32),UpdateCounter(48),UpdateCounter(64)等到四个线程结束时所花费的时间记为T2。</p>
+<p>这两种不同的方式比较性能，T2比T1少！</p>
+<p>为什么？ 方法一中的0，1，2，3所取的数据几乎都在一个缓存行中，其中一个核每更新计数一次，那么整个缓存行就失效了，那么其他核取数据就cache miss了。如果这样，需要关闭缓存机制。方法二中，是因为不同线程所取的数据在不同的缓存行中，这样就提高了并发量</p>
+<h2 id="Example-7-硬件复杂性"><a href="#Example-7-硬件复杂性" class="headerlink" title="Example 7 硬件复杂性"></a>Example 7 硬件复杂性</h2><hr>
+<p>好吧，即使你完全了解之前所讲述的缓存机制，但是在实战中，还不一定照葫芦画瓢就能轻而易举通过优化程序提高性能，一些个别的硬件体系在有些时候还是会使你震惊，不同处理器架构的优化手段也不尽相同。</p>
+<p>比如，在有些处理器架构中，L1缓存可以存在并行（如果从不同卡槽来访问），如果是来自相同卡槽的访问那么L1缓存就可能是顺序访问了。有时候，处理器作出的优化，也能让你吃惊，你的优化是多余的。 :) </p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><hr>
+<p> 还是不喜欢通过缓存特性来优化程序，虽然很多高性能的网络框架用到了这些缓存的原理，但是我还是喜欢算法级别的优化。原因就是Example 7，由于硬件的复杂性，很难写出跨平台的缓存利用友好的高性能程序，也很难根据硬件特性来预测程序性能。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/计算机体系结构/" rel="tag">#计算机体系结构</a>
+          
+            <a href="/blog/tags/缓存/" rel="tag">#缓存</a>
+          
+            <a href="/blog/tags/性能优化/" rel="tag">#性能优化</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/12/15/cert-java-zero/" rel="next">CERT Java编码规范翻译（DCL）</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">78</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="https://dendise7engithub.github.io/" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-1：内存访问和性能"><span class="nav-number">2.</span> <span class="nav-text">Example 1：内存访问和性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-2-缓存行（Cache-Line）的影响"><span class="nav-number">3.</span> <span class="nav-text">Example 2: 缓存行（Cache Line）的影响</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-3-L1-和-L2缓存的大小"><span class="nav-number">4.</span> <span class="nav-text">Example 3: L1 和 L2缓存的大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-4-指令级并行"><span class="nav-number">5.</span> <span class="nav-text">Example 4 指令级并行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-5-缓存相联"><span class="nav-number">6.</span> <span class="nav-text">Example 5 缓存相联</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-6-缓存行伪共享"><span class="nav-number">7.</span> <span class="nav-text">Example 6 缓存行伪共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-7-硬件复杂性"><span class="nav-number">8.</span> <span class="nav-text">Example 7 硬件复杂性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
