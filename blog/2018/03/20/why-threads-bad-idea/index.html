@@ -31,7 +31,7 @@
 
 
 
-  <meta name="keywords" content="软件开发," />
+  <meta name="keywords" content="线程," />
 
 
 
@@ -40,18 +40,18 @@
   <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="开源开源社区，开源软件的发展大大减少的程序员的劳动力，降低了生产门槛。随着这几年开源运动的发展，GitHub,StackOverflow的出现，以及各大厂商拥抱开源以后，软件开发变成了软件的组装，开源组件（系统）降低了软件的研发成本，让超小的研发团队就能控制超大的系统软件。也正是因为这样，才像雨后春笋一般催生了各种互联网的创业中小型公司。 软件开发模型软件的开发变得无比敏捷，从以前的瀑布模型到现在">
-<meta name="keywords" content="软件开发">
+<meta name="description" content="简介 什么是线程？  诞生并成长于操作系统这个世界中 在用户级别的工具中慢慢演进 被提议为多种多样的问题的一种解决方案  那么，上面说的如此明确了，我们是否在现实工作中成为一个彻头彻尾的“多线程程序员”呢？ 多线程带来的问题： 多线程程序很难编写 相对于多线程的一个折中方案： 采用事件驱动的思想 声明：  对于大多数的场景，事件要比多线程更好 多线程一般只能用于真正确实需要用到CPU并行的场景">
+<meta name="keywords" content="线程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="软件的未来">
-<meta property="og:url" content="https://alexiachen.github.io/blog/2016/08/05/open-source-power/index.html">
+<meta property="og:title" content="为什么使用多线程在大多数情况下是个坏注意？">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2018/03/20/why-threads-bad-idea/index.html">
 <meta property="og:site_name" content="MathxH">
-<meta property="og:description" content="开源开源社区，开源软件的发展大大减少的程序员的劳动力，降低了生产门槛。随着这几年开源运动的发展，GitHub,StackOverflow的出现，以及各大厂商拥抱开源以后，软件开发变成了软件的组装，开源组件（系统）降低了软件的研发成本，让超小的研发团队就能控制超大的系统软件。也正是因为这样，才像雨后春笋一般催生了各种互联网的创业中小型公司。 软件开发模型软件的开发变得无比敏捷，从以前的瀑布模型到现在">
+<meta property="og:description" content="简介 什么是线程？  诞生并成长于操作系统这个世界中 在用户级别的工具中慢慢演进 被提议为多种多样的问题的一种解决方案  那么，上面说的如此明确了，我们是否在现实工作中成为一个彻头彻尾的“多线程程序员”呢？ 多线程带来的问题： 多线程程序很难编写 相对于多线程的一个折中方案： 采用事件驱动的思想 声明：  对于大多数的场景，事件要比多线程更好 多线程一般只能用于真正确实需要用到CPU并行的场景">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-02-21T09:22:17.399Z">
+<meta property="og:updated_time" content="2018-03-21T06:17:29.525Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="软件的未来">
-<meta name="twitter:description" content="开源开源社区，开源软件的发展大大减少的程序员的劳动力，降低了生产门槛。随着这几年开源运动的发展，GitHub,StackOverflow的出现，以及各大厂商拥抱开源以后，软件开发变成了软件的组装，开源组件（系统）降低了软件的研发成本，让超小的研发团队就能控制超大的系统软件。也正是因为这样，才像雨后春笋一般催生了各种互联网的创业中小型公司。 软件开发模型软件的开发变得无比敏捷，从以前的瀑布模型到现在">
+<meta name="twitter:title" content="为什么使用多线程在大多数情况下是个坏注意？">
+<meta name="twitter:description" content="简介 什么是线程？  诞生并成长于操作系统这个世界中 在用户级别的工具中慢慢演进 被提议为多种多样的问题的一种解决方案  那么，上面说的如此明确了，我们是否在现实工作中成为一个彻头彻尾的“多线程程序员”呢？ 多线程带来的问题： 多线程程序很难编写 相对于多线程的一个折中方案： 采用事件驱动的思想 声明：  对于大多数的场景，事件要比多线程更好 多线程一般只能用于真正确实需要用到CPU并行的场景">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -61,7 +61,7 @@
   };
 </script>
 
-  <title> 软件的未来 | MathxH </title>
+  <title> 为什么使用多线程在大多数情况下是个坏注意？ | MathxH </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -318,7 +318,7 @@
           
           
             
-              软件的未来
+              为什么使用多线程在大多数情况下是个坏注意？
             
           
         </h1>
@@ -327,8 +327,8 @@
       <div class="post-meta">
         <span class="post-time">
           Posted on
-          <time itemprop="dateCreated" datetime="2016-08-05T13:55:27+08:00" content="2016-08-05">
-            2016-08-05
+          <time itemprop="dateCreated" datetime="2018-03-20T14:00:00+08:00" content="2018-03-20">
+            2018-03-20
           </time>
         </span>
 
@@ -346,12 +346,90 @@
       
 
       
-        <span itemprop="articleBody"><h1 id="开源"><a href="#开源" class="headerlink" title="开源"></a>开源</h1><p>开源社区，开源软件的发展大大减少的程序员的劳动力，降低了生产门槛。随着这几年开源运动的发展，GitHub,StackOverflow的出现，以及各大厂商拥抱开源以后，软件开发变成了软件的组装，开源组件（系统）降低了软件的研发成本，让超小的研发团队就能控制超大的系统软件。也正是因为这样，才像雨后春笋一般催生了各种互联网的创业中小型公司。</p>
-<h1 id="软件开发模型"><a href="#软件开发模型" class="headerlink" title="软件开发模型"></a>软件开发模型</h1><p>软件的开发变得无比敏捷，从以前的瀑布模型到现在的增量式迭代开发，持续集成，持续交付，容器微服务等这些工程实践，让软件的发布速率提高了几个数量级。</p>
-<h1 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h1><p>数据的地位慢慢超过了算法，因果关系变得不再重要，智能硬件机器的大规模普及产生了很多数据，从大数据中挖掘出相关性就可以分析出无法估量的潜在价值。10年前Google的GFS,MapReduce,BigTable这三篇论文打开了大数据的大门，而现在Hadoop，Apache Spark是互联网数据分析的标配，大量的数据也催生了刚开始快速发展的机器学习和深度学习。</p>
-<h1 id="云计算"><a href="#云计算" class="headerlink" title="云计算"></a>云计算</h1><p>云计算的普及，资源的虚拟化让无数创业公司形成了可能，进一步降低了运营成本。软件的架构变化从单机逐渐转向到了多机的分布式集群。</p>
-<h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><p>随着V8引擎的出现，javascript性能的大幅度提升，软件不再是Native App，而是Web App或是Hybird。Web应用越来越移动化。Html5 CSS3的发展使得Web页面更加细腻丰富，带来了响应式网页的概念,同时更好的适配多种设备。</p>
-<h1 id="编程语言"><a href="#编程语言" class="headerlink" title="编程语言"></a>编程语言</h1><p>编程语言越来越多样化，软件越来越平民化，编程的门槛大幅度降低，很多人经过简单的培训，自学就可以胜任开发工作。今后，更多的DSL出现，企业自动化，信息化的发展让各领域的人都需要编程的技能。</p>
+        <span itemprop="articleBody"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><hr>
+<p>什么是线程？</p>
+<ul>
+<li>诞生并成长于操作系统这个世界中</li>
+<li>在用户级别的工具中慢慢演进</li>
+<li>被提议为多种多样的问题的一种解决方案</li>
+</ul>
+<p>那么，上面说的如此明确了，我们是否在现实工作中成为一个彻头彻尾的“多线程程序员”呢？</p>
+<p>多线程带来的问题： 多线程程序很难编写</p>
+<p>相对于多线程的一个折中方案： 采用事件驱动的思想</p>
+<p>声明：</p>
+<ul>
+<li>对于大多数的场景，事件要比多线程更好</li>
+<li>多线程一般只能用于真正确实需要用到CPU并行的场景</li>
+</ul>
+<h2 id="多线程的使用场景"><a href="#多线程的使用场景" class="headerlink" title="多线程的使用场景"></a>多线程的使用场景</h2><hr>
+<ul>
+<li>操作系统： 一个内核线程对应一个用户进程</li>
+<li>科学计算： 一个线程可以绑定到一个CPU上执行，有效利用多核，提高性能。（比如大规模非线性方程组运算等等）</li>
+<li><p>分布式系统： 大量进程的并发请求（IO复用）</p>
+</li>
+<li><p>GUI编程： 线程对应用户的Action（按钮点击等）。比如需要一个后台线程长时间做运算，并最终显示结果在GUI上。</p>
+</li>
+<li><p>多媒体，动画： 类似于GUI</p>
+</li>
+</ul>
+<h2 id="为什么多线程很难"><a href="#为什么多线程很难" class="headerlink" title="为什么多线程很难"></a>为什么多线程很难</h2><hr>
+<ul>
+<li><p>同步：访问共享数据的时候都要加锁。忘记加锁了？对不起，数据损毁。</p>
+</li>
+<li><p>死锁： 多线程访问多个锁，锁之间有循环依赖。多个进程互相等待，造成系统挂起</p>
+</li>
+<li><p>难以Debug： 数据依赖，操作时序依赖</p>
+</li>
+<li><p>多线程破坏了抽象： 不能设计独立强的模块</p>
+</li>
+<li><p>回调函数不能与锁一起良好进行工作</p>
+</li>
+<li><p>很难达到理想性能：锁的粒度控制不好容易造成并发度降低，操作系统的调度和上下文切换机制限制了软件性能（用户态切换到内核态的时间是很昂贵的）</p>
+</li>
+<li><p>多线程不被良好支持： 操作系统提供的原生线程API不兼容，难以移植。</p>
+</li>
+</ul>
+<h2 id="事件驱动编程"><a href="#事件驱动编程" class="headerlink" title="事件驱动编程"></a>事件驱动编程</h2><hr>
+<ul>
+<li>单个执行流： 没有CPU并行</li>
+<li>可以注册感兴趣的事件（通过回调函数）</li>
+<li>Event-loop等待事件，并调用对应的event handler</li>
+<li>event handler之间没有优先级（内核线程调度有优先级）</li>
+<li>event handler的生命周期很短 （内核线程创建销毁耗时）</li>
+</ul>
+<h2 id="事件驱动编程被用在哪些场景"><a href="#事件驱动编程被用在哪些场景" class="headerlink" title="事件驱动编程被用在哪些场景"></a>事件驱动编程被用在哪些场景</h2><hr>
+<ul>
+<li><p>大多数的GUI框架，按钮响应等对应一个Event，一个Event对应一个Event Handler。一个Event Handler可以实现一些行为，打开文件，删除等等</p>
+</li>
+<li><p>分布式系统。一个handler对应每个输入源（Socket），handler处理请求和回送响应。事件驱动型的IO复用。</p>
+</li>
+</ul>
+<h2 id="事件驱动带来的问题"><a href="#事件驱动带来的问题" class="headerlink" title="事件驱动带来的问题"></a>事件驱动带来的问题</h2><hr>
+<ul>
+<li><p>handler如果进行长时间的运算，会导致程序长时间无响应（因为是单线程执行流，比如node.js）。对于这种耗时的运算，可以fork一个子进程来处理，子进程通过事件来通知主进程自己的完成情况。</p>
+</li>
+<li><p>不能跨事件的维护一个local state。（handler必须返回）</p>
+</li>
+<li><p>单线程执行流不能利用多核，也就是不适用于科学计算软件</p>
+</li>
+</ul>
+<h2 id="事件VS多线程"><a href="#事件VS多线程" class="headerlink" title="事件VS多线程"></a>事件VS多线程</h2><hr>
+<ul>
+<li><p>事件尽可能避免了并发，多线程相反。事件驱动更好入门，没有数据竞争和死锁。多线程可能对于一个简单场景用起来都更复杂。</p>
+</li>
+<li><p>事件驱动的程序更好Debug。时序依赖只跟事件有关，没有内部调度。</p>
+</li>
+<li><p>事件驱动在单核CPU上性能往往比多线程的程序性能更好。</p>
+</li>
+<li><p>事件驱动的程序比多线程程序更好移植。</p>
+</li>
+<li><p>多线程程序才能真正利用多核</p>
+</li>
+</ul>
+<h2 id="你应该放弃多线程吗"><a href="#你应该放弃多线程吗" class="headerlink" title="你应该放弃多线程吗"></a>你应该放弃多线程吗</h2><hr>
+<ul>
+<li>不能，在高性能服务器上必须有效利用多线程，比如数据库软件。</li>
+</ul>
 </span>
       
     </div>
@@ -360,7 +438,7 @@
       
         <div class="post-tags">
           
-            <a href="/blog/tags/软件开发/" rel="tag">#软件开发</a>
+            <a href="/blog/tags/线程/" rel="tag">#线程</a>
           
         </div>
       
@@ -369,13 +447,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/blog/2016/08/26/fix-bug/" rel="prev">有关于修BUG的一个思考</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/blog/2016/07/30/foot-print/" rel="next">我的足迹</a>
+              <a href="/blog/2018/03/14/stephen-hawking/" rel="next">霍金</a>
             
           </div>
         </div>
@@ -583,7 +659,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开源"><span class="nav-number">1.</span> <span class="nav-text">开源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#软件开发模型"><span class="nav-number">2.</span> <span class="nav-text">软件开发模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据"><span class="nav-number">3.</span> <span class="nav-text">数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#云计算"><span class="nav-number">4.</span> <span class="nav-text">云计算</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Web"><span class="nav-number">5.</span> <span class="nav-text">Web</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编程语言"><span class="nav-number">6.</span> <span class="nav-text">编程语言</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程的使用场景"><span class="nav-number">2.</span> <span class="nav-text">多线程的使用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么多线程很难"><span class="nav-number">3.</span> <span class="nav-text">为什么多线程很难</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件驱动编程"><span class="nav-number">4.</span> <span class="nav-text">事件驱动编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件驱动编程被用在哪些场景"><span class="nav-number">5.</span> <span class="nav-text">事件驱动编程被用在哪些场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件驱动带来的问题"><span class="nav-number">6.</span> <span class="nav-text">事件驱动带来的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件VS多线程"><span class="nav-number">7.</span> <span class="nav-text">事件VS多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#你应该放弃多线程吗"><span class="nav-number">8.</span> <span class="nav-text">你应该放弃多线程吗</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
