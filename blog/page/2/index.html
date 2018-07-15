@@ -3398,81 +3398,6 @@
           
           
             
-              <a class="post-title-link" href="/blog/2017/10/29/im-qos-offline/" itemprop="url">
-                即时通信消息的可靠性保证---离线篇
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2017-10-29T21:26:00+08:00" content="2017-10-29">
-            2017-10-29
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-            前言
-上一篇讲解了IM消息可靠性保证的双方在线情况，以及实现方案。那如果Client-B不在线，IM应用又是如何保证消息的可达性的呢？ 这就是本文所要讨论的问题。
-消息接收方不在线时的简化流程
-
-步骤1，User-A发送一条消息给User-B
-步骤2，IM-Server查看User-B的状态，发现B
-            ...
-          </span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/blog/2017/10/29/im-qos-offline/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
               <a class="post-title-link" href="/blog/2017/10/29/im-qos-online/" itemprop="url">
                 即时通信消息的可靠性保证---在线篇
               </a>
@@ -4095,6 +4020,79 @@ std::abort(),std::quick_exit()和std::_Exit()函数通常用来快速突然的�
           </span>
           <div class="post-more-link text-center">
             <a class="btn" href="/blog/2017/08/09/cert-cpp-seven/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/blog/2017/08/09/cert-cpp-six/" itemprop="url">
+                CERT C++编码规范翻译(FIO)
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2017-08-09T09:25:46+08:00" content="2017-08-09">
+            2017-08-09
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            文件IOFIO50-CPP. 在使用文件流输入输出的时候不要不使用中介定位调用严重程度:低。如果在使用文件流做输入输出的时候没有调用中介flush和中介定位那么就是未定义行为。
+C++标准[filebuf]有如下声明:
+
+The restrictions on reading and writing
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/blog/2017/08/09/cert-cpp-six/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
