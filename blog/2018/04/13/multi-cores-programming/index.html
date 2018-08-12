@@ -1,0 +1,960 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="System Software Engineer" />
+
+
+
+  <meta name="keywords" content="多线程编程,多核编程," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="这篇文章主要是看brpc的文档的心得体会吧，brpc算是国内高性能RPC框架中文档写得最好，最有诚意的作品了。就算不看它的源码，看它的文档也能收获很大，干货满满，在这过程中也解答了我以前的困惑。  前言 在开篇之前，我想说点文体风格，由于阅读brpc的文档给了我巨大的收获，所以文体的风格会以问答的方式展开。顺便给出原理解释，还有感受下戈君大神在文档中浸淫多年的软件基础设施工程实践心得体会。我文字">
+<meta name="keywords" content="多线程编程,多核编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多核编程的相关理论及实践">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2018/04/13/multi-cores-programming/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="这篇文章主要是看brpc的文档的心得体会吧，brpc算是国内高性能RPC框架中文档写得最好，最有诚意的作品了。就算不看它的源码，看它的文档也能收获很大，干货满满，在这过程中也解答了我以前的困惑。  前言 在开篇之前，我想说点文体风格，由于阅读brpc的文档给了我巨大的收获，所以文体的风格会以问答的方式展开。顺便给出原理解释，还有感受下戈君大神在文档中浸淫多年的软件基础设施工程实践心得体会。我文字">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-08-12T11:25:34.100Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="多核编程的相关理论及实践">
+<meta name="twitter:description" content="这篇文章主要是看brpc的文档的心得体会吧，brpc算是国内高性能RPC框架中文档写得最好，最有诚意的作品了。就算不看它的源码，看它的文档也能收获很大，干货满满，在这过程中也解答了我以前的困惑。  前言 在开篇之前，我想说点文体风格，由于阅读brpc的文档给了我巨大的收获，所以文体的风格会以问答的方式展开。顺便给出原理解释，还有感受下戈君大神在文档中浸淫多年的软件基础设施工程实践心得体会。我文字">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> 多核编程的相关理论及实践 | MathxH </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br />
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              多核编程的相关理论及实践
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2018-04-13T12:01:23-04:00" content="2018-04-13">
+            2018-04-13
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><blockquote>
+<p><em>这篇文章主要是看brpc的文档的心得体会吧，brpc算是国内高性能RPC框架中文档写得最好，最有诚意的作品了。就算不看它的源码，看它的文档也能收获很大，干货满满，在这过程中也解答了我以前的困惑。</em></p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p>在开篇之前，我想说点文体风格，由于阅读<a href="https://github.com/brpc/brpc" target="_blank" rel="noopener">brpc</a>的文档给了我巨大的收获，所以文体的风格会以问答的方式展开。顺便给出原理解释，还有感受下<a href="https://www.linkedin.com/in/gejun" target="_blank" rel="noopener">戈君大神</a>在文档中浸淫多年的软件基础设施工程实践心得体会。我文字理解驾驭不了的地方会选择性地摘抄文档内容。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><hr>
+<h3 id="1-如何针对写多读少的场景设计一个多线程计数器？"><a href="#1-如何针对写多读少的场景设计一个多线程计数器？" class="headerlink" title="1. 如何针对写多读少的场景设计一个多线程计数器？"></a>1. 如何针对写多读少的场景设计一个多线程计数器？</h3><p>大部分RPC框架，或者其他中间件或多或少都需要有这样的需求，因为这些中间件基本都是主打高性能的，高效利用多核多线程。既然是高性能，都需要为它设计计数器，目的是为了方<br>便统计各种服务的调用次数，还有其他性能参数（QPS,平均延时），以达到监控服务，调优服务的最终目的。<br>本着最直观的理解，写下了如下最简单的计数器代码:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">int</span> global_count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//高并发下，多线程调用这个服务，显而易见需要加锁解锁，构成一个临界区</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">service</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    lock();</span><br><span class="line">    global_count++;</span><br><span class="line">    unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以上代码是正确的，global_count在多线程调用的累加下不会出错。但是由于多线程高频率修改global_count，性能可能没你想象的好，因为造成了大量的<a href="https://en.wikipedia.org/wiki/Race_condition" target="_blank" rel="noopener">Race Condition</a>。这时候锁的性能造成了瓶颈。你不得不想方设法的绕开锁的限制。</p>
+<p>这里有一点值得注意，C++提供的std::mutex在大部分不压榨性能的场景足够用了，造成std::mutex性能低下的两点，一个是std::mutex的粒度过大，也就是临界区过大限制了并发度。另一个就是频繁的访问导致锁争用，上下文切换非常频繁。</p>
+<p>那么如何解决计数器遇到的这个问题呢？ 其实最直观的就是避免共享，避免锁争用。用<a href="https://en.wikipedia.org/wiki/Thread-local_storage" target="_blank" rel="noopener">thread local</a>技术来避免减少大量的Cache Bouncing，该技术原理是每个线程修改（写）global_count只维持线程自己的一个变量累加的副本。等到有线程读global_count的时候，就把各个线程的变量副本的结果合并起来，这个速度就会显得慢了，不过因为是写多读少的场景，所以没有问题。</p>
+<h3 id="2-Cache-Bouncing是为何物？"><a href="#2-Cache-Bouncing是为何物？" class="headerlink" title="2. Cache Bouncing是为何物？"></a>2. Cache Bouncing是为何物？</h3><p>为了以较低的成本大幅提高性能，现代CPU都有cache。cpu cache已经发展到了三级缓存结构，基本上现在买的个人电脑都是L3结构。其中L1和L2 cache为每个核独有，L3则所有核共享。为了保证所有的核看到正确的内存数据，一个核在写入自己的L1 cache后，CPU会执行<a href="https://en.wikipedia.org/wiki/Cache_coherence" target="_blank" rel="noopener">Cache一致性算法</a>把对应的Cache Line(一般是64字节)同步到其他核的Cache中。这个过程并不很快，是微秒级的，相比之下写入L1 cache只需要若干纳秒。当很多线程在频繁修改某个共享字段变量时，这个字段所在的Cache Line被不停地同步到不同的核上，就像在核间弹来弹去，这个现象就叫做Cache Bouncing。由于实现cache一致性往往有硬件锁，Cache Bouncing是一种隐式的的全局竞争。</p>
+<p>当然Cache一致性算法有多种，其中一种听到的最多的叫<a href="https://en.wikipedia.org/wiki/MESI_protocol" target="_blank" rel="noopener">MESI协议</a>。</p>
+<h3 id="3-CAS原子指令为什么会这么难？"><a href="#3-CAS原子指令为什么会这么难？" class="headerlink" title="3. CAS原子指令为什么会这么难？"></a>3. CAS原子指令为什么会这么难？</h3><p>多核多线程编程常用锁避免多个线程在修改同一个数据时产生race condition。当锁成为性能瓶颈时，我们又总想试着绕开它，而不可避免地接触了原子指令（用于实现Lock-Free和Wait-Free等数据结构和算法）。但在实践中，用CAS原子指令写出正确的代码是一件非常困难的事，各种概念接踵而来，琢磨不透的race condition、<a href="https://en.wikipedia.org/wiki/ABA_problem" target="_blank" rel="noopener">ABA problem</a>、<a href="https://en.wikipedia.org/wiki/Memory_barrier" target="_blank" rel="noopener">memory barrier</a>很烧脑。（Memory Barrier又叫内存栅栏，内存屏障）。</p>
+<p>顾名思义，原子指令是对软件不可再分的指令，比如x.fetch_add(n)指原子地给x加上n，这个指令对软件要么没做，要么完成，不会观察到中间状态。常见的原子指令有：</p>
+<table>
+<thead>
+<tr>
+<th>原子指令 (x均为std::atomic<int>)</int></th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x.load()</td>
+<td>返回x的值。</td>
+</tr>
+<tr>
+<td>x.store(n)</td>
+<td>把x设为n，什么都不返回。</td>
+</tr>
+<tr>
+<td>x.exchange(n)</td>
+<td>把x设为n，返回设定之前的值。</td>
+</tr>
+<tr>
+<td>x.compare_exchange_strong(expected_ref, desired)</td>
+<td>若x等于expected_ref，则设为desired，返回成功；否则把最新值写入expected_ref，返回失败。</td>
+</tr>
+<tr>
+<td>x.compare_exchange_weak(expected_ref, desired)</td>
+<td>相比compare_exchange_strong可能有<a href="http://en.wikipedia.org/wiki/Spurious_wakeup" target="_blank" rel="noopener">spurious wakeup</a>。</td>
+</tr>
+<tr>
+<td>x.fetch_add(n), x.fetch_sub(n)</td>
+<td>原子地做x += n, x-= n，返回修改之前的值。</td>
+</tr>
+</tbody>
+</table>
+<p>你已经可以不用显式加锁用这些指令做原子计数，比如多个线程同时累加一个原子变量，以统计这些线程对一些资源的操作次数。但是，这可能会有两个问题：</p>
+<ul>
+<li>这个操作没有你想象地快。</li>
+<li>如果你尝试通过看似简单的原子操作控制对一些资源的访问，你的程序有很大几率会crash。</li>
+</ul>
+<h3 id="4-什么情况下多核之间的Cache-Line会频繁同步导致Cache-Bouncing？"><a href="#4-什么情况下多核之间的Cache-Line会频繁同步导致Cache-Bouncing？" class="headerlink" title="4. 什么情况下多核之间的Cache Line会频繁同步导致Cache Bouncing？"></a>4. 什么情况下多核之间的Cache Line会频繁同步导致Cache Bouncing？</h3><p>一个核心写入自己的L1 cache是极快的(4 cycles, ~2ns)，但当另一个核心读或写同一处内存时，它得确认看到其他核心中对应的cache line。对于软件来说，这个过程是原子的，不能在中间穿插其他代码，只能等待CPU完成一致性同步，这个复杂的硬件算法使得原子操作会变得很慢，竞争激烈时fetch_add会耗费数百纳秒左右。访问被多个线程频繁共享的内存往往是比较慢的。比如像一些场景临界区看着很小，但保护它的spin lock性能不佳，因为spin lock使用的exchange, fetch_add等指令必须等待最新的cache line，看上去只有几条指令，花费若干微秒并不奇怪。</p>
+<p>要提高性能，就要避免让CPU频繁同步cache line。这不单和原子指令本身的性能有关，还会影响到程序的整体性能。最有效的解决方法很直白：<strong>尽量避免共享</strong>。（比如用之前提到过的Thread Local）。</p>
+<p>一个相关的编程陷阱是<a href="https://en.wikipedia.org/wiki/False_sharing" target="_blank" rel="noopener">False Sharing</a>：对那些不怎么被修改甚至只读变量的访问，由于同一个cache line中的其他变量被频繁修改，而不得不经常等待cache line同步而显著变慢了(也就是被别的变量拉低的性能)。多线程中的变量尽量按访问规律排列，频繁被其他线程修改的变量要放在独立的Cache Line中。要让一个变量或结构体按Cache Line对齐。</p>
+<h3 id="5-基于CAS原语的原子指令编写的Lock-Free和Wait-Free数据结构和算法性能一定更高吗？"><a href="#5-基于CAS原语的原子指令编写的Lock-Free和Wait-Free数据结构和算法性能一定更高吗？" class="headerlink" title="5. 基于CAS原语的原子指令编写的Lock-Free和Wait-Free数据结构和算法性能一定更高吗？"></a>5. 基于CAS原语的原子指令编写的Lock-Free和Wait-Free数据结构和算法性能一定更高吗？</h3><p>诚然，原子指令基于CAS原语的控制并发的粒度会更小，但是由此带来了更大的复杂性。它能为服务赋予两个重要的概念<a href="https://en.wikipedia.org/wiki/Non-blocking_algorithm#Lock-freedom" target="_blank" rel="noopener">Lock-Free</a>和<a href="https://en.wikipedia.org/wiki/Non-blocking_algorithm#Wait-freedom" target="_blank" rel="noopener">Wait-Free</a>。</p>
+<p>当然前者的意思不言自明了，就是无锁编程（算法），后者是无等待编程（算法）。有的人说，那好了，采用Lock-Free的算法，不用加锁了，显然更快了。Wait-Free那更加快了，都不用等待了。当然理论上是这么一回事，但是工程实践上又是一回事。无锁编程采用底层的CAS原语其实上的是硬件粒度的锁，理论上是更加快，因为一些实时系统的关键部分和一些关键的数据结构为了压榨性能，确实是用Lock-Free的算法和Wait-Free算法编写的。但是，值得注意的事情是：</p>
+<ul>
+<li><p>lock-free和wait-free必须处理更多更复杂的race condition和ABA problem，完成相同目的的代码比用锁更复杂。代码越多，反而比用小粒度的std::mutex耗时长。</p>
+</li>
+<li><p>使用mutex的算法变相带“后退”效果。后退(backoff)指出现竞争时尝试另一个途径以临时避免竞争，mutex出现竞争时会使调用者睡眠，使拿到锁的那个线程可以很快地独占完成一系列流程，总体吞吐可能反而高了。</p>
+</li>
+</ul>
+<p>mutex导致低性能往往是因为临界区过大（限制了并发度），或竞争过于激烈（上下文切换开销变得突出）。lock-free/wait-free算法的价值在于其保证了一个或所有线程始终在做有用的事，而不是绝对的高性能。但在一种情况下lock-free和wait-free算法的性能多半更高：就是算法本身可以用少量的CAS原子指令实现。实现锁也是要用原子指令的，当算法本身用一两条指令就能完成的时候，相比额外用锁肯定是更快了。</p>
+<p>当然，大部分场景几乎不要用Lock-Free和Wait-Free的算法，一个是因为不需要那么极尽变态地压榨性能。另一个是这两种算法其实很复杂，即使写出来了，从形式化的手段也难以证明算法的正确性。对于越复杂的数据结构越是如此。比如Lock-Free的数据结构目前在boost C++中常见的有Queue, Ring Buffer，Stack这些简单的数据结构。但是如果你搜网络上的论文，就很难见到有Lock-Free的树型数据结构。其一是太复杂了，即使实现并证明正确，但是实测性能可能也没加锁的树形数据结构高。如果这样就舍本逐末了。</p>
+<h3 id="6-协程是什么？它为什么不能利用多核？"><a href="#6-协程是什么？它为什么不能利用多核？" class="headerlink" title="6.协程是什么？它为什么不能利用多核？"></a>6.协程是什么？它为什么不能利用多核？</h3><p>协程是一种用户态的线程，由用户态的调度器来调度，因为其非常轻量，可以用来部分代替线程从而实现所谓的高并发（看场景），而且由于协程不对应内核中的线程概念，所以用户可以一瞬间创建出成千上万个协程，而不消耗太多性能，它们之前切换可以非常快（100ns-200ns），受缓存一致性的影响很小。但是呢，平常我们所说的协程并不能利用CPU多核，因为是它相当于是N：1的线程库，就是N个协程只跑在一个内核线程上，一个内核线程只会在一个核上运行。</p>
+<p>还有一个缺点就是，因为协程无法高效利用多核，代码必须非阻塞，否则所有协程都会被block住，对开发者要求比较苛刻。协程的这种特点使其非常适合写运行时间基本能确定的IO服务器，比如http server，在一些精心调试的场景中，可以达到非常高的吞吐量（实时大流量）。协程的这个特点与Event Loop的单线程异步是类似的，一个callback函数如果需要等待比较长的时间，那么整个Event Loop就被block住了，其他事件得不到及时响应。</p>
+<p>所以可以看到了，Node.js之类的适配上协程确实可以达到高并发，高吞吐，这句话本身没问题。但是这是有场景的，Node.js适合处理IO数据密集型实时应用系统，比如Web消息实时推送（知乎的问答提示），Web可视化数据实时展示。Node非常适合如下情况：在响应客户端之前，你预计可能有很高的流量，但所需的服务器端逻辑和处理不一定很多（服务端不能有复杂计算，复杂业务逻辑，复杂事务处理）。</p>
+<p>当然有懂一点的人可能会说，可以开启多个Node.js进程（Cluster模块）来以多个内核线程达到利用多核的目的，当然至于这样是不是很方便，很高效就是另一个话题了。但是据我所知，主流大型互联网公司基础框架想高效的利用多核都不会选择这种方案。</p>
+<h3 id="7-Go语言中的GoRoutine是协程吗？为什么它却能利用多核？"><a href="#7-Go语言中的GoRoutine是协程吗？为什么它却能利用多核？" class="headerlink" title="7. Go语言中的GoRoutine是协程吗？为什么它却能利用多核？"></a>7. Go语言中的GoRoutine是协程吗？为什么它却能利用多核？</h3><p>不是，因为GoRoutine是可以利用多核的，它实质上就是个M:N的线程库（一般M会远大于N），M个GoRoutine对应N个内核线程（当然，这个特性是以语言内建特性的方式暴露出来的，而不是标准库的形式，所以写起来会更自然些）。一个RoRoutine因复杂的计算或者同步阻塞IO等待而block住也不会影响其他GoRoutine。</p>
+<p>Goroutine调度器的实现由一种关键的技术：<a href="https://en.wikipedia.org/wiki/Work_stealing" target="_blank" rel="noopener">Work-Stealing调度算法</a>。这一种算法的目的是想让GoRoutine更快地被调度到更多的CPU核心上。</p>
+<h3 id="8-单线程Reactor和多线程Reactor模型有什么不同？"><a href="#8-单线程Reactor和多线程Reactor模型有什么不同？" class="headerlink" title="8. 单线程Reactor和多线程Reactor模型有什么不同？"></a>8. 单线程Reactor和多线程Reactor模型有什么不同？</h3><p>以libevent, libev等event-loop库为典型。这个模型一般由一个event dispatcher等待各类事件，待事件发生后原地调用对应的event handler，全部调用完后等待更多事件，故为”loop”。这个模型的实质是把多段逻辑按事件触发顺序交织在一个系统线程中。一个event-loop只能使用一个核，故此类程序要么是IO-bound，要么是每个handler有确定的较短的运行时间（比如http server)，否则一个耗时漫长的回调就会卡住整个程序，产生高延时。在实践中这类程序不适合多开发者参与，一个人写了阻塞代码可能就会拖慢其他代码的响应。由于event handler不会同时运行，不太会产生复杂的race condition，一般不需要加锁。此类程序主要靠部署更多进程增加扩展性。Redis就是这么干的。</p>
+<p>以boost::asio为典型。一般由一个或多个线程分别运行event dispatcher，待事件发生后把event handler交给一个worker线程执行。 这个模型是单线程reactor的自然扩展，叫多线程Reactor，可以利用多核。由于共用地址空间使得线程间交互变得廉价，worker thread间一般会更及时地均衡负载，而多进程一般依赖更前端的服务（Nginx）来分割流量，一个设计良好的多线程reactor程序往往能比同一台机器上的多个单线程reactor进程更均匀地使用不同核心。不过由于cache一致性的限制，多线程reactor并不能获得线性于核心数的性能，在特定的场景中，粗糙的多线程reactor实现跑在24核上甚至没有精致的单线程reactor实现跑在1个核上快。由于多线程reactor包含多个worker线程，单个event handler阻塞未必会延缓其他handler，所以event handler未必得非阻塞，除非所有的worker线程都被阻塞才会影响到整体进展。事实上，大部分RPC框架都使用了这个模型，且回调中常有阻塞部分，比如同步等待访问下游的RPC返回。</p>
+<h3 id="9-N：1线程库和M-N线程库又有什么区别？"><a href="#9-N：1线程库和M-N线程库又有什么区别？" class="headerlink" title="9. N：1线程库和M:N线程库又有什么区别？"></a>9. N：1线程库和M:N线程库又有什么区别？</h3><p>之前提到过，平常所说的协程（Coroutine）相当于是一个N：1的线程库。但是这么说并不代表N：1的线程库就是协程，它有另外的名字叫<a href="https://en.wikipedia.org/wiki/Fiber_\(computer_science\" target="_blank" rel="noopener">纤程（Fiber）</a>)。以GNU Pth, StateThreads等为典型，一般是把N个用户线程映射入一个系统内核线程。同时只运行一个用户线程，调用阻塞函数时才会切换至其他用户线程（有调度器，所以跟Event Loop这点细节上又不大一样）。N:1线程库与单线程reactor在能力上是等价的，但事件回调被替换为了上下文(栈,寄存器,signals)，运行回调变成了跳转至上下文。和event loop库一样，单个N:1线程库无法充分发挥多核性能，只适合一些特定的程序。只有一个系统线程对CPU cache较为友好，加上舍弃对signal mask的支持的话，用户线程间的上下文切换可以很快(100~200ns)。N:1线程库的性能一般和event loop库差不多，扩展性也主要靠多进程。</p>
+<p>M:N线程库也只是一种实现思想思路，Goroutine就是这样的实现。即把M个用户线程映射入N个系统内核线程。M:N线程库可以决定一段代码何时开始在哪运行，并何时结束，相比多线程reactor在调度上具备更多的灵活度。但实现全功能的M:N线程库是困难的，它一直是个活跃的研究话题。我们这里说的M:N线程库特别针对编写网络服务，在这一前提下一些需求可以简化，比如没有时间片抢占，没有(完备的)优先级等。M:N线程库可以在用户态也可以在内核中实现，用户态的实现以新语言为主，比如GHC threads和goroutine，这些语言可以围绕线程库设计全新的关键字并拦截所有相关的API。而在现有语言中的实现往往得修改内核，比如Windows UMS和google SwicthTo(虽然是1:1，但基于它可以实现M:N的效果)。相比N:1线程库，M:N线程库在使用上更类似于系统内核线程，需要用锁或消息传递（消息总线，Actor模型，Vert.x，Akka库等代表）保证代码的线程安全。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/多线程编程/" rel="tag">#多线程编程</a>
+          
+            <a href="/blog/tags/多核编程/" rel="tag">#多核编程</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/08/12/hello-world/" rel="prev">Hello World</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/04/01/home-network-design/" rel="next">家里面的网络布局方案</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">64</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">86</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="https://dendise7engithub.github.io/" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-如何针对写多读少的场景设计一个多线程计数器？"><span class="nav-number">2.1.</span> <span class="nav-text">1. 如何针对写多读少的场景设计一个多线程计数器？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Cache-Bouncing是为何物？"><span class="nav-number">2.2.</span> <span class="nav-text">2. Cache Bouncing是为何物？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-CAS原子指令为什么会这么难？"><span class="nav-number">2.3.</span> <span class="nav-text">3. CAS原子指令为什么会这么难？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-什么情况下多核之间的Cache-Line会频繁同步导致Cache-Bouncing？"><span class="nav-number">2.4.</span> <span class="nav-text">4. 什么情况下多核之间的Cache Line会频繁同步导致Cache Bouncing？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-基于CAS原语的原子指令编写的Lock-Free和Wait-Free数据结构和算法性能一定更高吗？"><span class="nav-number">2.5.</span> <span class="nav-text">5. 基于CAS原语的原子指令编写的Lock-Free和Wait-Free数据结构和算法性能一定更高吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-协程是什么？它为什么不能利用多核？"><span class="nav-number">2.6.</span> <span class="nav-text">6.协程是什么？它为什么不能利用多核？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Go语言中的GoRoutine是协程吗？为什么它却能利用多核？"><span class="nav-number">2.7.</span> <span class="nav-text">7. Go语言中的GoRoutine是协程吗？为什么它却能利用多核？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-单线程Reactor和多线程Reactor模型有什么不同？"><span class="nav-number">2.8.</span> <span class="nav-text">8. 单线程Reactor和多线程Reactor模型有什么不同？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-N：1线程库和M-N线程库又有什么区别？"><span class="nav-number">2.9.</span> <span class="nav-text">9. N：1线程库和M:N线程库又有什么区别？</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

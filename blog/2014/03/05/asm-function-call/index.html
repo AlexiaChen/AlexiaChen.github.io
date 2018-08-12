@@ -1,0 +1,955 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="System Software Engineer" />
+
+
+
+  <meta name="keywords" content="内存模型,C/C++,汇编语言," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="可能分析的时候会用到一点汇编语言，不过都很简单，不影响理解文章。  预备知识 在开始正文之前，需要复习下函数调用的约定。  __cdecl: C/C++函数默认调用约定，参数依次从右向左传递，并压入堆栈，最后由调用函数清空堆栈，这种方式适用于传递参数个数可变的被调用函数，只有被调用函数才知道它传递了多少个参数给被调用函数，比如printf();  stdcall：参数由右向左传递，并压入堆栈，由">
+<meta name="keywords" content="内存模型,C&#x2F;C++,汇编语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从底层角度看待函数的调用">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2014/03/05/asm-function-call/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="可能分析的时候会用到一点汇编语言，不过都很简单，不影响理解文章。  预备知识 在开始正文之前，需要复习下函数调用的约定。  __cdecl: C/C++函数默认调用约定，参数依次从右向左传递，并压入堆栈，最后由调用函数清空堆栈，这种方式适用于传递参数个数可变的被调用函数，只有被调用函数才知道它传递了多少个参数给被调用函数，比如printf();  stdcall：参数由右向左传递，并压入堆栈，由">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-08-12T11:25:34.094Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从底层角度看待函数的调用">
+<meta name="twitter:description" content="可能分析的时候会用到一点汇编语言，不过都很简单，不影响理解文章。  预备知识 在开始正文之前，需要复习下函数调用的约定。  __cdecl: C/C++函数默认调用约定，参数依次从右向左传递，并压入堆栈，最后由调用函数清空堆栈，这种方式适用于传递参数个数可变的被调用函数，只有被调用函数才知道它传递了多少个参数给被调用函数，比如printf();  stdcall：参数由右向左传递，并压入堆栈，由">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> 从底层角度看待函数的调用 | MathxH </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br />
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              从底层角度看待函数的调用
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2014-03-05T12:01:23-05:00" content="2014-03-05">
+            2014-03-05
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><blockquote>
+<p>可能分析的时候会用到一点汇编语言，不过都很简单，不影响理解文章。</p>
+</blockquote>
+<h1 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h1><hr>
+<p>在开始正文之前，需要复习下函数调用的约定。</p>
+<ul>
+<li><p>__cdecl: C/C++函数<strong>默认</strong>调用约定，参数依次从右向左传递，并压入堆栈，最后由调用函数清空堆栈，这种方式适用于传递参数个数可变的被调用函数，只有被调用函数才知道它传递了多少个参数给被调用函数，比如printf();</p>
+</li>
+<li><p><strong>stdcall：参数由<font color="red">右向左</font>传递，并压入堆栈，由被调用函数清空堆栈，当函数有可变参数个数时，函数调用约定自动转换成</strong>cdecl调用约定;</p>
+</li>
+<li><p><strong>thiscall：C++非静态成员函数默认调用约定，不能使用个数可变参数，调用非静态成员函数时，this指针直接保存在ecx寄存器中，不入栈，其他方面同</strong>stdcall；</p>
+</li>
+<li><p>__fastcall：凡是接口函数都必须指明其调用规范，除非接口函数是类的非静态成员函数；</p>
+</li>
+</ul>
+<h1 id="简洁的内存模型抽象"><a href="#简洁的内存模型抽象" class="headerlink" title="简洁的内存模型抽象"></a>简洁的内存模型抽象</h1><hr>
+<p>由于是简单而本质的抽象，因此我们不考虑分页机制、MMU(memory management unit)之类的。正是如此，它们本来对于我们就是透明的。</p>
+<p>所以内存就被考虑为一个从编号(地址)0开始、以编号(地址)0xffff ffff结束的字节序列。每一个字节都被顺序地编号。编号就是字节的地址。<br>在32位FLAT模式汇编中，本来就是如此。</p>
+<p>在程序加载入内存后，程序的指令和数据都按某种方式存放在内存里面。要访问和执行他们，只需要知道他们的地址就可以了。</p>
+<p>最重要的东西登场，它就是eip，指令指针寄存器，或称程序计数器。eip中的值程序员无法修改(嗯，可是汇编程序员呢？汇编程序员也无法修改它的值吗？废话，汇编程序员也是程序员啊！)，它的值就是下一条即将执行的指令的地址。就是说eip永远指向下一条指令。</p>
+<p>然后就是esp,它指向栈的栈顶。当向栈压入数据或从栈弹出数据时，esp的值不断变化，但无论如何变化，它都指向栈顶。</p>
+<p>最后就是ebp，它用来把栈中的某个地址作为基址(基本地址，这样理解就是了)，它用来标识栈中的某个固定位置，因此可以通过它访问这个固定位置附近的数据。</p>
+<p>80X86的栈是向下增长的。也就是说，当向栈压入4个字节的数据时，esp = esp - 4; 当从栈中弹出4个字节时，esp = esp + 4。</p>
+<h1 id="栈帧与函数调用"><a href="#栈帧与函数调用" class="headerlink" title="栈帧与函数调用"></a>栈帧与函数调用</h1><hr>
+<p>关于计算机，最重要的三个抽象是什么？答案是虚拟地址空间、进程、文件。</p>
+<p>一个进程就是一个运行中的程序，或者被加载到内存中的程序。现代操作系统使进程看上去独占了所有的系统资源，但实际上系统中运行着多个进程。</p>
+<p>所以从一个进程的视角看去，它独占了系统中的所有内存资源和CPU资源。对于32位系统虚拟地址空间被抽象为编号0~0xffff ffff的字节序列，它是平坦的，线性的，被系统抽象了的，所以叫它平坦地址或线性地址、虚拟地址。</p>
+<p>对于Linux来说，保留高1G为系统使用。0-3G空间被应用程序也就是进程独占。</p>
+<p>对于一个被加载了的程序也就是进程，其在内存中的分布为：<br>栈<br>共享内存段<br>自由存储区（堆）<br>BSS段<br>数据段<br>只读数据段<br>代码段</p>
+<p>栈向下增长。</p>
+<p>每一个函数调用，都是一个栈帧（stack frame）。<br>以下代码：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> z;</span><br><span class="line">    z = x + y;</span><br><span class="line">    <span class="keyword">return</span> z;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    add(<span class="number">3</span>, <span class="number">5</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那么main函数是一个栈帧，add是一个栈帧。<br>当程序运行时，main函数栈帧先被建立，这个栈帧在高地址。然后调用add函数。此时add函数栈帧被建立，在低地址。当程序执行流进入add函数时，add函数内的局部变量在add函数栈帧中被建立。然后add返回。当add函数返回，此时add函数栈帧被销毁，同时add函数内的局部变量也被销毁。所以，C/C++编程原则告诉我们：永远不要返回一个指向局部对象的指针。也就是说如下代码是错误的：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span>* <span class="title">getNumber</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">return</span> &amp;a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那么运行时的栈是什么样子的呢？它是一个随着运行，不断增长（进入新的函数调用）和缩短（函数返回）的动态影像。</p>
+<h1 id="从汇编语言看函数调用"><a href="#从汇编语言看函数调用" class="headerlink" title="从汇编语言看函数调用"></a>从汇编语言看函数调用</h1><hr>
+<p>以下是<a href="http://www.masm32.com/" target="_blank" rel="noopener">MASM</a>文法编写的汇编语言程序<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">.386</span> ;<span class="number">386</span>系统</span><br><span class="line">.MODEL FLAT ;<span class="number">32</span>位平坦地址模式</span><br><span class="line"></span><br><span class="line">Exit PROTO NEAR32 stdcall, dwPara:DWORD ;退出函数原型</span><br><span class="line">                                                ;Exit是函数名，dwPara是函数参数</span><br><span class="line"></span><br><span class="line">.STACK <span class="number">4096</span> ;保留<span class="number">4096</span>字节栈空间</span><br><span class="line"></span><br><span class="line">.DATA ;数据段，定义全局变量</span><br><span class="line">number1 DWORD <span class="number">11111111</span>h ;定义变量number1，大小<span class="number">4</span>字节</span><br><span class="line">number2 DWORD <span class="number">22222222</span>h ;定义变量number2, 大小<span class="number">4</span>字节</span><br><span class="line"></span><br><span class="line">.CODE ;程序代码</span><br><span class="line">Init PROTO NEAR32 ;定义函数Init</span><br><span class="line">        mov number1, <span class="number">0</span> ;假设该指令地址为<span class="number">0x0040</span> <span class="number">0000</span></span><br><span class="line"></span><br><span class="line">mov number2, <span class="number">0</span></span><br><span class="line">        ret ;函数Init返回</span><br><span class="line">Init ENDP ;函数Init结束</span><br><span class="line"></span><br><span class="line">_start: ;相当于main函数</span><br><span class="line">        call Init ;调用函数Init，此指令地址为<span class="number">0x0040</span> <span class="number">000f</span></span><br><span class="line">         ...... ;该处指令地址为<span class="number">0x0040</span> <span class="number">0014</span></span><br><span class="line">       </span><br><span class="line">        INVOKE Exit, <span class="number">0</span> ;调用Exit退出</span><br><span class="line"></span><br><span class="line">PUBLIC _start ;公开入口点</span><br><span class="line"></span><br><span class="line">END ;程序结束</span><br></pre></td></tr></table></figure></p>
+<p>其实代码不用看的…<br>假设程序被加载入内存，这时esp被初始化，然后esp指向栈顶。设此时栈顶地址为0x0063 00f8.一切为了说明方便哈。总之程序加载后，栈被初始化，也就是esp被初始化，esp会指向内存中的某个地址，并以这个地址作为栈的起始。<br>eip始终指向执行流，也就是“下一条指令”。</p>
+<p>那么程序加载。栈初始化了。数据区域在内存中开辟出来了，全局变量被给予确切地址(这里是虚拟地址，因为这是一个进程，它的地址只管在虚拟地址空间中给就可以了，虚拟地址到物理地址的映射由操作系统和MMU完成)。代码段（也就是要执行的指令）也被放入内存中并给予确切地址。eip指向代码段的开始，并开始执行程序…</p>
+<p>所以eip只管指向某个内存地址，这个内存地址存储着程序员编写的指令，然后CPU把指令取出来执行就是了。所以计算机叫做“顺序存储控制机”。对不起我啰嗦了。</p>
+<p>好的。我们假设了，在程序加载后，esp被初始化为0x0063 00f8，并假设了mov number1, 0这个指令的地址在0x0040 0000,根据这个假设的地址和每个指令码的长度(这些指令都放在代码段，而且一个一个指令就是挨着放的)，推断出call指令的地址是0x0040 000f,call指令的下一条指令的地址是0x0040 0014(因为这个call指令的长度占用5个字节，0x0040 000f + 5 = 0x0040 0014)。这里不算我对指令长度的计算错误，总之假设我的地址计算是正确的。</p>
+<p>OK开始了。程序已经加载。那么开始程序执行。eip首先指向call指令，因为_start开始那里就是call指令。嗯，eip就是一个32位寄存器，这个寄存器里面的值永远是即将执行的指令的内存地址，这时eip里面的值是0x0040 000f。</p>
+<p>call指令执行！该指令首先将下一条指令的地址压入栈，也就是说，call指令的第一个动作是将0x0040 0014(call指令的下一条指令地址)压入栈。esp此时变化，其值变为0x0063 00f4。为什么？因为esp被初始化为0x0063 00f8，一个地址4个字节入栈之后，esp = esp - 4。然后call指令转去调用Init过程代码。eip变化为0x0040 0000，为什么？因为Init过程的第一个指令地址就是0x0040 0000.这个过程是由CPU自动完成的，也就是说，call指令，让CPU自动完成这一系列动作。</p>
+<p>然后Init过程执行到ret指令。<br>ret指令干什么？它将栈内数据弹出，并用该数据填充eip。栈内数据是什么？就是0x0040 0014,它就是call指令的下一条指令的地址！同时esp = esp + 4.也就是说，ret指令执行后，eip值变为0x0040 0014, esp的值变回0x0063 00f8.这个过程由CPU自动完成。ret指令让CPU自动完成这一系列动作。</p>
+<p>整理：执行call，call指令首先将下一条指令地址入栈，然后跑去执行过程代码；过程代码中执行ret,ret首先从栈中将下一条指令地址弹回eip，这样程序就开始执行call指令后的指令。一句话：eip始终指向下一条指令地址。</p>
+<p>以上！就是汇编函数调用和返回的过程。就是一个call和一个ret.eip在这个执行过程中通过栈来保存。</p>
+<p>接下来，让我们开始考察C语言的过程调用和返回，也就是C语言函数的参数压栈和参数访问过程。</p>
+<p>先看一个汇编调用压参和参数访问过程。</p>
+<p>假设有一个add过程，这个过程的工作是将两个整型值(每个整型值4字节)相加，并将相加的和返回eax寄存器。<br>如果通过把参数压入堆栈来传递参数调用过程，那么调用方(caller)代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">push var1 ;第一个变量值</span><br><span class="line">push var2 ;第二个变量值</span><br><span class="line">call add ;调用add过程</span><br><span class="line">add esp, <span class="number">8</span> ;从栈移除参数</span><br></pre></td></tr></table></figure>
+<p>而被调用过程(callee)add的代码如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">add PROC NEAR32 ;add过程，该过程将两个整型值相加</span><br><span class="line">    push ebp ;保存基栈指针</span><br><span class="line">    mov ebp, esp ;建立栈</span><br><span class="line">    mov eax, [ebp + <span class="number">8</span>] ;复制第二个参数值(var2)</span><br><span class="line">    mov eax, [ebp + <span class="number">12</span>] ;加上第一个参数值(var1)</span><br><span class="line">    pop ebp ;恢复ebp寄存器</span><br><span class="line">    ret ;过程返回</span><br><span class="line">add ENDP ;过程结束</span><br></pre></td></tr></table></figure></p>
+<p>首先，esp是栈顶，直接从caller栈顶看起。也就是，在调用前，esp指向某个内存地址。<br>在调用函数前将参数压入栈中。<br>push var1<br>push var2<br>这两行代码使esp - 8. 然后压参完毕，图中即为压参完毕esp.<br>然后调用函数:<br>call add<br>嗯，之前复习call指令时说什么了？call指令执行时，首先将返回地址压入栈。<br>也就是将add esp, 8 这条指令的地址压入栈。</p>
+<p>然后call指令执行过程调用，eip指向add函数内第一条指令的地址：<br>push ebp ;将ebp保存到栈中，同时esp - 4(说过了80X86的栈是向低地址方向增长的).<br>此时ebp原值被保存入栈中。<br>然后:<br>mov ebp, esp<br>此时以ebp为基准的栈建立了。此时ebp和esp都指向栈顶(ebp原值被栈保存起来了哦)。<br>为什么要这么做？<br>因为esp是随时变动的，只要有压栈和出栈的操作，esp的值就随着压栈和出栈的操作变化(随着push和pop操作变化，甚或，程序员直接改动esp的值)。<br>而ebp却不会随着push和pop操作变化。程序员在callee中不会修改ebp的值，而是使用ebp作为基准访问参数。</p>
+<p>那么接下来就很好理解了，第二个参数的地址是ebp + 8, 第一个参数的地址是ebp + 12.<br>所以<br>mov eax, [ebp + 8] ;复制第二个参数值(var2)到eax<br>mov eax, [ebp + 12] ;加上第一个参数值(var1)<br>就不难理解了。</p>
+<p>在过程把实现代码处理完毕的最后，pop ebp将ebp原值从栈中弹出恢复。<br>然后ret返回指令将返回地址弹出并赋给eip(请注意，返回地址弹出后，esp + 4, 这时esp正好指向调用者压参完毕的位置)，…<br>回到调用者的地方并继续执行。</p>
+<p>那么调用处的add esp, 8 ;从栈移除参数<br>是干什么用的？注释已经说得很清楚了。<br>调用者将var1和var2压到栈中，由于调用者的压栈，esp被往下移动了8；那么这个esp的原始位置也就是caller的栈顶应该在过程调用后恢复，add esp， 8就是恢复esp的。</p>
+<p>ok。基本上就是如此了！</p>
+<p>对于C语言的过程调用，比如，在main函数里面调用add<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    add(x, y);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>实际上，这里add(x, y)（调用者处）被编译器编译成如下汇编代码：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">push y</span><br><span class="line">push x</span><br><span class="line">call add</span><br><span class="line">add esp, <span class="number">8</span></span><br></pre></td></tr></table></figure></p>
+<p>以上，这就是C过程调用的汇编解释。</p>
+<p>接下来给出一般过程的入口代码和出口代码。</p>
+<p>不难猜测，所有的过程（被调用函数）都有一样的入口代码和出口代码：</p>
+<p>所有的C函数，在被编译器编译成汇编代码之后，<br>函数开始的几行汇编代码总是这样的，所以我们称这它为入口代码（entry code）：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">push ebp ;保存基址</span><br><span class="line">mov ebp, esp ;建立ebp偏移基准</span><br><span class="line">sub esp, n ;n个字节的局部变量参数</span><br><span class="line">push ... ;保存过程中会用到的通用寄存器</span><br><span class="line">...</span><br><span class="line">pushf ;保存标识寄存器，也就是保存标志位</span><br></pre></td></tr></table></figure></p>
+<p>而结尾的几行总是这样的，所以称其为出口代码：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">popf ;恢复标识寄存器</span><br><span class="line">pop ... ;恢复寄存器</span><br><span class="line">...</span><br><span class="line">mov esp, ebp ;恢复callee esp</span><br><span class="line">pop ebp ;恢复ebp</span><br><span class="line">ret ;返回</span><br></pre></td></tr></table></figure></p>
+<h1 id="stdcall和cdcel"><a href="#stdcall和cdcel" class="headerlink" title="stdcall和cdcel"></a>stdcall和cdcel</h1><hr>
+<p>既然已经了解了上述内容，那么调用惯例就很容易理解了。<br>cdcel和stdcall是约定俗成的调用惯例，它们的区别在于由谁来恢复esp。</p>
+<p>cdcel是由调用者恢复esp的调用惯例，<br>也就是说<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">push var1</span><br><span class="line">push var2</span><br><span class="line">call add</span><br><span class="line">add esp, <span class="number">8</span></span><br></pre></td></tr></table></figure></p>
+<p>这是cdcel调用惯例</p>
+<p>而stdcall则是由callee恢复esp的调用惯例<br>stdcall会在callee里面将ret这样写：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ret <span class="number">8</span></span><br></pre></td></tr></table></figure></p>
+<p>意思是返回的同时esp + 8.</p>
+<p>这两种调用惯例，stdcall的好处是不用每次都在调用过程后写add esp, 8这样就减小了代码量，减小了目标文件的体积。<br>而stdcall的缺陷更明显，那就是callee有时候无法推断参数的个数和长度，这样的话esp只能由调用者恢复(比如变参数函数，这种函数callee是无法推断参数个数的，也就无法知道应该在ret后面加多少偏移量)。 </p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/内存模型/" rel="tag">#内存模型</a>
+          
+            <a href="/blog/tags/C-C/" rel="tag">#C/C++</a>
+          
+            <a href="/blog/tags/汇编语言/" rel="tag">#汇编语言</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2014/06/27/logic-judgement/" rel="prev">逻辑判断</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2014/03/05/data-compression/" rel="next">数据压缩的基本常识</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">64</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">86</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="https://dendise7engithub.github.io/" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#预备知识"><span class="nav-number">1.</span> <span class="nav-text">预备知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简洁的内存模型抽象"><span class="nav-number">2.</span> <span class="nav-text">简洁的内存模型抽象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#栈帧与函数调用"><span class="nav-number">3.</span> <span class="nav-text">栈帧与函数调用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#从汇编语言看函数调用"><span class="nav-number">4.</span> <span class="nav-text">从汇编语言看函数调用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#stdcall和cdcel"><span class="nav-number">5.</span> <span class="nav-text">stdcall和cdcel</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,917 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="System Software Engineer" />
+
+
+
+  <meta name="keywords" content="重构,软件工程," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="前言 程序员是一个巨大多样的群体，可能论代码风格每个人有不同的理解，每个人对编写优雅简洁的代码的欣赏风格可能也不同。虽然每个人的个性和风格是有差异的，但是对于优美的代码同时也有普遍的共性和。优美的代码也是具有普适性的。 因为这样，所以才有很多经验老道的工程师写了有关于代码编写风格规范的书籍。比如，《API Design for C++》,《编写可读代码的艺术》, 《重构:改善既有代码的设计》等。">
+<meta name="keywords" content="重构,软件工程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何写出优美的代码">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2016/08/28/beautiful-code/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="前言 程序员是一个巨大多样的群体，可能论代码风格每个人有不同的理解，每个人对编写优雅简洁的代码的欣赏风格可能也不同。虽然每个人的个性和风格是有差异的，但是对于优美的代码同时也有普遍的共性和。优美的代码也是具有普适性的。 因为这样，所以才有很多经验老道的工程师写了有关于代码编写风格规范的书籍。比如，《API Design for C++》,《编写可读代码的艺术》, 《重构:改善既有代码的设计》等。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-08-12T11:25:34.094Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何写出优美的代码">
+<meta name="twitter:description" content="前言 程序员是一个巨大多样的群体，可能论代码风格每个人有不同的理解，每个人对编写优雅简洁的代码的欣赏风格可能也不同。虽然每个人的个性和风格是有差异的，但是对于优美的代码同时也有普遍的共性和。优美的代码也是具有普适性的。 因为这样，所以才有很多经验老道的工程师写了有关于代码编写风格规范的书籍。比如，《API Design for C++》,《编写可读代码的艺术》, 《重构:改善既有代码的设计》等。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> 如何写出优美的代码 | MathxH </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br />
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              如何写出优美的代码
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2016-08-28T09:27:30-04:00" content="2016-08-28">
+            2016-08-28
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
+<p>程序员是一个巨大多样的群体，可能论代码风格每个人有不同的理解，每个人对编写优雅简洁的代码的欣赏风格可能也不同。虽然每个人的个性和风格是有差异的，但是对于优美的代码同时也有普遍的共性和。优美的代码也是具有普适性的。</p>
+<p>因为这样，所以才有很多经验老道的工程师写了有关于代码编写风格规范的书籍。比如，<a href="https://book.douban.com/subject/24869855/" target="_blank" rel="noopener">《API Design for C++》</a>,<a href="https://book.douban.com/subject/10797189/" target="_blank" rel="noopener">《编写可读代码的艺术》</a>, <a href="https://book.douban.com/subject/4262627/" target="_blank" rel="noopener">《重构:改善既有代码的设计》</a>等。</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><hr>
+<p>那么什么样的代码算优美简洁呢？什么样的代码丑陋混乱呢？我的个人理解是：</p>
+<h3 id="1-函数尽可能小"><a href="#1-函数尽可能小" class="headerlink" title="1. 函数尽可能小"></a><strong>1. 函数尽可能小</strong></h3><p>什么意思呢？这里的“小”是有多种意义的，首先，函数的功能要小，意思就是函数不能负责很多功能，只做好一件事即可，也就是<a href="https://en.wikipedia.org/wiki/Single_responsibility_principle" target="_blank" rel="noopener">单一职责原则</a>。功能小的其中一个表象就是，函数的输入参数少，如果参数一旦多，它的功能就会越来越模糊，对函数外部的状态依赖会越来越大，同时也不利于维护。我的设计是，函数参数尽量不要超过5个，超过5个那么就该考虑是不是设计有问题了。如果功能比较单一的话，那么给函数命名也会更加轻松，试想一下，如果一个函数的功能庞大臃肿，同时做好几件事，那么你该如何命名？你会不知道该怎么较好的命名，语义意图都不明确。代码可读性也将降低。</p>
+<p>还有一种“小”的意义是，函数的实现要小，表象就是，实现函数的代码函数要尽可能少，尽量保持在一个屏幕内放下。如果函数的实现是几百上千行，那么阅读代码的人还需要拖动屏幕滚轮，造成不必要的思绪断点形成上下文的开销，这个开销是很大的，因为程序员必须想起上一个屏幕页面的代码是干了什么，与这个页面的屏幕的思路连接起来，这样的思路就不是“所见即得”的。所以这也是为什么各大主流通用程序语言会引入<a href="https://en.wikipedia.org/wiki/Lambda_expression" target="_blank" rel="noopener">lambda表达式</a>（当然了，还有各种变种，什么java的匿名类，javascript的匿名函数等等）这种特性。这样的好处就是，语言的表达能力增强了，同时也让程序员查看函数实现不需要所谓的“跳转到定义”，避免了思维不连续的开销。当然也不能滥用，否则会造成javascript中的call back hell（回调地狱）。</p>
+<h3 id="2-避免使用全局变量，多使用局部变量"><a href="#2-避免使用全局变量，多使用局部变量" class="headerlink" title="2. 避免使用全局变量，多使用局部变量"></a><strong>2. 避免使用全局变量，多使用局部变量</strong></h3><p>这是很多书籍上都提过并强调的一点。如果过多使用全局变量，那么整个程序的状态信息传递会相当复杂，整个程序的状态将混沌不堪。就像电线缠绕在一起的样子。对于局部变量的使用就是，声明局部变量的时候，应该离使用它们的地方越近，原因与第一点的上下文开销是一样的。这样语义衔接更好。如果你使用的是C语言，那么请使用支持<a href="https://en.wikipedia.org/wiki/C99" target="_blank" rel="noopener">C99</a>的编译器，<a href="https://en.wikipedia.org/wiki/C89" target="_blank" rel="noopener">C89</a>的标准局部变量只能声明在函数开头。你看，语言的标准也在不断进步并解决问题。对了，提醒一点，MSVC编译器是不支持C99的，所以直接用它的C++编译器。：)</p>
+<h3 id="3-使用简单语义明确的变量名和函数名"><a href="#3-使用简单语义明确的变量名和函数名" class="headerlink" title="3. 使用简单语义明确的变量名和函数名"></a><strong>3. 使用简单语义明确的变量名和函数名</strong></h3><p>这点不用说了，变量名取a，b，c的可以拖出去斩了。:P<br>值得提到的一点就是，对于在循环内无实际意义的迭代变量可以使用i，j，k。因为这些变量名已经是业界共识了，不会影响可读性，即使在BAT或者Google这样的大公司也可以放心使用。还有一点原因就是，即使加上了更有意义的名字，对可读性也不会带来提升，有些时候甚至还会模糊作者的意图。比如你循环遍历一个数组的时候：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; ++i)&#123;</span><br><span class="line">    <span class="comment">/* to do something*/</span></span><br><span class="line">    <span class="built_in">array</span>[i] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>即使你把i变为看似更有意义的名字index:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; len; ++index)&#123;</span><br><span class="line">    <span class="comment">/* to do something*/</span></span><br><span class="line">    <span class="built_in">array</span>[index] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样可读性也不会带来多大的提升，在更复杂的场景下，还会让其他阅读代码的人搞不清意图。</p>
+<h3 id="4-避免过多的嵌套"><a href="#4-避免过多的嵌套" class="headerlink" title="4. 避免过多的嵌套"></a><strong>4. 避免过多的嵌套</strong></h3><p>看看这些嵌套过深的代码，只有天知道这坨东西在干什么。注：下面这段代码截取自公司的一个项目。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClearData</span> <span class="keyword">implements</span> <span class="title">IJob</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">transient</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(ClearData.class);</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Properties params)</span> </span>&#123;</span><br><span class="line">		clearFolder();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String[] modes = <span class="keyword">new</span> String[] &#123; <span class="string">"babj"</span>, <span class="string">"gefs"</span>, <span class="string">"cwao"</span>, <span class="string">"ecmf"</span> &#125;;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">clearFolder</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		Date now = <span class="keyword">new</span> Date();</span><br><span class="line"></span><br><span class="line">		File root = <span class="keyword">new</span> File(Config.GetString(<span class="string">"folder_target"</span>));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 循环各产品模式</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; modes.length; i++) &#123;</span><br><span class="line"></span><br><span class="line">			File mode = <span class="keyword">new</span> File(Converter.CombinePath(root.getPath(), modes[i]));</span><br><span class="line"></span><br><span class="line">			logger.info(<span class="string">"清理文件夹："</span> + mode.getName());</span><br><span class="line"></span><br><span class="line">			File[] products = mode.listFiles();</span><br><span class="line"></span><br><span class="line">			<span class="comment">// 循环各产品</span></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; products.length; j++) &#123;</span><br><span class="line"></span><br><span class="line">				<span class="comment">// 如果当前是日志文件，准备清理</span></span><br><span class="line">				<span class="keyword">if</span> (products[j].isFile() &amp;&amp; products[j].getName().endsWith(<span class="string">"log"</span>)) &#123;</span><br><span class="line">					<span class="comment">// 日志文件，需清理</span></span><br><span class="line"></span><br><span class="line">					logger.info(<span class="string">" 清理文件：    "</span> + products[j].getName());</span><br><span class="line"></span><br><span class="line">					Date time = Converter.String2Date(products[j].getName().split(<span class="string">"\\."</span>)[<span class="number">0</span>], <span class="string">"yyyyMMddHH"</span>);</span><br><span class="line"></span><br><span class="line">					<span class="keyword">if</span> (time != <span class="keyword">null</span> &amp;&amp; (now.getTime() - time.getTime()) &gt; utils.Constants.ticks_day * Config.GetInteger(<span class="string">"remain_days"</span>)) &#123;</span><br><span class="line">						<span class="comment">// 删除当前日志文件</span></span><br><span class="line">						products[j].delete();</span><br><span class="line">					&#125;</span><br><span class="line">				&#125; <span class="keyword">else</span> <span class="keyword">if</span> (products[j].isDirectory()) &#123;</span><br><span class="line"></span><br><span class="line">					logger.info(<span class="string">"清理文件夹：    "</span> + products[j].getName());</span><br><span class="line"></span><br><span class="line">					<span class="comment">// 如果当前是目录，则是子产品类型</span></span><br><span class="line">					File[] subItems = products[j].listFiles();</span><br><span class="line"></span><br><span class="line">					<span class="comment">// 循环个子产品</span></span><br><span class="line">					<span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; subItems.length; k++) &#123;</span><br><span class="line"></span><br><span class="line">						<span class="keyword">if</span> (subItems[k].isDirectory()) &#123;</span><br><span class="line"></span><br><span class="line">							logger.info(<span class="string">"清理文件夹：        "</span> + subItems[k].getName());</span><br><span class="line"></span><br><span class="line">							File[] ens = subItems[k].listFiles();</span><br><span class="line"></span><br><span class="line">							<span class="comment">// 循环各模式</span></span><br><span class="line">							<span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; ens.length; x++) &#123;</span><br><span class="line"></span><br><span class="line">								<span class="keyword">if</span> (ens[x].isDirectory()) &#123;</span><br><span class="line">									logger.info(<span class="string">"清理文件夹：            "</span> + ens[x].getName());</span><br><span class="line"></span><br><span class="line">									File[] dates = ens[x].listFiles();</span><br><span class="line"></span><br><span class="line">									<span class="comment">// 循环各日期文件夹</span></span><br><span class="line">									<span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; dates.length; y++) &#123;</span><br><span class="line"></span><br><span class="line">										File date = dates[y];</span><br><span class="line"></span><br><span class="line">										<span class="keyword">if</span> (date.isDirectory()) &#123;</span><br><span class="line"></span><br><span class="line">											logger.info(<span class="string">"清理文件夹：                "</span> + date.getName());</span><br><span class="line"></span><br><span class="line">											Date _date = Converter.String2Date(date.getName(), <span class="string">"yyyyMMddHH"</span>);</span><br><span class="line"></span><br><span class="line">											<span class="keyword">if</span> (_date != <span class="keyword">null</span> &amp;&amp; (now.getTime() - _date.getTime()) &gt; utils.Constants.ticks_day * Config.GetInteger(<span class="string">"remain_days"</span>)) &#123;</span><br><span class="line">												<span class="comment">// 删除当前日志文件</span></span><br><span class="line">												logger.info(<span class="string">"清理文件夹：                过期删除."</span>);</span><br><span class="line">												deleteDir(date);</span><br><span class="line">											&#125;</span><br><span class="line">										&#125;</span><br><span class="line">									&#125;</span><br><span class="line">								&#125;</span><br><span class="line">							&#125;</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">deleteDir</span><span class="params">(File dir)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">        <span class="keyword">if</span> (dir.isDirectory()) &#123;</span><br><span class="line">        	</span><br><span class="line">            File[] children = dir.listFiles();</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;children.length; i++) &#123;</span><br><span class="line">                <span class="keyword">boolean</span> success = deleteDir(children[i]);</span><br><span class="line">                <span class="keyword">if</span> (!success) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 目录此时为空，可以删除</span></span><br><span class="line">        <span class="keyword">return</span> dir.delete();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>知道了吧？ 影响代码可读性的书写反而需要用更多的注释来弥补。一个书写优美简洁的代码应该是“自解释”的，就是不需要写注释，程序员一眼就能明白大概是在干什么的。如果注释越来越多，那么维护性会越来越差，因为维护代码的同时还需要维护注释。但很显然，实际情况中，保持代码和注释的一致性非常难。你看看小公司的那些老古董项目，有一些注释都与代码意图完全不一样了，天知道是什么年代的注释。留着还会把人带歪路上呢，删了吧，也不好，谁知道留着这段注释你将来想干啥。 代码的<a href="http://baike.baidu.com/item/%E7%86%B5/19190273#viewPageContent" target="_blank" rel="noopener"><font color="red">熵</font></a>是越来越高的，代码的腐烂也是时时刻刻。</p>
+<p>上面只说到了过多嵌套的坏处，那么如何避免这类现象呢？其实万变不离其宗，与第一点本质一样。</p>
+<p>方法就是，把这些大量的循环或嵌套抽象成语义更明确的函数或方法把它提取出去调用，过多的嵌套就说明函数代码块的实现太复杂了，也表现了实现者的思路不清晰，当然也可能最终是公司加班赶项目进度的原因造成这样的结果。:)</p>
+<p><font color="red">注意一点</font>，不要为了<font color="red">避免嵌套</font>在循环中用break，continue 投机取巧，好吧，即使这样的写法带来一定程度的避免过多嵌套，但是同时它也带来了更多的坏处，具体情况王垠的文章<a href="http://www.yinwang.org/blog-cn/2015/11/21/programming-philosophy" target="_blank" rel="noopener">《编程的智慧》</a>有讨论。我还可以举出一些讨论:</p>
+<ul>
+<li><p><a href="http://programmers.stackexchange.com/questions/58237/are-break-and-continue-bad-programming-practices" target="_blank" rel="noopener">Are <code>break</code> and <code>continue</code> bad programming practices?</a></p>
+</li>
+<li><p><a href="http://stackoverflow.com/questions/11133127/why-it-is-a-bad-practice-to-use-break-continue-labels-in-oop-e-g-java-c" target="_blank" rel="noopener">Why it is a bad practice to use break/continue labels in OOP (e.g. Java, C#)</a></p>
+</li>
+<li><p><a href="http://stackoverflow.com/questions/4913981/why-is-continue-inside-a-loop-a-bad-idea" target="_blank" rel="noopener">Why is continue inside a loop a bad idea?</a></p>
+</li>
+</ul>
+<p>当然，这个问题大家仁者见仁智者见智了。我自己的感觉就是，如果在循环中用continue跳过一个条件，我大脑中还要反转这个条件才知道程序真正做的事，因为continue是跳过，意图是不处理，那么此事是意义不大的。那么我大脑中还要反转这个条件去查看程序关注的需要处理的代码块。这造成了思维短时间内的条件反转，影响直观性。所以，为何不直接关注需要处理的代码块呢？如果这造成了所谓的多了一层嵌套，那么为何不改善设计，采取之前提到的做法，把代码块抽象成更有意义的函数来避免嵌套过深呢？</p>
+<h1 id="优雅简洁的代码实例"><a href="#优雅简洁的代码实例" class="headerlink" title="优雅简洁的代码实例"></a>优雅简洁的代码实例</h1><hr>
+<p>如果说，我工作以来阅读过最漂亮的代码实现，那么应该就是<a href="https://en.wikipedia.org/wiki/Standard_Template_Library" target="_blank" rel="noopener">C++ STL</a>的<a href="http://www.sgi.com/tech/stl/" target="_blank" rel="noopener">SGI实现</a>了。这正是完美的工业级别的代码设计，我心中最完美的C++ coding style。有很多编译器的产商附带的STL基本就是参照SGI的实现。MSVC的不是，MSVC其中小部分买的是PJ STL实现，PJ STL的实现基本没法看。</p>
+<p>下面就是SGI STL vector容器的实现,仔细看看，是不是函数很小，基本的循环迭代嵌套也尽量消除了。函数的语义功能已经被抽象得很薄了，所以根本不用写注释来说明作者的意图。完美的“自解释”代码。:)<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Copyright (c) 1994</span></span><br><span class="line"><span class="comment"> * Hewlett-Packard Company</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Permission to use, copy, modify, distribute and sell this software</span></span><br><span class="line"><span class="comment"> * and its documentation for any purpose is hereby granted without fee,</span></span><br><span class="line"><span class="comment"> * provided that the above copyright notice appear in all copies and</span></span><br><span class="line"><span class="comment"> * that both that copyright notice and this permission notice appear</span></span><br><span class="line"><span class="comment"> * in supporting documentation.  Hewlett-Packard Company makes no</span></span><br><span class="line"><span class="comment"> * representations about the suitability of this software for any</span></span><br><span class="line"><span class="comment"> * purpose.  It is provided "as is" without express or implied warranty.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Copyright (c) 1996</span></span><br><span class="line"><span class="comment"> * Silicon Graphics Computer Systems, Inc.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Permission to use, copy, modify, distribute and sell this software</span></span><br><span class="line"><span class="comment"> * and its documentation for any purpose is hereby granted without fee,</span></span><br><span class="line"><span class="comment"> * provided that the above copyright notice appear in all copies and</span></span><br><span class="line"><span class="comment"> * that both that copyright notice and this permission notice appear</span></span><br><span class="line"><span class="comment"> * in supporting documentation.  Silicon Graphics makes no</span></span><br><span class="line"><span class="comment"> * representations about the suitability of this software for any</span></span><br><span class="line"><span class="comment"> * purpose.  It is provided "as is" without express or implied warranty.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* <span class="doctag">NOTE:</span> This is an internal header file, included by other STL headers.</span></span><br><span class="line"><span class="comment"> *   You should not attempt to use it directly.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> __SGI_STL_INTERNAL_VECTOR_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __SGI_STL_INTERNAL_VECTOR_H</span></span><br><span class="line"></span><br><span class="line">__STL_BEGIN_NAMESPACE </span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(__sgi) &amp;&amp; !defined(__GNUC__) &amp;&amp; (_MIPS_SIM != _MIPS_SIM_ABI32)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> set woff 1174</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span> = <span class="title">alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">vector</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">typedef</span> T value_type;</span><br><span class="line">  <span class="keyword">typedef</span> value_type* pointer;</span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">const</span> value_type* const_pointer;</span><br><span class="line">  <span class="keyword">typedef</span> value_type* iterator;</span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">const</span> value_type* const_iterator;</span><br><span class="line">  <span class="keyword">typedef</span> value_type&amp; reference;</span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">const</span> value_type&amp; const_reference;</span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">size_t</span> size_type;</span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">ptrdiff_t</span> difference_type;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __STL_CLASS_PARTIAL_SPECIALIZATION</span></span><br><span class="line">  <span class="keyword">typedef</span> reverse_iterator&lt;const_iterator&gt; const_reverse_iterator;</span><br><span class="line">  <span class="keyword">typedef</span> reverse_iterator&lt;iterator&gt; reverse_iterator;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span> <span class="comment">/* __STL_CLASS_PARTIAL_SPECIALIZATION */</span></span></span><br><span class="line">  <span class="keyword">typedef</span> reverse_iterator&lt;const_iterator, value_type, const_reference, </span><br><span class="line">                           difference_type&gt;  const_reverse_iterator;</span><br><span class="line">  <span class="keyword">typedef</span> reverse_iterator&lt;iterator, value_type, reference, difference_type&gt;</span><br><span class="line">          reverse_iterator;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* __STL_CLASS_PARTIAL_SPECIALIZATION */</span></span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">  <span class="keyword">typedef</span> simple_alloc&lt;value_type, Alloc&gt; data_allocator;</span><br><span class="line">  iterator start;</span><br><span class="line">  iterator finish;</span><br><span class="line">  iterator end_of_storage;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">insert_aux</span><span class="params">(iterator position, <span class="keyword">const</span> T&amp; x)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">deallocate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (start) data_allocator::deallocate(start, end_of_storage - start);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">fill_initialize</span><span class="params">(size_type n, <span class="keyword">const</span> T&amp; value)</span> </span>&#123;</span><br><span class="line">    start = allocate_and_fill(n, value);</span><br><span class="line">    finish = start + n;</span><br><span class="line">    end_of_storage = finish;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function">iterator <span class="title">begin</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> start; &#125;</span><br><span class="line">  <span class="function">const_iterator <span class="title">begin</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> start; &#125;</span><br><span class="line">  <span class="function">iterator <span class="title">end</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> finish; &#125;</span><br><span class="line">  <span class="function">const_iterator <span class="title">end</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> finish; &#125;</span><br><span class="line">  <span class="function">reverse_iterator <span class="title">rbegin</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> reverse_iterator(end()); &#125;</span><br><span class="line">  <span class="function">const_reverse_iterator <span class="title">rbegin</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> const_reverse_iterator(end()); </span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">reverse_iterator <span class="title">rend</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> reverse_iterator(begin()); &#125;</span><br><span class="line">  <span class="function">const_reverse_iterator <span class="title">rend</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> const_reverse_iterator(begin()); </span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">size_type <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> size_type(end() - begin()); &#125;</span><br><span class="line">  <span class="function">size_type <span class="title">max_size</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> size_type(<span class="number">-1</span>) / <span class="keyword">sizeof</span>(T); &#125;</span><br><span class="line">  <span class="function">size_type <span class="title">capacity</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> size_type(end_of_storage - begin()); &#125;</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> begin() == end(); &#125;</span><br><span class="line">  reference <span class="keyword">operator</span>[](size_type n) &#123; <span class="keyword">return</span> *(begin() + n); &#125;</span><br><span class="line">  const_reference <span class="keyword">operator</span>[](size_type n) <span class="keyword">const</span> &#123; <span class="keyword">return</span> *(begin() + n); &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">vector</span>() : start(<span class="number">0</span>), finish(<span class="number">0</span>), end_of_storage(<span class="number">0</span>) &#123;&#125;</span><br><span class="line">  <span class="built_in">vector</span>(size_type n, <span class="keyword">const</span> T&amp; value) &#123; fill_initialize(n, value); &#125;</span><br><span class="line">  <span class="built_in">vector</span>(<span class="keyword">int</span> n, <span class="keyword">const</span> T&amp; value) &#123; fill_initialize(n, value); &#125;</span><br><span class="line">  <span class="built_in">vector</span>(<span class="keyword">long</span> n, <span class="keyword">const</span> T&amp; value) &#123; fill_initialize(n, value); &#125;</span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">vector</span><span class="params">(size_type n)</span> </span>&#123; fill_initialize(n, T()); &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">vector</span>(<span class="keyword">const</span> <span class="built_in">vector</span>&lt;T, Alloc&gt;&amp; x) &#123;</span><br><span class="line">    start = allocate_and_copy(x.end() - x.begin(), x.begin(), x.end());</span><br><span class="line">    finish = start + (x.end() - x.begin());</span><br><span class="line">    end_of_storage = finish;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __STL_MEMBER_TEMPLATES</span></span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>&gt;</span></span><br><span class="line"><span class="class">  <span class="title">vector</span>(<span class="title">InputIterator</span> <span class="title">first</span>, <span class="title">InputIterator</span> <span class="title">last</span>) :</span></span><br><span class="line">    start(<span class="number">0</span>), finish(<span class="number">0</span>), end_of_storage(<span class="number">0</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    range_initialize(first, last, iterator_category(first));</span><br><span class="line">  &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span> <span class="comment">/* __STL_MEMBER_TEMPLATES */</span></span></span><br><span class="line">  <span class="built_in">vector</span>(const_iterator first, const_iterator last) &#123;</span><br><span class="line">    size_type n = <span class="number">0</span>;</span><br><span class="line">    distance(first, last, n);</span><br><span class="line">    start = allocate_and_copy(n, first, last);</span><br><span class="line">    finish = start + n;</span><br><span class="line">    end_of_storage = finish;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* __STL_MEMBER_TEMPLATES */</span></span></span><br><span class="line">  ~<span class="built_in">vector</span>() &#123; </span><br><span class="line">    destroy(start, finish);</span><br><span class="line">    deallocate();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">vector</span>&lt;T, Alloc&gt;&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> <span class="built_in">vector</span>&lt;T, Alloc&gt;&amp; x);</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">reserve</span><span class="params">(size_type n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (capacity() &lt; n) &#123;</span><br><span class="line">      <span class="keyword">const</span> size_type old_size = size();</span><br><span class="line">      iterator tmp = allocate_and_copy(n, start, finish);</span><br><span class="line">      destroy(start, finish);</span><br><span class="line">      deallocate();</span><br><span class="line">      start = tmp;</span><br><span class="line">      finish = tmp + old_size;</span><br><span class="line">      end_of_storage = start + n;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">reference <span class="title">front</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> *begin(); &#125;</span><br><span class="line">  <span class="function">const_reference <span class="title">front</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> *begin(); &#125;</span><br><span class="line">  <span class="function">reference <span class="title">back</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> *(end() - <span class="number">1</span>); &#125;</span><br><span class="line">  <span class="function">const_reference <span class="title">back</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> *(end() - <span class="number">1</span>); &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">push_back</span><span class="params">(<span class="keyword">const</span> T&amp; x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (finish != end_of_storage) &#123;</span><br><span class="line">      construct(finish, x);</span><br><span class="line">      ++finish;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      insert_aux(end(), x);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="built_in">vector</span>&lt;T, Alloc&gt;&amp; x)</span> </span>&#123;</span><br><span class="line">    __STD::swap(start, x.start);</span><br><span class="line">    __STD::swap(finish, x.finish);</span><br><span class="line">    __STD::swap(end_of_storage, x.end_of_storage);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">iterator <span class="title">insert</span><span class="params">(iterator position, <span class="keyword">const</span> T&amp; x)</span> </span>&#123;</span><br><span class="line">    size_type n = position - begin();</span><br><span class="line">    <span class="keyword">if</span> (finish != end_of_storage &amp;&amp; position == end()) &#123;</span><br><span class="line">      construct(finish, x);</span><br><span class="line">      ++finish;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      insert_aux(position, x);</span><br><span class="line">    <span class="keyword">return</span> begin() + n;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">iterator <span class="title">insert</span><span class="params">(iterator position)</span> </span>&#123; <span class="keyword">return</span> insert(position, T()); &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __STL_MEMBER_TEMPLATES</span></span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>&gt;</span></span><br><span class="line"><span class="class">  <span class="title">void</span> <span class="title">insert</span>(<span class="title">iterator</span> <span class="title">position</span>, <span class="title">InputIterator</span> <span class="title">first</span>, <span class="title">InputIterator</span> <span class="title">last</span>) &#123;</span></span><br><span class="line">    range_insert(position, first, last, iterator_category(first));</span><br><span class="line">  &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span> <span class="comment">/* __STL_MEMBER_TEMPLATES */</span></span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(iterator position,</span></span></span><br><span class="line"><span class="function"><span class="params">              const_iterator first, const_iterator last)</span></span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* __STL_MEMBER_TEMPLATES */</span></span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">insert</span> <span class="params">(iterator pos, size_type n, <span class="keyword">const</span> T&amp; x)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">insert</span> <span class="params">(iterator pos, <span class="keyword">int</span> n, <span class="keyword">const</span> T&amp; x)</span> </span>&#123;</span><br><span class="line">    insert(pos, (size_type) n, x);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">insert</span> <span class="params">(iterator pos, <span class="keyword">long</span> n, <span class="keyword">const</span> T&amp; x)</span> </span>&#123;</span><br><span class="line">    insert(pos, (size_type) n, x);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">pop_back</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    --finish;</span><br><span class="line">    destroy(finish);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">iterator <span class="title">erase</span><span class="params">(iterator position)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (position + <span class="number">1</span> != end())</span><br><span class="line">      copy(position + <span class="number">1</span>, finish, position);</span><br><span class="line">    --finish;</span><br><span class="line">    destroy(finish);</span><br><span class="line">    <span class="keyword">return</span> position;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">iterator <span class="title">erase</span><span class="params">(iterator first, iterator last)</span> </span>&#123;</span><br><span class="line">    iterator i = copy(last, finish, first);</span><br><span class="line">    destroy(i, finish);</span><br><span class="line">    finish = finish - (last - first);</span><br><span class="line">    <span class="keyword">return</span> first;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">resize</span><span class="params">(size_type new_size, <span class="keyword">const</span> T&amp; x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (new_size &lt; size()) </span><br><span class="line">      erase(begin() + new_size, end());</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      insert(end(), new_size - size(), x);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">resize</span><span class="params">(size_type new_size)</span> </span>&#123; resize(new_size, T()); &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123; erase(begin(), end()); &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">  <span class="function">iterator <span class="title">allocate_and_fill</span><span class="params">(size_type n, <span class="keyword">const</span> T&amp; x)</span> </span>&#123;</span><br><span class="line">    iterator result = data_allocator::allocate(n);</span><br><span class="line">    __STL_TRY &#123;</span><br><span class="line">      uninitialized_fill_n(result, n, x);</span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    __STL_UNWIND(data_allocator::deallocate(result, n));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __STL_MEMBER_TEMPLATES</span></span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">ForwardIterator</span>&gt;</span></span><br><span class="line"><span class="class">  <span class="title">iterator</span> <span class="title">allocate_and_copy</span>(<span class="title">size_type</span> <span class="title">n</span>,</span></span><br><span class="line"><span class="class">                             <span class="title">ForwardIterator</span> <span class="title">first</span>, <span class="title">ForwardIterator</span> <span class="title">last</span>) &#123;</span></span><br><span class="line">    iterator result = data_allocator::allocate(n);</span><br><span class="line">    __STL_TRY &#123;</span><br><span class="line">      uninitialized_copy(first, last, result);</span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    __STL_UNWIND(data_allocator::deallocate(result, n));</span><br><span class="line">  &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span> <span class="comment">/* __STL_MEMBER_TEMPLATES */</span></span></span><br><span class="line">  <span class="function">iterator <span class="title">allocate_and_copy</span><span class="params">(size_type n,</span></span></span><br><span class="line"><span class="function"><span class="params">                             const_iterator first, const_iterator last)</span> </span>&#123;</span><br><span class="line">    iterator result = data_allocator::allocate(n);</span><br><span class="line">    __STL_TRY &#123;</span><br><span class="line">      uninitialized_copy(first, last, result);</span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    __STL_UNWIND(data_allocator::deallocate(result, n));</span><br><span class="line">  &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* __STL_MEMBER_TEMPLATES */</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __STL_MEMBER_TEMPLATES</span></span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>&gt;</span></span><br><span class="line"><span class="class">  <span class="title">void</span> <span class="title">range_initialize</span>(<span class="title">InputIterator</span> <span class="title">first</span>, <span class="title">InputIterator</span> <span class="title">last</span>,</span></span><br><span class="line"><span class="class">                        <span class="title">input_iterator_tag</span>) &#123;</span></span><br><span class="line">    <span class="keyword">for</span> ( ; first != last; ++first)</span><br><span class="line">      push_back(*first);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// This function is only called by the constructor.  We have to worry</span></span><br><span class="line">  <span class="comment">//  about resource leaks, but not about maintaining invariants.</span></span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">ForwardIterator</span>&gt;</span></span><br><span class="line"><span class="class">  <span class="title">void</span> <span class="title">range_initialize</span>(<span class="title">ForwardIterator</span> <span class="title">first</span>, <span class="title">ForwardIterator</span> <span class="title">last</span>,</span></span><br><span class="line"><span class="class">                        <span class="title">forward_iterator_tag</span>) &#123;</span></span><br><span class="line">    size_type n = <span class="number">0</span>;</span><br><span class="line">    distance(first, last, n);</span><br><span class="line">    start = allocate_and_copy(n, first, last);</span><br><span class="line">    finish = start + n;</span><br><span class="line">    end_of_storage = finish;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>&gt;</span></span><br><span class="line"><span class="class">  <span class="title">void</span> <span class="title">range_insert</span>(<span class="title">iterator</span> <span class="title">pos</span>,</span></span><br><span class="line"><span class="class">                    <span class="title">InputIterator</span> <span class="title">first</span>, <span class="title">InputIterator</span> <span class="title">last</span>,</span></span><br><span class="line"><span class="class">                    <span class="title">input_iterator_tag</span>);</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">ForwardIterator</span>&gt;</span></span><br><span class="line"><span class="class">  <span class="title">void</span> <span class="title">range_insert</span>(<span class="title">iterator</span> <span class="title">pos</span>,</span></span><br><span class="line"><span class="class">                    <span class="title">ForwardIterator</span> <span class="title">first</span>, <span class="title">ForwardIterator</span> <span class="title">last</span>,</span></span><br><span class="line"><span class="class">                    <span class="title">forward_iterator_tag</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* __STL_MEMBER_TEMPLATES */</span></span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">bool</span> <span class="title">operator</span>==(<span class="title">const</span> <span class="title">vector</span>&lt;T, Alloc&gt;&amp; <span class="title">x</span>, <span class="title">const</span> <span class="title">vector</span>&lt;T, Alloc&gt;&amp; <span class="title">y</span>) &#123;</span></span><br><span class="line">  <span class="keyword">return</span> x.size() == y.size() &amp;&amp; equal(x.begin(), x.end(), y.begin());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">bool</span> <span class="title">operator</span>&lt;(const vector&lt;T, Alloc&gt;&amp; x, const vector&lt;T, Alloc&gt;&amp; y) &#123;</span></span><br><span class="line"><span class="class">  return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());</span></span><br><span class="line"><span class="class">&#125;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">#ifdef __STL_FUNCTION_TMPL_PARTIAL_ORDER</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">template &lt;class T, class Alloc&gt;</span></span><br><span class="line"><span class="class">inline void swap(vector&lt;T, Alloc&gt;&amp; x, vector&lt;T, Alloc&gt;&amp; y) &#123;</span></span><br><span class="line"><span class="class">  x.swap(y);</span></span><br><span class="line"><span class="class">&#125;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">#endif /* __STL_FUNCTION_TMPL_PARTIAL_ORDER */</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">template &lt;class T, class Alloc&gt;</span></span><br><span class="line"><span class="class">vector&lt;T, Alloc&gt;&amp; vector&lt;T, Alloc&gt;::operator=(const vector&lt;T, Alloc&gt;&amp; x) &#123;</span></span><br><span class="line"><span class="class">  if (&amp;x != this) &#123;</span></span><br><span class="line"><span class="class">    if (x.size() &gt; <span class="title">capacity</span>()) &#123;</span></span><br><span class="line">      iterator tmp = allocate_and_copy(x.end() - x.begin(),</span><br><span class="line">                                       x.begin(), x.end());</span><br><span class="line">      destroy(start, finish);</span><br><span class="line">      deallocate();</span><br><span class="line">      start = tmp;</span><br><span class="line">      end_of_storage = start + (x.end() - x.begin());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (size() &gt;= x.size()) &#123;</span><br><span class="line">      iterator i = copy(x.begin(), x.end(), begin());</span><br><span class="line">      destroy(i, finish);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      copy(x.begin(), x.begin() + size(), start);</span><br><span class="line">      uninitialized_copy(x.begin() + size(), x.end(), finish);</span><br><span class="line">    &#125;</span><br><span class="line">    finish = start + x.size();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">vector</span>&lt;T, Alloc&gt;:</span>:insert_aux(iterator position, <span class="keyword">const</span> T&amp; x) &#123;</span><br><span class="line">  <span class="keyword">if</span> (finish != end_of_storage) &#123;</span><br><span class="line">    construct(finish, *(finish - <span class="number">1</span>));</span><br><span class="line">    ++finish;</span><br><span class="line">    T x_copy = x;</span><br><span class="line">    copy_backward(position, finish - <span class="number">2</span>, finish - <span class="number">1</span>);</span><br><span class="line">    *position = x_copy;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> size_type old_size = size();</span><br><span class="line">    <span class="keyword">const</span> size_type len = old_size != <span class="number">0</span> ? <span class="number">2</span> * old_size : <span class="number">1</span>;</span><br><span class="line">    iterator new_start = data_allocator::allocate(len);</span><br><span class="line">    iterator new_finish = new_start;</span><br><span class="line">    __STL_TRY &#123;</span><br><span class="line">      new_finish = uninitialized_copy(start, position, new_start);</span><br><span class="line">      construct(new_finish, x);</span><br><span class="line">      ++new_finish;</span><br><span class="line">      new_finish = uninitialized_copy(position, finish, new_finish);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#       <span class="meta-keyword">ifdef</span>  __STL_USE_EXCEPTIONS </span></span><br><span class="line">    <span class="keyword">catch</span>(...) &#123;</span><br><span class="line">      destroy(new_start, new_finish); </span><br><span class="line">      data_allocator::deallocate(new_start, len);</span><br><span class="line">      <span class="keyword">throw</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">#       <span class="meta-keyword">endif</span> <span class="comment">/* __STL_USE_EXCEPTIONS */</span></span></span><br><span class="line">    destroy(begin(), end());</span><br><span class="line">    deallocate();</span><br><span class="line">    start = new_start;</span><br><span class="line">    finish = new_finish;</span><br><span class="line">    end_of_storage = new_start + len;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">vector</span>&lt;T, Alloc&gt;:</span>:insert(iterator position, size_type n, <span class="keyword">const</span> T&amp; x) &#123;</span><br><span class="line">  <span class="keyword">if</span> (n != <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (size_type(end_of_storage - finish) &gt;= n) &#123;</span><br><span class="line">      T x_copy = x;</span><br><span class="line">      <span class="keyword">const</span> size_type elems_after = finish - position;</span><br><span class="line">      iterator old_finish = finish;</span><br><span class="line">      <span class="keyword">if</span> (elems_after &gt; n) &#123;</span><br><span class="line">        uninitialized_copy(finish - n, finish, finish);</span><br><span class="line">        finish += n;</span><br><span class="line">        copy_backward(position, old_finish - n, old_finish);</span><br><span class="line">        fill(position, position + n, x_copy);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">        uninitialized_fill_n(finish, n - elems_after, x_copy);</span><br><span class="line">        finish += n - elems_after;</span><br><span class="line">        uninitialized_copy(position, old_finish, finish);</span><br><span class="line">        finish += elems_after;</span><br><span class="line">        fill(position, old_finish, x_copy);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> size_type old_size = size();        </span><br><span class="line">      <span class="keyword">const</span> size_type len = old_size + max(old_size, n);</span><br><span class="line">      iterator new_start = data_allocator::allocate(len);</span><br><span class="line">      iterator new_finish = new_start;</span><br><span class="line">      __STL_TRY &#123;</span><br><span class="line">        new_finish = uninitialized_copy(start, position, new_start);</span><br><span class="line">        new_finish = uninitialized_fill_n(new_finish, n, x);</span><br><span class="line">        new_finish = uninitialized_copy(position, finish, new_finish);</span><br><span class="line">      &#125;</span><br><span class="line"><span class="meta">#         <span class="meta-keyword">ifdef</span>  __STL_USE_EXCEPTIONS </span></span><br><span class="line">      <span class="keyword">catch</span>(...) &#123;</span><br><span class="line">        destroy(new_start, new_finish);</span><br><span class="line">        data_allocator::deallocate(new_start, len);</span><br><span class="line">        <span class="keyword">throw</span>;</span><br><span class="line">      &#125;</span><br><span class="line"><span class="meta">#         <span class="meta-keyword">endif</span> <span class="comment">/* __STL_USE_EXCEPTIONS */</span></span></span><br><span class="line">      destroy(start, finish);</span><br><span class="line">      deallocate();</span><br><span class="line">      start = new_start;</span><br><span class="line">      finish = new_finish;</span><br><span class="line">      end_of_storage = new_start + len;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __STL_MEMBER_TEMPLATES</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt; <span class="title">template</span> &lt;class InputIterator&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">vector</span>&lt;T, Alloc&gt;:</span>:range_insert(iterator pos,</span><br><span class="line">                                    InputIterator first, InputIterator last,</span><br><span class="line">                                    input_iterator_tag) &#123;</span><br><span class="line">  <span class="keyword">for</span> ( ; first != last; ++first) &#123;</span><br><span class="line">    pos = insert(pos, *first);</span><br><span class="line">    ++pos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt; <span class="title">template</span> &lt;class ForwardIterator&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">vector</span>&lt;T, Alloc&gt;:</span>:range_insert(iterator position,</span><br><span class="line">                                    ForwardIterator first,</span><br><span class="line">                                    ForwardIterator last,</span><br><span class="line">                                    forward_iterator_tag) &#123;</span><br><span class="line">  <span class="keyword">if</span> (first != last) &#123;</span><br><span class="line">    size_type n = <span class="number">0</span>;</span><br><span class="line">    distance(first, last, n);</span><br><span class="line">    <span class="keyword">if</span> (size_type(end_of_storage - finish) &gt;= n) &#123;</span><br><span class="line">      <span class="keyword">const</span> size_type elems_after = finish - position;</span><br><span class="line">      iterator old_finish = finish;</span><br><span class="line">      <span class="keyword">if</span> (elems_after &gt; n) &#123;</span><br><span class="line">        uninitialized_copy(finish - n, finish, finish);</span><br><span class="line">        finish += n;</span><br><span class="line">        copy_backward(position, old_finish - n, old_finish);</span><br><span class="line">        copy(first, last, position);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">        ForwardIterator mid = first;</span><br><span class="line">        advance(mid, elems_after);</span><br><span class="line">        uninitialized_copy(mid, last, finish);</span><br><span class="line">        finish += n - elems_after;</span><br><span class="line">        uninitialized_copy(position, old_finish, finish);</span><br><span class="line">        finish += elems_after;</span><br><span class="line">        copy(first, mid, position);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> size_type old_size = size();</span><br><span class="line">      <span class="keyword">const</span> size_type len = old_size + max(old_size, n);</span><br><span class="line">      iterator new_start = data_allocator::allocate(len);</span><br><span class="line">      iterator new_finish = new_start;</span><br><span class="line">      __STL_TRY &#123;</span><br><span class="line">        new_finish = uninitialized_copy(start, position, new_start);</span><br><span class="line">        new_finish = uninitialized_copy(first, last, new_finish);</span><br><span class="line">        new_finish = uninitialized_copy(position, finish, new_finish);</span><br><span class="line">      &#125;</span><br><span class="line"><span class="meta">#         <span class="meta-keyword">ifdef</span> __STL_USE_EXCEPTIONS</span></span><br><span class="line">      <span class="keyword">catch</span>(...) &#123;</span><br><span class="line">        destroy(new_start, new_finish);</span><br><span class="line">        data_allocator::deallocate(new_start, len);</span><br><span class="line">        <span class="keyword">throw</span>;</span><br><span class="line">      &#125;</span><br><span class="line"><span class="meta">#         <span class="meta-keyword">endif</span> <span class="comment">/* __STL_USE_EXCEPTIONS */</span></span></span><br><span class="line">      destroy(start, finish);</span><br><span class="line">      deallocate();</span><br><span class="line">      start = new_start;</span><br><span class="line">      finish = new_finish;</span><br><span class="line">      end_of_storage = new_start + len;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span> <span class="comment">/* __STL_MEMBER_TEMPLATES */</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">vector</span>&lt;T, Alloc&gt;:</span>:insert(iterator position, </span><br><span class="line">                              const_iterator first, </span><br><span class="line">                              const_iterator last) &#123;</span><br><span class="line">  <span class="keyword">if</span> (first != last) &#123;</span><br><span class="line">    size_type n = <span class="number">0</span>;</span><br><span class="line">    distance(first, last, n);</span><br><span class="line">    <span class="keyword">if</span> (size_type(end_of_storage - finish) &gt;= n) &#123;</span><br><span class="line">      <span class="keyword">const</span> size_type elems_after = finish - position;</span><br><span class="line">      iterator old_finish = finish;</span><br><span class="line">      <span class="keyword">if</span> (elems_after &gt; n) &#123;</span><br><span class="line">        uninitialized_copy(finish - n, finish, finish);</span><br><span class="line">        finish += n;</span><br><span class="line">        copy_backward(position, old_finish - n, old_finish);</span><br><span class="line">        copy(first, last, position);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">        uninitialized_copy(first + elems_after, last, finish);</span><br><span class="line">        finish += n - elems_after;</span><br><span class="line">        uninitialized_copy(position, old_finish, finish);</span><br><span class="line">        finish += elems_after;</span><br><span class="line">        copy(first, first + elems_after, position);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> size_type old_size = size();</span><br><span class="line">      <span class="keyword">const</span> size_type len = old_size + max(old_size, n);</span><br><span class="line">      iterator new_start = data_allocator::allocate(len);</span><br><span class="line">      iterator new_finish = new_start;</span><br><span class="line">      __STL_TRY &#123;</span><br><span class="line">        new_finish = uninitialized_copy(start, position, new_start);</span><br><span class="line">        new_finish = uninitialized_copy(first, last, new_finish);</span><br><span class="line">        new_finish = uninitialized_copy(position, finish, new_finish);</span><br><span class="line">      &#125;</span><br><span class="line"><span class="meta">#         <span class="meta-keyword">ifdef</span> __STL_USE_EXCEPTIONS</span></span><br><span class="line">      <span class="keyword">catch</span>(...) &#123;</span><br><span class="line">        destroy(new_start, new_finish);</span><br><span class="line">        data_allocator::deallocate(new_start, len);</span><br><span class="line">        <span class="keyword">throw</span>;</span><br><span class="line">      &#125;</span><br><span class="line"><span class="meta">#         <span class="meta-keyword">endif</span> <span class="comment">/* __STL_USE_EXCEPTIONS */</span></span></span><br><span class="line">      destroy(start, finish);</span><br><span class="line">      deallocate();</span><br><span class="line">      start = new_start;</span><br><span class="line">      finish = new_finish;</span><br><span class="line">      end_of_storage = new_start + len;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* __STL_MEMBER_TEMPLATES */</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(__sgi) &amp;&amp; !defined(__GNUC__) &amp;&amp; (_MIPS_SIM != _MIPS_SIM_ABI32)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> reset woff 1174</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">__STL_END_NAMESPACE </span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* __SGI_STL_INTERNAL_VECTOR_H */</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Local Variables:</span></span><br><span class="line"><span class="comment">// mode:C++</span></span><br><span class="line"><span class="comment">// End:</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><hr>
+<p>所以，设计代码的时候应该尽量往这样的标准上靠拢，严格要求自己。另外，在知乎上看到一个<a href="https://www.zhihu.com/question/24601525" target="_blank" rel="noopener">讨论</a>，还有一个更精巧漂亮的STL实现叫<a href="https://github.com/electronicarts/EASTL" target="_blank" rel="noopener">EASTL</a> ，有机会读一读。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/重构/" rel="tag">#重构</a>
+          
+            <a href="/blog/tags/软件工程/" rel="tag">#软件工程</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2016/08/31/tech-leader/" rel="prev">谈谈技术领导者的基本素养</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2016/08/27/ioccc-code/" rel="next">我的C语言混乱代码</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">64</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">86</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="https://dendise7engithub.github.io/" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-函数尽可能小"><span class="nav-number">2.0.1.</span> <span class="nav-text">1. 函数尽可能小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-避免使用全局变量，多使用局部变量"><span class="nav-number">2.0.2.</span> <span class="nav-text">2. 避免使用全局变量，多使用局部变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-使用简单语义明确的变量名和函数名"><span class="nav-number">2.0.3.</span> <span class="nav-text">3. 使用简单语义明确的变量名和函数名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-避免过多的嵌套"><span class="nav-number">2.0.4.</span> <span class="nav-text">4. 避免过多的嵌套</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优雅简洁的代码实例"><span class="nav-number">3.</span> <span class="nav-text">优雅简洁的代码实例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

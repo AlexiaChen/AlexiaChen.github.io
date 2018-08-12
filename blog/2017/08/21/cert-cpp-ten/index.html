@@ -1,0 +1,942 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="System Software Engineer" />
+
+
+
+  <meta name="keywords" content="C/C++,CERT," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="其他功能杂项MSC50-CPP. 不要使用std::rand()生成伪随机数严重程度： 中等。使用std::rand()函数可能直接造成可预测的随机数。 伪随机数生成器使用了数学算法来生成统计学上较好的随机数序列，但是产生的随机数序列不是真正意义上的随机。 C标准库提供的rand()函数通过C++ 标准库函数暴露出的std::rand()对随机序列的生成没有任何质量保证。 一般对于应用程序需要一个">
+<meta name="keywords" content="C&#x2F;C++,CERT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CERT C++ 编码规范翻译（MSC）">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2017/08/21/cert-cpp-ten/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="其他功能杂项MSC50-CPP. 不要使用std::rand()生成伪随机数严重程度： 中等。使用std::rand()函数可能直接造成可预测的随机数。 伪随机数生成器使用了数学算法来生成统计学上较好的随机数序列，但是产生的随机数序列不是真正意义上的随机。 C标准库提供的rand()函数通过C++ 标准库函数暴露出的std::rand()对随机序列的生成没有任何质量保证。 一般对于应用程序需要一个">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-08-12T11:25:34.094Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CERT C++ 编码规范翻译（MSC）">
+<meta name="twitter:description" content="其他功能杂项MSC50-CPP. 不要使用std::rand()生成伪随机数严重程度： 中等。使用std::rand()函数可能直接造成可预测的随机数。 伪随机数生成器使用了数学算法来生成统计学上较好的随机数序列，但是产生的随机数序列不是真正意义上的随机。 C标准库提供的rand()函数通过C++ 标准库函数暴露出的std::rand()对随机序列的生成没有任何质量保证。 一般对于应用程序需要一个">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> CERT C++ 编码规范翻译（MSC） | MathxH </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br />
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              CERT C++ 编码规范翻译（MSC）
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2017-08-21T13:52:26-04:00" content="2017-08-21">
+            2017-08-21
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="其他功能杂项"><a href="#其他功能杂项" class="headerlink" title="其他功能杂项"></a>其他功能杂项</h2><h3 id="MSC50-CPP-不要使用std-rand-生成伪随机数"><a href="#MSC50-CPP-不要使用std-rand-生成伪随机数" class="headerlink" title="MSC50-CPP. 不要使用std::rand()生成伪随机数"></a>MSC50-CPP. 不要使用std::rand()生成伪随机数</h3><p>严重程度： 中等。使用std::rand()函数可能直接造成可预测的随机数。</p>
+<p>伪随机数生成器使用了数学算法来生成统计学上较好的随机数序列，但是产生的随机数序列不是真正意义上的随机。</p>
+<p>C标准库提供的rand()函数通过C++ 标准库函数<cstdlib>暴露出的std::rand()对随机序列的生成没有任何质量保证。</cstdlib></p>
+<p>一般对于应用程序需要一个强伪随机数生成器，需要高质量的随机数，并且需要高性能。</p>
+<h4 id="代码样例对比"><a href="#代码样例对比" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">id</span><span class="params">(<span class="string">"ID"</span>)</span></span>; <span class="comment">// Holds the ID, starting with the</span></span><br><span class="line">  <span class="comment">// characters "ID" followed by a</span></span><br><span class="line">  <span class="comment">// random integer in the range [0-10000].</span></span><br><span class="line">  id += <span class="built_in">std</span>::to_string(<span class="built_in">std</span>::rand() % <span class="number">10000</span>);</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码显然用了std::rand()来生成随机数，但是生成的随机ID序列是可预测的，随机数质量有限。应该采用C++标准提供的随机数生成器:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;random&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">id</span><span class="params">(<span class="string">"ID"</span>)</span></span>; <span class="comment">// Holds the ID, starting with the</span></span><br><span class="line">  <span class="comment">// characters "ID" followed by a random</span></span><br><span class="line">  <span class="comment">// integer in the range [0-10000].</span></span><br><span class="line">  <span class="built_in">std</span>::uniform_int_distribution&lt;<span class="keyword">int</span>&gt; distribution(<span class="number">0</span>, <span class="number">10000</span>);</span><br><span class="line">  <span class="built_in">std</span>::random_device rd;</span><br><span class="line">  std::mt19937 engine(rd());</span><br><span class="line">  id += <span class="built_in">std</span>::to_string(distribution(engine));</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码采用了C++标准库提供的在伪随机数生成上更加细粒度的控制机制。它把随机数生成分为了两个部分，一个是用算法提供很多随机值（引擎部分），一个是通过概率密度函数重新分布引擎提供的随机值。分布对象不是必须的，但是它可以确保这些随机值能够恰当的分布在给定的范围内，在此样例代码中，是采用<a href="https://en.wikipedia.org/wiki/Mersenne_Twister" target="_blank" rel="noopener">Mersenne Twister算法</a>作为引擎来生成随机值，然后通过<a href="https://en.wikipedia.org/wiki/Uniform_distribution_\(continuous\" target="_blank" rel="noopener">均匀分布</a>)来代替取模运算生成给定范围内的随机数。</p>
+<h3 id="MSC51-CPP-确保随机数生成器被恰当的种子初始化"><a href="#MSC51-CPP-确保随机数生成器被恰当的种子初始化" class="headerlink" title="MSC51-CPP. 确保随机数生成器被恰当的种子初始化"></a>MSC51-CPP. 确保随机数生成器被恰当的种子初始化</h3><p>严重程度: 中等。</p>
+<p>一个伪随机数生成器是使用确定性算法来生成逼近真随机数的随机数序列。每个序列可以通过伪随机数的初始状态和算法来完全确定。也就是说可以预测。大多数的伪随机数生成器都需要设置初始状态，也叫种子状态。</p>
+<p>如果用相同的初始化状态来初始化伪随机数生成器(比如没有显式初始化或者直接初始化一个常量值)，那么最终生成的随机数序列在不同的程序上运行都是一样的结果，这样攻击者就容易预测出随机序列的值了。</p>
+<p>所以方案就是，确保伪随机数生成器以恰当的初始种子初始化状态，这样就不可被预测和被攻击者掌控了。一个初始化正常的伪随机数生成器在每次程序运行都会生成不一样的随机数序列。</p>
+<p>当然，不是所有的随机数生成器都需要种子初始化。真随机数生成器一般要依赖物理硬件来生成完全不可预测的随机数，这样的随机数生成器就不需要种子化。还有一些高质量的伪随机数生成器，比如在一些Unix系统上的/dev/random设备，也不需要种子化。只有完全依赖算法生成的伪随机数生成器才需要被种子初始化。</p>
+<h4 id="代码样例对比-1"><a href="#代码样例对比-1" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;random&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::mt19937 engine;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) &#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; engine() &lt;&lt; <span class="string">", "</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码很显然没有恰当的种子初始化伪随机数生成器，所以无论多少次执行，结果都是一样的。结果是以下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1st run: 3499211612, 581869302, 3890346734, 3586334585, 545404204,</span><br><span class="line">4161255391, 3922919429, 949333985, 2715962298, 1323567403,</span><br><span class="line"></span><br><span class="line">2nd run: 3499211612, 581869302, 3890346734, 3586334585, 545404204,</span><br><span class="line">4161255391, 3922919429, 949333985, 2715962298, 1323567403,</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">nth run: 3499211612, 581869302, 3890346734, 3586334585, 545404204,</span><br><span class="line">4161255391, 3922919429, 949333985, 2715962298, 1323567403,</span><br></pre></td></tr></table></figure>
+<p>好吧，开发者之后又想到了一个方案，类似于C语言之前经常的种子化用法，用系统时间戳来做种初始化伪随机数生成器:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;random&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::random_device dev;</span><br><span class="line">  std::mt19937 engine(dev());</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) &#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; engine() &lt;&lt; <span class="string">", "</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码虽然每次运行生成出来的随机数序列都不一样了，但是一旦攻击者控制了系统时间的生成，那么它就可以控制种子的值了，还是会被攻击者攻击利用，所以需要改成以下终极方案:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;random&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::random_device dev;</span><br><span class="line">  std::mt19937 engine(dev());</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) &#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; engine() &lt;&lt; <span class="string">", "</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码使用std::random_device来生成一个随机的值来做种子，然后初始化Mersenne Twister算法引擎对象。std::random_device生成出来的随机值如果可能的话，那么随机值就是非确定性的，也就是不可预测，其随机强度依赖于底层的随机数生成设备，比如/dev/random。如果没有此类的设备，那么std::random_device会直接调用随机数引擎，然而，这个生成出来的随机值已经足够随机了，可以用其来做种子。</p>
+<h3 id="MSC52-CPP-如果函数是有返回值的，那么在所有函数退出路径中必须返回一个值"><a href="#MSC52-CPP-如果函数是有返回值的，那么在所有函数退出路径中必须返回一个值" class="headerlink" title="MSC52-CPP. 如果函数是有返回值的，那么在所有函数退出路径中必须返回一个值"></a>MSC52-CPP. 如果函数是有返回值的，那么在所有函数退出路径中必须返回一个值</h3><p>严重程度: 中等。如果忘记返回一个值，那么就会导致未定义行为，可能会导致数据完整性违例。</p>
+<p>C++标准[stmt.return]有如下声明:</p>
+<blockquote>
+<p>Flowing off the end of a function is equivalent to a return with no value; this results in undefined behavior in a value-returning function.</p>
+</blockquote>
+<p>对于异常处理部分，C++标准[except.handle]有如下说明:</p>
+<blockquote>
+<p>Flowing off the end of a function-try-block is equivalent to a return with no value; this results in undefined behavior in a value-returning function (6.6.3)</p>
+</blockquote>
+<h4 id="代码样例对比-2"><a href="#代码样例对比-2" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">absolute_value</span><span class="params">(<span class="keyword">int</span> a)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (a &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> -a;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码显然遗漏了另一个条件，忘记返回一个int值了，一旦a等于大于0，那么会导致未定义行为，应该改成以下:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">absolute_value</span><span class="params">(<span class="keyword">int</span> a)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (a &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> -a;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="代码样例对比-3"><a href="#代码样例对比-3" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="keyword">size_t</span> f(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;v, <span class="built_in">std</span>::<span class="keyword">size_t</span> s) <span class="keyword">try</span> &#123;</span><br><span class="line">  v.resize(s);</span><br><span class="line">  <span class="keyword">return</span> s;</span><br><span class="line">&#125; <span class="keyword">catch</span> (...) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码采用function-try-block的形式捕获异常，但是在catch块中，却没有返回一个值，一旦一个异常发生，那么就会导致未定义行为。应该改成以下:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="keyword">size_t</span> f(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;v, <span class="built_in">std</span>::<span class="keyword">size_t</span> s) <span class="keyword">try</span> &#123;</span><br><span class="line">  v.resize(s);</span><br><span class="line">  <span class="keyword">return</span> s;</span><br><span class="line">&#125; <span class="keyword">catch</span> (...) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="MSC53-CPP-如果函数被声明为-noreturn-，那么就一定不能返回"><a href="#MSC53-CPP-如果函数被声明为-noreturn-，那么就一定不能返回" class="headerlink" title="MSC53-CPP. 如果函数被声明为[[noreturn]]，那么就一定不能返回"></a>MSC53-CPP. 如果函数被声明为[[noreturn]]，那么就一定不能返回</h3><p>严重程度： 中等。如果强制返回，那么直接会造成未定义行为，一般是数据完整性违例。</p>
+<p>[[noreturn]]是指定一个函数没有返回，C++标准[dcl.attr.noreturn]有如下说明:</p>
+<blockquote>
+<p>If a function f is called where f was previously declared with the noreturn attribute and f eventually returns, the behavior is undefined.</p>
+</blockquote>
+<p>注意，异常抛出不是返回，语义不一样。</p>
+<h4 id="代码样例对比-4"><a href="#代码样例对比-4" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"></span><br><span class="line">[[noreturn]] <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (i &gt; <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">throw</span> <span class="string">"Received positive input"</span>;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (i &lt; <span class="number">0</span>)</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码在i == 0的时候，不会通过任何条件，那么就会导致隐式返回，直接造成未定义行为。应该考虑所有执行路径，改成以下代码:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"></span><br><span class="line">[[noreturn]] <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (i &gt; <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">throw</span> <span class="string">"Received positive input"</span>;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="MSC54-CPP-信号处理函数必须是一个平坦老式的函数"><a href="#MSC54-CPP-信号处理函数必须是一个平坦老式的函数" class="headerlink" title="MSC54-CPP. 信号处理函数必须是一个平坦老式的函数"></a>MSC54-CPP. 信号处理函数必须是一个平坦老式的函数</h3><p>严重程度: 高。修复代价极高。如果不遵循条款，可能导致implementation-defined的行为，也可能是undefined-behavior 。</p>
+<p>C++标准[support.runtime]有如下声明:</p>
+<blockquote>
+<p>The common subset of the C and C++ languages consists of all declarations, definitions, and expressions that may appear in a well formed C++ program and also in a conforming C program. A POF (“plain old function”) is a function that uses only features from this common subset, and that does not directly or indirectly use any function that is not a POF, except that it may use plain lock-free atomic operations. A plain lock-free atomic operation is an invocation of a function f from Clause 29, such that f is not a member function, and either f is the function atomic_is_lock_free, or for every atomic argument A passed to f, atomic_is_lock_free(A) yields true. All signal handlers shall have C linkage. The behavior of any function other than a POF used as a signal handler in a C++ program is implementation-defined.228</p>
+</blockquote>
+<p>所有的信号处理函数必须这么做。</p>
+<h4 id="代码样例对比-5"><a href="#代码样例对比-5" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;csignal&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sig_handler</span><span class="params">(<span class="keyword">int</span> sig)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Implementation details elided.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">install_signal_handler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (SIG_ERR == <span class="built_in">std</span>::signal(SIGTERM, sig_handler)) &#123;</span><br><span class="line">    <span class="comment">// Handle error</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上感觉信号处理函数平坦了，但是不是C风格的“老式”函数，因为在C++程序中，默认的链接性质是C++的，不是C语言的符号，所以以上代码会导致未定义行为，必须改成以下:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;csignal&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span> <span class="function"><span class="keyword">void</span> <span class="title">sig_handler</span><span class="params">(<span class="keyword">int</span> sig)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Implementation details elided.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">install_signal_handler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (SIG_ERR == <span class="built_in">std</span>::signal(SIGTERM, sig_handler)) &#123;</span><br><span class="line">    <span class="comment">// Handle error</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="代码样例对比-6"><a href="#代码样例对比-6" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;csignal&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">g</span><span class="params">()</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span> <span class="function"><span class="keyword">void</span> <span class="title">sig_handler</span><span class="params">(<span class="keyword">int</span> sig)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    g();</span><br><span class="line">  &#125; <span class="keyword">catch</span> (...) &#123;</span><br><span class="line">    <span class="comment">// Handle error</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">install_signal_handler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (SIG_ERR == <span class="built_in">std</span>::signal(SIGTERM, sig_handler)) &#123;</span><br><span class="line">  <span class="comment">// Handle error</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码信号处理函数调用了一个可能会抛异常的函数，所以用try-catch来防止向信号处理函数外抛异常。因为异常不属于C/C++特性的公共子集范畴，所以以上代码可能会导致implementation-defined的行为。在以stack-based的架构中，信号的产生是异步的，所以可能导致栈帧没有被恰当的初始化，导致栈追踪(stack tracing)处于不稳定的状态。所以应该改成以下:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;csignal&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">volatile</span> <span class="keyword">sig_atomic_t</span> signal_flag = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">g</span><span class="params">()</span> <span class="title">noexcept</span><span class="params">(<span class="literal">false</span>)</span></span>;</span><br><span class="line">  <span class="keyword">extern</span> <span class="string">"C"</span> <span class="function"><span class="keyword">void</span> <span class="title">sig_handler</span><span class="params">(<span class="keyword">int</span> sig)</span> </span>&#123;</span><br><span class="line">  signal_flag = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">install_signal_handler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (SIG_ERR == <span class="built_in">std</span>::signal(SIGTERM, sig_handler)) &#123;</span><br><span class="line">  <span class="comment">// Handle error</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Called periodically to poll the signal flag.</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">poll_signal_flag</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (signal_flag == <span class="number">1</span>) &#123;</span><br><span class="line">    signal_flag = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      g();</span><br><span class="line">    &#125; <span class="keyword">catch</span>(...) &#123;</span><br><span class="line">      <span class="comment">// Handle error</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码就使用一个信号处理的flag的变量标记信号处理函数是否被调用，所以需要周期性的调用poll_signal_flag()函数来检查信号处理函数是否被调用，如果被调用，那么在来做之前的处理。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/C-C/" rel="tag">#C/C++</a>
+          
+            <a href="/blog/tags/CERT/" rel="tag">#CERT</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/08/31/explore-cpp17/" rel="prev">C++ 17的特性探索</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/08/16/cert-cpp-nine/" rel="next">CERT C++ 编码规范翻译（CON）</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">64</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">86</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="https://dendise7engithub.github.io/" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#其他功能杂项"><span class="nav-number">1.</span> <span class="nav-text">其他功能杂项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MSC50-CPP-不要使用std-rand-生成伪随机数"><span class="nav-number">1.1.</span> <span class="nav-text">MSC50-CPP. 不要使用std::rand()生成伪随机数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比"><span class="nav-number">1.1.1.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MSC51-CPP-确保随机数生成器被恰当的种子初始化"><span class="nav-number">1.2.</span> <span class="nav-text">MSC51-CPP. 确保随机数生成器被恰当的种子初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MSC52-CPP-如果函数是有返回值的，那么在所有函数退出路径中必须返回一个值"><span class="nav-number">1.3.</span> <span class="nav-text">MSC52-CPP. 如果函数是有返回值的，那么在所有函数退出路径中必须返回一个值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">代码样例对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-3"><span class="nav-number">1.3.2.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MSC53-CPP-如果函数被声明为-noreturn-，那么就一定不能返回"><span class="nav-number">1.4.</span> <span class="nav-text">MSC53-CPP. 如果函数被声明为[[noreturn]]，那么就一定不能返回</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-4"><span class="nav-number">1.4.1.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MSC54-CPP-信号处理函数必须是一个平坦老式的函数"><span class="nav-number">1.5.</span> <span class="nav-text">MSC54-CPP. 信号处理函数必须是一个平坦老式的函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-5"><span class="nav-number">1.5.1.</span> <span class="nav-text">代码样例对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码样例对比-6"><span class="nav-number">1.5.2.</span> <span class="nav-text">代码样例对比</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
