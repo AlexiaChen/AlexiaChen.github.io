@@ -48,7 +48,7 @@
 <meta property="og:site_name" content="MathxH">
 <meta property="og:description" content="青葱岁月，一去不复返啊  前言 对于Linux呢，我自己算不上熟悉，但也不是很陌生。大一上学期的时候在对于操作系统什么都不懂的情况下，废了九牛二虎之力装了个ubuntu。随便敲了下命令行，于是便草草了事。 工作了以后，使用的开发环境windows和Linux都接触过，不过对于windows接触的是最多的。因为大学主要业余写的是win32的代码。工作的时候呢，如果遇到程序需要运行在Linux上，大">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-08-14T13:16:52.050Z">
+<meta property="og:updated_time" content="2018-08-18T07:21:41.669Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="你好，manjaro">
 <meta name="twitter:description" content="青葱岁月，一去不复返啊  前言 对于Linux呢，我自己算不上熟悉，但也不是很陌生。大一上学期的时候在对于操作系统什么都不懂的情况下，废了九牛二虎之力装了个ubuntu。随便敲了下命令行，于是便草草了事。 工作了以后，使用的开发环境windows和Linux都接触过，不过对于windows接触的是最多的。因为大学主要业余写的是win32的代码。工作的时候呢，如果遇到程序需要运行在Linux上，大">
@@ -374,15 +374,19 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ntpdate cn.ntp.org.cn <span class="comment">#可以换成任何一个公开的NTP Server地址</span></span><br></pre></td></tr></table></figure>
 <h4 id="安装yaourt"><a href="#安装yaourt" class="headerlink" title="安装yaourt"></a>安装yaourt</h4><p>yaourt是pacman的一个外壳，同时它还支持AUR。AUR是一个Arch Linux用户的软件仓库，也就是说，很多用户可以把自己喜欢的软件包上传上去，分享给其他用户。我们在AUR里面搜索得到的软件，可以通过yaourt来简化安装流程。</p>
 <p>如果不用yaourt，你恐怕得手动编译软件的很多东西，要多敲十几个命令行，不划算。yaourt这些步骤都对用户透明化了。方便不少。不过这里提示一点，AUR里面的软件毕竟是野生的，没有经过完全测试，没有官方源提供的安全，所以有一定风险，安装一个软件前，需要仔细评估，查看用户评论。但是Arch软件巨多，就是强大在AUR上面了。</p>
-<p>运行一下命令就安装yaourt了:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S yaourt</span><br></pre></td></tr></table></figure></p>
-<p>之后你就可以通过以下命令搜索AUR上的软件了:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yaourt -Ss [package name]</span><br></pre></td></tr></table></figure></p>
+<p>运行一下命令就安装yaourt了:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S yaourt</span><br></pre></td></tr></table></figure>
+<p>之后你就可以通过以下命令搜索AUR上的软件了:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yaourt -Ss [package name]</span><br></pre></td></tr></table></figure>
 <h4 id="安装Visual-Studio-Code"><a href="#安装Visual-Studio-Code" class="headerlink" title="安装Visual Studio Code"></a>安装Visual Studio Code</h4><p>毕竟我是微软的粉丝，最近几年微软大力支持开源。VSCode真是良心的开源跨平台的编辑器产品，获得网络上的一致好评，在windiws下用它也用的多。反正Linux下的vi vim nano这些用得不顺手，也不熟悉。</p>
-<p>直接用yaourt安装VSCode:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yaourt -S visual-studio-code-bin</span><br></pre></td></tr></table></figure></p>
+<p>直接用yaourt安装VSCode:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yaourt -S visual-studio-code-bin</span><br></pre></td></tr></table></figure>
 <h4 id="安装中文输入法"><a href="#安装中文输入法" class="headerlink" title="安装中文输入法"></a>安装中文输入法</h4><p>然后就是安装中文输入法–搜狗输入法。Deepin自带了，毕竟国产Linux。但是manjaro可没这么好。</p>
 <ol>
 <li>首先添加国内源</li>
 </ol>
-<p>打开/etc/pacman.conf配置文件。并在文件末尾添加:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[archlinuxcn]</span><br><span class="line">SigLevel = Optional TrustedOnly</span><br><span class="line">Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch</span><br></pre></td></tr></table></figure></p>
+<p>打开/etc/pacman.conf配置文件。并在文件末尾添加:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[archlinuxcn]</span><br><span class="line">SigLevel = Optional TrustedOnly</span><br><span class="line">Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch</span><br></pre></td></tr></table></figure>
 <ol start="2">
 <li>更新源并导入GPG Key</li>
 </ol>
@@ -403,6 +407,16 @@
 </ol>
 <h4 id="安装CLion"><a href="#安装CLion" class="headerlink" title="安装CLion"></a>安装CLion</h4><p>喜欢JetBrain系列的IDE，没有IDE简直没法干活，windows上当然是Visual Studio，但是Linux上只能是CLion了。当然，感受了下，它同样强大，作为Linux下的C++ IDE，它够用了，支持CMake工程模型。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo yaourt -S clion</span><br><span class="line">sudo yaourt -S clion-cmake</span><br><span class="line">sudo yaourt -S clion-gdb</span><br><span class="line">sudo yaourt -S clion-jre</span><br></pre></td></tr></table></figure>
+<h4 id="安装Adobe-Flash-Player-Plugin"><a href="#安装Adobe-Flash-Player-Plugin" class="headerlink" title="安装Adobe Flash Player Plugin"></a>安装Adobe Flash Player Plugin</h4><p>这样最起码可以看bilibili了，= =。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S flashplugin</span><br></pre></td></tr></table></figure>
+<h4 id="安装迅雷"><a href="#安装迅雷" class="headerlink" title="安装迅雷"></a>安装迅雷</h4><p>我发现Linux下的aria2这个下载神器堪比迅雷，我下载aria2，并配置了aria2.conf中的tracker，还是不行，下载几乎没啥速度。而且aria2也不支持ed2k。而在Linux上支持ed2k的amule客户端下载速度也是以0计算。太烂了，也许不能开箱即用吧。</p>
+<p>想想还是迅雷好，国产Deepin已经通过deepin-wine已经完美移植迅雷过来了。所以我们安装下就可以了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S deepin-wine</span><br><span class="line">sudo pacman -S deepin.com.thunderspeed</span><br></pre></td></tr></table></figure>
+<p>这里我感谢武汉深之度的程序员日日夜夜的努力，这种造福人类的事情值得表扬。当然安装上迅雷有点BUG，就是中文字符显示不出来。我只能猜着点击按钮下载，不过好在界面布局我比较熟悉，下载没出啥意外。电影天堂的大部分ftp电影都能下载下来。</p>
+<h4 id="影音娱乐"><a href="#影音娱乐" class="headerlink" title="影音娱乐"></a>影音娱乐</h4><p>音乐就听听网易云的Web版本了。电影的话，manjaro自带VLC，这个极度强大，但是界面不好看。把它卸载了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -Rss vlc</span><br></pre></td></tr></table></figure>
+<p>换了deepin出品的deepin-movie。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S deepin-movie</span><br></pre></td></tr></table></figure>
 <h4 id="推荐些命令行神器"><a href="#推荐些命令行神器" class="headerlink" title="推荐些命令行神器"></a>推荐些命令行神器</h4><p>话说，工欲善其事必先利其器。</p>
 <p>方便好用，我也安装了，这个也是收集大部分网友的答案。</p>
 <ul>
@@ -654,7 +668,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#折腾手记"><span class="nav-number">2.</span> <span class="nav-text">折腾手记</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#更新系统"><span class="nav-number">2.0.1.</span> <span class="nav-text">更新系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过NTP服务设置当前系统时间"><span class="nav-number">2.0.2.</span> <span class="nav-text">通过NTP服务设置当前系统时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装yaourt"><span class="nav-number">2.0.3.</span> <span class="nav-text">安装yaourt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Visual-Studio-Code"><span class="nav-number">2.0.4.</span> <span class="nav-text">安装Visual Studio Code</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装中文输入法"><span class="nav-number">2.0.5.</span> <span class="nav-text">安装中文输入法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装CLion"><span class="nav-number">2.0.6.</span> <span class="nav-text">安装CLion</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐些命令行神器"><span class="nav-number">2.0.7.</span> <span class="nav-text">推荐些命令行神器</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#折腾手记"><span class="nav-number">2.</span> <span class="nav-text">折腾手记</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#更新系统"><span class="nav-number">2.0.1.</span> <span class="nav-text">更新系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过NTP服务设置当前系统时间"><span class="nav-number">2.0.2.</span> <span class="nav-text">通过NTP服务设置当前系统时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装yaourt"><span class="nav-number">2.0.3.</span> <span class="nav-text">安装yaourt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Visual-Studio-Code"><span class="nav-number">2.0.4.</span> <span class="nav-text">安装Visual Studio Code</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装中文输入法"><span class="nav-number">2.0.5.</span> <span class="nav-text">安装中文输入法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装CLion"><span class="nav-number">2.0.6.</span> <span class="nav-text">安装CLion</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Adobe-Flash-Player-Plugin"><span class="nav-number">2.0.7.</span> <span class="nav-text">安装Adobe Flash Player Plugin</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装迅雷"><span class="nav-number">2.0.8.</span> <span class="nav-text">安装迅雷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#影音娱乐"><span class="nav-number">2.0.9.</span> <span class="nav-text">影音娱乐</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐些命令行神器"><span class="nav-number">2.0.10.</span> <span class="nav-text">推荐些命令行神器</span></a></li></ol></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
