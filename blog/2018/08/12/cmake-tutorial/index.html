@@ -1,34 +1,33 @@
+
 <!doctype html>
 <html class="theme-next use-motion theme-next-mala">
-
 <head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-
-
-  <meta http-equiv="Cache-Control" content="no-transform" />
-  <meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
-  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" />
 
 
 
-  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet'
-    type='text/css'>
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
 
 
-  <link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1" />
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 
 
-  <meta name="description" content="System Software Engineer" />
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="System Software Engineer" />
 
 
 
@@ -41,26 +40,26 @@
   <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
 
 
-  <meta name="description" content="前言 主要最近的换工作，完全在Linux下开发，虽然以前都接触过CMake，不过体系也是零散的，遂做了一个简短的CMake教程，以供后续快速入门。 另外，好久也没有写文章了，这份工作还是有一定的技术性，之前的那家公司是开发/维护，大部分工作都是维护，没有什么写文章的激情。 所以，今天是硬凑一篇文章。 正文 CMakeCMake是跨平台的元构建系统，也就是说，它不实际产生构建行为，它只是生成给其他构">
-  <meta name="keywords" content="C&#x2F;C++,CMake">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="简短的CMake教程">
-  <meta property="og:url" content="https://alexiachen.github.io/blog/2018/08/12/cmake-tutorial/index.html">
-  <meta property="og:site_name" content="MathxH">
-  <meta property="og:description" content="前言 主要最近的换工作，完全在Linux下开发，虽然以前都接触过CMake，不过体系也是零散的，遂做了一个简短的CMake教程，以供后续快速入门。 另外，好久也没有写文章了，这份工作还是有一定的技术性，之前的那家公司是开发/维护，大部分工作都是维护，没有什么写文章的激情。 所以，今天是硬凑一篇文章。 正文 CMakeCMake是跨平台的元构建系统，也就是说，它不实际产生构建行为，它只是生成给其他构">
-  <meta property="og:locale" content="en">
-  <meta property="og:updated_time" content="2018-09-06T13:51:41.129Z">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="简短的CMake教程">
-  <meta name="twitter:description" content="前言 主要最近的换工作，完全在Linux下开发，虽然以前都接触过CMake，不过体系也是零散的，遂做了一个简短的CMake教程，以供后续快速入门。 另外，好久也没有写文章了，这份工作还是有一定的技术性，之前的那家公司是开发/维护，大部分工作都是维护，没有什么写文章的激情。 所以，今天是硬凑一篇文章。 正文 CMakeCMake是跨平台的元构建系统，也就是说，它不实际产生构建行为，它只是生成给其他构">
+<meta name="description" content="前言 主要最近的换工作，完全在Linux下开发，虽然以前都接触过CMake，不过体系也是零散的，遂做了一个简短的CMake教程，以供后续快速入门。 另外，好久也没有写文章了，这份工作还是有一定的技术性，之前的那家公司是开发/维护，大部分工作都是维护，没有什么写文章的激情。 所以，今天是硬凑一篇文章。 正文 CMakeCMake是跨平台的元构建系统，也就是说，它不实际产生构建行为，它只是生成给其他构">
+<meta name="keywords" content="C&#x2F;C++,CMake">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简短的CMake教程">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2018/08/12/cmake-tutorial/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="前言 主要最近的换工作，完全在Linux下开发，虽然以前都接触过CMake，不过体系也是零散的，遂做了一个简短的CMake教程，以供后续快速入门。 另外，好久也没有写文章了，这份工作还是有一定的技术性，之前的那家公司是开发/维护，大部分工作都是维护，没有什么写文章的激情。 所以，今天是硬凑一篇文章。 正文 CMakeCMake是跨平台的元构建系统，也就是说，它不实际产生构建行为，它只是生成给其他构">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-09-06T13:51:41.129Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简短的CMake教程">
+<meta name="twitter:description" content="前言 主要最近的换工作，完全在Linux下开发，虽然以前都接触过CMake，不过体系也是零散的，遂做了一个简短的CMake教程，以供后续快速入门。 另外，好久也没有写文章了，这份工作还是有一定的技术性，之前的那家公司是开发/维护，大部分工作都是维护，没有什么写文章的激情。 所以，今天是硬凑一篇文章。 正文 CMakeCMake是跨平台的元构建系统，也就是说，它不实际产生构建行为，它只是生成给其他构">
 
 
-  <script type="text/javascript" id="hexo.configuration">
-    var CONFIG = {
-      scheme: 'Mala',
-      sidebar: 'always'
-    };
-  </script>
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
 
   <title> 简短的CMake教程 | MathxH </title>
 </head>
@@ -76,7 +75,7 @@
     </a>
   </div>
 <![endif]-->
-
+  
 
 
 
@@ -84,105 +83,105 @@
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner">
-        <h1 class="site-meta">
-          <span class="logo-line-before"><i></i></span>
-          <a href="/blog/" class="brand" rel="start">
-            <span class="logo">
-              <i class="icon-next-logo"></i>
-            </span>
-            <span class="site-title">MathxH</span>
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
           </a>
-          <span class="logo-line-after"><i></i></span>
-        </h1>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br />
+            menu.resume
+          </a>
+        </li>
+      
 
-        <div class="site-nav-toggle">
-          <button>
-            <span class="btn-bar"></span>
-            <span class="btn-bar"></span>
-            <span class="btn-bar"></span>
-          </button>
-        </div>
+      
+      
+    </ul>
+  
 
-        <nav class="site-nav">
+  
+</nav>
 
-
-
-          <ul id="menu" class="menu ">
-
-
-            <li class="menu-item menu-item-home">
-              <a href="/blog/" rel="section">
-                <i class="menu-item-icon icon-next-home"></i> <br />
-                Home
-              </a>
-            </li>
-
-
-            <li class="menu-item menu-item-categories">
-              <a href="/blog/categories" rel="section">
-                <i class="menu-item-icon icon-next-categories"></i> <br />
-                Categories
-              </a>
-            </li>
-
-
-            <li class="menu-item menu-item-archives">
-              <a href="/blog/archives" rel="section">
-                <i class="menu-item-icon icon-next-archives"></i> <br />
-                Archives
-              </a>
-            </li>
-
-
-            <li class="menu-item menu-item-tags">
-              <a href="/blog/tags" rel="section">
-                <i class="menu-item-icon icon-next-tags"></i> <br />
-                Tags
-              </a>
-            </li>
-
-
-            <li class="menu-item menu-item-about">
-              <a href="/blog/about" rel="section">
-                <i class="menu-item-icon icon-next-about"></i> <br />
-                About
-              </a>
-            </li>
-
-
-            <li class="menu-item menu-item-resume">
-              <a href="/blog/resume" rel="section">
-                <i class="menu-item-icon icon-next-resume"></i> <br />
-                menu.resume
-              </a>
-            </li>
-
-
-
-
-          </ul>
-
-
-
-        </nav>
-
-      </div>
+ </div>
     </header>
 
+    
+      
 
+      
+        <style type="text/css">
 
-
-
-    <style type="text/css">
-      .circle {
+    .circle {
         width: 40px;
         height: 40px;
         background: #555 no-repeat;
         cursor: move;
-      }
+    }
 
-      .assist-btn {
+    .assist-btn {
         position: fixed;
         top: 50％;
         left: 10px;
@@ -192,77 +191,78 @@
         outline: none;
         border: none;
         color: #87daff;
-      }
-    </style>
+    }
 
-    <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
-    <script type="text/javascript">
-      // 浮动圆点展开与收缩
-      /*
-      $(function () {
-          var assist_box = $('.assist-box');
-          $('#assist_btn').hover(function () {
-              assist_box.stop().show(300);
-          }, function () {
-              assist_box.stop().hide(150);
-          })
-      });
-      */
-      //浮动圆点拖动
-      $(function () {
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
         var box = document.getElementById('assist_btn');
         box.onmousedown = function (event) {
-          var e = event || window.event,
-            t = e.target || e.srcElement,
-            // 鼠标按下时的坐标x1,y1
-            x1 = e.clientX,
-            y1 = e.clientY,
-            //鼠标按下时的左右偏移量
-            dragLeft = this.offsetLeft,
-            dragTop = this.offsetTop;
-
-          document.onmousemove = function (event) {
             var e = event || window.event,
-              t = e.target || e.srcElement,
-              // 鼠标移动时的动态坐标
-              x2 = e.clientX,
-              y2 = e.clientY,
-              // 鼠标移动时的坐标的变化量
-              x = x2 - x1,
-              y = y2 - y1;
-            box.style.left = (dragLeft + x) + 'px';
-            box.style.top = (dragTop + y) + 'px';
-          }
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
 
-          document.onmouseup = function () {
-            this.onmousemove = null;
-          }
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
         }
-      });
+    });
 
-      /*
-          $whitesmoke   = #f5f5f5
-          $gainsboro    = #eee
-          $gray-lighter = #ddd
-          $grey-light   = #ccc
-          $grey         = #bbb
-          $grey-dark    = #999
-          $grey-dim     = #666
-          $black-light  = #555
-          $black-deep   = #222
-          $red          = #ff2a2a
-          $blue-bright  = #87daff
-          $blue         = #0684bd
-          $blue-deep    = #262a30
-      */
-      // white theme
-      var body = { color: "#555", background: "white" };
-      var a_tag = { color: "#222" };
-      var header = { background: "#f5f5f5" };
-      var logo_line_i = { background: "#222" };
-      var post_code = { background: "#eee", color: "#222" };
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
 
-      function switch_theme() {
+    function switch_theme() {
         $("body").css(body);
         $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
         $(".header, .footer").css(header);
@@ -270,27 +270,25 @@
         $(".post code").css(post_code);
         $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
         $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
-
+        
         $("#assist_btn").hide();
-      }
+    }
 
-      $(function () {
-        $("#assist_btn").dblclick(function () {
-          switch_theme();
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
         });
-      });
+    });
 
-    </script>
+</script>
 
-    <div>
+<div>
 
-      <button class="assist-btn circle" id="assist_btn">
+    <button class="assist-btn circle" id="assist_btn">
         亮
-      </button>
+    </button>
 
-    </div>
-
-
+</div>
 
 
 
@@ -300,528 +298,190 @@
 
 
 
+      
 
+    
 
     <main id="main" class="main">
       <div class="main-inner">
-        <div id="content" class="content">
+        <div id="content" class="content"> 
 
-          <div id="posts" class="posts-expand">
+  <div id="posts" class="posts-expand">
+    
 
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-            <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-              <header class="post-header">
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              简短的CMake教程
+            
+          
+        </h1>
+      
 
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2018-08-12T17:39:00+08:00" content="2018-08-12">
+            2018-08-12
+          </time>
+        </span>
 
+        
 
-                <h1 class="post-title" itemprop="name headline">
+        
+          
+        
+      </div>
+    </header>
 
+    <div class="post-body">
 
+      
+      
 
-                  简短的CMake教程
+      
+        <span itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p>主要最近的换工作，完全在Linux下开发，虽然以前都接触过CMake，不过体系也是零散的，遂做了一个简短的CMake教程，以供后续快速入门。</p>
+<p>另外，好久也没有写文章了，这份工作还是有一定的技术性，之前的那家公司是开发/维护，大部分工作都是维护，没有什么写文章的激情。</p>
+<p>所以，今天是硬凑一篇文章。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><hr>
+<h4 id="CMake"><a href="#CMake" class="headerlink" title="CMake"></a>CMake</h4><p>CMake是跨平台的元构建系统，也就是说，它不实际产生构建行为，它只是生成给其他构建系统使用的文件，比如Makefile，MSBuild的solution file。</p>
+<p>CMake根据读取名为CMakeLists.txt的文件，然后生成平台特定的构建文件，但是一个很大的问题是，CMake官方提供的教程特别复杂，对于新手的个坑，很难快速入门。</p>
+<p>这个教程会通过例子来学习怎么用CMake。以下我们提供几个C++源代码供例子使用：</p>
+<ul>
+<li>main.cpp</li>
+<li>vector.h</li>
+<li>vector.cpp</li>
+<li>array.h</li>
+<li>array.cpp</li>
+</ul>
+<p>那么描述构建的CMakeLists.txt内容会是以下:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">2.8</span>)</span><br><span class="line"><span class="keyword">project</span>(pjc-lab5)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_FLAGS <span class="string">"-std=c++14 -Wall $&#123;CMAKE_CXX_FLAGS&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(vector-test</span><br><span class="line">    array.cpp</span><br><span class="line">    vector.cpp</span><br><span class="line">    main.cpp</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>以上代码很简单，但是第一个问题是，它是不可移植的，因为它没有任何逻辑判断就设置了GCC/Clang的特定编译参数。</p>
+<p>第二个问题是，它全局改变了include的搜索路径。</p>
+<p>CMake也要有好的书写习惯，采用更加现代的方式来写CMake文件:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.5</span>)</span><br><span class="line"><span class="keyword">project</span>(pjc-lab5 LANGUAGES CXX)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">14</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_EXTENSIONS <span class="keyword">OFF</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(vector-test</span><br><span class="line">    array.cpp</span><br><span class="line">    vector.cpp</span><br><span class="line">    main.cpp</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>注意了，以上代码有几点改变了：</p>
+<ul>
+<li>强制要求了CMake的版本不得小于3.5，因为要使用CMake的一些新功能</li>
+<li>直接指定该工程为C++工程。这样可以减少CMake查找tool chain的时间，它就不会去查找其他编译器了，也不会检查其他编译器是否正常了。</li>
+<li>直接采用可跨平台的方式来指定采用的C++标准为C++ 14</li>
+<li>打开CMAKE_CXX_STANDARD_REQUIRED开关，如果C++ 14标准不被支持，CMake会直接终止构建过程。反之，会采用老的标准来构建</li>
+<li>CMAKE_CXX_EXTENSIONS开关是告诉CMake采用更加通用的编译参数，比如这个开关打开，传递给GCC的参数就会是-std=c++14 而不是-std=gnu++14</li>
+</ul>
+<p>然后在构建过程中，你会发现没有警告，因为CMake不会设定编译器的警告级别，需要你根据不同平台来指定相应的编译器警告参数:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( CMAKE_CXX_COMPILER_ID <span class="keyword">MATCHES</span> <span class="string">"Clang|AppleClang|GNU"</span> )</span><br><span class="line">    target_compile_options( vector-test PRIVATE -Wall -Wextra -Wunreachable-code -Wpedantic)</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"><span class="keyword">if</span> ( CMAKE_CXX_COMPILER_ID <span class="keyword">MATCHES</span> <span class="string">"Clang"</span> )</span><br><span class="line">    target_compile_options( vector-test PRIVATE -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"><span class="keyword">if</span> ( CMAKE_CXX_COMPILER_ID <span class="keyword">MATCHES</span> <span class="string">"MSVC"</span> )</span><br><span class="line">    target_compile_options( vector-test PRIVATE /W4 /w44265 /w44061 /w44062 )</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
+<p>如果就采用上述的CMake文件，那么它生成的工程文件并不好，没有预期，你会发现如果生成VS的solution，你打开工程，你会发现没有包含头文件（vector.h array.h）。因为CMake不理解C++语言，它只是构建工具。</p>
+<p>所以CMake文件中要改变下:<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_executable</span>(vector-test</span><br><span class="line">    array.cpp</span><br><span class="line">    vector.cpp</span><br><span class="line">    main.cpp</span><br><span class="line">    array.h</span><br><span class="line">    vector.h</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>当然，也可以通过CMake的source_group命令给文件归类:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">source_group</span>(<span class="string">"Tests"</span> FILES main.cpp)</span><br><span class="line"><span class="keyword">source_group</span>(<span class="string">"Implementation"</span> FILES array.cpp vector.cpp)</span><br></pre></td></tr></table></figure>
+<p>这样VS工程下就可以看到对C++源文件分类的文件夹图标了。</p>
+<h4 id="Tests"><a href="#Tests" class="headerlink" title="Tests"></a>Tests</h4><p>CMake是一堆工具的集合，所以它有一个test runner，叫<a href="https://cmake.org/cmake/help/latest/manual/ctest.1.html" target="_blank" rel="noopener">CTest</a>。</p>
+<p>要使用它，你需要显式指定它：<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_test</span>(NAME test-name COMMAND how-to-run-it)</span><br></pre></td></tr></table></figure></p>
+<p>测试返回0表示成功，返回其他值表示失败。</p>
+<p>还可以自定义，通过<a href="https://cmake.org/cmake/help/latest/command/set_tests_properties.html?highlight=set_tests_properties" target="_blank" rel="noopener">set_tests_properties</a>来设置其<a href="https://cmake.org/cmake/help/v3.11/manual/cmake-properties.7.html#test-properties" target="_blank" rel="noopener">相关属性</a>。</p>
+<p>对于我们的例子工程，我们仅仅是运行bin文件，并不做额外检查:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span>(CTest)</span><br><span class="line"><span class="keyword">add_test</span>(NAME plain-run COMMAND $&lt;TARGET_FILE:vector-test&gt;)</span><br></pre></td></tr></table></figure>
+<p>COMMAND后面的表达式是<a href="https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html" target="_blank" rel="noopener">generator-expression</a>。</p>
+<p>最后，我们的CMakeLists.txt的内容会是:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.5</span>)</span><br><span class="line"><span class="keyword">project</span>(pjc-lab5 </span><br><span class="line">DESCRIPTION <span class="string">"Very nice project"</span></span><br><span class="line">LANGUAGES CXX)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">14</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_EXTENSIONS <span class="keyword">OFF</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(vector-test</span><br><span class="line">    array.cpp</span><br><span class="line">    vector.cpp</span><br><span class="line">    main.cpp</span><br><span class="line">    array.h</span><br><span class="line">    vector.h</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">source_group</span>(<span class="string">"Tests"</span> FILES main.cpp)</span><br><span class="line"><span class="keyword">source_group</span>(<span class="string">"Implementation"</span> FILES array.cpp vector.cpp)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ( CMAKE_CXX_COMPILER_ID <span class="keyword">MATCHES</span> <span class="string">"Clang|AppleClang|GNU"</span> )</span><br><span class="line">    target_compile_options( vector-test PRIVATE -Wall -Wextra -Wunreachable-code -Wpedantic)</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"><span class="keyword">if</span> ( CMAKE_CXX_COMPILER_ID <span class="keyword">MATCHES</span> <span class="string">"Clang"</span> )</span><br><span class="line">    target_compile_options( vector-test PRIVATE -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"><span class="keyword">if</span> ( CMAKE_CXX_COMPILER_ID <span class="keyword">MATCHES</span> <span class="string">"MSVC"</span> )</span><br><span class="line">    target_compile_options( vector-test PRIVATE /W4 /w44265 /w44061 /w44062 )</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span>(CTest)</span><br><span class="line"><span class="keyword">add_test</span>(NAME plain-run COMMAND $&lt;TARGET_FILE:vector-test&gt;)</span><br></pre></td></tr></table></figure>
+<h4 id="libraries"><a href="#libraries" class="headerlink" title="libraries"></a>libraries</h4><p>之前的教程都是很简单的例子，但是现实中的项目往往要拆分模块，链接外部的第三方库或者链接工程内的库。</p>
+<p>如果不想阅读此章节，可以参考JetBrain的CLion提供的一个简明的<a href="https://www.jetbrains.com/help/clion/quick-cmake-tutorial.html" target="_blank" rel="noopener">CMake教程</a>。</p>
+<p>里面记录如何包含链接外部的library。</p>
+<p>构建生成一个library的cmake指令如下:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(libname [STATIC | SHARED] two.cpp three.h)</span><br></pre></td></tr></table></figure>
+<p>下面我们来写一个计算器程序的cmake,bin文件依赖了lib文件，这样看起来就像一个小工程了:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.8</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">project</span>(Calculator LANGUAGES CXX)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_library</span>(calclib STATIC src/calclib.cpp <span class="keyword">include</span>/calc/lib.hpp)</span><br><span class="line">target_include_directories(calclib PUBLIC <span class="keyword">include</span>)</span><br><span class="line">target_compile_features(calclib PUBLIC cxx_std_11)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(calc apps/calc.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(calc PUBLIC calclib)</span><br></pre></td></tr></table></figure>
+<h4 id="变量和缓存变量"><a href="#变量和缓存变量" class="headerlink" title="变量和缓存变量"></a>变量和缓存变量</h4><p>为什么要说这个？因为如果cmake维护一个很大的工程，会有各种编译策略参数，这个就需要逻辑判断，变量这些就随之诞生了。</p>
+<p>给一个局部变量设置一个值:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(MY_VARIABLE <span class="string">"value"</span>)</span><br></pre></td></tr></table></figure>
+<p>当然，cmake也有list类型的变量,有2种表达方式：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(MY_LIST <span class="string">"one"</span> <span class="string">"two"</span>)</span><br><span class="line"><span class="keyword">set</span>(MY_LIST <span class="string">"one;two"</span>)</span><br></pre></td></tr></table></figure>
+<p>以上变量如果离开作用域就无效了。</p>
+<p>下面来说下缓存变量，如果你要从命令行来设置cmake的变量，那么就需要声明缓存变量。类似于CMAKE_BUILD_TYPE这样的变量都是缓存变量：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(MY_CACHE_VARIABLE <span class="string">"VALUE"</span> CACHE <span class="keyword">STRING</span> <span class="string">"Description"</span>)</span><br></pre></td></tr></table></figure>
+<p>但是以上不会替换已经存在的值，需要按照以下这样：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(MY_CACHE_VARIABLE <span class="string">"VALUE"</span> CACHE <span class="keyword">STRING</span> <span class="string">""</span> FORCE)</span><br><span class="line"><span class="keyword">mark_as_advanced</span>(MY_CACHE_VARIABLE)</span><br></pre></td></tr></table></figure>
+<h4 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h4><p>cmake可以访问环境变量：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(ENV&#123;variable_name&#125; value)</span><br><span class="line"><span class="keyword">set</span>(MY_VAR $ENV&#123;variable_name&#125;)</span><br></pre></td></tr></table></figure>
+<h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4><p>cmake也会在属性中保存一些信息，这些属性有点像变量，但是这些属性的作用一般是针对一个target或者目录什么的。cmake的属性变量是以CMAKE_打头的，类似CMAKE_BUILD_TYPE，CMAKE_CXX_STANDARD这些。</p>
+<p>比如使用CXX标准可以用设置属性的方式办到，有两种表达：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set_property</span>(TARGET TargetName</span><br><span class="line">             PROPERTY CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set_target_properties</span>(TargetName PROPERTIES</span><br><span class="line">                      CXX_STANDARD <span class="number">11</span>)</span><br></pre></td></tr></table></figure>
+<p>当然既然有set，当然有get:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">get_property</span>(ResultVariable TARGET TargetName PROPERTY CXX_STANDARD)</span><br></pre></td></tr></table></figure>
+<h3 id="Cmake编程"><a href="#Cmake编程" class="headerlink" title="Cmake编程"></a>Cmake编程</h3><h4 id="控制流"><a href="#控制流" class="headerlink" title="控制流"></a>控制流</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(variable)</span><br><span class="line">    <span class="comment"># If variable is `ON`, `YES`, `TRUE`, `Y`, or non zero number</span></span><br><span class="line"><span class="keyword">else</span>()</span><br><span class="line">    <span class="comment"># If variable is `0`, `OFF`, `NO`, `FALSE`, `N`, `IGNORE`, `NOTFOUND`, `""`, or ends in `-NOTFOUND`</span></span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="string">"$&#123;variable&#125;"</span>)</span><br><span class="line">    <span class="comment"># True if variable is not false-like</span></span><br><span class="line"><span class="keyword">else</span>()</span><br><span class="line">    <span class="comment"># Note that undefined variables would be `""` thus false</span></span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
+<h4 id="宏和函数"><a href="#宏和函数" class="headerlink" title="宏和函数"></a>宏和函数</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>(SIMPLE REQUIRED_ARG)</span><br><span class="line">    <span class="keyword">message</span>(STATUS <span class="string">"Simple arguments: $&#123;REQUIRED_ARG&#125;, followed by $&#123;ARGV&#125;"</span>)</span><br><span class="line">    <span class="keyword">set</span>(<span class="variable">$&#123;REQUIRED_ARG&#125;</span> <span class="string">"From SIMPLE"</span> PARENT_SCOPE)</span><br><span class="line"><span class="keyword">endfunction</span>()</span><br><span class="line"></span><br><span class="line">simple(This)</span><br><span class="line"><span class="keyword">message</span>(<span class="string">"Output: $&#123;This&#125;"</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="与源码文件“通信”"><a href="#与源码文件“通信”" class="headerlink" title="与源码文件“通信”"></a>与源码文件“通信”</h4><p>Cmake允许源代码访问cmake的变量，这个指令就是configure_file。</p>
+<p>这样的功能在版本管理上经常使用：</p>
+<p>Version.h.in<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MY_VERSION_MAJOR @PROJECT_VERSION_MAJOR@</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MY_VERSION_MINOR @PROJECT_VERSION_MINOR@</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MY_VERSION_PATCH @PROJECT_VERSION_PATCH@</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MY_VERSION_TWEAK @PROJECT_VERSION_TWEAK@</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MY_VERSION <span class="meta-string">"@PROJECT_VERSION@"</span></span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">configure_file</span> (</span><br><span class="line">    <span class="string">"$&#123;PROJECT_SOURCE_DIR&#125;/include/My/Version.h.in"</span></span><br><span class="line">    <span class="string">"$&#123;PROJECT_BINARY_DIR&#125;/include/My/Version.h"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>可以从上面的配置看出来，本质上cmake只是把后缀in的文件，进行变量标记替换，然后再拷贝到指定目录的文件名。没有什么神奇的。</p>
+<p>当然，cmake也可以反过来，cmake代码访问源码文件的内容：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Assuming the canonical version is listed in a single line</span></span><br><span class="line"><span class="comment"># This would be in several parts if picking up from MAJOR, MINOR, etc.</span></span><br><span class="line"><span class="keyword">set</span>(VERSION_REGEX <span class="string">"#define MY_VERSION[ \t]+\"(.+)\""</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read in the line containing the version</span></span><br><span class="line">file(STRINGS <span class="string">"$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/include/My/Version.hpp"</span></span><br><span class="line">    VERSION_STRING REGEX <span class="variable">$&#123;VERSION_REGEX&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Pick out just the version</span></span><br><span class="line"><span class="keyword">string</span>(REGEX REPLACE <span class="variable">$&#123;VERSION_REGEX&#125;</span> <span class="string">"\\1"</span> VERSION_STRING <span class="string">"$&#123;VERSION_STRING&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Automatically getting PROJECT_VERSION_MAJOR, My_VERSION_MAJOR, etc.</span></span><br><span class="line"><span class="keyword">project</span>(My LANGUAGES CXX VERSION <span class="variable">$&#123;VERSION_STRING&#125;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="怎样规划你的工程结构"><a href="#怎样规划你的工程结构" class="headerlink" title="怎样规划你的工程结构"></a>怎样规划你的工程结构</h3><p>基本如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">- project</span><br><span class="line">  - .gitignore</span><br><span class="line">  - README.md</span><br><span class="line">  - LICENCE.md</span><br><span class="line">  - CMakeLists.txt</span><br><span class="line">  - cmake</span><br><span class="line">    - FindSomeLib.cmake</span><br><span class="line">  - include</span><br><span class="line">    - project</span><br><span class="line">      - lib.hpp</span><br><span class="line">  - src</span><br><span class="line">    - CMakeLists.txt</span><br><span class="line">    - lib.cpp</span><br><span class="line">  - apps</span><br><span class="line">    - CMakeLists.txt</span><br><span class="line">    - app.cpp</span><br><span class="line">  - tests</span><br><span class="line">    - testlib.cpp</span><br><span class="line">  - docs</span><br><span class="line">    - Doxyfile.in</span><br><span class="line">  - extern</span><br><span class="line">    - googletest</span><br><span class="line">  - scripts</span><br><span class="line">    - helper.py</span><br></pre></td></tr></table></figure>
+<h3 id="运行其他的程序"><a href="#运行其他的程序" class="headerlink" title="运行其他的程序"></a>运行其他的程序</h3><p>编译的时候要做很多事情，比如你构建完毕要用nsis进行打包等等，有些时候不得不调用其他命令行。</p>
+<h4 id="配置时运行一个命令"><a href="#配置时运行一个命令" class="headerlink" title="配置时运行一个命令"></a>配置时运行一个命令</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">find_package</span>(Git QUIET)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(GIT_FOUND <span class="keyword">AND</span> EXISTS <span class="string">"$&#123;PROJECT_SOURCE_DIR&#125;/.git"</span>)</span><br><span class="line">    <span class="keyword">execute_process</span>(COMMAND <span class="variable">$&#123;GIT_EXECUTABLE&#125;</span> submodule update --init --recursive</span><br><span class="line">                    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;</span></span><br><span class="line">                    RESULT_VARIABLE GIT_SUBMOD_RESULT)</span><br><span class="line">    <span class="keyword">if</span>(NOT GIT_SUBMOD_RESULT <span class="keyword">EQUAL</span> <span class="string">"0"</span>)</span><br><span class="line">        <span class="keyword">message</span>(FATAL_ERROR <span class="string">"git submodule update --init failed with $&#123;GIT_SUBMOD_RESULT&#125;, please checkout submodules"</span>)</span><br><span class="line">    <span class="keyword">endif</span>()</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
+<h4 id="编译时运行一个命令"><a href="#编译时运行一个命令" class="headerlink" title="编译时运行一个命令"></a>编译时运行一个命令</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">find_package</span>(PythonInterp REQUIRED)</span><br><span class="line"><span class="keyword">add_custom_command</span>(OUTPUT <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/include/Generated.hpp"</span></span><br><span class="line">    COMMAND <span class="string">"$&#123;PYTHON_EXECUTABLE&#125;"</span> <span class="string">"$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/scripts/GenerateHeader.py"</span> --argument</span><br><span class="line">    DEPENDS some_target)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_custom_target</span>(generate_header ALL</span><br><span class="line">    DEPENDS <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/include/Generated.hpp"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">install</span>(FILES <span class="variable">$&#123;CMAKE_CURRENT_BINARY_DIR&#125;</span>/<span class="keyword">include</span>/Generated.hpp DESTINATION <span class="keyword">include</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="Cmake其他的一些特性"><a href="#Cmake其他的一些特性" class="headerlink" title="Cmake其他的一些特性"></a>Cmake其他的一些特性</h3><p>CMAKE_BUILD_TYPE变量默认既不是Debug也不是Release。必须指定。</p>
+<p>关于C++ 11等一些新标准，有以下配置:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_EXTENSIONS <span class="keyword">OFF</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set_target_properties</span>(myTarget PROPERTIES</span><br><span class="line">    CXX_STANDARD <span class="number">11</span></span><br><span class="line">    CXX_STANDARD_REQUIRED YES</span><br><span class="line">    CXX_EXTENSIONS NO</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h4 id="查找库"><a href="#查找库" class="headerlink" title="查找库"></a>查找库</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">find_library</span>(MATH_LIBRARY m)</span><br><span class="line"><span class="keyword">if</span>(MATH_LIBRARY)</span><br><span class="line">    <span class="keyword">target_link_libraries</span>(MyTarget PUBLIC <span class="variable">$&#123;MATH_LIBRARY&#125;</span>)</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure></span>
+      
+    </div>
 
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/C-C/" rel="tag">#C/C++</a>
+          
+            <a href="/blog/tags/CMake/" rel="tag">#CMake</a>
+          
+        </div>
+      
 
-                </h1>
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
 
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/08/11/manjaro-hello/" rel="next">你好，manjaro</a>
+            
+          </div>
+        </div>
+      
 
-                <div class="post-meta">
-                  <span class="post-time">
-                    Posted on
-                    <time itemprop="dateCreated" datetime="2018-08-12T17:39:00+08:00" content="2018-08-12">
-                      2018-08-12
-                    </time>
-                  </span>
-
-
-
-
-
-
-                </div>
-              </header>
-
-              <div class="post-body">
-
-
-
-
-
-                <span itemprop="articleBody">
-                  <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2>
-                  <hr>
-                  <p>主要最近的换工作，完全在Linux下开发，虽然以前都接触过CMake，不过体系也是零散的，遂做了一个简短的CMake教程，以供后续快速入门。</p>
-                  <p>另外，好久也没有写文章了，这份工作还是有一定的技术性，之前的那家公司是开发/维护，大部分工作都是维护，没有什么写文章的激情。</p>
-                  <p>所以，今天是硬凑一篇文章。</p>
-                  <h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2>
-                  <hr>
-                  <h4 id="CMake"><a href="#CMake" class="headerlink" title="CMake"></a>CMake</h4>
-                  <p>CMake是跨平台的元构建系统，也就是说，它不实际产生构建行为，它只是生成给其他构建系统使用的文件，比如Makefile，MSBuild的solution file。</p>
-                  <p>CMake根据读取名为CMakeLists.txt的文件，然后生成平台特定的构建文件，但是一个很大的问题是，CMake官方提供的教程特别复杂，对于新手的个坑，很难快速入门。</p>
-                  <p>这个教程会通过例子来学习怎么用CMake。以下我们提供几个C++源代码供例子使用：</p>
-                  <ul>
-                    <li>main.cpp</li>
-                    <li>vector.h</li>
-                    <li>vector.cpp</li>
-                    <li>array.h</li>
-                    <li>array.cpp</li>
-                  </ul>
-                  <p>那么描述构建的CMakeLists.txt内容会是以下:</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">2.8</span>)</span><br><span class="line"><span class="keyword">project</span>(pjc-lab5)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_FLAGS <span class="string">"-std=c++14 -Wall $&#123;CMAKE_CXX_FLAGS&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(vector-test</span><br><span class="line">    array.cpp</span><br><span class="line">    vector.cpp</span><br><span class="line">    main.cpp</span><br><span class="line">)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <p>以上代码很简单，但是第一个问题是，它是不可移植的，因为它没有任何逻辑判断就设置了GCC/Clang的特定编译参数。</p>
-                  <p>第二个问题是，它全局改变了include的搜索路径。</p>
-                  <p>CMake也要有好的书写习惯，采用更加现代的方式来写CMake文件:</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.5</span>)</span><br><span class="line"><span class="keyword">project</span>(pjc-lab5 LANGUAGES CXX)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">14</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_EXTENSIONS <span class="keyword">OFF</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(vector-test</span><br><span class="line">    array.cpp</span><br><span class="line">    vector.cpp</span><br><span class="line">    main.cpp</span><br><span class="line">)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <p>注意了，以上代码有几点改变了：</p>
-                  <ul>
-                    <li>强制要求了CMake的版本不得小于3.5，因为要使用CMake的一些新功能</li>
-                    <li>直接指定该工程为C++工程。这样可以减少CMake查找tool chain的时间，它就不会去查找其他编译器了，也不会检查其他编译器是否正常了。</li>
-                    <li>直接采用可跨平台的方式来指定采用的C++标准为C++ 14</li>
-                    <li>打开CMAKE_CXX_STANDARD_REQUIRED开关，如果C++ 14标准不被支持，CMake会直接终止构建过程。反之，会采用老的标准来构建</li>
-                    <li>CMAKE_CXX_EXTENSIONS开关是告诉CMake采用更加通用的编译参数，比如这个开关打开，传递给GCC的参数就会是-std=c++14 而不是-std=gnu++14</li>
-                  </ul>
-                  <p>然后在构建过程中，你会发现没有警告，因为CMake不会设定编译器的警告级别，需要你根据不同平台来指定相应的编译器警告参数:</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">if</span> ( CMAKE_CXX_COMPILER_ID <span class="keyword">MATCHES</span> <span class="string">"Clang|AppleClang|GNU"</span> )</span><br><span class="line">    target_compile_options( vector-test PRIVATE -Wall -Wextra -Wunreachable-code -Wpedantic)</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"><span class="keyword">if</span> ( CMAKE_CXX_COMPILER_ID <span class="keyword">MATCHES</span> <span class="string">"Clang"</span> )</span><br><span class="line">    target_compile_options( vector-test PRIVATE -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"><span class="keyword">if</span> ( CMAKE_CXX_COMPILER_ID <span class="keyword">MATCHES</span> <span class="string">"MSVC"</span> )</span><br><span class="line">    target_compile_options( vector-test PRIVATE /W4 /w44265 /w44061 /w44062 )</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <p>如果就采用上述的CMake文件，那么它生成的工程文件并不好，没有预期，你会发现如果生成VS的solution，你打开工程，你会发现没有包含头文件（vector.h
-                    array.h）。因为CMake不理解C++语言，它只是构建工具。</p>
-                  <p>所以CMake文件中要改变下:<br>
-                    <figure class="highlight cmake">
-                      <table>
-                        <tr>
-                          <td class="gutter">
-                            <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
-                          </td>
-                          <td class="code">
-                            <pre><span class="line"><span class="keyword">add_executable</span>(vector-test</span><br><span class="line">    array.cpp</span><br><span class="line">    vector.cpp</span><br><span class="line">    main.cpp</span><br><span class="line">    array.h</span><br><span class="line">    vector.h</span><br><span class="line">)</span><br></pre>
-                          </td>
-                        </tr>
-                      </table>
-                    </figure>
-                  </p>
-                  <p>当然，也可以通过CMake的source_group命令给文件归类:</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">source_group</span>(<span class="string">"Tests"</span> FILES main.cpp)</span><br><span class="line"><span class="keyword">source_group</span>(<span class="string">"Implementation"</span> FILES array.cpp vector.cpp)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <p>这样VS工程下就可以看到对C++源文件分类的文件夹图标了。</p>
-                  <h4 id="Tests"><a href="#Tests" class="headerlink" title="Tests"></a>Tests</h4>
-                  <p>CMake是一堆工具的集合，所以它有一个test runner，叫<a href="https://cmake.org/cmake/help/latest/manual/ctest.1.html"
-                      target="_blank" rel="noopener">CTest</a>。</p>
-                  <p>要使用它，你需要显式指定它：<br>
-                    <figure class="highlight cmake">
-                      <table>
-                        <tr>
-                          <td class="gutter">
-                            <pre><span class="line">1</span><br></pre>
-                          </td>
-                          <td class="code">
-                            <pre><span class="line"><span class="keyword">add_test</span>(NAME test-name COMMAND how-to-run-it)</span><br></pre>
-                          </td>
-                        </tr>
-                      </table>
-                    </figure>
-                  </p>
-                  <p>测试返回0表示成功，返回其他值表示失败。</p>
-                  <p>还可以自定义，通过<a href="https://cmake.org/cmake/help/latest/command/set_tests_properties.html?highlight=set_tests_properties"
-                      target="_blank" rel="noopener">set_tests_properties</a>来设置其<a href="https://cmake.org/cmake/help/v3.11/manual/cmake-properties.7.html#test-properties"
-                      target="_blank" rel="noopener">相关属性</a>。</p>
-                  <p>对于我们的例子工程，我们仅仅是运行bin文件，并不做额外检查:</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">include</span>(CTest)</span><br><span class="line"><span class="keyword">add_test</span>(NAME plain-run COMMAND $&lt;TARGET_FILE:vector-test&gt;)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <p>COMMAND后面的表达式是<a href="https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html"
-                      target="_blank" rel="noopener">generator-expression</a>。</p>
-                  <p>最后，我们的CMakeLists.txt的内容会是:</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.5</span>)</span><br><span class="line"><span class="keyword">project</span>(pjc-lab5 </span><br><span class="line">DESCRIPTION <span class="string">"Very nice project"</span></span><br><span class="line">LANGUAGES CXX)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">14</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_EXTENSIONS <span class="keyword">OFF</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(vector-test</span><br><span class="line">    array.cpp</span><br><span class="line">    vector.cpp</span><br><span class="line">    main.cpp</span><br><span class="line">    array.h</span><br><span class="line">    vector.h</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">source_group</span>(<span class="string">"Tests"</span> FILES main.cpp)</span><br><span class="line"><span class="keyword">source_group</span>(<span class="string">"Implementation"</span> FILES array.cpp vector.cpp)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ( CMAKE_CXX_COMPILER_ID <span class="keyword">MATCHES</span> <span class="string">"Clang|AppleClang|GNU"</span> )</span><br><span class="line">    target_compile_options( vector-test PRIVATE -Wall -Wextra -Wunreachable-code -Wpedantic)</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"><span class="keyword">if</span> ( CMAKE_CXX_COMPILER_ID <span class="keyword">MATCHES</span> <span class="string">"Clang"</span> )</span><br><span class="line">    target_compile_options( vector-test PRIVATE -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"><span class="keyword">if</span> ( CMAKE_CXX_COMPILER_ID <span class="keyword">MATCHES</span> <span class="string">"MSVC"</span> )</span><br><span class="line">    target_compile_options( vector-test PRIVATE /W4 /w44265 /w44061 /w44062 )</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span>(CTest)</span><br><span class="line"><span class="keyword">add_test</span>(NAME plain-run COMMAND $&lt;TARGET_FILE:vector-test&gt;)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <h4 id="libraries"><a href="#libraries" class="headerlink" title="libraries"></a>libraries</h4>
-                  <p>之前的教程都是很简单的例子，但是现实中的项目往往要拆分模块，链接外部的第三方库或者链接工程内的库。</p>
-                  <p>如果不想阅读此章节，可以参考JetBrain的CLion提供的一个简明的<a href="https://www.jetbrains.com/help/clion/quick-cmake-tutorial.html"
-                      target="_blank" rel="noopener">CMake教程</a>。</p>
-                  <p>里面记录如何包含链接外部的library。</p>
-                  <p>构建生成一个library的cmake指令如下:</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">add_library</span>(libname [STATIC | SHARED] two.cpp three.h)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <p>下面我们来写一个计算器程序的cmake,bin文件依赖了lib文件，这样看起来就像一个小工程了:</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.8</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">project</span>(Calculator LANGUAGES CXX)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_library</span>(calclib STATIC src/calclib.cpp <span class="keyword">include</span>/calc/lib.hpp)</span><br><span class="line">target_include_directories(calclib PUBLIC <span class="keyword">include</span>)</span><br><span class="line">target_compile_features(calclib PUBLIC cxx_std_11)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(calc apps/calc.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(calc PUBLIC calclib)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <h4 id="变量和缓存变量"><a href="#变量和缓存变量" class="headerlink" title="变量和缓存变量"></a>变量和缓存变量</h4>
-                  <p>为什么要说这个？因为如果cmake维护一个很大的工程，会有各种编译策略参数，这个就需要逻辑判断，变量这些就随之诞生了。</p>
-                  <p>给一个局部变量设置一个值:</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">set</span>(MY_VARIABLE <span class="string">"value"</span>)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <p>当然，cmake也有list类型的变量,有2种表达方式：</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">set</span>(MY_LIST <span class="string">"one"</span> <span class="string">"two"</span>)</span><br><span class="line"><span class="keyword">set</span>(MY_LIST <span class="string">"one;two"</span>)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <p>以上变量如果离开作用域就无效了。</p>
-                  <p>下面来说下缓存变量，如果你要从命令行来设置cmake的变量，那么就需要声明缓存变量。类似于CMAKE_BUILD_TYPE这样的变量都是缓存变量：</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">set</span>(MY_CACHE_VARIABLE <span class="string">"VALUE"</span> CACHE <span class="keyword">STRING</span> <span class="string">"Description"</span>)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <p>但是以上不会替换已经存在的值，需要按照以下这样：</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">set</span>(MY_CACHE_VARIABLE <span class="string">"VALUE"</span> CACHE <span class="keyword">STRING</span> <span class="string">""</span> FORCE)</span><br><span class="line"><span class="keyword">mark_as_advanced</span>(MY_CACHE_VARIABLE)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <h4 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h4>
-                  <p>cmake可以访问环境变量：</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">set</span>(ENV&#123;variable_name&#125; value)</span><br><span class="line"><span class="keyword">set</span>(MY_VAR $ENV&#123;variable_name&#125;)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4>
-                  <p>cmake也会在属性中保存一些信息，这些属性有点像变量，但是这些属性的作用一般是针对一个target或者目录什么的。cmake的属性变量是以CMAKE_打头的，类似CMAKE_BUILD_TYPE，CMAKE_CXX_STANDARD这些。</p>
-                  <p>比如使用CXX标准可以用设置属性的方式办到，有两种表达：</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">set_property</span>(TARGET TargetName</span><br><span class="line">             PROPERTY CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set_target_properties</span>(TargetName PROPERTIES</span><br><span class="line">                      CXX_STANDARD <span class="number">11</span>)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <p>当然既然有set，当然有get:</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">get_property</span>(ResultVariable TARGET TargetName PROPERTY CXX_STANDARD)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <h3 id="Cmake编程"><a href="#Cmake编程" class="headerlink" title="Cmake编程"></a>Cmake编程</h3>
-                  <h4 id="控制流"><a href="#控制流" class="headerlink" title="控制流"></a>控制流</h4>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">if</span>(variable)</span><br><span class="line">    <span class="comment"># If variable is `ON`, `YES`, `TRUE`, `Y`, or non zero number</span></span><br><span class="line"><span class="keyword">else</span>()</span><br><span class="line">    <span class="comment"># If variable is `0`, `OFF`, `NO`, `FALSE`, `N`, `IGNORE`, `NOTFOUND`, `""`, or ends in `-NOTFOUND`</span></span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">if</span>(<span class="string">"$&#123;variable&#125;"</span>)</span><br><span class="line">    <span class="comment"># True if variable is not false-like</span></span><br><span class="line"><span class="keyword">else</span>()</span><br><span class="line">    <span class="comment"># Note that undefined variables would be `""` thus false</span></span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <h4 id="宏和函数"><a href="#宏和函数" class="headerlink" title="宏和函数"></a>宏和函数</h4>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">function</span>(SIMPLE REQUIRED_ARG)</span><br><span class="line">    <span class="keyword">message</span>(STATUS <span class="string">"Simple arguments: $&#123;REQUIRED_ARG&#125;, followed by $&#123;ARGV&#125;"</span>)</span><br><span class="line">    <span class="keyword">set</span>(<span class="variable">$&#123;REQUIRED_ARG&#125;</span> <span class="string">"From SIMPLE"</span> PARENT_SCOPE)</span><br><span class="line"><span class="keyword">endfunction</span>()</span><br><span class="line"></span><br><span class="line">simple(This)</span><br><span class="line"><span class="keyword">message</span>(<span class="string">"Output: $&#123;This&#125;"</span>)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <h4 id="与源码文件“通信”"><a href="#与源码文件“通信”" class="headerlink" title="与源码文件“通信”"></a>与源码文件“通信”</h4>
-                  <p>Cmake允许源代码访问cmake的变量，这个指令就是configure_file。</p>
-                  <p>这样的功能在版本管理上经常使用：</p>
-                  <p>Version.h.in<br>
-                    <figure class="highlight c++">
-                      <table>
-                        <tr>
-                          <td class="gutter">
-                            <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
-                          </td>
-                          <td class="code">
-                            <pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MY_VERSION_MAJOR @PROJECT_VERSION_MAJOR@</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MY_VERSION_MINOR @PROJECT_VERSION_MINOR@</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MY_VERSION_PATCH @PROJECT_VERSION_PATCH@</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MY_VERSION_TWEAK @PROJECT_VERSION_TWEAK@</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MY_VERSION <span class="meta-string">"@PROJECT_VERSION@"</span></span></span><br></pre>
-                          </td>
-                        </tr>
-                      </table>
-                    </figure>
-                  </p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">configure_file</span> (</span><br><span class="line">    <span class="string">"$&#123;PROJECT_SOURCE_DIR&#125;/include/My/Version.h.in"</span></span><br><span class="line">    <span class="string">"$&#123;PROJECT_BINARY_DIR&#125;/include/My/Version.h"</span></span><br><span class="line">)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <p>可以从上面的配置看出来，本质上cmake只是把后缀in的文件，进行变量标记替换，然后再拷贝到指定目录的文件名。没有什么神奇的。</p>
-                  <p>当然，cmake也可以反过来，cmake代码访问源码文件的内容：</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="comment"># Assuming the canonical version is listed in a single line</span></span><br><span class="line"><span class="comment"># This would be in several parts if picking up from MAJOR, MINOR, etc.</span></span><br><span class="line"><span class="keyword">set</span>(VERSION_REGEX <span class="string">"#define MY_VERSION[ \t]+\"(.+)\""</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read in the line containing the version</span></span><br><span class="line">file(STRINGS <span class="string">"$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/include/My/Version.hpp"</span></span><br><span class="line">    VERSION_STRING REGEX <span class="variable">$&#123;VERSION_REGEX&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Pick out just the version</span></span><br><span class="line"><span class="keyword">string</span>(REGEX REPLACE <span class="variable">$&#123;VERSION_REGEX&#125;</span> <span class="string">"\\1"</span> VERSION_STRING <span class="string">"$&#123;VERSION_STRING&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Automatically getting PROJECT_VERSION_MAJOR, My_VERSION_MAJOR, etc.</span></span><br><span class="line"><span class="keyword">project</span>(My LANGUAGES CXX VERSION <span class="variable">$&#123;VERSION_STRING&#125;</span>)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <h3 id="怎样规划你的工程结构"><a href="#怎样规划你的工程结构" class="headerlink" title="怎样规划你的工程结构"></a>怎样规划你的工程结构</h3>
-                  <p>基本如下:</p>
-                  <figure class="highlight plain">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line">- project</span><br><span class="line">  - .gitignore</span><br><span class="line">  - README.md</span><br><span class="line">  - LICENCE.md</span><br><span class="line">  - CMakeLists.txt</span><br><span class="line">  - cmake</span><br><span class="line">    - FindSomeLib.cmake</span><br><span class="line">  - include</span><br><span class="line">    - project</span><br><span class="line">      - lib.hpp</span><br><span class="line">  - src</span><br><span class="line">    - CMakeLists.txt</span><br><span class="line">    - lib.cpp</span><br><span class="line">  - apps</span><br><span class="line">    - CMakeLists.txt</span><br><span class="line">    - app.cpp</span><br><span class="line">  - tests</span><br><span class="line">    - testlib.cpp</span><br><span class="line">  - docs</span><br><span class="line">    - Doxyfile.in</span><br><span class="line">  - extern</span><br><span class="line">    - googletest</span><br><span class="line">  - scripts</span><br><span class="line">    - helper.py</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <h3 id="运行其他的程序"><a href="#运行其他的程序" class="headerlink" title="运行其他的程序"></a>运行其他的程序</h3>
-                  <p>编译的时候要做很多事情，比如你构建完毕要用nsis进行打包等等，有些时候不得不调用其他命令行。</p>
-                  <h4 id="配置时运行一个命令"><a href="#配置时运行一个命令" class="headerlink" title="配置时运行一个命令"></a>配置时运行一个命令</h4>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">find_package</span>(Git QUIET)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(GIT_FOUND <span class="keyword">AND</span> EXISTS <span class="string">"$&#123;PROJECT_SOURCE_DIR&#125;/.git"</span>)</span><br><span class="line">    <span class="keyword">execute_process</span>(COMMAND <span class="variable">$&#123;GIT_EXECUTABLE&#125;</span> submodule update --init --recursive</span><br><span class="line">                    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;</span></span><br><span class="line">                    RESULT_VARIABLE GIT_SUBMOD_RESULT)</span><br><span class="line">    <span class="keyword">if</span>(NOT GIT_SUBMOD_RESULT <span class="keyword">EQUAL</span> <span class="string">"0"</span>)</span><br><span class="line">        <span class="keyword">message</span>(FATAL_ERROR <span class="string">"git submodule update --init failed with $&#123;GIT_SUBMOD_RESULT&#125;, please checkout submodules"</span>)</span><br><span class="line">    <span class="keyword">endif</span>()</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <h4 id="编译时运行一个命令"><a href="#编译时运行一个命令" class="headerlink" title="编译时运行一个命令"></a>编译时运行一个命令</h4>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">find_package</span>(PythonInterp REQUIRED)</span><br><span class="line"><span class="keyword">add_custom_command</span>(OUTPUT <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/include/Generated.hpp"</span></span><br><span class="line">    COMMAND <span class="string">"$&#123;PYTHON_EXECUTABLE&#125;"</span> <span class="string">"$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;/scripts/GenerateHeader.py"</span> --argument</span><br><span class="line">    DEPENDS some_target)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_custom_target</span>(generate_header ALL</span><br><span class="line">    DEPENDS <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/include/Generated.hpp"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">install</span>(FILES <span class="variable">$&#123;CMAKE_CURRENT_BINARY_DIR&#125;</span>/<span class="keyword">include</span>/Generated.hpp DESTINATION <span class="keyword">include</span>)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <h3 id="Cmake其他的一些特性"><a href="#Cmake其他的一些特性" class="headerlink" title="Cmake其他的一些特性"></a>Cmake其他的一些特性</h3>
-                  <p>CMAKE_BUILD_TYPE变量默认既不是Debug也不是Release。必须指定。</p>
-                  <p>关于C++ 11等一些新标准，有以下配置:</p>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_EXTENSIONS <span class="keyword">OFF</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set_target_properties</span>(myTarget PROPERTIES</span><br><span class="line">    CXX_STANDARD <span class="number">11</span></span><br><span class="line">    CXX_STANDARD_REQUIRED YES</span><br><span class="line">    CXX_EXTENSIONS NO</span><br><span class="line">)</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                  <h4 id="查找库"><a href="#查找库" class="headerlink" title="查找库"></a>查找库</h4>
-                  <figure class="highlight cmake">
-                    <table>
-                      <tr>
-                        <td class="gutter">
-                          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
-                        </td>
-                        <td class="code">
-                          <pre><span class="line"><span class="keyword">find_library</span>(MATH_LIBRARY m)</span><br><span class="line"><span class="keyword">if</span>(MATH_LIBRARY)</span><br><span class="line">    <span class="keyword">target_link_libraries</span>(MyTarget PUBLIC <span class="variable">$&#123;MATH_LIBRARY&#125;</span>)</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre>
-                        </td>
-                      </tr>
-                    </table>
-                  </figure>
-                </span>
-
-              </div>
-
-              <footer class="post-footer">
-
-                <div class="post-tags">
-
-                  <a href="/blog/tags/C-C/" rel="tag">#C/C++</a>
-
-                  <a href="/blog/tags/CMake/" rel="tag">#CMake</a>
-
-                </div>
+      
+      
+    </footer>
+  </article>
 
 
 
-                <div class="post-nav">
-                  <div class="post-nav-prev post-nav-item">
+    <div>
+      
+        <style type="text/css">
 
-                  </div>
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
 
-                  <div class="post-nav-next post-nav-item">
-
-                    <a href="/blog/2018/08/11/manjaro-hello/" rel="next">你好，manjaro</a>
-
-                  </div>
-                </div>
-
-
-
-
-              </footer>
-            </article>
-
-
-
-            <div>
-
-              <style type="text/css">
-                .donate_bar {
-                  text-align: center;
-                  margin-top: 5%;
-                }
-
-                .donate_bar.hidden {
-                  display: none;
-                }
-
-                /*
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
     .donate_bar a.btn_donate {
         display: inline-block;
         width: 82px;
@@ -839,273 +499,219 @@
         transition: background 0s;
     }
 */
-                .donate_bar a.btn_donate:hover {
-                  // background-position: 0px -82px;
-                  color: #87daff
-                }
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
 
-                .donate_bar .donate_txt {
-                  display: block;
-                  color: #9d9d9d;
-                  font: 14px/2 "Microsoft Yahei";
-                }
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
 
-                .bold {
-                  font-weight: bold;
-                }
+    .bold { 
+        font-weight: bold; 
+    }
 
-                .post-donate a {
-                  border-bottom: 0px;
-                }
+    .post-donate a {
+        border-bottom: 0px;
+    }
 
-                #donate_guide table {
-                  border: none;
-                }
+    #donate_guide table {
+        border: none;
+    }
 
-                #donate_guide td {
-                  border-bottom: none;
-                  border-right: none;
-                  background: #333333;
-                  valign: top;
-                }
-              </style>
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
 
-
-
-
-            </div>
-
-            <div class="post-spread">
-
-              <div class="bdsharebuttonbox">
-                <a href="#" class="bds_more" data-cmd="more"></a>
-                <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
-                <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
-                <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
-                <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
-                <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
-                <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
-              </div>
-              <script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "1", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+</style>
 
 
-            </div>
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">69</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
           </div>
 
-        </div>
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
 
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">92</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
 
+        </nav>
 
+        
 
-        <div class="comments" id="comments">
-
-        </div>
-
-      </div>
-
-
-
-      <div class="sidebar-toggle">
-        <div class="sidebar-toggle-line-wrap">
-          <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-          <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-          <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-        </div>
-      </div>
-
-      <aside id="sidebar" class="sidebar">
-        <div class="sidebar-inner">
-
-
-          <ul class="sidebar-nav motion-element">
-            <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-              Table Of Contents
-            </li>
-            <li class="sidebar-nav-overview" data-target="site-overview">
-              Overview
-            </li>
-          </ul>
-
-
-          <section class="site-overview">
-            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-              <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image" />
-              <p class="site-author-name" itemprop="name">MathxH Chen</p>
-            </div>
-            <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
-            <nav class="site-state motion-element">
-              <div class="site-state-item site-state-posts">
-                <a href="/blog/archives">
-                  <span class="site-state-item-count">69</span>
-                  <span class="site-state-item-name">posts</span>
-                </a>
-              </div>
-
-              <div class="site-state-item site-state-categories">
-                <a href="/blog/categories">
-                  <span class="site-state-item-count">0</span>
-                  <span class="site-state-item-name">categories</span>
-                </a>
-              </div>
-
-              <div class="site-state-item site-state-tags">
-                <a href="/blog/tags">
-                  <span class="site-state-item-count">92</span>
-                  <span class="site-state-item-name">tags</span>
-                </a>
-              </div>
-
-            </nav>
-
-
-
-            <div class="links-of-author motion-element">
-
-
+        <div class="links-of-author motion-element">
+          
+            
               <span class="links-of-author-item">
                 <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
               </span>
-
+            
               <span class="links-of-author-item">
                 <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
               </span>
-
+            
               <span class="links-of-author-item">
                 <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
               </span>
-
-
-            </div>
-
-            <div class="links-of-friendly motion-element">
-
-              <p class="site-author-name">友情链接</p>
-
-              <span class="links-of-author-item">
-                <a href="https://dendise7engithub.github.io/" target="_blank">老唐的博客</a>
-              </span>
-
-              <span class="links-of-author-item">
-                <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
-              </span>
-
-
-            </div>
-
-
-
-
-          </section>
-
-
-          <section class="post-toc-wrap sidebar-panel-active">
-            <div class="post-toc-indicator-top post-toc-indicator"></div>
-            <div class="post-toc">
-
-
-              <div class="post-toc-content">
-                <ol class="nav">
-                  <li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span>
-                      <span class="nav-text">前言</span></a></li>
-                  <li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span>
-                      <span class="nav-text">正文</span></a>
-                    <ol class="nav-child">
-                      <li class="nav-item nav-level-4"><a class="nav-link" href="#CMake"><span class="nav-number">2.0.1.</span>
-                          <span class="nav-text">CMake</span></a></li>
-                      <li class="nav-item nav-level-4"><a class="nav-link" href="#Tests"><span class="nav-number">2.0.2.</span>
-                          <span class="nav-text">Tests</span></a></li>
-                      <li class="nav-item nav-level-4"><a class="nav-link" href="#libraries"><span class="nav-number">2.0.3.</span>
-                          <span class="nav-text">libraries</span></a></li>
-                      <li class="nav-item nav-level-4"><a class="nav-link" href="#变量和缓存变量"><span class="nav-number">2.0.4.</span>
-                          <span class="nav-text">变量和缓存变量</span></a></li>
-                      <li class="nav-item nav-level-4"><a class="nav-link" href="#环境变量"><span class="nav-number">2.0.5.</span>
-                          <span class="nav-text">环境变量</span></a></li>
-                      <li class="nav-item nav-level-4"><a class="nav-link" href="#属性"><span class="nav-number">2.0.6.</span>
-                          <span class="nav-text">属性</span></a></li>
-                    </ol>
-                  </li>
-                  <li class="nav-item nav-level-3"><a class="nav-link" href="#Cmake编程"><span class="nav-number">2.1.</span>
-                      <span class="nav-text">Cmake编程</span></a>
-                    <ol class="nav-child">
-                      <li class="nav-item nav-level-4"><a class="nav-link" href="#控制流"><span class="nav-number">2.1.1.</span>
-                          <span class="nav-text">控制流</span></a></li>
-                      <li class="nav-item nav-level-4"><a class="nav-link" href="#宏和函数"><span class="nav-number">2.1.2.</span>
-                          <span class="nav-text">宏和函数</span></a></li>
-                      <li class="nav-item nav-level-4"><a class="nav-link" href="#与源码文件“通信”"><span class="nav-number">2.1.3.</span>
-                          <span class="nav-text">与源码文件“通信”</span></a></li>
-                    </ol>
-                  </li>
-                  <li class="nav-item nav-level-3"><a class="nav-link" href="#怎样规划你的工程结构"><span class="nav-number">2.2.</span>
-                      <span class="nav-text">怎样规划你的工程结构</span></a></li>
-                  <li class="nav-item nav-level-3"><a class="nav-link" href="#运行其他的程序"><span class="nav-number">2.3.</span>
-                      <span class="nav-text">运行其他的程序</span></a>
-                    <ol class="nav-child">
-                      <li class="nav-item nav-level-4"><a class="nav-link" href="#配置时运行一个命令"><span class="nav-number">2.3.1.</span>
-                          <span class="nav-text">配置时运行一个命令</span></a></li>
-                      <li class="nav-item nav-level-4"><a class="nav-link" href="#编译时运行一个命令"><span class="nav-number">2.3.2.</span>
-                          <span class="nav-text">编译时运行一个命令</span></a></li>
-                    </ol>
-                  </li>
-                  <li class="nav-item nav-level-3"><a class="nav-link" href="#Cmake其他的一些特性"><span class="nav-number">2.4.</span>
-                      <span class="nav-text">Cmake其他的一些特性</span></a>
-                    <ol class="nav-child">
-                      <li class="nav-item nav-level-4"><a class="nav-link" href="#查找库"><span class="nav-number">2.4.1.</span>
-                          <span class="nav-text">查找库</span></a></li>
-                    </ol>
-                  </li>
-                </ol>
-                </li>
-                </ol>
-              </div>
-
-            </div>
-            <div class="post-toc-indicator-bottom post-toc-indicator"></div>
-          </section>
-
-
+            
+          
         </div>
-      </aside>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="https://dendise7engithub.github.io/" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CMake"><span class="nav-number">2.0.1.</span> <span class="nav-text">CMake</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Tests"><span class="nav-number">2.0.2.</span> <span class="nav-text">Tests</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#libraries"><span class="nav-number">2.0.3.</span> <span class="nav-text">libraries</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变量和缓存变量"><span class="nav-number">2.0.4.</span> <span class="nav-text">变量和缓存变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#环境变量"><span class="nav-number">2.0.5.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性"><span class="nav-number">2.0.6.</span> <span class="nav-text">属性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cmake编程"><span class="nav-number">2.1.</span> <span class="nav-text">Cmake编程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#控制流"><span class="nav-number">2.1.1.</span> <span class="nav-text">控制流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#宏和函数"><span class="nav-number">2.1.2.</span> <span class="nav-text">宏和函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#与源码文件“通信”"><span class="nav-number">2.1.3.</span> <span class="nav-text">与源码文件“通信”</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#怎样规划你的工程结构"><span class="nav-number">2.2.</span> <span class="nav-text">怎样规划你的工程结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行其他的程序"><span class="nav-number">2.3.</span> <span class="nav-text">运行其他的程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置时运行一个命令"><span class="nav-number">2.3.1.</span> <span class="nav-text">配置时运行一个命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译时运行一个命令"><span class="nav-number">2.3.2.</span> <span class="nav-text">编译时运行一个命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cmake其他的一些特性"><span class="nav-number">2.4.</span> <span class="nav-text">Cmake其他的一些特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查找库"><span class="nav-number">2.4.1.</span> <span class="nav-text">查找库</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
 
 
     </main>
 
     <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
 
-          &copy; &nbsp; 2013 -
-          <span itemprop="copyrightYear">2018</span>
-          <span class="with-love">
-            <i class="icon-next-heart"></i>
-          </span>
-          <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
 
-          <div class="powered-by"></div>
-          <div class="powered-by">
-            Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
-          </div>
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
 
-          <div class="theme-info">
-            Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link"
-              href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
-          </div>
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
 
-          <!-- busuanzi -->
+</div>
 
-          <div class="powered-by">
-            <div class="theme-info">
-              <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-              </script>
-              <span id="busuanzi_container_site_pv">
-                本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
-              </span>
-            </div>
-          </div>
-
-
-        </div>
-
-        <!--
+<!--
 <div class="theme-info">
   Theme -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
@@ -1114,15 +720,15 @@
 </div>
 -->
 
-        <!--
+<!--
 <div class="powered-by"></div>
 <div class="powered-by">
   Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
 </div>
 -->
 
-        <!-- busuanzi -->
-        <!--
+<!-- busuanzi -->
+<!--
 
   <div class="theme-info">
     <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
@@ -1135,7 +741,7 @@
 -->
 
 
-      </div>
+ </div>
     </footer>
 
     <div class="back-to-top"></div>
@@ -1143,23 +749,23 @@
 
   <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
 
+  
+  
+  
+    
+    
+
+  
 
 
-
-
-
-
-
-
-
-
-
+  
+  
   <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
   <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
 
 
   <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
-
+  
 
   <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
   <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
@@ -1172,164 +778,164 @@
   <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
   <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
 
 
-  <script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
 
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
 
-  <script type="text/javascript" id="sidebar.toc.highlight">
-    $(document).ready(function () {
-      var tocSelector = '.post-toc';
-      var $tocSelector = $(tocSelector);
-      var activeCurrentSelector = '.active-current';
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
 
-      $tocSelector
-        .on('activate.bs.scrollspy', function () {
-          var $currentActiveElement = $(tocSelector + ' .active').last();
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
 
-          removeCurrentActiveClass();
-          $currentActiveElement.addClass('active-current');
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
 
-          $tocSelector[0].scrollTop = $currentActiveElement.position().top;
-        })
-        .on('clear.bs.scrollspy', function () {
-          removeCurrentActiveClass();
-        });
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
 
-      function removeCurrentActiveClass() {
-        $(tocSelector + ' ' + activeCurrentSelector)
-          .removeClass(activeCurrentSelector.substring(1));
-      }
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
 
-      function processTOC() {
-        getTOCMaxHeight();
-        toggleTOCOverflowIndicators();
-      }
+      $tocSelector.css('height', height);
 
-      function getTOCMaxHeight() {
-        var height = $('.sidebar').height() -
-          $tocSelector.position().top -
-          $('.post-toc-indicator-bottom').height();
+      return height;
+    }
 
-        $tocSelector.css('height', height);
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
 
-        return height;
-      }
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
 
-      function toggleTOCOverflowIndicators() {
-        tocOverflowIndicator(
-          '.post-toc-indicator-top',
-          $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
-        );
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
 
-        tocOverflowIndicator(
-          '.post-toc-indicator-bottom',
-          $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
-        )
-      }
-
-      $(document).on('sidebar.motion.complete', function () {
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
         processTOC();
-      });
+      }
+    });
 
-      $('body').scrollspy({ target: tocSelector });
-      $(window).on('resize', function () {
-        if ($('.sidebar').hasClass('sidebar-active')) {
-          processTOC();
-        }
-      });
+    onScroll($tocSelector);
 
-      onScroll($tocSelector);
-
-      function onScroll(element) {
-        element.on('mousewheel DOMMouseScroll', function (event) {
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
           var oe = event.originalEvent;
           var delta = oe.wheelDelta || -oe.detail;
 
-          this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
           event.preventDefault();
 
           toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
         });
-      }
 
-      function tocOverflowIndicator(indicator, action) {
-        var $indicator = $(indicator);
-        var opacity = action === 'show' ? 0.4 : 0;
-        $indicator.velocity ?
-          $indicator.velocity('stop').velocity({
-            opacity: opacity
-          }, { duration: 100 }) :
-          $indicator.stop().animate({
-            opacity: opacity
-          }, 100);
-      }
-
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
     });
-  </script>
 
-  <script type="text/javascript" id="sidebar.nav">
-    $(document).ready(function () {
-      var html = $('html');
-      var TAB_ANIMATE_DURATION = 200;
-      var hasVelocity = $.isFunction(html.velocity);
-
-      $('.sidebar-nav li').on('click', function () {
-        var item = $(this);
-        var activeTabClassName = 'sidebar-nav-active';
-        var activePanelClassName = 'sidebar-panel-active';
-        if (item.hasClass(activeTabClassName)) {
-          return;
-        }
-
-        var currentTarget = $('.' + activePanelClassName);
-        var target = $('.' + item.data('target'));
-
-        hasVelocity ?
-          currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
-            target
-              .velocity('stop')
-              .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
-              .addClass(activePanelClassName);
-          }) :
-          currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
-            currentTarget.hide();
-            target
-              .stop()
-              .css({ 'opacity': 0, 'display': 'block' })
-              .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
-                currentTarget.removeClass(activePanelClassName);
-                target.addClass(activePanelClassName);
-              });
-          });
-
-        item.siblings().removeClass(activeTabClassName);
-        item.addClass(activeTabClassName);
-      });
-
-      $('.post-toc a').on('click', function (e) {
-        e.preventDefault();
-        var targetSelector = escapeSelector(this.getAttribute('href'));
-        var offset = $(targetSelector).offset().top;
-        hasVelocity ?
-          html.velocity('stop').velocity('scroll', {
-            offset: offset + 'px',
-            mobileHA: false
-          }) :
-          $('html, body').stop().animate({
-            scrollTop: offset
-          }, 500);
-      });
-
-      // Expand sidebar on post detail page by default, when post has a toc.
-      var $tocContent = $('.post-toc-content');
-      if (isDesktop() && CONFIG.sidebar === 'post') {
-        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-          displaySidebar();
-        }
-      }
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
     });
-  </script>
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
 
 
 
@@ -1344,12 +950,12 @@
     });
   </script>
 
+  
 
+  
+  
 
-
-
-
-
+  
   <script type="text/javascript" src="/blog/js/lazyload.js"></script>
   <script type="text/javascript">
     $(function () {
@@ -1360,5 +966,4 @@
     });
   </script>
 </body>
-
 </html>
