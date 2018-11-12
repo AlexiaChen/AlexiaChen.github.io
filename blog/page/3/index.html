@@ -3398,6 +3398,78 @@
           
           
             
+              <a class="post-title-link" href="/blog/2017/08/16/cert-cpp-nine/" itemprop="url">
+                CERT C++ 编码规范翻译（CON）
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2017-08-16T10:25:15+08:00" content="2017-08-16">
+            2017-08-16
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            并发编程CON50-CPP. 当mutex被上锁的时候不要销毁mutex严重程度：中等。修复代价也非常高昂。导致不合法的控制流和数据冲撞。
+Mutex对象一般是用来在并发访问的时候保护共享数据的。如果一个Mutex对象在线程阻塞等待上锁的时候销毁了，那么临界区和共享数据就再也不受保护了。
+C++标准
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/blog/2017/08/16/cert-cpp-nine/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/blog/2017/08/11/cert-cpp-eight/" itemprop="url">
                 CERT C++编码规范翻译（OOP）
               </a>
@@ -4038,84 +4110,11 @@ C风格的字符串数组要求字符串结尾隐式包含一个null结束符(�
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/blog/2017/06/29/cert-cpp-one/" itemprop="url">
-                CERT C++编码规范翻译（EXP）
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2017-06-29T14:50:53+08:00" content="2017-06-29">
-            2017-06-29
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-            表达式（EXP）EXP50-CPP 不要依赖求值顺序所造成的副作用严重等级：中等
-关于求值顺序可能造成的副作用，C++标准[intro.execution]有说明：
-
-Sequenced before is an asymmetric, transitive, pair-wise relation 
-            ...
-          </span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/blog/2017/06/29/cert-cpp-one/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/blog/page/2/">&laquo;</a><a class="page-number" href="/blog/">1</a><a class="page-number" href="/blog/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/blog/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/blog/page/7/">7</a><a class="extend next" rel="next" href="/blog/page/4/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/blog/page/2/">&laquo;</a><a class="page-number" href="/blog/">1</a><a class="page-number" href="/blog/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/blog/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/blog/page/8/">8</a><a class="extend next" rel="next" href="/blog/page/4/">&raquo;</a>
   </nav>
 
  </div>
@@ -4149,7 +4148,7 @@ Sequenced before is an asymmetric, transitive, pair-wise relation
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/blog/archives">
-              <span class="site-state-item-count">70</span>
+              <span class="site-state-item-count">71</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -4163,7 +4162,7 @@ Sequenced before is an asymmetric, transitive, pair-wise relation
 
           <div class="site-state-item site-state-tags">
             <a href="/blog/tags">
-              <span class="site-state-item-count">93</span>
+              <span class="site-state-item-count">94</span>
               <span class="site-state-item-name">tags</span>
               </a>
           </div>
