@@ -3546,6 +3546,78 @@
           
           
             
+              <a class="post-title-link" href="/blog/2018/08/25/manjaro-mysql8-conf/" itemprop="url">
+                manjaro下安装配置MySQL8
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2018-08-25T14:13:47+08:00" content="2018-08-25">
+            2018-08-25
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            虽然Arch体系的Linux都推荐用MariaDB，也不知道为什么Arch Linux不大推荐MySQL，虽然二者协议兼容，但是我就想用MySQL。
+我这边是中科大的源。
+12sudo pacman -S mysqlsudo mysqld --initialize --user=mysql --ba
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/blog/2018/08/25/manjaro-mysql8-conf/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/blog/2018/08/12/cmake-tutorial/" itemprop="url">
                 简短的CMake教程
               </a>
@@ -3662,6 +3734,221 @@
           </span>
           <div class="post-more-link text-center">
             <a class="btn" href="/blog/2018/08/11/manjaro-hello/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/blog/2018/06/15/avoid-win32-error-report-dialog/" itemprop="url">
+                win32 进程崩溃时禁止弹出错误对话框
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2018-06-15T18:58:23+08:00" content="2018-06-15">
+            2018-06-15
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            在main函数程序初始化的时候加入以下代码即可：
+1SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX); _set_abort_behavior(0,_WRITE_ABORT_MSG);
+这样程序就悄无声息的崩溃了，不然守护进程都
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/blog/2018/06/15/avoid-win32-error-report-dialog/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/blog/2018/06/06/fix-vs-halting/" itemprop="url">
+                解决Visual Studio调试突然变慢卡死的问题
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2018-06-06T15:58:23+08:00" content="2018-06-06">
+            2018-06-06
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            最开始摸不到头脑，之前还能好好调试的啊，现在VS启动调试器变得巨卡。后来在VS的调试菜单的符号选项里面发现了系统环境变量_NT_SYMBOL_PATH 的值为：srvc:\symbolshttp://msdl.microsoft.com/download/symbols
+才想起来以前用WinDbg分
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/blog/2018/06/06/fix-vs-halting/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/blog/2018/06/03/win32-dump/" itemprop="url">
+                windows用户态程序的dump文件生成
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2018-06-03T12:58:23+08:00" content="2018-06-03">
+            2018-06-03
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            熟悉Linux的开发人员都知道，在Linux下开发程序，如果程序崩溃了，可以通过配置Core Dump，来让程序崩溃的瞬间产生一个Dump文件，然后通过dump文件来调试程序为什么崩溃。但是windows下就比较麻烦。
+windows下配置用户态程序的Dump非常麻烦.aspx)。
+总结后第一种的方
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/blog/2018/06/03/win32-dump/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -3834,303 +4121,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/blog/2018/03/20/why-threads-bad-idea/" itemprop="url">
-                为什么使用多线程在大多数情况下是个坏注意？
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2018-03-20T14:00:00+08:00" content="2018-03-20">
-            2018-03-20
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-            简介
-什么是线程？
-
-诞生并成长于操作系统这个世界中
-在用户级别的工具中慢慢演进
-被提议为多种多样的问题的一种解决方案
-
-那么，上面说的如此明确了，我们是否在现实工作中成为一个彻头彻尾的“多线程程序员”呢？
-多线程带来的问题： 多线程程序很难编写
-相对于多线程的一个折中方案： 采用事件驱动的思想
-声
-            ...
-          </span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/blog/2018/03/20/why-threads-bad-idea/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/blog/2018/03/14/stephen-hawking/" itemprop="url">
-                霍金
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2018-03-14T14:00:00+08:00" content="2018-03-14">
-            2018-03-14
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-            这位最具有传奇色彩的物理学家去世了，是在圆周率日去世的，这天是爱因斯坦的生日，也是世界顶尖理工大学麻省理工学院发offer的日子。霍金的生日还是伽利略的去世的日子，有人说他是天选之人。
-之前发表感慨在微信朋友圈，又觉得不合适，所以删掉了，发到博客上来，以作纪念。
-我小时候是看霍金的科普书长大的，印象
-            ...
-          </span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/blog/2018/03/14/stephen-hawking/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/blog/2018/02/08/gallery-processor-cache/" itemprop="url">
-                处理器缓存效果概要
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2018-02-08T17:16:53+08:00" content="2018-02-08">
-            2018-02-08
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-            前言
-大部分看过《CSAPP》这本经典的人，一般都能理解CPU缓存的大概机制，并能简单通过CPU的缓存机制来优化程序性能。
-我这篇文章主要也是用一些代码样例来从一些不同的角度演示缓存的工作机制和实战中的代码优化。
-Example 1：内存访问和性能
-比较以下两种不同的循环，哪种循环相对更快？(不用管
-            ...
-          </span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/blog/2018/02/08/gallery-processor-cache/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/blog/2017/12/15/cert-java-zero/" itemprop="url">
-                CERT Java编码规范翻译（DCL）
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2017-12-15T17:16:53+08:00" content="2017-12-15">
-            2017-12-15
-          </time>
-        </span>
-
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-            声明
-本文翻译自CERT(计算机安全应急响应组)提供的Java安全编码规范，与其他规范不一样的是，该规范侧重软件安全的编码规范。翻译不完全逐字段翻译，可能有简化删改。文章分为规则（Rules）和建议（Recommendations）部分。前者是规则，程序员需要遵循的，后者是推荐，意在强烈建议那样做（
-            ...
-          </span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/blog/2017/12/15/cert-java-zero/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -4169,7 +4159,7 @@ Example 1：内存访问和性能
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/blog/archives">
-              <span class="site-state-item-count">71</span>
+              <span class="site-state-item-count">75</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -4183,7 +4173,7 @@ Example 1：内存访问和性能
 
           <div class="site-state-item site-state-tags">
             <a href="/blog/tags">
-              <span class="site-state-item-count">94</span>
+              <span class="site-state-item-count">99</span>
               <span class="site-state-item-name">tags</span>
               </a>
           </div>
