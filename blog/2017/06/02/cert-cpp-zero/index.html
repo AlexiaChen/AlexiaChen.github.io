@@ -1,43 +1,43 @@
 
 <!doctype html>
 <html class="theme-next use-motion theme-next-mala">
-<head>
+<head><meta name="generator" content="Hexo 3.8.0">
   
 
-<meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
-
-
-
-  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-
-
-<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1"/>
-
-
-    <meta name="description" content="System Software Engineer" />
-
-
-
-  <meta name="keywords" content="CERT,C/C++," />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
 
 
-  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1" />
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1">
+
+
+    <meta name="description" content="System Software Engineer">
+
+
+
+  <meta name="keywords" content="CERT,C/C++,">
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1">
 
 
 <meta name="description" content="声明 本文翻译自CERT(计算机安全应急响应组)提供的C++安全编码规范（2016版），与其他规范不一样的是，该规范侧重软件安全的编码规范。翻译不完全逐字段翻译，可能有简化删改。 正文 声明与初始化（DCL）DCL50-CPP 不要定义C风格的可变参函数严重等级：高  C风格的可变参函数的参数没有类型安全保证，也就是说，编译器不检查参数的类型是否匹配，如果类型不匹配这样会导致运行时出现未定义行为。">
@@ -48,7 +48,7 @@
 <meta property="og:site_name" content="MathxH">
 <meta property="og:description" content="声明 本文翻译自CERT(计算机安全应急响应组)提供的C++安全编码规范（2016版），与其他规范不一样的是，该规范侧重软件安全的编码规范。翻译不完全逐字段翻译，可能有简化删改。 正文 声明与初始化（DCL）DCL50-CPP 不要定义C风格的可变参函数严重等级：高  C风格的可变参函数的参数没有类型安全保证，也就是说，编译器不检查参数的类型是否匹配，如果类型不匹配这样会导致运行时出现未定义行为。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-08-16T12:54:39.294Z">
+<meta property="og:updated_time" content="2018-12-15T13:39:30.423Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CERT C++编码规范翻译（DCL）">
 <meta name="twitter:description" content="声明 本文翻译自CERT(计算机安全应急响应组)提供的C++安全编码规范（2016版），与其他规范不一样的是，该规范侧重软件安全的编码规范。翻译不完全逐字段翻译，可能有简化删改。 正文 声明与初始化（DCL）DCL50-CPP 不要定义C风格的可变参函数严重等级：高  C风格的可变参函数的参数没有类型安全保证，也就是说，编译器不检查参数的类型是否匹配，如果类型不匹配这样会导致运行时出现未定义行为。">
@@ -64,7 +64,7 @@
   <title> CERT C++编码规范翻译（DCL） | MathxH </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
 
   <!--[if lte IE 8]>
   <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
@@ -82,7 +82,7 @@
   <div class="container one-column page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><h1 class="site-meta">
   <span class="logo-line-before"><i></i></span>
   <a href="/blog/" class="brand" rel="start">
@@ -111,7 +111,7 @@
         
         <li class="menu-item menu-item-home">
           <a href="/blog/" rel="section">
-            <i class="menu-item-icon icon-next-home"></i> <br />
+            <i class="menu-item-icon icon-next-home"></i> <br>
             Home
           </a>
         </li>
@@ -119,7 +119,7 @@
         
         <li class="menu-item menu-item-categories">
           <a href="/blog/categories" rel="section">
-            <i class="menu-item-icon icon-next-categories"></i> <br />
+            <i class="menu-item-icon icon-next-categories"></i> <br>
             Categories
           </a>
         </li>
@@ -127,7 +127,7 @@
         
         <li class="menu-item menu-item-archives">
           <a href="/blog/archives" rel="section">
-            <i class="menu-item-icon icon-next-archives"></i> <br />
+            <i class="menu-item-icon icon-next-archives"></i> <br>
             Archives
           </a>
         </li>
@@ -135,7 +135,7 @@
         
         <li class="menu-item menu-item-tags">
           <a href="/blog/tags" rel="section">
-            <i class="menu-item-icon icon-next-tags"></i> <br />
+            <i class="menu-item-icon icon-next-tags"></i> <br>
             Tags
           </a>
         </li>
@@ -143,7 +143,7 @@
         
         <li class="menu-item menu-item-about">
           <a href="/blog/about" rel="section">
-            <i class="menu-item-icon icon-next-about"></i> <br />
+            <i class="menu-item-icon icon-next-about"></i> <br>
             About
           </a>
         </li>
@@ -151,7 +151,7 @@
         
         <li class="menu-item menu-item-resume">
           <a href="/blog/resume" rel="section">
-            <i class="menu-item-icon icon-next-resume"></i> <br />
+            <i class="menu-item-icon icon-next-resume"></i> <br>
             menu.resume
           </a>
         </li>
@@ -309,7 +309,7 @@
   <div id="posts" class="posts-expand">
     
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
     <header class="post-header">
 
       
@@ -327,7 +327,7 @@
       <div class="post-meta">
         <span class="post-time">
           Posted on
-          <time itemprop="dateCreated" datetime="2017-06-02T17:16:53+08:00" content="2017-06-02">
+          <time itemprop="dateCreated" datetime="2017-06-02T17:16:53-04:00" content="2017-06-02">
             2017-06-02
           </time>
         </span>
@@ -395,9 +395,9 @@
 <p>所以，如果是第二种，那么程序根本就不会如你预想的输出Constructed文本。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Widget</span> &#123;</span></span><br><span class="line">Widget() &#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Constructed"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">Widget w1; <span class="comment">// Elide the parentheses</span></span><br><span class="line">Widget w2&#123;&#125;; <span class="comment">// Use direct initialization</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>以上使用正确的初始化方法才能如预想工作。</p>
-<h4 id="代码样例对比-3"><a href="#代码样例对比-3" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Widget</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">Widget</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Widget constructed"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Gadget</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">Gadget</span><span class="params">(Widget wid)</span> </span>&#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Gadget constructed"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">3</span>;</span><br><span class="line">  Gadget g(Widget(i));// 该声明有歧义</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="代码样例对比-3"><a href="#代码样例对比-3" class="headerlink" title="代码样例对比"></a>代码样例对比</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Widget</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">Widget</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Widget constructed"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Gadget</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">Gadget</span><span class="params">(Widget wid)</span> </span>&#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Gadget constructed"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">3</span>;</span><br><span class="line">  <span class="function">Gadget <span class="title">g</span><span class="params">(Widget(i))</span></span>;<span class="comment">// 该声明有歧义</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>以上的声明有歧义，不会被解释为一个Gadget类型的对象g，而是被解释成函数g，返回类型为Gadget。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Widget</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">Widget</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Widget constructed"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Gadget</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">Gadget</span><span class="params">(Widget wid)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Gadget constructed"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">3</span>;</span><br><span class="line">  Gadget g1((Widget(i))); // Use extra parentheses</span><br><span class="line">  Gadget g2&#123;Widget(i)&#125;; <span class="comment">// Use direct initialization</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Widget</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">Widget</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Widget constructed"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Gadget</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">Gadget</span><span class="params">(Widget wid)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Gadget constructed"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">3</span>;</span><br><span class="line">  <span class="function">Gadget <span class="title">g1</span><span class="params">((Widget(i)))</span></span>; <span class="comment">// Use extra parentheses</span></span><br><span class="line">  Gadget g2&#123;Widget(i)&#125;; <span class="comment">// Use direct initialization</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>以上的代码才会正确输出：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Widget constructed</span><br><span class="line">Gadget constructed</span><br><span class="line">Widget constructed</span><br><span class="line">Gadget constructed</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
 <h3 id="DCL54-CPP-在同一个作用域同时重载alloc和dealloc的函数"><a href="#DCL54-CPP-在同一个作用域同时重载alloc和dealloc的函数" class="headerlink" title="DCL54-CPP 在同一个作用域同时重载alloc和dealloc的函数"></a>DCL54-CPP 在同一个作用域同时重载alloc和dealloc的函数</h3><p>严重等级：低</p>
@@ -697,7 +697,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             Table Of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -707,15 +707,15 @@
       
 
       <section class="site-overview">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image"/>
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image">
           <p class="site-author-name" itemprop="name">MathxH Chen</p>
         </div>
         <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/blog/archives">
-              <span class="site-state-item-count">75</span>
+              <span class="site-state-item-count">77</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -729,7 +729,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/blog/tags">
-              <span class="site-state-item-count">99</span>
+              <span class="site-state-item-count">100</span>
               <span class="site-state-item-name">tags</span>
               </a>
           </div>
@@ -796,7 +796,7 @@
     </main>
 
     <footer id="footer" class="footer">
-      <div class="footer-inner"> <div class="copyright" >
+      <div class="footer-inner"> <div class="copyright">
   
   &copy; &nbsp;  2013 - 
   <span itemprop="copyrightYear">2018</span>
