@@ -1,0 +1,911 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head><meta name="generator" content="Hexo 3.8.0">
+  
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1">
+
+
+    <meta name="description" content="System Software Engineer">
+
+
+
+  <meta name="keywords" content="马尔科夫链,自然语言处理,">
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1">
+
+
+<meta name="description" content="前言 我写了一个python脚本来分析了一本英文书，把这本书的英文句子作为一个训练集，用马尔科夫链来做处理产生短文，这样也可以算作是一个自动补全的程序了。比如，一些聊天工具和输入法可能就有这样的功能，基于你以前历史的语句输入来判断你当前输入后面可能会输入的单词或语句作提示或者补全。 网络社区也有一些爱好者用马尔科夫链来生成鸡汤文 正文 首先，需要随便下载一个英文小说或者书籍来作为训练集合，英文当然">
+<meta name="keywords" content="马尔科夫链,自然语言处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用马尔科夫链来做自动补全">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2019/03/10/auto-complete-markov-chain/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="前言 我写了一个python脚本来分析了一本英文书，把这本书的英文句子作为一个训练集，用马尔科夫链来做处理产生短文，这样也可以算作是一个自动补全的程序了。比如，一些聊天工具和输入法可能就有这样的功能，基于你以前历史的语句输入来判断你当前输入后面可能会输入的单词或语句作提示或者补全。 网络社区也有一些爱好者用马尔科夫链来生成鸡汤文 正文 首先，需要随便下载一个英文小说或者书籍来作为训练集合，英文当然">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-03-10T11:09:31.261Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用马尔科夫链来做自动补全">
+<meta name="twitter:description" content="前言 我写了一个python脚本来分析了一本英文书，把这本书的英文句子作为一个训练集，用马尔科夫链来做处理产生短文，这样也可以算作是一个自动补全的程序了。比如，一些聊天工具和输入法可能就有这样的功能，基于你以前历史的语句输入来判断你当前输入后面可能会输入的单词或语句作提示或者补全。 网络社区也有一些爱好者用马尔科夫链来生成鸡汤文 正文 首先，需要随便下载一个英文小说或者书籍来作为训练集合，英文当然">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> 用马尔科夫链来做自动补全 | MathxH </title>
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br>
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br>
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br>
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br>
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br>
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br>
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              用马尔科夫链来做自动补全
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2019-03-10T15:26:00+08:00" content="2019-03-10">
+            2019-03-10
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p>我写了一个python脚本来分析了一本英文书，把这本书的英文句子作为一个训练集，用<a href="https://en.wikipedia.org/wiki/Markov_chain" target="_blank" rel="noopener">马尔科夫链</a>来做处理产生短文，这样也可以算作是一个自动补全的程序了。比如，一些聊天工具和输入法可能就有这样的功能，基于你以前历史的语句输入来判断你当前输入后面可能会输入的单词或语句作提示或者补全。</p>
+<p>网络社区也有一些爱好者用<a href="https://blog.csdn.net/renhaofan/article/details/82191387" target="_blank" rel="noopener">马尔科夫链来生成鸡汤文</a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><hr>
+<p>首先，需要随便下载一个英文小说或者书籍来作为训练集合，英文当然越正宗越地道越好，这样的数据质量比较高，之后生成的段落语句结果也更好些。这里我下载了<a href="http://vdisk.weibo.com/s/uiFtZjZIxy3Gz" target="_blank" rel="noopener">哈利波特1-7的英文txt</a>。哈哈，英文原版我只读了第一部魔法石，惭愧啊。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># python 3! due to random.choices()</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> operator, random</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_empty_words</span><span class="params">(l)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> list(filter(<span class="keyword">lambda</span> a: a != <span class="string">''</span>, l))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update_occ</span><span class="params">(d, seq, w)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> seq <span class="keyword">not</span> <span class="keyword">in</span> d:</span><br><span class="line">        d[seq]=defaultdict(int)</span><br><span class="line"></span><br><span class="line">    d[seq][w]=d[seq][w]+<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># https://docs.python.org/3/library/random.html#random.choice</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_random_from_table</span><span class="params">(t)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> random.choices(list(t.keys()), weights=list(t.values()))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">process</span><span class="params">()</span>:</span> </span><br><span class="line">    <span class="keyword">with</span> open (<span class="string">"harry-potter.txt"</span>, <span class="string">"r"</span>) <span class="keyword">as</span> myfile:</span><br><span class="line">        data=myfile.read()</span><br><span class="line"></span><br><span class="line">    sentences=data.lower().replace(<span class="string">'\r'</span>,<span class="string">' '</span>).replace(<span class="string">'\n'</span>,<span class="string">' '</span>).replace(<span class="string">'?'</span>,<span class="string">'.'</span>).replace(<span class="string">'!'</span>,<span class="string">'.'</span>).replace(<span class="string">'“'</span>,<span class="string">'.'</span>).replace(<span class="string">'”'</span>,<span class="string">'.'</span>).replace(<span class="string">"\""</span>,<span class="string">"."</span>).replace(<span class="string">'‘'</span>,<span class="string">' '</span>).replace(<span class="string">'-'</span>,<span class="string">' '</span>).replace(<span class="string">'’'</span>,<span class="string">' '</span>).replace(<span class="string">'\''</span>,<span class="string">' '</span>).split(<span class="string">"."</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># key=list of words, as a string, delimited by space</span></span><br><span class="line">    <span class="comment">#     (I would use list of strings here as key, but list in not hashable)</span></span><br><span class="line">    <span class="comment"># val=dict, k: next word; v: occurrences</span></span><br><span class="line">    first=&#123;&#125;</span><br><span class="line">    second=&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> s <span class="keyword">in</span> sentences:</span><br><span class="line">        words=s.replace(<span class="string">','</span>,<span class="string">' '</span>).split(<span class="string">" "</span>)</span><br><span class="line">        words=remove_empty_words(words)</span><br><span class="line">        <span class="keyword">if</span> len(words)==<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(words)):</span><br><span class="line">            <span class="keyword">if</span> i&gt;=<span class="number">1</span>:</span><br><span class="line">                update_occ(first, words[i<span class="number">-1</span>], words[i])</span><br><span class="line">            <span class="keyword">if</span> i&gt;=<span class="number">2</span>:</span><br><span class="line">                update_occ(second, words[i<span class="number">-2</span>]+<span class="string">" "</span>+words[i<span class="number">-1</span>], words[i])</span><br><span class="line"></span><br><span class="line">    text=[<span class="string">"magic"</span>, <span class="string">"is"</span>]</span><br><span class="line"></span><br><span class="line">    text_len=len(text)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">200</span>):</span><br><span class="line"></span><br><span class="line">        last_idx=text_len<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">        tmp=text[last_idx<span class="number">-1</span>]+<span class="string">" "</span>+text[last_idx]</span><br><span class="line">        <span class="keyword">if</span> tmp <span class="keyword">in</span> second:</span><br><span class="line">            new_word=gen_random_from_table(second[tmp])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># fall-back to 1st order</span></span><br><span class="line">            tmp2=text[last_idx]</span><br><span class="line">            <span class="keyword">if</span> tmp2 <span class="keyword">not</span> <span class="keyword">in</span> first:</span><br><span class="line">                <span class="comment"># dead-end</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            new_word=gen_random_from_table(first[tmp2])</span><br><span class="line"></span><br><span class="line">        text.append(new_word)</span><br><span class="line">        text_len=text_len+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">print</span> (<span class="string">" "</span>.join(text))</span><br><span class="line"></span><br><span class="line"><span class="comment"># main function</span></span><br><span class="line">process()</span><br></pre></td></tr></table></figure>
+<p>运行以上代码，就可以生成一个150来个单词的”联想”短文了:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">magic is not having practised vanishing spells horribly difficult at first but they two thousand racing broom tampering and torture; an interview said harry leaping to their bulky backpacks the nine of the cottages were fewer here and make it too far; it rolled over toward him holding a wand to shoulder wands raised james glancing over his head pound so he went as red as ron who clambered to his determination to shut his eyes wanting to know anything new right before you go upstairs with ron eating their way around the walls and all their shock and exhaustion that the phoenix but after a few horrible seconds he did to open the lestranges vault only once a month later harry kept his eyes was twitching slightly hair whipped back off the pitch but all three of my followers would give better cover they extinguished their fire then he sat down when something of a voice and called out of pure venom at harry his temper getting the exit and when sounds of someone stumbling ftom a room like a venomous bubble compressing his lungs driving all other concerns fled harry s head with a large fir tree blocking the top</span><br></pre></td></tr></table></figure>
+<p>当然这段短文有点狗屁不通，甚至有点搞笑，我们现在先不管。</p>
+<p>我们先来看看代码中的first和second变量，它们是一个字典。</p>
+<p>first变量表示第一个单词后出现的单词的概率统计，这是一阶马尔科夫链生成的数据结果。</p>
+<p>我们通过python把first的结果排序打印出来好了:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">print</span> (<span class="string">"first table:"</span>)</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> first:</span><br><span class="line">    <span class="keyword">print</span> (k)</span><br><span class="line">    <span class="comment"># https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value</span></span><br><span class="line">    s=sorted(first[k].items(), key=operator.itemgetter(<span class="number">1</span>), reverse=<span class="keyword">True</span>)</span><br><span class="line">    <span class="keyword">print</span> (s[:<span class="number">20</span>])</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">""</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">harry</span><br><span class="line">[(&apos;s&apos;, 1344), (&apos;and&apos;, 776), (&apos;had&apos;, 657), (&apos;was&apos;, 475), (&apos;could&apos;, 400), (&apos;potter&apos;, 385), (&apos;said&apos;, 358), (&apos;saw&apos;, 271), (&apos;looked&apos;, 241), (&apos;felt&apos;, 238), (&apos;ron&apos;, 233), (&apos;who&apos;, 201), (&apos;thought&apos;, 172), (&apos;asked&apos;, 163), (&apos;as&apos;, 160), (&apos;knew&apos;, 156), (&apos;did&apos;, 125), (&apos;i&apos;, 115), (&apos;to&apos;, 108), (&apos;in&apos;, 106)]</span><br><span class="line"></span><br><span class="line">potter</span><br><span class="line">[(&apos;and&apos;, 63), (&apos;s&apos;, 59), (&apos;said&apos;, 28), (&apos;is&apos;, 26), (&apos;you&apos;, 23), (&apos;has&apos;, 21), (&apos;i&apos;, 18), (&apos;the&apos;, 17), (&apos;was&apos;, 13), (&apos;he&apos;, 13), (&apos;sir&apos;, 13), (&apos;will&apos;, 10), (&apos;had&apos;, 10), (&apos;she&apos;, 10), (&apos;in&apos;, 9), (&apos;must&apos;, 9), (&apos;that&apos;, 9), (&apos;stinks&apos;, 7), (&apos;not&apos;, 6), (&apos;come&apos;, 5)]</span><br><span class="line"></span><br><span class="line">and</span><br><span class="line">[(&apos;the&apos;, 1225), (&apos;hermione&apos;, 954), (&apos;he&apos;, 907), (&apos;harry&apos;, 662), (&apos;a&apos;, 605), (&apos;then&apos;, 554), (&apos;ron&apos;, 550), (&apos;i&apos;, 541), (&apos;his&apos;, 363), (&apos;george&apos;, 341), (&apos;it&apos;, 298), (&apos;they&apos;, 289), (&apos;you&apos;, 253), (&apos;she&apos;, 243), (&apos;was&apos;, 232), (&apos;that&apos;, 211), (&apos;there&apos;, 190), (&apos;saw&apos;, 187), (&apos;said&apos;, 171), (&apos;looked&apos;, 161)]</span><br><span class="line"></span><br><span class="line">the</span><br><span class="line">[(&apos;door&apos;, 770), (&apos;dark&apos;, 637), (&apos;room&apos;, 629), (&apos;other&apos;, 548), (&apos;ministry&apos;, 477), (&apos;first&apos;, 455), (&apos;floor&apos;, 408), (&apos;same&apos;, 386), (&apos;way&apos;, 362), (&apos;end&apos;, 362), (&apos;castle&apos;, 358), (&apos;air&apos;, 334), (&apos;ground&apos;, 326), (&apos;only&apos;, 326), (&apos;back&apos;, 317), (&apos;last&apos;, 296), (&apos;table&apos;, 292), (&apos;rest&apos;, 284), (&apos;front&apos;, 263), (&apos;death&apos;, 260)]</span><br><span class="line"></span><br><span class="line">sorcerer</span><br><span class="line">[(&apos;s&apos;, 24), (&apos;in&apos;, 3), (&apos;of&apos;, 1), (&apos;spoke&apos;, 1)]</span><br></pre></td></tr></table></figure>
+<p>好了，我们现在再来看看second变量的结果，它表示两个单词之后出现的每个单词的概率统计，这是二阶马尔科夫链的结果，依次类推，还有3阶马尔科夫链，只不过代码里面没写。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">print</span> (<span class="string">"second table:"</span>)</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> second:</span><br><span class="line">        <span class="keyword">print</span> (k)</span><br><span class="line">        <span class="comment"># https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value</span></span><br><span class="line">        s=sorted(second[k].items(), key=operator.itemgetter(<span class="number">1</span>), reverse=<span class="keyword">True</span>)</span><br><span class="line">        <span class="keyword">print</span> (s[:<span class="number">20</span>])</span><br><span class="line">        <span class="keyword">print</span> (<span class="string">""</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">which made</span><br><span class="line">[(&apos;the&apos;, 3), (&apos;it&apos;, 2), (&apos;harry&apos;, 2), (&apos;drills&apos;, 1), (&apos;professor&apos;, 1), (&apos;ginny&apos;, 1), (&apos;his&apos;, 1), (&apos;ron&apos;, 1), (&apos;him&apos;, 1), (&apos;a&apos;, 1)]</span><br><span class="line"></span><br><span class="line">he was</span><br><span class="line">[(&apos;going&apos;, 96), (&apos;not&apos;, 88), (&apos;a&apos;, 66), (&apos;still&apos;, 65), (&apos;sure&apos;, 50), (&apos;in&apos;, 47), (&apos;doing&apos;, 43), (&apos;the&apos;, 42), (&apos;looking&apos;, 40), (&apos;wearing&apos;, 38), (&apos;so&apos;, 32), (&apos;about&apos;, 29), (&apos;trying&apos;, 29), (&apos;on&apos;, 27), (&apos;being&apos;, 25), (&apos;very&apos;, 22), (&apos;lying&apos;, 22), (&apos;standing&apos;, 22), (&apos;too&apos;, 19), (&apos;supposed&apos;, 19)]</span><br><span class="line"></span><br><span class="line">was a</span><br><span class="line">[(&apos;very&apos;, 48), (&apos;loud&apos;, 39), (&apos;pause&apos;, 35), (&apos;great&apos;, 35), (&apos;long&apos;, 25), (&apos;bit&apos;, 22), (&apos;little&apos;, 20), (&apos;good&apos;, 19), (&apos;large&apos;, 16), (&apos;moment&apos;, 16), (&apos;flash&apos;, 15), (&apos;few&apos;, 14), (&apos;small&apos;, 14), (&apos;tiny&apos;, 13), (&apos;wizard&apos;, 12), (&apos;bang&apos;, 12), (&apos;nasty&apos;, 11), (&apos;knock&apos;, 11), (&apos;sudden&apos;, 11), (&apos;lot&apos;, 10)]</span><br><span class="line"></span><br><span class="line">a big</span><br><span class="line">[(&apos;mistake&apos;, 3), (&apos;deal&apos;, 3), (&apos;plastic&apos;, 2), (&apos;supporter&apos;, 2), (&apos;party&apos;, 2), (&apos;man&apos;, 2), (&apos;beefy&apos;, 1), (&apos;city&apos;, 1), (&apos;argument&apos;, 1), (&apos;old&apos;, 1), (&apos;photograph&apos;, 1), (&apos;green&apos;, 1), (&apos;lumpy&apos;, 1), (&apos;black&apos;, 1), (&apos;red&apos;, 1), (&apos;thing&apos;, 1), (&apos;drop&apos;, 1), (&apos;enough&apos;, 1), (&apos;bet&apos;, 1), (&apos;bearded&apos;, 1)]</span><br><span class="line"></span><br><span class="line">big beefy</span><br><span class="line">[(&apos;man&apos;, 1)]</span><br></pre></td></tr></table></figure>
+<p>好了，这里先暂时止步探索，你会发现二阶马尔科夫链的结果更加精确，生成的数据集也更加小。这不废话嘛，就像猜谜语一样，提示给的越精确越多，那么你猜中的概率越大，解的空间范围就缩小了，second表也就更小了。哈哈，开始有点意思了。</p>
+<p>好的，我们现在在二阶马尔科夫链的基础上加入3阶马尔科夫链，按照2阶的代码修改就行了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">first=&#123;&#125;</span><br><span class="line">second=&#123;&#125;</span><br><span class="line">third=&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> s <span class="keyword">in</span> sentences:</span><br><span class="line">    words=s.replace(<span class="string">','</span>,<span class="string">' '</span>).split(<span class="string">" "</span>)</span><br><span class="line">    words=remove_empty_words(words)</span><br><span class="line">    <span class="keyword">if</span> len(words)==<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(words)):</span><br><span class="line">        <span class="keyword">if</span> i&gt;=<span class="number">1</span>:</span><br><span class="line">            update_occ(first, words[i<span class="number">-1</span>], words[i])</span><br><span class="line">        <span class="keyword">if</span> i&gt;=<span class="number">2</span>:</span><br><span class="line">            update_occ(second, words[i<span class="number">-2</span>]+<span class="string">" "</span>+words[i<span class="number">-1</span>], words[i])</span><br><span class="line">        <span class="keyword">if</span> i&gt;=<span class="number">3</span>:</span><br><span class="line">            update_occ(third, words[i<span class="number">-3</span>]+<span class="string">" "</span>+words[i<span class="number">-2</span>]+<span class="string">" "</span>+words[i<span class="number">-1</span>],words[i])</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">were proud to</span><br><span class="line">[(&apos;say&apos;, 1)]</span><br><span class="line"></span><br><span class="line">proud to say</span><br><span class="line">[(&apos;that&apos;, 1)]</span><br><span class="line"></span><br><span class="line">to say that</span><br><span class="line">[(&apos;he&apos;, 3), (&apos;she&apos;, 3), (&apos;i&apos;, 2), (&apos;they&apos;, 1), (&apos;s&apos;, 1), (&apos;you&apos;, 1), (&apos;his&apos;, 1), (&apos;from&apos;, 1), (&apos;your&apos;, 1), (&apos;at&apos;, 1), (&apos;on&apos;, 1), (&apos;age&apos;, 1), (&apos;dumbledore&apos;, 1), (&apos;it&apos;, 1)]</span><br><span class="line"></span><br><span class="line">say that they</span><br><span class="line">[(&apos;were&apos;, 1), (&apos;know&apos;, 1)]</span><br><span class="line"></span><br><span class="line">that they were</span><br><span class="line">[(&apos;not&apos;, 9), (&apos;all&apos;, 7), (&apos;there&apos;, 3), (&apos;going&apos;, 3), (&apos;alone&apos;, 2), (&apos;being&apos;, 2), (&apos;indeed&apos;, 2), (&apos;in&apos;, 2), (&apos;a&apos;, 2), (&apos;the&apos;, 2), (&apos;still&apos;, 2), (&apos;supposed&apos;, 2), (&apos;no&apos;, 2), (&apos;really&apos;, 2), (&apos;perfectly&apos;, 1), (&apos;related&apos;, 1), (&apos;proud&apos;, 1), (&apos;witches&apos;, 1), (&apos;fifty&apos;, 1), (&apos;already&apos;, 1)]</span><br></pre></td></tr></table></figure>
+<p>从以上可以看出，3阶显然更精确，并且third表也更小了。</p>
+<p>以下为了让各位观众更清晰的看到3阶马尔科夫链的生成结果更准确，我用更加可读的输出打印出来:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">tests=[<span class="string">"i can tell"</span>, <span class="string">"who did this"</span>, <span class="string">"she was a"</span>, <span class="string">"he was a"</span>, <span class="string">"i did not"</span>,</span><br><span class="line">    <span class="string">"wanted to do"</span>, <span class="string">"you will find"</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> test <span class="keyword">in</span> tests:</span><br><span class="line">    test_words=test.split(<span class="string">" "</span>)</span><br><span class="line"></span><br><span class="line">    test_len=len(test_words)</span><br><span class="line">    last_idx=test_len<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> test_len&gt;=<span class="number">3</span>:</span><br><span class="line">        tmp=test_words[last_idx<span class="number">-2</span>]+<span class="string">" "</span>+test_words[last_idx<span class="number">-1</span>]+<span class="string">" "</span>+test_words[last_idx]</span><br><span class="line">        <span class="keyword">if</span> tmp <span class="keyword">in</span> third:</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">"* third order. for sequence:"</span>,tmp)</span><br><span class="line">            print_stat(third[tmp])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> test_len&gt;=<span class="number">2</span>:</span><br><span class="line">        tmp=test_words[last_idx<span class="number">-1</span>]+<span class="string">" "</span>+test_words[last_idx]</span><br><span class="line">        <span class="keyword">if</span> tmp <span class="keyword">in</span> second:</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">"* second order. for sequence:"</span>, tmp)</span><br><span class="line">            print_stat(second[tmp])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> test_len&gt;=<span class="number">1</span>:</span><br><span class="line">        tmp=test_words[last_idx]</span><br><span class="line">        <span class="keyword">if</span> tmp <span class="keyword">in</span> first:</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">"* first order. for word:"</span>, tmp)</span><br><span class="line">            print_stat(first[tmp])</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">""</span>)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line">* third order. <span class="keyword">for</span> sequence: i can tell</span><br><span class="line">you <span class="number">42</span>%</span><br><span class="line">yeh <span class="number">14</span>%</span><br><span class="line">who <span class="number">7</span>%</span><br><span class="line">he <span class="number">7</span>%</span><br><span class="line">mum <span class="number">7</span>%</span><br><span class="line">* second order. <span class="keyword">for</span> sequence: can tell</span><br><span class="line">me <span class="number">25</span>%</span><br><span class="line">you <span class="number">20</span>%</span><br><span class="line">us <span class="number">10</span>%</span><br><span class="line">yeh <span class="number">5</span>%</span><br><span class="line">him <span class="number">5</span>%</span><br><span class="line">* first order. <span class="keyword">for</span> word: tell</span><br><span class="line">you <span class="number">17</span>%</span><br><span class="line">me <span class="number">14</span>%</span><br><span class="line">him <span class="number">10</span>%</span><br><span class="line">us <span class="number">7</span>%</span><br><span class="line">them <span class="number">5</span>%</span><br><span class="line"></span><br><span class="line">* second order. <span class="keyword">for</span> sequence: did this</span><br><span class="line">mean <span class="number">27</span>%</span><br><span class="line">but <span class="number">9</span>%</span><br><span class="line">year <span class="number">9</span>%</span><br><span class="line">weird <span class="number">9</span>%</span><br><span class="line">band <span class="number">9</span>%</span><br><span class="line">* first order. <span class="keyword">for</span> word: this</span><br><span class="line"><span class="keyword">is</span> <span class="number">10</span>%</span><br><span class="line">time <span class="number">6</span>%</span><br><span class="line">was <span class="number">5</span>%</span><br><span class="line">year <span class="number">2</span>%</span><br><span class="line">one <span class="number">2</span>%</span><br><span class="line"></span><br><span class="line">* third order. <span class="keyword">for</span> sequence: she was a</span><br><span class="line">witch <span class="number">12</span>%</span><br><span class="line">bit <span class="number">12</span>%</span><br><span class="line">great <span class="number">8</span>%</span><br><span class="line">very <span class="number">8</span>%</span><br><span class="line">freak <span class="number">4</span>%</span><br><span class="line">* second order. <span class="keyword">for</span> sequence: was a</span><br><span class="line">very <span class="number">3</span>%</span><br><span class="line">loud <span class="number">3</span>%</span><br><span class="line">pause <span class="number">2</span>%</span><br><span class="line">great <span class="number">2</span>%</span><br><span class="line">long <span class="number">2</span>%</span><br><span class="line">* first order. <span class="keyword">for</span> word: a</span><br><span class="line">few <span class="number">2</span>%</span><br><span class="line">little <span class="number">2</span>%</span><br><span class="line">bit <span class="number">1</span>%</span><br><span class="line">moment <span class="number">1</span>%</span><br><span class="line">very <span class="number">1</span>%</span><br><span class="line"></span><br><span class="line">* third order. <span class="keyword">for</span> sequence: he was a</span><br><span class="line">bit <span class="number">7</span>%</span><br><span class="line">good <span class="number">7</span>%</span><br><span class="line">wizard <span class="number">6</span>%</span><br><span class="line">death <span class="number">6</span>%</span><br><span class="line">big <span class="number">4</span>%</span><br><span class="line">* second order. <span class="keyword">for</span> sequence: was a</span><br><span class="line">very <span class="number">3</span>%</span><br><span class="line">loud <span class="number">3</span>%</span><br><span class="line">pause <span class="number">2</span>%</span><br><span class="line">great <span class="number">2</span>%</span><br><span class="line">long <span class="number">2</span>%</span><br><span class="line">* first order. <span class="keyword">for</span> word: a</span><br><span class="line">few <span class="number">2</span>%</span><br><span class="line">little <span class="number">2</span>%</span><br><span class="line">bit <span class="number">1</span>%</span><br><span class="line">moment <span class="number">1</span>%</span><br><span class="line">very <span class="number">1</span>%</span><br><span class="line"></span><br><span class="line">* third order. <span class="keyword">for</span> sequence: i did <span class="keyword">not</span></span><br><span class="line">want <span class="number">12</span>%</span><br><span class="line">have <span class="number">8</span>%</span><br><span class="line">know <span class="number">8</span>%</span><br><span class="line">ask <span class="number">4</span>%</span><br><span class="line">fasten <span class="number">4</span>%</span><br><span class="line">* second order. <span class="keyword">for</span> sequence: did <span class="keyword">not</span></span><br><span class="line">know <span class="number">8</span>%</span><br><span class="line">want <span class="number">7</span>%</span><br><span class="line">seem <span class="number">6</span>%</span><br><span class="line">answer <span class="number">4</span>%</span><br><span class="line">look <span class="number">3</span>%</span><br><span class="line">* first order. <span class="keyword">for</span> word: <span class="keyword">not</span></span><br><span class="line">to <span class="number">7</span>%</span><br><span class="line">be <span class="number">3</span>%</span><br><span class="line">a <span class="number">2</span>%</span><br><span class="line">have <span class="number">2</span>%</span><br><span class="line">the <span class="number">1</span>%</span><br><span class="line"></span><br><span class="line">* third order. <span class="keyword">for</span> sequence: wanted to do</span><br><span class="line">was <span class="number">33</span>%</span><br><span class="line">the <span class="number">16</span>%</span><br><span class="line">but <span class="number">8</span>%</span><br><span class="line"><span class="keyword">with</span> <span class="number">8</span>%</span><br><span class="line">his <span class="number">8</span>%</span><br><span class="line">* second order. <span class="keyword">for</span> sequence: to do</span><br><span class="line"><span class="keyword">with</span> <span class="number">20</span>%</span><br><span class="line">it <span class="number">14</span>%</span><br><span class="line">the <span class="number">4</span>%</span><br><span class="line">something <span class="number">3</span>%</span><br><span class="line">was <span class="number">2</span>%</span><br><span class="line">* first order. <span class="keyword">for</span> word: do</span><br><span class="line">you <span class="number">20</span>%</span><br><span class="line">it <span class="number">12</span>%</span><br><span class="line"><span class="keyword">not</span> <span class="number">8</span>%</span><br><span class="line"><span class="keyword">with</span> <span class="number">6</span>%</span><br><span class="line">that <span class="number">3</span>%</span><br><span class="line"></span><br><span class="line">* third order. <span class="keyword">for</span> sequence: you will find</span><br><span class="line">that <span class="number">28</span>%</span><br><span class="line">a <span class="number">14</span>%</span><br><span class="line">unless <span class="number">7</span>%</span><br><span class="line">everything <span class="number">7</span>%</span><br><span class="line">on <span class="number">7</span>%</span><br><span class="line">* second order. <span class="keyword">for</span> sequence: will find</span><br><span class="line">that <span class="number">23</span>%</span><br><span class="line">it <span class="number">14</span>%</span><br><span class="line">me <span class="number">9</span>%</span><br><span class="line">a <span class="number">9</span>%</span><br><span class="line">uses <span class="number">4</span>%</span><br><span class="line">* first order. <span class="keyword">for</span> word: find</span><br><span class="line">out <span class="number">19</span>%</span><br><span class="line">a <span class="number">8</span>%</span><br><span class="line">the <span class="number">7</span>%</span><br><span class="line">it <span class="number">5</span>%</span><br><span class="line">him <span class="number">4</span>%</span><br></pre></td></tr></table></figure>
+<p>从上面的输出可以看出，i can tell 接 you这个单词的概率42%，要比can tell 接 you这个单词的概率20% 要大。显然结果就更精确了。如果调试得当，那么生成的短文结果可能还真看起来像那么回事。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><hr>
+<p>最后，提示一下，first，second，third这三张表可以结合起来使用，third这张表的权重显然更高，依次类推。如果你正在做一个输入法或者聊天提示的功能，可以简单采用这样的方法，先收集用户的输入语句等信息作为训练集合，来构建这几张表，这几张表的优先级最高，优先级最低的是常用的固定成语，词语的搭配，还有流行网络用语等等。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/马尔科夫链/" rel="tag">#马尔科夫链</a>
+          
+            <a href="/blog/tags/自然语言处理/" rel="tag">#自然语言处理</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/12/15/manjaro-rtl8821ce/" rel="next">manjaro下安装配置无线网卡驱动</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image">
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">77</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">102</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="http://www.dendoink.com" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright">
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
