@@ -1,0 +1,973 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head><meta name="generator" content="Hexo 3.8.0">
+  
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1">
+
+
+    <meta name="description" content="System Software Engineer">
+
+
+
+  <meta name="keywords" content="Linux,">
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1">
+
+
+<meta name="description" content="青葱岁月，一去不复返啊  前言 对于Linux呢，我自己算不上熟悉，但也不是很陌生。大一上学期的时候在对于操作系统什么都不懂的情况下，废了九牛二虎之力装了个ubuntu。随便敲了下命令行，于是便草草了事。 工作了以后，使用的开发环境windows和Linux都接触过，不过对于windows接触的是最多的。因为大学主要业余写的是win32的代码。工作的时候呢，如果遇到程序需要运行在Linux上，大">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你好，manjaro">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2018/08/11/manjaro-hello/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="青葱岁月，一去不复返啊  前言 对于Linux呢，我自己算不上熟悉，但也不是很陌生。大一上学期的时候在对于操作系统什么都不懂的情况下，废了九牛二虎之力装了个ubuntu。随便敲了下命令行，于是便草草了事。 工作了以后，使用的开发环境windows和Linux都接触过，不过对于windows接触的是最多的。因为大学主要业余写的是win32的代码。工作的时候呢，如果遇到程序需要运行在Linux上，大">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-01-04T15:05:55.858Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="你好，manjaro">
+<meta name="twitter:description" content="青葱岁月，一去不复返啊  前言 对于Linux呢，我自己算不上熟悉，但也不是很陌生。大一上学期的时候在对于操作系统什么都不懂的情况下，废了九牛二虎之力装了个ubuntu。随便敲了下命令行，于是便草草了事。 工作了以后，使用的开发环境windows和Linux都接触过，不过对于windows接触的是最多的。因为大学主要业余写的是win32的代码。工作的时候呢，如果遇到程序需要运行在Linux上，大">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> 你好，manjaro | MathxH </title>
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br>
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br>
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br>
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br>
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br>
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br>
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              你好，manjaro
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2018-08-11T09:00:00+08:00" content="2018-08-11">
+            2018-08-11
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><blockquote>
+<p><em>青葱岁月，一去不复返啊</em></p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p>对于Linux呢，我自己算不上熟悉，但也不是很陌生。大一上学期的时候在对于操作系统什么都不懂的情况下，废了九牛二虎之力装了个ubuntu。随便敲了下命令行，于是便草草了事。</p>
+<p>工作了以后，使用的开发环境windows和Linux都接触过，不过对于windows接触的是最多的。因为大学主要业余写的是win32的代码。工作的时候呢，如果遇到程序需要运行在Linux上，大部分的时候是在windows上用IDE写好代码，然后配置好<a href="https://cmake.org/" target="_blank" rel="noopener">cmake</a>,然后cmake生成Linux下的GNU Makefile文件，就可以make工程了。因为工作的稳定需要，接触最多的Linux发行版是CentOS，RedHat，ubuntu，当然还有Fedora和OpenSUSE。</p>
+<p>所以对于Linux说实话，还是没有依赖得过多，它对于我来说，不过就是个工具。我没有像其他人那样对某个发行版的热爱上升到信仰程度。但是由于网络上某些人的安利，曾经试着装过具有高度自由，高度灵活的Linux发行版—<a href="https://www.archlinux.org/" target="_blank" rel="noopener">Arch Linux</a>。</p>
+<p>当然，对于刚开始接触Arch的我，完全通过命令行安装Arch的过程，还是把我折腾的够呛，不过最后还是装上了。之后，在上面写了个hello world就把Arch卸载了。没用过Arch社区提供的<a href="https://wiki.archlinux.org/index.php/Pacman" target="_blank" rel="noopener">pacman</a>和<a href="https://aur.archlinux.org/" target="_blank" rel="noopener">AUR</a>。</p>
+<p>但是最近工作的原因，需要完全在Linux下工作更加方便，所以把家里这台个人电脑的windows全部格了，因为考虑到我这台电脑性能的问题，没有装<a href="https://www.deepin.org/" target="_blank" rel="noopener">Deepin Linux</a>，Deepin UI太炫了，占用资源高，听社区反映有些时候桌面环境会卡死，于是索性就装了个<a href="https://manjaro.org/" target="_blank" rel="noopener">manjaro Linux</a>。</p>
+<p>选择manjaro的几个原因如下：</p>
+<ul>
+<li><p>Arch的衍生版，继承自Arch几乎所有优点（软件源更新非常快，软件时常保持最新，内核滚动升级，利用AUR和pacman的包管理）。</p>
+</li>
+<li><p>图形化的安装界面，一路Next，几乎开箱即用。</p>
+</li>
+<li><p>硬件支持非常好。</p>
+</li>
+<li><p>高度可定制化，而且Xfce的DE，资源占用低。</p>
+</li>
+</ul>
+<h2 id="折腾手记"><a href="#折腾手记" class="headerlink" title="折腾手记"></a>折腾手记</h2><hr>
+<h4 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h4><p>因为manjaro是滚动发布的，所以安装完成重启后，进入系统第一件事情最好是打开terminal，运行以下命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -Syu</span><br></pre></td></tr></table></figure>
+<p>目的是更新本地的源数据库和更新系统。不然如果长时间不升级系统，容易滚挂掉。不过听说manjaro对于Arch很少发生这种意外，非常稳定。</p>
+<h4 id="通过NTP服务设置当前系统时间"><a href="#通过NTP服务设置当前系统时间" class="headerlink" title="通过NTP服务设置当前系统时间"></a>通过NTP服务设置当前系统时间</h4><p>安装完成的系统跟当前时区的时间不同步，采用NTP协议来同步时间:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ntpdate cn.ntp.org.cn <span class="comment">#可以换成任何一个公开的NTP Server地址</span></span><br></pre></td></tr></table></figure>
+<h4 id="安装yaourt"><a href="#安装yaourt" class="headerlink" title="安装yaourt"></a>安装yaourt</h4><p>yaourt是pacman的一个外壳，同时它还支持AUR。AUR是一个Arch Linux用户的软件仓库，也就是说，很多用户可以把自己喜欢的软件包上传上去，分享给其他用户。我们在AUR里面搜索得到的软件，可以通过yaourt来简化安装流程。</p>
+<p>如果不用yaourt，你恐怕得手动编译软件的很多东西，要多敲十几个命令行，不划算。yaourt这些步骤都对用户透明化了。方便不少。不过这里提示一点，AUR里面的软件毕竟是野生的，没有经过完全测试，没有官方源提供的安全，所以有一定风险，安装一个软件前，需要仔细评估，查看用户评论。但是Arch软件巨多，就是强大在AUR上面了。</p>
+<p>运行一下命令就安装yaourt了:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S yaourt</span><br></pre></td></tr></table></figure>
+<p>之后你就可以通过以下命令搜索AUR上的软件了:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yaourt -Ss [package name]</span><br></pre></td></tr></table></figure>
+<h4 id="安装Visual-Studio-Code"><a href="#安装Visual-Studio-Code" class="headerlink" title="安装Visual Studio Code"></a>安装Visual Studio Code</h4><p>毕竟我是微软的粉丝，最近几年微软大力支持开源。VSCode真是良心的开源跨平台的编辑器产品，获得网络上的一致好评，在windiws下用它也用的多。反正Linux下的vi vim nano这些用得不顺手，也不熟悉。</p>
+<p>直接用yaourt安装VSCode:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yaourt -S visual-studio-code-bin</span><br></pre></td></tr></table></figure>
+<h4 id="安装中文输入法"><a href="#安装中文输入法" class="headerlink" title="安装中文输入法"></a>安装中文输入法</h4><p>然后就是安装中文输入法–搜狗输入法。Deepin自带了，毕竟国产Linux。但是manjaro可没这么好。</p>
+<ol>
+<li>首先添加国内源</li>
+</ol>
+<p>打开/etc/pacman.conf配置文件。并在文件末尾添加:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[archlinuxcn]</span><br><span class="line">SigLevel = Optional TrustedOnly</span><br><span class="line">Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>更新源并导入GPG Key</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -Syy &amp;&amp; sudo pacman -S archlinuxcn-keyring</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>安装搜狗输入法</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S fcitx-im <span class="comment">#默认全部安装</span></span><br><span class="line">sudo pacman -S fcitx-configtool <span class="comment"># 图形化配置工具</span></span><br><span class="line">sudo pacman -S fcitx-sogoupinyin</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>编辑添加输入法配置文件</li>
+</ol>
+<p>生成并编辑~/.xprofile文件，添加以下内容:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GTK_IM_MODULE=fcitx</span><br><span class="line"><span class="built_in">export</span> QT_IM_MODULE=fcitx</span><br><span class="line"><span class="built_in">export</span> XMODIFIERS=<span class="string">"@im=fcitx"</span></span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>重启系统，使输入法安装生效</li>
+<li>通过fcitx-configtool配置工具添加搜狗输入法</li>
+<li>完成</li>
+</ol>
+<h4 id="安装CLion"><a href="#安装CLion" class="headerlink" title="安装CLion"></a>安装CLion</h4><p>喜欢JetBrain系列的IDE，没有IDE简直没法干活，windows上当然是Visual Studio，但是Linux上只能是CLion了。当然，感受了下，它同样强大，作为Linux下的C++ IDE，它够用了，支持CMake工程模型。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo yaourt -S clion</span><br><span class="line">sudo yaourt -S clion-cmake</span><br><span class="line">sudo yaourt -S clion-gdb</span><br><span class="line">sudo yaourt -S clion-jre</span><br></pre></td></tr></table></figure>
+<h4 id="安装Adobe-Flash-Player-Plugin"><a href="#安装Adobe-Flash-Player-Plugin" class="headerlink" title="安装Adobe Flash Player Plugin"></a>安装Adobe Flash Player Plugin</h4><p>这样最起码可以看bilibili了，= =。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S flashplugin</span><br></pre></td></tr></table></figure>
+<h4 id="安装迅雷"><a href="#安装迅雷" class="headerlink" title="安装迅雷"></a>安装迅雷</h4><p>我发现Linux下的aria2这个下载神器堪比迅雷，我下载aria2，并配置了aria2.conf中的tracker，还是不行，下载几乎没啥速度。而且aria2也不支持ed2k。而在Linux上支持ed2k的amule客户端下载速度也是以0计算。太烂了，也许不能开箱即用吧。</p>
+<p>想想还是迅雷好，国产Deepin已经通过deepin-wine已经完美移植迅雷过来了。所以我们安装下就可以了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S deepin-wine</span><br><span class="line">sudo pacman -S deepin.com.thunderspeed</span><br></pre></td></tr></table></figure>
+<p>这里我感谢武汉深之度的程序员日日夜夜的努力，这种造福人类的事情值得表扬。当然安装上迅雷有点BUG，就是中文字符显示不出来。我只能猜着点击按钮下载，不过好在界面布局我比较熟悉，下载没出啥意外。电影天堂的大部分ftp电影都能下载下来。</p>
+<h4 id="影音娱乐"><a href="#影音娱乐" class="headerlink" title="影音娱乐"></a>影音娱乐</h4><p>音乐就听听网易云的Web版本了。电影的话，manjaro自带VLC，这个极度强大，但是界面不好看。把它卸载了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -Rss vlc</span><br></pre></td></tr></table></figure>
+<p>换了deepin出品的deepin-movie。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S deepin-movie</span><br></pre></td></tr></table></figure>
+<h4 id="推荐些命令行神器"><a href="#推荐些命令行神器" class="headerlink" title="推荐些命令行神器"></a>推荐些命令行神器</h4><p>话说，工欲善其事必先利其器。</p>
+<p>方便好用，我也安装了，这个也是收集大部分网友的答案。</p>
+<ul>
+<li><p><a href="https://github.com/ggreer/the_silver_searcher" target="_blank" rel="noopener">ag</a>,比grep、ack更快的递归搜索文件内容。</p>
+</li>
+<li><p><a href="https://github.com/koalaman/shellcheck" target="_blank" rel="noopener">shellcheck</a>, shell脚本静态检查工具，能够识别语法错误以及不规范的写法。</p>
+</li>
+<li><p><a href="https://hisham.hm/htop/" target="_blank" rel="noopener">htop</a>, 提供更美观、更方便的进程监控工具，替代top命令。</p>
+</li>
+<li><p><a href="https://github.com/nicolargo/glances" target="_blank" rel="noopener">glances</a>, 更强大的 htop / top 代替者,做综合监控。在某些方面，并没有htop好。</p>
+</li>
+<li><p><a href="https://dev.yorhel.nl/ncdu" target="_blank" rel="noopener">ncdu</a>, 可视化的目录占用空间分析程序</p>
+</li>
+<li><p><a href="http://www.pandoc.org/" target="_blank" rel="noopener">pandoc</a>, 可以将 markdown 转成各式各样的格式：PDF、DOCX、EPUB、MOBI,我通产用它生成PPT和简历。</p>
+</li>
+<li><p><a href="http://www.graphviz.org/" target="_blank" rel="noopener">Graphviz</a>,可以将文本转化为图表</p>
+</li>
+<li><p><a href="https://github.com/jakubroztocil/httpie" target="_blank" rel="noopener">httpie</a>, 测试http接口的时候，感觉比curl简单。curl毕竟更底层些，但是curl却更加灵活。</p>
+</li>
+</ul>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Linux/" rel="tag">#Linux</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/08/12/cmake-tutorial/" rel="prev">简短的CMake教程</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/06/15/avoid-win32-error-report-dialog/" rel="next">win32 进程崩溃时禁止弹出错误对话框</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image">
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">78</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">103</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="http://www.dendoink.com" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#折腾手记"><span class="nav-number">2.</span> <span class="nav-text">折腾手记</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#更新系统"><span class="nav-number">2.0.1.</span> <span class="nav-text">更新系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过NTP服务设置当前系统时间"><span class="nav-number">2.0.2.</span> <span class="nav-text">通过NTP服务设置当前系统时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装yaourt"><span class="nav-number">2.0.3.</span> <span class="nav-text">安装yaourt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Visual-Studio-Code"><span class="nav-number">2.0.4.</span> <span class="nav-text">安装Visual Studio Code</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装中文输入法"><span class="nav-number">2.0.5.</span> <span class="nav-text">安装中文输入法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装CLion"><span class="nav-number">2.0.6.</span> <span class="nav-text">安装CLion</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Adobe-Flash-Player-Plugin"><span class="nav-number">2.0.7.</span> <span class="nav-text">安装Adobe Flash Player Plugin</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装迅雷"><span class="nav-number">2.0.8.</span> <span class="nav-text">安装迅雷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#影音娱乐"><span class="nav-number">2.0.9.</span> <span class="nav-text">影音娱乐</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐些命令行神器"><span class="nav-number">2.0.10.</span> <span class="nav-text">推荐些命令行神器</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright">
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

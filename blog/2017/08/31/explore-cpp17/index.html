@@ -1,0 +1,1010 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head><meta name="generator" content="Hexo 3.8.0">
+  
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1">
+
+
+    <meta name="description" content="System Software Engineer">
+
+
+
+  <meta name="keywords" content="C/C++,">
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1">
+
+
+<meta name="description" content="前言 随着C++ 17标准今年出来以后，各大社区都有C++ 17的讨论，C++的爱好者们都希望这门语言变得更像现代编程语言一样，越来越好用，拥有越来越高级的抽象语义。以下是知乎上的几个讨论：  怎样看待C++17众多功能流产? C++17 有哪些值得注意的新特性? C++17 基本完成，对于新特性大家怎么看? C++ 17的19个基本特性  另外，各大编译器产商也对C++ 17的标准实现进行了跟进">
+<meta name="keywords" content="C&#x2F;C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 17的特性探索">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2017/08/31/explore-cpp17/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="前言 随着C++ 17标准今年出来以后，各大社区都有C++ 17的讨论，C++的爱好者们都希望这门语言变得更像现代编程语言一样，越来越好用，拥有越来越高级的抽象语义。以下是知乎上的几个讨论：  怎样看待C++17众多功能流产? C++17 有哪些值得注意的新特性? C++17 基本完成，对于新特性大家怎么看? C++ 17的19个基本特性  另外，各大编译器产商也对C++ 17的标准实现进行了跟进">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-01-04T15:05:55.855Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++ 17的特性探索">
+<meta name="twitter:description" content="前言 随着C++ 17标准今年出来以后，各大社区都有C++ 17的讨论，C++的爱好者们都希望这门语言变得更像现代编程语言一样，越来越好用，拥有越来越高级的抽象语义。以下是知乎上的几个讨论：  怎样看待C++17众多功能流产? C++17 有哪些值得注意的新特性? C++17 基本完成，对于新特性大家怎么看? C++ 17的19个基本特性  另外，各大编译器产商也对C++ 17的标准实现进行了跟进">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> C++ 17的特性探索 | MathxH </title>
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br>
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br>
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br>
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br>
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br>
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br>
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              C++ 17的特性探索
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2017-08-31T14:38:18+08:00" content="2017-08-31">
+            2017-08-31
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p>随着C++ 17标准今年出来以后，各大社区都有C++ 17的讨论，C++的爱好者们都希望这门语言变得更像现代编程语言一样，越来越好用，拥有越来越高级的抽象语义。以下是知乎上的几个讨论：</p>
+<ul>
+<li><a href="https://www.zhihu.com/question/42152208" target="_blank" rel="noopener">怎样看待C++17众多功能流产?</a></li>
+<li><a href="https://www.zhihu.com/question/32222337" target="_blank" rel="noopener">C++17 有哪些值得注意的新特性?</a></li>
+<li><a href="https://www.zhihu.com/question/56943731" target="_blank" rel="noopener">C++17 基本完成，对于新特性大家怎么看?</a></li>
+<li><a href="https://www.oschina.net/news/85129/top-19-new-features-of-c17-you-need-to-know" target="_blank" rel="noopener">C++ 17的19个基本特性</a></li>
+</ul>
+<p>另外，各大编译器产商也对C++ 17的标准实现进行了跟进。本着垠神的文章<a href="http://www.yinwang.org/blog-cn/2017/07/06/master-pl" target="_blank" rel="noopener">《如何掌握所有的程序语言》</a>里面所说，不要关注语言的语法细节，而着重关注学习语言的特性，我打算探索下C++ 17的语言特性，当然，有些特性在其他语言也有对应的概念，比如any，variant，optional等在Java 8中也有了。</p>
+<h2 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h2><hr>
+<p>C++17提供了optional这个特性，该特性以类的形式提供，管理一个可选的值。它的常用场景其实没什么高深的，类似于lambda表达式简化了代码，该特性可以用来表示函数的返回值，该返回值可以表现函数可能会调用失败的信息。（注：boost也实现了此特性）</p>
+<p>比如你想实现一个把字符串转换为整数的函数，你采用最传统的方法来实现:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">parse_int</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; s, <span class="keyword">int</span>&amp; i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">// 实现算法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面这个函数的签名其实并不美观，简洁。第一个参数为需要处理的输入字符串，第二个参数是处理成功时候通过引用的输出参数。最后用了bool返回值来告诉caller是否处理失败。</p>
+<p>或者为了减少参数，降低干扰信息，还可以用一个方法，但是还是比较丑陋:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span>* <span class="title">parse_int</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">// 实现算法</span></span><br><span class="line">   <span class="comment">// 如果失败，返回nullptr</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的函数用空指针代替了失败的信息。函数签名还是不美观，而且这样的用法极少，需要动态内存分配。很少有开发人员会通过内部new一个int对象，等到caller使用完毕，caller需要自己手动delete:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *result = parse_int(<span class="string">"12334"</span>);</span><br><span class="line"><span class="keyword">if</span>(result)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *result &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">delete</span> result; <span class="comment">// 如果使用完毕忘记释放，内存泄漏</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"none"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果使用optional就方便了:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::optional&lt;<span class="keyword">int</span>&gt; parse_int(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; s)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">int</span> result;</span><br><span class="line">   <span class="comment">//....</span></span><br><span class="line">   <span class="keyword">if</span>(isSuccess)</span><br><span class="line">   &#123;</span><br><span class="line">       <span class="keyword">return</span> result;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"result is: "</span> &lt;&lt; parse_int(<span class="string">"123456"</span>).value_or(<span class="string">"invalid paramter"</span>) &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">     <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"result is: "</span> &lt;&lt; parse_int(<span class="string">"dwafawf"</span>).value_or(<span class="string">"invalid paramter"</span>) &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">auto</span> result = parse_int(<span class="string">"5643"</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"result is: "</span> &lt;&lt; *result &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码会输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result is: 123456</span><br><span class="line">result is: invalid parameter</span><br><span class="line">result is: 5643</span><br></pre></td></tr></table></figure>
+<p>还有一个让代码简洁的例子:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Key, <span class="keyword">typename</span> Value&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Lookup</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="built_in">std</span>::optional&lt;Value&gt; get(Key key);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Lookup&lt;<span class="built_in">std</span>::<span class="built_in">string</span>, <span class="built_in">std</span>::<span class="built_in">string</span>&gt; location_lookup;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> location = location_lookup.get(<span class="string">"waldo"</span>).value_or(<span class="string">"unknown"</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="Variant"><a href="#Variant" class="headerlink" title="Variant"></a>Variant</h2><hr>
+<p>在C++ 17中以std::variant这个类提供，表示一个类型安全的Union类型。当然，boost有对应的<a href="http://www.boost.org/doc/libs/1_57_0/doc/html/variant.html" target="_blank" rel="noopener">Boost.Variant</a>, Qt有对应的<a href="http://doc.qt.io/qt-5/qvariant.html" target="_blank" rel="noopener">QVariant</a>。 这个类类型的一个实例在给定任何一个时刻保留其中一个类型的值。</p>
+<p>设计的动机：</p>
+<p>在很多时候，在开发C++程序的过程中，你需要一个类型表示多种类型其中的任何一个类型的时候，你可能相当，union这个关键字来实现以下:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">union</span> &#123; <span class="keyword">int</span> i; <span class="keyword">double</span> d; &#125; u;</span><br><span class="line">u.d = <span class="number">3.14</span>;</span><br><span class="line">u.i = <span class="number">3</span>; <span class="comment">// overwrites u.d (OK: u.d is a POD type)</span></span><br></pre></td></tr></table></figure>
+<p>变量u既可以保存int类型的值，又可以保存double类型的值，但是同一个时刻，只有其中一个类型的值保存在其中，但是很遗憾，union关键字一般只支持基本类型，比如int，char，double之类的POD类型，如果用C++使用面向对象的方式编程，以下非POD的类型就不支持:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">union</span> &#123;</span><br><span class="line">  <span class="keyword">int</span> i;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">string</span> s; <span class="comment">// illegal: std::string is not a POD type!</span></span><br><span class="line">&#125; u;</span><br></pre></td></tr></table></figure>
+<p>于是std::variant就产生了:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> <span class="built_in">std</span>::variant&lt; <span class="keyword">int</span>, <span class="built_in">std</span>::<span class="built_in">string</span> &gt; u(<span class="string">"hello world"</span>);</span><br><span class="line"> <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; u; <span class="comment">// output: hello world</span></span><br><span class="line"> u = <span class="number">13</span>;</span><br><span class="line"> <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; u; <span class="comment">// output: 13</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::variant&lt;<span class="keyword">int</span>, <span class="keyword">double</span>&gt; v&#123; <span class="number">12</span> &#125;;</span><br><span class="line"><span class="built_in">std</span>::get&lt;<span class="keyword">int</span>&gt;(v); <span class="comment">// == 12</span></span><br><span class="line"><span class="built_in">std</span>::get&lt;<span class="number">0</span>&gt;(v); <span class="comment">// == 12</span></span><br><span class="line">v = <span class="number">12.0</span>;</span><br><span class="line"><span class="built_in">std</span>::get&lt;<span class="keyword">double</span>&gt;(v); <span class="comment">// == 12.0</span></span><br><span class="line"><span class="built_in">std</span>::get&lt;<span class="number">1</span>&gt;(v); <span class="comment">// == 12.0</span></span><br></pre></td></tr></table></figure>
+<p>当然，std::variant确实有点用，但是有点鸡肋的感觉。相比Qt的QVariant相差十万八千里。</p>
+<h2 id="Any"><a href="#Any" class="headerlink" title="Any"></a>Any</h2><hr>
+<p>在C++17中，这玩意儿以std::any的类提供，表示对于一个任意类型的类型安全的单值容器。当然了，Boost库也有对应的<a href="http://www.boost.org/doc/libs/develop/doc/html/any.html" target="_blank" rel="noopener">Boost.Any</a>,当然了这玩意儿跟Variant很像，所以在boost的官方文档中，有了这两个类型的对比:</p>
+<blockquote>
+<p>As a discriminated union container, the Variant library shares many of the same features of the Any library. However, since neither library wholly encapsulates the features of the other, one library cannot be generally recommended for use over the other.</p>
+</blockquote>
+<blockquote>
+<p>That said, Boost.Variant has several advantages over Boost.Any, such as:</p>
+<ul>
+<li>Boost.Variant guarantees the type of its content is one of a finite, user-specified set of types.</li>
+<li>Boost.Variant provides compile-time checked visitation of its content. (By contrast, the current version of Boost.Any provides no visitation mechanism at all; but even if it did, it would need to be checked at run-time.)</li>
+<li>Boost.Variant enables generic visitation of its content. (Even if Boost.Any did provide a visitation mechanism, it would enable visitation only of explicitly-specified types.)</li>
+<li>Boost.Variant offers an efficient, stack-based storage scheme (avoiding the overhead of dynamic allocation).</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Of course, Boost.Any has several advantages over Boost.Variant, such as:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>Boost.Any, as its name implies, allows virtually any type for its content, providing great flexibility.</li>
+<li>Boost.Any provides the no-throw guarantee of exception safety for its swap operation.</li>
+<li>Boost.Any makes little use of template metaprogramming techniques (avoiding potentially hard-to-read error messages and significant compile-time processor and memory demands).</li>
+</ul>
+</blockquote>
+<p>以下是std::any的用法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::any x&#123; <span class="number">5</span> &#125;;</span><br><span class="line">x.has_value() <span class="comment">// == true</span></span><br><span class="line"><span class="built_in">std</span>::any_cast&lt;<span class="keyword">int</span>&gt;(x) <span class="comment">// == 5</span></span><br><span class="line"><span class="built_in">std</span>::any_cast&lt;<span class="keyword">int</span>&amp;&gt;(x) = <span class="number">10</span>;</span><br><span class="line"><span class="built_in">std</span>::any_cast&lt;<span class="keyword">int</span>&gt;(x) <span class="comment">// == 10</span></span><br></pre></td></tr></table></figure>
+<p>还有更详细的用法:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;any&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// simple example </span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">auto</span> a = <span class="built_in">std</span>::any(<span class="number">12</span>);</span><br><span class="line"> </span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::any_cast&lt;<span class="keyword">int</span>&gt;(a) &lt;&lt; <span class="string">'\n'</span>; </span><br><span class="line"> </span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::any_cast&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt;(a) &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span>(<span class="keyword">const</span> <span class="built_in">std</span>::bad_any_cast&amp; e) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; e.what() &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// advanced example</span></span><br><span class="line"> </span><br><span class="line">    a = <span class="built_in">std</span>::<span class="built_in">string</span>(<span class="string">"hello"</span>);</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">auto</span>&amp; ra = <span class="built_in">std</span>::any_cast&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&amp;&gt;(a); <span class="comment">//&lt; reference</span></span><br><span class="line">    ra[<span class="number">1</span>] = <span class="string">'o'</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"a: "</span> &lt;&lt; <span class="built_in">std</span>::any_cast&lt;<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp;&gt;(a) &lt;&lt; <span class="string">'\n'</span>; <span class="comment">//&lt; const reference</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">auto</span> b = <span class="built_in">std</span>::any_cast&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&amp;&amp;&gt;(a); <span class="comment">//&lt; rvalue reference (no need for std::move)</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Note, 'b' is a move-constructed std::string, 'a' is now empty</span></span><br><span class="line"> </span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"a: "</span> &lt;&lt; *<span class="built_in">std</span>::any_cast&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt;(&amp;a) <span class="comment">//&lt; pointer</span></span><br><span class="line">        &lt;&lt; <span class="string">"b: "</span> &lt;&lt; b &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从以上代码可以看出来，std::any的使用场景旨在提供类型安全的void<em> ，你会发现，在很多C/C++开发的系统软件的源码里面都用void</em> 来传递上下文（context），无论是线程上下文也好还是其他也罢，但是用void* 来传递上下文信息，原来的类型信息就丢失了，到了要使用上下文的时候，需要强制转换成原来的类型，但是万一转换的类型不对，出错怎么办？如果出错，程序会直接崩溃，不会有任何提示，如果使用了std::any在转换的过程中，如果出错，还会以抛异常的方式来提示用户。</p>
+<p><a href="https://www.zhihu.com/question/56317879" target="_blank" rel="noopener">所以大多数情况下使用Any，既可以消除void*的隐患问题，又一样的保证了之前void*的低开发成本，一举两得。</a></p>
+<h2 id="std-string-view"><a href="#std-string-view" class="headerlink" title="std::string_view"></a>std::string_view</h2><hr>
+<p>这个东西呢，是非真正意义地引用一个字符串，一般用来提供一个字符串之上的抽象，也就是这个view是std::string的一个抽象，可以简单理解为，view是std::string对象的展示层，它不存储实际的数据，只读，不可修改。std::string是Model层，与软件工程中的Model和View对应。</p>
+<p>由于以上的一些特点，通常会用到在字符串操作上<a href="https://www.zhihu.com/question/63164644" target="_blank" rel="noopener">性能比较苛刻的场景</a>。</p>
+<p>stackoverflow上也有一个<a href="https://stackoverflow.com/questions/20803826/what-is-string-view" target="_blank" rel="noopener">讨论</a>以说明这个库特性的设计动机。</p>
+<p>以下是用法:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> str&#123; <span class="string">"   trim me"</span> &#125;;</span><br><span class="line"><span class="built_in">std</span>::string_view v&#123; str &#125;;</span><br><span class="line"></span><br><span class="line">v.remove_prefix(<span class="built_in">std</span>::min(v.find_first_not_of(<span class="string">" "</span>), v.size()));</span><br><span class="line"></span><br><span class="line">str; <span class="comment">//  == "   trim me"</span></span><br><span class="line">v; <span class="comment">// == "trim me"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string_view&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> str = <span class="string">"Exemplar"</span>;</span><br><span class="line">    <span class="built_in">std</span>::string_view v = str;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; v[<span class="number">2</span>] &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"><span class="comment">//  v[2] = 'y'; // Error: cannot modify through a string view</span></span><br><span class="line">    str[<span class="number">2</span>] = <span class="string">'y'</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; v[<span class="number">2</span>] &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在以上的第二个代码片段，可以看到把在Model层的str对象修改了，与它关联的view对象立即内容就随之改变了，反之就不能通过view层的v对象来修改Model层的str对象。如果是C++之前的引用概念的话，就能通过引用来修改原对象了。</p>
+<p>以前端开发中的React和Vue的状态管理来说，就是说，View的状态变化与Model的状态变化一致，View的状态随着Model的状态改变而改变。但是View自身的状态改变却不能影响Model的状态改变。这个状态传递是单向的，不是双向的。</p>
+<h2 id="std-invoke"><a href="#std-invoke" class="headerlink" title="std::invoke"></a>std::invoke</h2><hr>
+<p>这个没多少要说的，就是调用一个callable的对象，还可以传递参数。</p>
+<p>Callable对象顾名思义就是，可以像普通函数那样调用的对象，比如std::function等等。</p>
+<p>以下为用法:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;functional&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Foo</span> &#123;</span></span><br><span class="line">    Foo(<span class="keyword">int</span> num) : num_(num) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">print_add</span><span class="params">(<span class="keyword">int</span> i)</span> <span class="keyword">const</span> </span>&#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; num_+i &lt;&lt; <span class="string">'\n'</span>; &#125;</span><br><span class="line">    <span class="keyword">int</span> num_;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_num</span><span class="params">(<span class="keyword">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">PrintNum</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">int</span> i)</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// invoke a free function</span></span><br><span class="line">    <span class="built_in">std</span>::invoke(print_num, <span class="number">-9</span>);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// invoke a lambda</span></span><br><span class="line">    <span class="built_in">std</span>::invoke([]() &#123; print_num(<span class="number">42</span>); &#125;);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// invoke a member function</span></span><br><span class="line">    <span class="function"><span class="keyword">const</span> Foo <span class="title">foo</span><span class="params">(<span class="number">314159</span>)</span></span>;</span><br><span class="line">    <span class="built_in">std</span>::invoke(&amp;Foo::print_add, foo, <span class="number">1</span>);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// invoke (access) a data member</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"num_: "</span> &lt;&lt; <span class="built_in">std</span>::invoke(&amp;Foo::num_, foo) &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// invoke a function object</span></span><br><span class="line">    <span class="built_in">std</span>::invoke(PrintNum(), <span class="number">18</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-9</span><br><span class="line">42</span><br><span class="line">314160</span><br><span class="line">num_: 314159</span><br><span class="line">18</span><br></pre></td></tr></table></figure>
+<p>然而，还可以再复杂一点，创建一个代理调用函数的模版类:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Callable&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Proxy</span> &#123;</span></span><br><span class="line">    Callable c;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Proxy(Callable c): c(c) &#123;&#125;</span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span>... <span class="title">Args</span>&gt;</span></span><br><span class="line"><span class="class">    <span class="title">decltype</span>(<span class="title">auto</span>) <span class="title">operator</span>()(<span class="title">Args</span>&amp;&amp;... <span class="title">args</span>) &#123;</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">std</span>::invoke(c, <span class="built_in">std</span>::forward&lt;Args&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> add = [] (<span class="keyword">int</span> x, <span class="keyword">int</span> y) &#123;</span><br><span class="line">  <span class="keyword">return</span> x + y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Proxy&lt;<span class="keyword">decltype</span>(add)&gt; p&#123; add &#125;;</span><br><span class="line">p(<span class="number">1</span>, <span class="number">2</span>); <span class="comment">// == 3</span></span><br></pre></td></tr></table></figure>
+<p>该模板类可以接收任何函数并作为其代理。</p>
+<h2 id="std-apply"><a href="#std-apply" class="headerlink" title="std::apply"></a>std::apply</h2><hr>
+<p>这个函数是调用Callable对象并把元组（Tuple）化的参数序列传递给Callable对象，这样就方便了:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> add = [] (<span class="keyword">int</span> x, <span class="keyword">int</span> y) &#123;</span><br><span class="line">  <span class="keyword">return</span> x + y;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">std</span>::apply(add, <span class="built_in">std</span>::make_tuple( <span class="number">1</span>, <span class="number">2</span> )); <span class="comment">// == 3</span></span><br></pre></td></tr></table></figure>
+<p>这个特性在类似的函数式语言都会有，比如<a href="https://www.zhihu.com/question/54627596" target="_blank" rel="noopener">Scheme</a>中。</p>
+<h2 id="类模版参数推导"><a href="#类模版参数推导" class="headerlink" title="类模版参数推导"></a>类模版参数推导</h2><hr>
+<p>自动模版参数推导类似已经完成的函数的参数推导，但是现在可以推导模版类构造函数了:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T = <span class="keyword">float</span>&gt;</span><br><span class="line">struct MyContainer &#123;</span><br><span class="line">  T val;</span><br><span class="line">  MyContainer() : val() &#123;&#125;</span><br><span class="line">  MyContainer(T val) : val(val) &#123;&#125;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">MyContainer c1&#123; <span class="number">1</span> &#125;; <span class="comment">// OK MyContainer&lt;int&gt;</span></span><br><span class="line">MyContainer c2; <span class="comment">// OK MyContainer&lt;float&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="用auto声明无类型的模版参数"><a href="#用auto声明无类型的模版参数" class="headerlink" title="用auto声明无类型的模版参数"></a>用auto声明无类型的模版参数</h2><hr>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">emplate &lt;<span class="keyword">auto</span> ... seq&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">my_integer_sequence</span> &#123;</span></span><br><span class="line">  <span class="comment">// Implementation here ...</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Explicitly pass type `int` as template argument.</span></span><br><span class="line"><span class="keyword">auto</span> seq = <span class="built_in">std</span>::integer_sequence&lt;<span class="keyword">int</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&gt;();</span><br><span class="line"><span class="comment">// Type is deduced to be `int`.</span></span><br><span class="line"><span class="keyword">auto</span> seq2 = my_integer_sequence&lt;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&gt;();</span><br></pre></td></tr></table></figure>
+<h2 id="Folding表达式"><a href="#Folding表达式" class="headerlink" title="Folding表达式"></a>Folding表达式</h2><hr>
+<p>一个folding表达式执行一个封装了对模版参数二元操作的折叠。</p>
+<ul>
+<li><p>一个类似(… op expr)或(expr op …)这样形式的表达式，其中op为fold操作符，expr为未展开的参数包裹，这样的形式叫一元折叠(unary fold)。</p>
+</li>
+<li><p>一个类似(expr1 op … op expr2)这样形式的表达式，其中op为fold操作符，叫二元折叠(binary fold)。expr1和expr2都是未展开的参数包裹，但也可能不都是未展开的。</p>
+</li>
+</ul>
+<p>二元折叠:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">logicalAnd</span><span class="params">(Args... args)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Binary folding.</span></span><br><span class="line">    <span class="keyword">return</span> (<span class="literal">true</span> &amp;&amp; ... &amp;&amp; args);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> b = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">bool</span>&amp; b2 = b;</span><br><span class="line">logicalAnd(b, b2, <span class="literal">true</span>); <span class="comment">// == true</span></span><br></pre></td></tr></table></figure>
+<p>一元折叠:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">sum</span><span class="params">(Args... args)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Unary folding.</span></span><br><span class="line">    <span class="keyword">return</span> (... + args);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sum(<span class="number">1.0</span>, <span class="number">2.0f</span>, <span class="number">3</span>); <span class="comment">// == 6.0</span></span><br></pre></td></tr></table></figure>
+<h2 id="在花括号初始化列表中的auto推导的新规则"><a href="#在花括号初始化列表中的auto推导的新规则" class="headerlink" title="在花括号初始化列表中的auto推导的新规则"></a>在花括号初始化列表中的auto推导的新规则</h2><hr>
+<p>改变了当采用统一初始化语法auto的推导规则。原来，auto x{3}被推导为std::initializer_list<int>类型，现在变为直接推导为int类型</int></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> x1&#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;; <span class="comment">// error: not a single element</span></span><br><span class="line"><span class="keyword">auto</span> x2 = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;; <span class="comment">// decltype(x2) is std::initializer_list&lt;int&gt;</span></span><br><span class="line"><span class="keyword">auto</span> x3&#123; <span class="number">3</span> &#125;; <span class="comment">// decltype(x3) is int</span></span><br><span class="line"><span class="keyword">auto</span> x4&#123; <span class="number">3.0</span> &#125;; <span class="comment">// decltype(x4) is double</span></span><br></pre></td></tr></table></figure>
+<h2 id="constexpr的lambda表达式"><a href="#constexpr的lambda表达式" class="headerlink" title="constexpr的lambda表达式"></a>constexpr的lambda表达式</h2><hr>
+<p>使用constexpr构造编译时lambda表达式:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> identity = [] (<span class="keyword">int</span> n) <span class="keyword">constexpr</span> &#123; <span class="keyword">return</span> n; &#125;;</span><br><span class="line"><span class="keyword">static_assert</span>(identity(<span class="number">123</span>) == <span class="number">123</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">constexpr</span> <span class="keyword">auto</span> add = [] (<span class="keyword">int</span> x, <span class="keyword">int</span> y) &#123;</span><br><span class="line">  <span class="keyword">auto</span> L = [=] &#123; <span class="keyword">return</span> x; &#125;;</span><br><span class="line">  <span class="keyword">auto</span> R = [=] &#123; <span class="keyword">return</span> y; &#125;;</span><br><span class="line">  <span class="keyword">return</span> [=] &#123; <span class="keyword">return</span> L() + R(); &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static_assert</span>(add(<span class="number">1</span>, <span class="number">2</span>)() == <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="keyword">int</span> <span class="title">addOne</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> [n] &#123; <span class="keyword">return</span> n + <span class="number">1</span>; &#125;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static_assert</span>(addOne(<span class="number">1</span>) == <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="lambda以值方式捕获this指针"><a href="#lambda以值方式捕获this指针" class="headerlink" title="lambda以值方式捕获this指针"></a>lambda以值方式捕获this指针</h2><hr>
+<p>之前的C++标准只能以引用的方式捕获this指针，现在可以以值来捕获了。因为以前在使用callback函数的异步代码中，必须要求一个合法对象，万一对象超过其生命周期，那么程序就挂了。所以在C++17中*this是对当前的对象拷贝了一个副本，而this还是类似C++11的标准一样以引用捕获:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MyObj</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> value&#123; <span class="number">123</span> &#125;;</span><br><span class="line">  <span class="function"><span class="keyword">auto</span> <span class="title">getValueCopy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> [*<span class="keyword">this</span>] &#123; <span class="keyword">return</span> value; &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">auto</span> <span class="title">getValueRef</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">this</span>] &#123; <span class="keyword">return</span> value; &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">MyObj mo;</span><br><span class="line"><span class="keyword">auto</span> valueCopy = mo.getValueCopy();</span><br><span class="line"><span class="keyword">auto</span> valueRef = mo.getValueRef();</span><br><span class="line">mo.value = <span class="number">321</span>;</span><br><span class="line">valueCopy(); <span class="comment">// 123</span></span><br><span class="line">valueRef(); <span class="comment">// 321</span></span><br></pre></td></tr></table></figure>
+<h2 id="内联变量"><a href="#内联变量" class="headerlink" title="内联变量"></a>内联变量</h2><hr>
+<p>在该标准中，inline关键字既能作用于函数也能作用于变量了，作用于变量和作用于函数的语义都是一样的。使用场景嘛，都是为了提高性能。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Disassembly example using compiler explorer.</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span> &#123;</span> <span class="keyword">int</span> x; &#125;;</span><br><span class="line"><span class="keyword">inline</span> S x1 = S&#123;<span class="number">321</span>&#125;; <span class="comment">// mov esi, dword ptr [x1]</span></span><br><span class="line">                      <span class="comment">// x1: .long 321</span></span><br><span class="line"></span><br><span class="line">S x2 = S&#123;<span class="number">123</span>&#125;;        <span class="comment">// mov eax, dword ptr [.L_ZZ4mainE2x2]</span></span><br><span class="line">                      <span class="comment">// mov dword ptr [rbp - 8], eax</span></span><br><span class="line">                      <span class="comment">// .L_ZZ4mainE2x2: .long 123</span></span><br></pre></td></tr></table></figure>
+<h2 id="嵌套namespace"><a href="#嵌套namespace" class="headerlink" title="嵌套namespace"></a>嵌套namespace</h2><hr>
+<p>这个不必多说，主要是书写代码更简洁了:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// C++ 11</span></span><br><span class="line"><span class="keyword">namespace</span> A &#123;</span><br><span class="line">  <span class="keyword">namespace</span> B &#123;</span><br><span class="line">    <span class="keyword">namespace</span> C &#123;</span><br><span class="line">      <span class="keyword">int</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// C++ 17</span></span><br><span class="line"><span class="keyword">namespace</span> A::B::C &#123;</span><br><span class="line">  <span class="keyword">int</span> i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Structured-bindings"><a href="#Structured-bindings" class="headerlink" title="Structured bindings"></a>Structured bindings</h2><hr>
+<p>其实这个特性Python里面也有类似的。这个标准提案的目的是解构初始化，它是这样使用的： auto [x,y,z] = expr。 expr作为一个表达式，它需要返回tuple-like的对象，这个对象的元素必须与x，y，z进行绑定。tuple-like的对象包括std::tuple, std::pair , std::array和聚合结构体。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Coordinate = <span class="built_in">std</span>::pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;;</span><br><span class="line"><span class="function">Coordinate <span class="title">origin</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> Coordinate&#123;<span class="number">0</span>, <span class="number">0</span>&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">auto</span> [ x, y ] = origin();</span><br><span class="line">x; <span class="comment">// == 0</span></span><br><span class="line">y; <span class="comment">// == 0</span></span><br></pre></td></tr></table></figure>
+<h2 id="constexpr-if"><a href="#constexpr-if" class="headerlink" title="constexpr if"></a>constexpr if</h2><hr>
+<p>这个特性还是相当有用的，让代码实例化依赖于编译时的条件。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="keyword">bool</span> <span class="title">isIntegral</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">if</span> <span class="title">constexpr</span> <span class="params">(<span class="built_in">std</span>::is_integral&lt;T&gt;::value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static_assert</span>(isIntegral&lt;<span class="keyword">int</span>&gt;() == <span class="literal">true</span>);</span><br><span class="line"><span class="keyword">static_assert</span>(isIntegral&lt;<span class="keyword">char</span>&gt;() == <span class="literal">true</span>);</span><br><span class="line"><span class="keyword">static_assert</span>(isIntegral&lt;<span class="keyword">double</span>&gt;() == <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span> &#123;</span>&#125;;</span><br><span class="line"><span class="keyword">static_assert</span>(isIntegral&lt;S&gt;() == <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="UTF-8字符字面量"><a href="#UTF-8字符字面量" class="headerlink" title="UTF-8字符字面量"></a>UTF-8字符字面量</h2><hr>
+<p>UTF-8终于被纳入标准了:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> x = u8'x'; <span class="comment">//被编码为UTF-8</span></span><br></pre></td></tr></table></figure>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/C-C/" rel="tag">#C/C++</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/09/10/about-im/" rel="prev">有关于即时通讯的开发</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/08/21/cert-cpp-ten/" rel="next">CERT C++ 编码规范翻译（MSC）</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image">
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">78</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">103</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="http://www.dendoink.com" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optional"><span class="nav-number">2.</span> <span class="nav-text">Optional</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Variant"><span class="nav-number">3.</span> <span class="nav-text">Variant</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Any"><span class="nav-number">4.</span> <span class="nav-text">Any</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#std-string-view"><span class="nav-number">5.</span> <span class="nav-text">std::string_view</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#std-invoke"><span class="nav-number">6.</span> <span class="nav-text">std::invoke</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#std-apply"><span class="nav-number">7.</span> <span class="nav-text">std::apply</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类模版参数推导"><span class="nav-number">8.</span> <span class="nav-text">类模版参数推导</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用auto声明无类型的模版参数"><span class="nav-number">9.</span> <span class="nav-text">用auto声明无类型的模版参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Folding表达式"><span class="nav-number">10.</span> <span class="nav-text">Folding表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在花括号初始化列表中的auto推导的新规则"><span class="nav-number">11.</span> <span class="nav-text">在花括号初始化列表中的auto推导的新规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#constexpr的lambda表达式"><span class="nav-number">12.</span> <span class="nav-text">constexpr的lambda表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lambda以值方式捕获this指针"><span class="nav-number">13.</span> <span class="nav-text">lambda以值方式捕获this指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内联变量"><span class="nav-number">14.</span> <span class="nav-text">内联变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#嵌套namespace"><span class="nav-number">15.</span> <span class="nav-text">嵌套namespace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Structured-bindings"><span class="nav-number">16.</span> <span class="nav-text">Structured bindings</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#constexpr-if"><span class="nav-number">17.</span> <span class="nav-text">constexpr if</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UTF-8字符字面量"><span class="nav-number">18.</span> <span class="nav-text">UTF-8字符字面量</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright">
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

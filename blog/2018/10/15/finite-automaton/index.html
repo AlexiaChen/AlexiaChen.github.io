@@ -1,0 +1,988 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head><meta name="generator" content="Hexo 3.8.0">
+  
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1">
+
+
+    <meta name="description" content="System Software Engineer">
+
+
+
+  <meta name="keywords" content="计算理论,程序语言理论,有限自动机,">
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1">
+
+
+<meta name="description" content="简单是终极的复杂 – 达 芬奇  前言 其实这算是计算理论的第二个章节，第一个章节可以去看我之前写的文章—-《程序的含义》。 追求简单是人类内心的本性使然，看上去好像没有太多修饰，当你仔细揣摩，你会发现，最精华的理论已经融入每个角落，越是简单的东西，其实越难吧空，需要经过千锤百炼。 现代计算机具有强大的计算能力，但是正是由于其强大，所以伴随着过多的复杂性。我们很难理解一台计算机多个子系统的全部细">
+<meta name="keywords" content="计算理论,程序语言理论,有限自动机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最简单的计算机之有限自动机">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2018/10/15/finite-automaton/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="简单是终极的复杂 – 达 芬奇  前言 其实这算是计算理论的第二个章节，第一个章节可以去看我之前写的文章—-《程序的含义》。 追求简单是人类内心的本性使然，看上去好像没有太多修饰，当你仔细揣摩，你会发现，最精华的理论已经融入每个角落，越是简单的东西，其实越难吧空，需要经过千锤百炼。 现代计算机具有强大的计算能力，但是正是由于其强大，所以伴随着过多的复杂性。我们很难理解一台计算机多个子系统的全部细">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://wx2.sinaimg.cn/large/a1ac93f3gy1fwbj5b9ttzj20a305p0sl.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/large/a1ac93f3gy1fwbjpr86a3j209903tq2s.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/large/a1ac93f3gy1fwcprbf862j20ac05f0so.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/large/a1ac93f3gy1fx90t9coulj20d808rq30.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/large/a1ac93f3gy1fx91nipz96j20bu0553yg.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/large/a1ac93f3gy1fyuz2lgi1ij20as06t3yg.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/large/a1ac93f3gy1fyuzaqd9o1j20d009ymxc.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/large/a1ac93f3gy1fyuzs6tzkcj20fp0dtmxj.jpg">
+<meta property="og:updated_time" content="2019-01-05T02:33:47.444Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="最简单的计算机之有限自动机">
+<meta name="twitter:description" content="简单是终极的复杂 – 达 芬奇  前言 其实这算是计算理论的第二个章节，第一个章节可以去看我之前写的文章—-《程序的含义》。 追求简单是人类内心的本性使然，看上去好像没有太多修饰，当你仔细揣摩，你会发现，最精华的理论已经融入每个角落，越是简单的东西，其实越难吧空，需要经过千锤百炼。 现代计算机具有强大的计算能力，但是正是由于其强大，所以伴随着过多的复杂性。我们很难理解一台计算机多个子系统的全部细">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/large/a1ac93f3gy1fwbj5b9ttzj20a305p0sl.jpg">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> 最简单的计算机之有限自动机 | MathxH </title>
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br>
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br>
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br>
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br>
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br>
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br>
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              最简单的计算机之有限自动机
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2018-10-15T20:30:48+08:00" content="2018-10-15">
+            2018-10-15
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><blockquote>
+<p><em>简单是终极的复杂</em> – <em>达 芬奇</em></p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p>其实这算是计算理论的第二个章节，第一个章节可以去看我之前写的文章—-<a href="https://alexiachen.github.io/blog/2017/10/15/program-semantic/">《程序的含义》</a>。</p>
+<p>追求简单是人类内心的本性使然，看上去好像没有太多修饰，当你仔细揣摩，你会发现，最精华的理论已经融入每个角落，越是简单的东西，其实越难吧空，需要经过千锤百炼。</p>
+<p>现代计算机具有强大的计算能力，但是正是由于其强大，所以伴随着过多的复杂性。我们很难理解一台计算机多个子系统的全部细节，更别说理解这些子系统如何互相协作从而构成整个系统了。这些复杂性使得对真实的计算机的能力与行为进行直接推导显得不切实际，此时计算机的简化模型就显得非常有用。简单的模型只提取出真实计算机中令人感兴趣的特性，它可以帮助人们建立对计算完整的认知。</p>
+<p>接下来，我们会逐步揭开什么是计算，最后分析这样简单的模型所能达到的计算极限。</p>
+<h2 id="确定性有限自动机"><a href="#确定性有限自动机" class="headerlink" title="确定性有限自动机"></a>确定性有限自动机</h2><hr>
+<p>现实中，计算机通常有大量的RAM和DISK，还有许多I/O设备（键盘等），还有CPU。有限状态机也被称作有限自动机，这是一个极简的计算机模型。它为了简单，抛弃了RAM DISK等这些特性。</p>
+<h3 id="状态-规则-输入-输出"><a href="#状态-规则-输入-输出" class="headerlink" title="状态 规则 输入 输出"></a>状态 规则 输入 输出</h3><p>有限状态机你可以把它看作是一个抽象机器，它拥有一些可能的状态，能跟踪到自己当前具体处于其中的一个状态。注意，它没有键盘等这些接口，它只有一个抽象接口，就是一个来自外部的信息输入流会被它逐个读取，并随着这些信息的输入，自动转移状态。</p>
+<p>以下是一个有限状态机的图示：</p>
+<p><img src="http://wx2.sinaimg.cn/large/a1ac93f3gy1fwbj5b9ttzj20a305p0sl.jpg" alt=""></p>
+<p>至于状态机怎么看，我就不过多介绍了。如果学过《编译原理》的词法分析的章节，一定会接触到的。</p>
+<ul>
+<li>该机器有两个状态， 1和2</li>
+<li>该机器的输入字符集合为{a，b}</li>
+<li>该机器的初始状态是1</li>
+</ul>
+<p>该机器会根据读到的字符来决定转移的状态，它不停的接受a，b在状态1和2之间来回切换，简直没完没了了。它像一个黑盒子一样运行，谁也不知道发生了啥，机器外面没人知道发生了什么，所以机器要有个输出，我们才知道最终的结果，有了结果，机器就停止运行了，相当于这个函数才有了输出，有输入必然要有输出，不然没意义。 所以我们需要为这台机器增加一个终止状态，以表示运行结束，产生输出。</p>
+<p>我们暂且把状态2标记为终止状态，当然如果用在词法分析理论上也可以被称为接受状态，表明机器对某个序列是接受还是拒绝。修改好的状态机图示如下：</p>
+<p><img src="http://wx4.sinaimg.cn/large/a1ac93f3gy1fwbjpr86a3j209903tq2s.jpg" alt=""></p>
+<p>红色就表示终止状态。当然，正规点的自动机终止状态是画两个圆表示终止，我这里图个简便，请谅解下。</p>
+<p>好了，我们来分析下。</p>
+<p>上图的自动机初始化状态为1, 当读入一个字符a的时候，它会转移到状态2，这是一个终止状态，所以我们可以认为这自动机接受了字符串“a”。如果它又读取了一个字符b，状态又转移到了1,这不是终止状态，所以自动机不接受字符串“ab”，也就是拒绝了“ab”。所以很容易可以推理出来，自动机接受“a”，“aba”，“ababa”这样的字符串。如果把图示下面的字符b也换成a。那么自动机接受“a”，“aaa”，“aaaaa”这样奇数的a组成的字符串，拒绝“”，“aa”，“aaaa”这样偶数个字符a组成的字符串或空字符串。这台自动机就可以判断a组成的字符串是技术还是偶数，是足以称为最简单的计算机了。</p>
+<p>当然，我们可以构造更复杂的自动机，我就不打算构造了。</p>
+<h3 id="确定性"><a href="#确定性" class="headerlink" title="确定性"></a>确定性</h3><p>显然，如果了解自动机概念的人，就知道之前所提到的自动机都是具有确定性，也就是说，无论它处于什么状态，并且无论读入什么字符，它最终所处的状态总是完全确定的。这样的确定性有2种约束条件：</p>
+<ul>
+<li><p>不存在二义性，也就是说一个状态对于同样的输入，它不能有多个规则</p>
+</li>
+<li><p>每个状态都必须针对每个可能的输入字符至少有一个规则</p>
+</li>
+</ul>
+<p>具有这种确定性的自动机专业点叫确定性有限自动机（Deterministic Finite Automaton，DFA）。</p>
+<h3 id="用程序语言来实现DFA"><a href="#用程序语言来实现DFA" class="headerlink" title="用程序语言来实现DFA"></a>用程序语言来实现DFA</h3><p>DFA是一种抽象机器，也可以被认为是一种解释器，这种机器很容易用软件来模拟。</p>
+<p>首先，需要定义一个规则集合RuleSet。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FARule</span> &lt; Struct.<span class="title">new</span>(:<span class="title">state</span>, :<span class="title">character</span>, :<span class="title">next_state</span>)</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">applies_to?</span><span class="params">(state,character)</span></span></span><br><span class="line">    <span class="keyword">self</span>.state == state &amp;&amp; <span class="keyword">self</span>.character == character</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">follow</span></span></span><br><span class="line">    next_state;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">inspect</span></span></span><br><span class="line">    <span class="string">"#&lt;FARule <span class="subst">#&#123;state.inspect&#125;</span> --<span class="subst">#&#123;character&#125;</span>--&gt; <span class="subst">#&#123;next_state&#125;</span>&gt;"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DFARuleSet</span> &lt; Struct.<span class="title">new</span>(:<span class="title">rules</span>)</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">next_state</span><span class="params">(state,character)</span></span></span><br><span class="line">    rule_for(state,character).follow</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">rule_for</span><span class="params">(state,character)</span></span></span><br><span class="line">    rules.detect &#123; <span class="params">|rule|</span> rule.applies_to?(state,character) &#125; <span class="comment"># find first if</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>每个规则用一个FARule来表示，都有一个applies_to? 这样的API来判断某些输入情况下是否可以apply。DFARuleSet表示规则集合，相当于FARule类的一个容器，存放多个FARule。</p>
+<p>好的，现在可以构造一个规则集合了：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">=begin</span></span><br><span class="line"><span class="comment">#&lt;struct DFARuleSet rules=[#&lt;FARule 1 --a--&gt; 2&gt;, #&lt;FARule 1 --b--&gt; 1&gt;, #&lt;FARule 2 --a--&gt; 2&gt;, </span></span><br><span class="line"><span class="comment">#&lt;FARule 2 --b--&gt; 3&gt;, #&lt;FARule 3 --a--&gt; 3&gt;, #&lt;FARule 3 --b--&gt; 3&gt;]&gt;</span></span><br><span class="line"><span class="comment">=end</span></span><br><span class="line">rules = DFARuleSet.new([</span><br><span class="line">  FARule.new(<span class="number">1</span>,<span class="string">'a'</span>,<span class="number">2</span>), FARule.new(<span class="number">1</span>,<span class="string">'b'</span>,<span class="number">1</span>),</span><br><span class="line">  FARule.new(<span class="number">2</span>,<span class="string">'a'</span>,<span class="number">2</span>), FARule.new(<span class="number">2</span>,<span class="string">'b'</span>,<span class="number">3</span>),</span><br><span class="line">  FARule.new(<span class="number">3</span>,<span class="string">'a'</span>,<span class="number">3</span>), FARule.new(<span class="number">3</span>,<span class="string">'b'</span>,<span class="number">3</span>)</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试DFARuleSet类</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt; 2</span></span><br><span class="line">rules.next_state(<span class="number">1</span>,<span class="string">'a'</span>)</span><br><span class="line"><span class="comment"># =&gt; 1</span></span><br><span class="line">rules.next_state(<span class="number">1</span>,<span class="string">'b'</span>)</span><br><span class="line"><span class="comment"># =&gt; 3</span></span><br><span class="line">rules.next_state(<span class="number">2</span>,<span class="string">'b'</span>)</span><br></pre></td></tr></table></figure>
+<p>到这里，是否能根据这个规则集合画出对应的DFA的图呢，这是可以的。下图就是以上RuleSet对应的自动机</p>
+<p><img src="http://wx3.sinaimg.cn/large/a1ac93f3gy1fwcprbf862j20ac05f0so.jpg" alt="DFA"></p>
+<p>不过，这台自动机没有终止状态，还不完整，所以我们要编写一个DFA的类的表示DFA来配置RuleSet和初始状态，终止状态，加入读取字符流的接口，并模拟抽象机器的运行，这样就灵活了。计算机科学很重要的一点就是抽象思维，分离变化与不变化。是不是跟上一章讲解语义的一样呢？其实都相当于一台解释器。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DFA</span> &lt; Struct.<span class="title">new</span>(:<span class="title">current_state</span>,:<span class="title">final_states</span>,:<span class="title">ruleset</span>)</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">accepting?</span></span></span><br><span class="line">    final_states.<span class="keyword">include</span>?(current_state)</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">read_char</span><span class="params">(character)</span></span></span><br><span class="line">    <span class="keyword">self</span>.current_state = ruleset.next_state(current_state,character)</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">read_string</span><span class="params">(str)</span></span></span><br><span class="line">    str.chars.each <span class="keyword">do</span> <span class="params">|character|</span></span><br><span class="line">      read_char(character)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span>  </span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试下DFA</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt; true</span></span><br><span class="line">DFA.new(<span class="number">1</span>,[<span class="number">1</span>,<span class="number">3</span>],rules).accepting?</span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt; false</span></span><br><span class="line">DFA.new(<span class="number">1</span>,[<span class="number">3</span>],rules).accepting?</span><br></pre></td></tr></table></figure>
+<p>之后，为了更加方便，我们构造一个可以创建DFA的工厂类：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DFAMaker</span> &lt; Struct.<span class="title">new</span>(:<span class="title">start_state</span>, :<span class="title">final_states</span>, :<span class="title">ruleset</span>)</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">make_dfa</span></span></span><br><span class="line">    DFA.new(start_state,final_states,ruleset)</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">accepts?</span><span class="params">(str)</span></span></span><br><span class="line">    make_dfa.tap &#123; <span class="params">|dfa|</span> dfa.read_string(str) &#125;.accepting?</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt; false</span></span><br><span class="line">DFAMaker.new(<span class="number">1</span>,[<span class="number">3</span>],rules).accepts?(<span class="string">'a'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt; false</span></span><br><span class="line">DFAMaker.new(<span class="number">1</span>,[<span class="number">3</span>],rules).accepts?(<span class="string">'baa'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt; true</span></span><br><span class="line">DFAMaker.new(<span class="number">1</span>,[<span class="number">3</span>],rules).accepts?(<span class="string">'babab'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt; true</span></span><br><span class="line">DFAMaker.new(<span class="number">1</span>,[<span class="number">2</span>],rules).accepts?(<span class="string">'aaaa'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt; false</span></span><br><span class="line">DFAMaker.new(<span class="number">1</span>,[<span class="number">1</span>],rules).accepts?(<span class="string">'a'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt; true</span></span><br><span class="line">DFAMaker.new(<span class="number">1</span>,[<span class="number">1</span>],rules).accepts?(<span class="string">'b'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="非确定性有限自动机"><a href="#非确定性有限自动机" class="headerlink" title="非确定性有限自动机"></a>非确定性有限自动机</h2><p>之前的确定性有限自动机（DFA）理解和实现起来都很简单，那是因为DFA与我们熟悉的机器非常相似。</p>
+<p>在去除了一台真实的计算机的所有复杂性之后，我们有机会使用一些不太常见的思想去进行探索，这将让我们离本质会更进一步。</p>
+<p>一种探索方式是去除我们现在所有的假设和约束。首先，确定性约束似乎是个限制，因为可能我们有些时候并不关系每个状态上每个可能的输入，那么为什么不能忽略不关心的字符处理规则，并假设当异常发生时这台机器能进入到一个通用的失败状态呢？ 那好，我们再进一步放宽要求，如果允许这台自动机拥有对立的规则，那么就会导致机器有多个执行路径，这又意味着什么？</p>
+<p>现在我们将要探索这些想法，需要对DFA的能力稍微做调整一下，看看有没有新的可能。</p>
+<h3 id="非确定性"><a href="#非确定性" class="headerlink" title="非确定性"></a>非确定性</h3><p>假设我们想要一台自动机，它能接受由a和b组成的第三个字符是b的任意字符串，那么很容易想到以下DFA的图示：</p>
+<p><img src="http://wx3.sinaimg.cn/large/a1ac93f3gy1fx90t9coulj20d808rq30.jpg" alt="DFA图示"></p>
+<p>以上的DFA处于状态3的时候，一旦读取到b就终止了，如果后面还有输入字符，就不停的循环进入终止状态5，反正目的达到了，只要是第三个字符是b的任意字符串就可以了，但是状态3读到了a字符，那么之后无论遇到什么输入，直到字符流读取完成，字符串也不能被该DFA识别了。</p>
+<p>到这里你发现DFA好强大呀，好像没什么不能完成的任务（对于特定字符串识别）。但是你错了，现在我提出一个问题，请设计一台自动机，满足识别倒数第三个字符是b的任意字符串，请问该怎么设计？（这里先别往下看，留一段时间在纸上画画图）。</p>
+<p>经过一段时间的思考，有人会发现这似乎会很困难，因为上面的DFA读取正数第三个的字符是b的时候保证在状态3，但是如果是倒数第三个就困难了，自动机很难预先知道什么时候能读到倒数第三，因为在整个字符流读取完成之前它不知道这个字符串有多长。现在我来告诉你，几乎不存在一台DFA能识别这样的需求的字符串。</p>
+<p>这时候要加强DFA的能力就需要放宽要求，把它改了，把确定性改成非确定性，换一个概念得了，叫非确定性有限自动机（NFA）。</p>
+<p>NFA就是对于每个状态特定的输入结果下，跳转的下一个状态都是不确定的。这个不确定的概念给自动机带来了更加强大的能力。这样就可以很轻松设计以下一台NFA：</p>
+<p><img src="http://wx1.sinaimg.cn/large/a1ac93f3gy1fx91nipz96j20bu0553yg.jpg" alt="NFA图示"></p>
+<p>查看以上NFA，对于状态1来说，接受一个字符b，它有可能保持在状态1，也可能跳转到状态2。也就是，对于状态1来说，字符b的输入导致的结果是不确定的。</p>
+<p>用以上NFA来识别字符串“baa”，读取完字符串之后，最终状态可能停留在状态1，也可能停留在状态4接受态。所以用NFA来识别字符串就要遍历所有可能的状态执行路径，只要存在一种路径能达到终止态，那么该字符串就被这台NFA所接受识别。哈，这么来看有点暴力搜索了，但是没办法，因为我们现实世界的物理计算机就是确定性的计算机，要模拟非确定性只有这样的办法了</p>
+<p>这样的暴力方式很容易可以看到两种实现，一个是采用递归，一种是采用线程并行，但是这两种实现都有点复杂和低效。</p>
+<p>我们可以采用一种更简洁高效的模拟，模仿DFA的模拟实现。</p>
+<p>很简单，最开始与DFA类似，也要创建一个RuleSet来存放规则集合。它与DFA不一样的是，在某个状态时接收相同的输入，可能跳转转移的状态不一致，也就是可能下一个状态是多个可能，所以需要引入编程语言提供的集合（Set）的概念来给下一个状态集去重。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">'set'</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FARule</span> &lt; Struct.<span class="title">new</span>(:<span class="title">state</span>, :<span class="title">character</span>, :<span class="title">next_state</span>)</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">applies_to?</span><span class="params">(state,character)</span></span></span><br><span class="line">    <span class="keyword">self</span>.state == state &amp;&amp; <span class="keyword">self</span>.character == character</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">follow</span></span></span><br><span class="line">    next_state;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">inspect</span></span></span><br><span class="line">    <span class="string">"#&lt;FARule <span class="subst">#&#123;state.inspect&#125;</span> --<span class="subst">#&#123;character&#125;</span>--&gt; <span class="subst">#&#123;next_state&#125;</span>&gt;"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NFARuleSet</span> &lt; Struct.<span class="title">new</span>(:<span class="title">rules</span>)</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">next_states</span><span class="params">(states, character)</span></span></span><br><span class="line">    states.flat_map &#123; <span class="params">|state|</span> follow_rules_for(state, character) &#125;.to_set</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">follow_rules_for</span><span class="params">(state, character)</span></span></span><br><span class="line">    rules_for(state, character).map(&amp;<span class="symbol">:follow</span>)</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">rules_for</span><span class="params">(state, character)</span></span></span><br><span class="line">    rules.select &#123; <span class="params">|rule|</span> rule.applies_to?(state, character) &#125; <span class="comment"># select * where </span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>好的，现在我们来用以上的Ruby类来定义上一副图示所表示的NFA：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ruleset = NFARuleSet.new([</span><br><span class="line">  FARule.new(<span class="number">1</span>, <span class="string">'a'</span>, <span class="number">1</span>), FARule.new(<span class="number">1</span>, <span class="string">'b'</span>, <span class="number">1</span>), FARule.new(<span class="number">1</span>, <span class="string">'b'</span>, <span class="number">2</span>),</span><br><span class="line">  FARule.new(<span class="number">2</span>, <span class="string">'a'</span>, <span class="number">3</span>), FARule.new(<span class="number">2</span>, <span class="string">'b'</span>, <span class="number">3</span>), FARule.new(<span class="number">3</span>, <span class="string">'a'</span>, <span class="number">4</span>),</span><br><span class="line">  FARule.new(<span class="number">3</span>, <span class="string">'b'</span>, <span class="number">4</span>)</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt; #&lt;Set: &#123;1, 2&#125;&gt;</span></span><br><span class="line">ruleset.next_states(Set[<span class="number">1</span>], <span class="string">'b'</span>)</span><br><span class="line"><span class="comment"># =&gt; #&lt;Set: &#123;1, 3, 4&#125;&gt;</span></span><br><span class="line">ruleset.next_states(Set[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], <span class="string">'a'</span>)</span><br><span class="line"><span class="comment"># =&gt; #&lt;Set: &#123;1, 2, 4&#125;&gt;</span></span><br><span class="line">ruleset.next_states(Set[<span class="number">1</span>,<span class="number">3</span>], <span class="string">'b'</span>)</span><br></pre></td></tr></table></figure>
+<p>对ruleset的定义能看得出来吗？ next_states的输入参数是当前状态集合，第二个参数是当前状态的输入数据，返回值是接收输入数据后返回的下一个状态集合。</p>
+<p>好的，再下一步就是通过程序来模拟手工的NFA运行，与DFA本质上并没有区别：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NFA</span> &lt; Struct.<span class="title">new</span>(:<span class="title">current_states</span>, :<span class="title">final_states</span>, :<span class="title">ruleset</span>)</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">accepting?</span></span></span><br><span class="line">    (current_states &amp; final_states).any?       <span class="comment"># set intersection operation is empty?</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">read_char</span><span class="params">(character)</span></span></span><br><span class="line">    <span class="keyword">self</span>.current_states = ruleset.next_states(current_states,character)</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">read_string</span><span class="params">(str)</span></span></span><br><span class="line">    str.chars.each <span class="keyword">do</span> <span class="params">|character|</span> </span><br><span class="line">      read_char(character)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NFAMaker</span> &lt; Struct.<span class="title">new</span>(:<span class="title">start_state</span>, :<span class="title">final_states</span>, :<span class="title">ruleset</span>)</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">make_nfa</span></span></span><br><span class="line">    NFA.new(Set[start_state], final_states, ruleset)</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">accepts?</span><span class="params">(str)</span></span></span><br><span class="line">    make_nfa.tap &#123; <span class="params">|nfa|</span> nfa.read_string(str) &#125;.accepting?</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">nfa = NFAMaker.new(<span class="number">1</span>, [<span class="number">4</span>], ruleset)</span><br><span class="line"><span class="comment"># =&gt; true</span></span><br><span class="line">nfa.accepts?(<span class="string">'bab'</span>)</span><br><span class="line"><span class="comment"># =&gt; true</span></span><br><span class="line">nfa.accepts?(<span class="string">'bababab'</span>)</span><br><span class="line"><span class="comment"># =&gt; false</span></span><br><span class="line">nfa.accepts?(<span class="string">'babababa'</span>)</span><br><span class="line"><span class="comment"># =&gt; true</span></span><br><span class="line">nfa.accepts?(<span class="string">'bababababbbbbb'</span>)</span><br></pre></td></tr></table></figure>
+<p>哈哈，以上代码最终实现的效果与NFA的的图示所达到的效果一样了，能接受”bab”，“baa”这样倒数第三个字符是’b’字符的字符串。</p>
+<h3 id="自由移动"><a href="#自由移动" class="headerlink" title="自由移动"></a>自由移动</h3><p>上一小节中，我们看到了对确定性这个约束条件的放宽给设计NFA的方法带来了一定的表达能力，为了再次提高表达，是否还可以放松哪些条件呢？</p>
+<p>回到DFA的层面，很容易设计一台DFA，这个DFA能接受字符a组成的字符串长度是2的倍数（“aa”, “aaaa”, ……）。</p>
+<p><img src="http://wx3.sinaimg.cn/large/a1ac93f3gy1fyuz2lgi1ij20as06t3yg.jpg" alt=""></p>
+<p>但是，如何设计一台机器，让这台机器既能接受长度是2的倍数也能接受是3的倍数的字符串呢？ 由于之前了解过NFA的概念，于是有人可能随手就实现了以下一台NFA：</p>
+<p><img src="http://wx2.sinaimg.cn/large/a1ac93f3gy1fyuzaqd9o1j20d009ymxc.jpg" alt=""></p>
+<p>以上这台NFA确实能接受”aa” “aaaa” “aaa” “aaaaaa”这样的字符串，满足要求。但是仔细一看，其实它也能接受”aaaaa” 这样不满足设计要求的字符串。我靠，不符合设计啊。如果不经过严密思考，一旦NFA比较复杂，那么这种错误一般比较难发现。怎么办呢？</p>
+<p>其实已经很接近真相了，最主要是因为这一台NFA要满足2个条件，这两个条件写在一起了，其实我们可以把这两个条件，根据每个条件写出对应的DFA，然后把DFA组合在一起形成一个规模大点的NFA机器。</p>
+<p>我们把这种组合特性叫做自由移动，这个特性就是能让NFA在多组状态中做选择的。我们把自由移动这种特性用没有转移输入的箭头来表示：</p>
+<p><img src="http://wx4.sinaimg.cn/large/a1ac93f3gy1fyuzs6tzkcj20fp0dtmxj.jpg" alt=""></p>
+<p>上面这台NFA，但如果在当前是状态1。那么它的当前状态就既是2也是4的状态。也就是说，这台NFA的初始状态集合是[1,2,4]。状态1流转只能到2或4，这样就分叉了，根据箭头是回不去状态1的，这样2台DFA各司其职。</p>
+<p>那么如果用Ruby怎么模拟NFA中的自由移动呢？ 其实就在RuleSet的规则集合中定义一个无输入并且自由流转的规则。 好的，我们根据这点来根据上图所示的NFA，设置它的规则：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ruleset = NFARuleSet.new([</span><br><span class="line">  FARule.new(<span class="number">1</span>, <span class="literal">nil</span>, <span class="number">2</span>), FARule.new(<span class="number">1</span>, <span class="literal">nil</span>, <span class="number">4</span>), </span><br><span class="line">  FARule.new(<span class="number">2</span>, <span class="string">'a'</span>, <span class="number">3</span>),</span><br><span class="line">  FARule.new(<span class="number">3</span>, <span class="string">'a'</span>, <span class="number">2</span>), </span><br><span class="line">  FARule.new(<span class="number">4</span>, <span class="string">'a'</span>, <span class="number">5</span>), </span><br><span class="line">  FARule.new(<span class="number">5</span>, <span class="string">'a'</span>, <span class="number">6</span>),</span><br><span class="line">  FARule.new(<span class="number">6</span>, <span class="string">'a'</span>, <span class="number">4</span>)</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt; #&lt;Set: &#123;2, 4&#125;&gt;</span></span><br><span class="line">ruleset.next_states(Set[<span class="number">1</span>], <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
+<p>状态1在无输入的情况下的下一个状态集合就是[2,4]。然后需要在RulSet的类中添加一个方法来计算一个状态集合的自由移动，这个方法同样返回一个状态集合：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NFARuleSet</span></span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">follow_free_moves</span><span class="params">(states)</span></span></span><br><span class="line">    more_states = next_states(states, <span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> more_states.subset?(states)</span><br><span class="line">      states</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      follow_free_moves(states + more_states)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt;  #&lt;Set: &#123;1, 2, 4&#125;&gt;</span></span><br><span class="line">ruleset.follow_free_moves(Set[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<p>然后，要模拟当前状态的自由移动，重写NFA类中的current_states：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NFA</span></span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">current_states</span></span></span><br><span class="line">    ruleset.follow_free_moves(<span class="keyword">super</span>)</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>这样的意图是，确保NFA当前可能的状态总是通过自由移动流转到任何可能的状态。这就让访问当前状态透明了，之前的代码几乎不用改动。好了，现在可以用之前的NFAMaker构造出一个支持自由移动的NFA了，并且按照上图的NFA设计图，并确保代码可以正确工作了：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">nfa = NFAMaker.new(<span class="number">1</span>, [<span class="number">2</span>, <span class="number">4</span>], ruleset)</span><br><span class="line"><span class="comment"># =&gt; true</span></span><br><span class="line">nfa.accepts?(<span class="string">'aa'</span>)</span><br><span class="line"><span class="comment"># =&gt; true</span></span><br><span class="line">nfa.accepts?(<span class="string">'aaa'</span>)</span><br><span class="line"><span class="comment"># =&gt; false</span></span><br><span class="line">nfa.accepts?(<span class="string">'aaaaa'</span>)</span><br><span class="line"><span class="comment"># =&gt; true</span></span><br><span class="line">nfa.accepts?(<span class="string">'aaaaaa'</span>)</span><br></pre></td></tr></table></figure>
+<p>看运行结果，恩，与设想中的一样。能接受2或3的倍数，并且不会出错了。</p>
+<p>模拟自由移动比现象中简单，它在非确定的基础上给了设计者额外的设计自由。当然从自动机理论的角度看，这文章中的很多名词并不专业，有限自动机读取的字符一般叫符号（Symbol），状态之间移动的规则叫做转移（transition），组成一台机器的规则集合叫做转移函数,表示空字符串的数学符号是希腊字母ε，能自由移动的NFA称为NFA-ε，自由移动一般叫ε转移。</p>
+<p>如果你学过编译原理的国外教材，在讲状态机的时候就会接触到这些，比如把正则表达式通过NFA写出来，就会用到ε转移来组合各种状态机，然后通过子集构造法把NFA规约成DFA。 后面我会讲到有限状态机与正则表达式是等价的，相当与正则表达式是有限自动机的文本表示出来的语言（正则语言，有时候也叫正规语言），而有限状态机是正则语言的解释器。所以当你想从底层实现正则表达式引擎的话，无论如何也绕不过有限状态机理论的。当然有些高级做法，并没有把正则表达式翻译成自动机执行，但是我这里不想过多涉及这样工业界的高级解释器技巧，这已经偏离文章宗旨。</p>
+<h2 id="正则语言"><a href="#正则语言" class="headerlink" title="正则语言"></a>正则语言</h2><p>正则语言也叫正则表达式，这是一个很简单的语言，正因为太简单了，所以在表达一些复杂模式匹配的时候语言会有些晦涩。但是它的单个规则很简单，都是通过简单的规则组合起来用的。这个子章节，我需要用Ruby构造的NFA一步一步来构建最简单的正则表达式的解释器。</p>
+<p>（To be contined）</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/计算理论/" rel="tag">#计算理论</a>
+          
+            <a href="/blog/tags/程序语言理论/" rel="tag">#程序语言理论</a>
+          
+            <a href="/blog/tags/有限自动机/" rel="tag">#有限自动机</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/11/11/cpp-closure/" rel="prev">C++的闭包</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/08/25/manjaro-mysql8-conf/" rel="next">manjaro下安装配置MySQL8</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image">
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">78</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">103</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="http://www.dendoink.com" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#确定性有限自动机"><span class="nav-number">2.</span> <span class="nav-text">确定性有限自动机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#状态-规则-输入-输出"><span class="nav-number">2.1.</span> <span class="nav-text">状态 规则 输入 输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#确定性"><span class="nav-number">2.2.</span> <span class="nav-text">确定性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用程序语言来实现DFA"><span class="nav-number">2.3.</span> <span class="nav-text">用程序语言来实现DFA</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非确定性有限自动机"><span class="nav-number">3.</span> <span class="nav-text">非确定性有限自动机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#非确定性"><span class="nav-number">3.1.</span> <span class="nav-text">非确定性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自由移动"><span class="nav-number">3.2.</span> <span class="nav-text">自由移动</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则语言"><span class="nav-number">4.</span> <span class="nav-text">正则语言</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright">
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

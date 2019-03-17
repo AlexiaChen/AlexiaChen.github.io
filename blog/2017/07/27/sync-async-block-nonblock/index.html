@@ -1,0 +1,941 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head><meta name="generator" content="Hexo 3.8.0">
+  
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1">
+
+
+    <meta name="description" content="System Software Engineer">
+
+
+
+  <meta name="keywords" content="IO,同步异步,阻塞非阻塞,">
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1">
+
+
+<meta name="description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   从编程角度阐释异步与同步与单线程或多线程都无关，是以任务的执行顺序有关，是更加高层次的抽象概念，下面以线程举例子： 同步（一个任务的开始必须依赖另一个任务的完成）  单线程： 1231 thread: / &amp;lt;- Task 1 -&amp;gt; / |                           | / &amp;lt;- Task 2">
+<meta name="keywords" content="IO,同步异步,阻塞非阻塞">
+<meta property="og:type" content="article">
+<meta property="og:title" content="再次理解同步异步和阻塞非阻塞">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2017/07/27/sync-async-block-nonblock/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   从编程角度阐释异步与同步与单线程或多线程都无关，是以任务的执行顺序有关，是更加高层次的抽象概念，下面以线程举例子： 同步（一个任务的开始必须依赖另一个任务的完成）  单线程： 1231 thread: / &amp;lt;- Task 1 -&amp;gt; / |                           | / &amp;lt;- Task 2">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://wx4.sinaimg.cn/large/a1ac93f3gy1fi3136mbg4j20bj046t8m.jpg">
+<meta property="og:updated_time" content="2019-01-04T15:05:55.865Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="再次理解同步异步和阻塞非阻塞">
+<meta name="twitter:description" content="唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。   从编程角度阐释异步与同步与单线程或多线程都无关，是以任务的执行顺序有关，是更加高层次的抽象概念，下面以线程举例子： 同步（一个任务的开始必须依赖另一个任务的完成）  单线程： 1231 thread: / &amp;lt;- Task 1 -&amp;gt; / |                           | / &amp;lt;- Task 2">
+<meta name="twitter:image" content="http://wx4.sinaimg.cn/large/a1ac93f3gy1fi3136mbg4j20bj046t8m.jpg">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> 再次理解同步异步和阻塞非阻塞 | MathxH </title>
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br>
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br>
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br>
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br>
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br>
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br>
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              再次理解同步异步和阻塞非阻塞
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2017-07-27T09:30:35+08:00" content="2017-07-27">
+            2017-07-27
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><blockquote>
+<p><em>唉，涉及到网络IO和文件IO的时候又把这些概念混淆了。</em></p>
+</blockquote>
+<hr>
+<h3 id="从编程角度阐释"><a href="#从编程角度阐释" class="headerlink" title="从编程角度阐释"></a>从编程角度阐释</h3><p>异步与同步与单线程或多线程都无关，是以任务的执行顺序有关，是更加高层次的抽象概念，下面以线程举例子：</p>
+<p>同步（一个任务的开始必须依赖另一个任务的完成）</p>
+<ul>
+<li><p>单线程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 thread: / &lt;- Task 1 -&gt; / |</span><br><span class="line">                           | / &lt;- Task 2 -&gt; / |</span><br><span class="line">                                              | / &lt;---- Task 3 ----&gt; / |</span><br></pre></td></tr></table></figure>
+<ul>
+<li>多线程：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">thread A: -&gt; / &lt;- Task 1 -&gt; / |</span><br><span class="line">thread B: ----------------&gt;   | -&gt; / &lt;--- Task 2 ---&gt; / |</span><br><span class="line">thread C: --------------------------------------&gt;       | -&gt; / &lt;- Task 3 -&gt; /</span><br></pre></td></tr></table></figure>
+<p>异步（一个任务的开始不必依赖另一个任务的完成）</p>
+<ul>
+<li>单线程：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 thread : / &lt;---------- Task 1 ----------&gt; /</span><br><span class="line">                            / &lt;---- Task 2 ---&gt; /</span><br><span class="line">                    / &lt;---- Task 3 ----&gt; /</span><br></pre></td></tr></table></figure>
+<ul>
+<li>多线程：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">thread A: -&gt; / &lt;- Task 1 -&gt; /</span><br><span class="line">thread B: -----&gt; / &lt;-------- Task 2 --------&gt; /</span><br><span class="line">thread C: -----------&gt; / &lt;- Task 3 -&gt; /</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>所以说，单线程也可以异步，多线程也可以同步。在多线程同步中，一个线程需要等待另一个线程的完成，所以会阻塞当前线程（操作系统会挂起当前线程），也就是多线程同步过程中，一般会有阻塞。单线程同步一般就不会有阻塞，所以在Socket编程中，在创建socket的时候，一般有block和non-block选项，系统会为了等待数据阻塞当前等待数据的线程，并由其他读取数据完毕的线程唤醒等待的recv线程，而继续运行。如果是选择non-block，那么等待数据的线程不会被挂起，无论网络数据是否到达会继续recv返回执行，需要调用者不停地轮询数据是否到达，到达再读取。</p>
+<p>block和non-block也只是概念，它的底层大部分是由锁来实现的，是锁概念的延伸和高层次的概念映射，比如读写锁，如果写锁被上锁了，那么读操作会被阻塞（读线程被挂起），等到写锁释放，才能继续读。所以，在谈到block和non-block的时候就会涉及到多线程的概念，肯定底层会有多线程的操作。单线程是不可能有阻塞和非阻塞的概念的。</p>
+<p>当然，有人说node.js中的readFile和readFileSync就分别是是异步非阻塞和同步阻塞。而node是单线程的为什么会有block和non-block的概念？因为涉及到阻塞和非阻塞一般是底层可能会有多线程处理IO的操作，nodejs的应用层面是看不到的，因为阻塞的线程是不会自动醒来的，必须要另一个线程来唤醒（Resume）以提示IO的完成。也就是nodejs的应用代码确实是单线程执行的，但是在发起文件IO的时候，肯定会有个IO线程来对文件进行读写，最后通知应用层的js代码。其实以上的说法是不准确的，因为对于文件读写是没有非阻塞这以说法的，因为底层肯定会有阻塞操作等待数据读进缓冲区，还是有锁来阻塞。所以在谈及文件IO的时候我们一般只谈及同步和异步，在谈及网络IO的时候只谈及阻塞和非阻塞。</p>
+<p>当然我也觉得<a href="https://www.zhihu.com/question/19732473" target="_blank" rel="noopener">同步异步和阻塞非阻塞不能单从字面意义上理解</a>。同步和异步关注的是消息通信机制，所谓同步就是caller主动等待callee的结果，也就是说在没有得到调用结果之前，callee就不返回，一旦callee返回了，一定得到返回结果了。异步正好相反，callee被调用之后，caller对于callee的调用就直接返回了，callee通过状态，或者消息，回调函数等机制来把调用的处理结果通知给caller。</p>
+<p>阻塞和非阻塞关注的是caller在等待调用结果（返回值，消息等）时的状态，也就是caller当时的状态。阻塞调用是指callee的被调用结果返回之前，当前的caller线程会被挂起，只有得到结果了，callee才会返回，caller线程被唤醒并继续执行。非阻塞调用是指callee不能得到结果之前，对callee的调用不会阻塞caller的当前线程。</p>
+<p>据知乎上的<a href="https://www.zhihu.com/people/giantchen" target="_blank" rel="noopener">陈硕</a>所说，在处理 IO 的时候，阻塞和非阻塞都是同步 IO。只有使用了特殊的 API 才是异步 IO。</p>
+<p><img src="http://wx4.sinaimg.cn/large/a1ac93f3gy1fi3136mbg4j20bj046t8m.jpg" alt=""></p>
+<p>怎样理解他这句话呢？《Unix网络编程》这大部经典著作其中有段原文：</p>
+<blockquote>
+<p>POSIX defines these two terms as follows:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>A synchronous I/O operation causes the requesting process to be blocked until that I/O operation completes.</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>An asynchronous I/O operation does not cause the requesting process to be blocked.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Using these definitions, the first four I/O models—blocking, nonblocking, I/O multiplexing, and signal-driven I/O—are all synchronous because the actual I/O operation (recvfrom) blocks the process. Only the asynchronous I/O model matches the asynchronous I/O definition.</p>
+</blockquote>
+<p>简单来说就是，对Unix-Like的系统来讲：阻塞式I/O(默认)，非阻塞式I/O(nonblock)，I/O复用(select/poll/epoll)都属于同步I/O，因为它们在数据由内核空间复制回进程缓冲区时都是阻塞的(不能干别的事)。只有异步I/O模型(AIO)是符合异步I/O操作的含义的，即在1数据准备完成、2由内核空间拷贝回缓冲区后 通知进程，在等待通知的这段时间里可以干别的事。</p>
+<h3 id="Reactor模式和Proactor模式"><a href="#Reactor模式和Proactor模式" class="headerlink" title="Reactor模式和Proactor模式"></a>Reactor模式和Proactor模式</h3><p>通常我们谈论事件驱动思想的时候会提到这两个模式，那么这两个模式到底有什么区别呢？</p>
+<p>在Unix标准中的同步IO中的非阻塞IO，也就是NIO（non-block IO），就是基于事件驱动思想的，实现上采用<a href="https://en.wikipedia.org/wiki/Reactor_pattern" target="_blank" rel="noopener">Reactor模式</a>，从程序角度而言，当发起IO的读或写操作时，是非阻塞的；当Socket有流可读或可写入Socket时，操作系统会相应地通知应用程序进行处理，应用再将流读取到缓冲区或写入操作系统。对于网络IO而言，主要有连接建立、流读取及流写入三种事件，Linux 2.6以后的版本采用epoll 方式来实现NIO。</p>
+<p>对于另一种异步IO，也就是AIO（asyn IO），同样是基于事件驱动的思想，实现上通常采用<a href="https://en.wikipedia.org/wiki/Proactor_pattern" target="_blank" rel="noopener">Proactor模式</a>。从程序角度而言，和NIO不同，当进行读写操作时，只需要直接调用API的read或write方法即可。这两种方法均为异步，对于读操作而言，当有流可读取时，操作系统会将可读的流传入read方法的缓冲区，并通知应用程序。对于写操作而言，当操作系统将write方法的流写入完毕时，操作系统主动通知应用程序。与NIO比较而言，AIO一方面简化了程序的编写，流的读取和写入都由操作系统来代替完成，另一方面省去了NIO中程序遍历事件通知队列的代价。windows基于<a href="https://en.wikipedia.org/wiki/Input/output_completion_port" target="_blank" rel="noopener">IOCP</a>实现了AIO，对，IOCP就是异步的，但是Linux目前只有基于Epoll模拟实现的AIO。显然，Linux从Epoll到AIO有一层转换，就是用同步的Epoll来模拟异步，Epoll是Reactor模式，AIO是Proactor模式。  所以这两个模式的关系，你可以简单理解为，Proactor模式是同步Reactor模式的异步体现，Proactor模式的层次更高，简化了程序编写。从复杂度来将，Reactor更反人类，因为Reactor是通知程序员有数据可以读写了，程序员再主动读写数据。Proactor模式是数据读写完毕了，再主动通知程序员。</p>
+<p>需要注意的一点就是Reactor模式一般是单线程实现，几乎所有的Reactor实现的系统都是单线程的，尽管Reactor模式也可以工作在多线程环境下，因为Proactor模式是Reactor的异步形式的变种，所以Proactor模式一般也是单线程实现的，而非多线程。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/IO/" rel="tag">#IO</a>
+          
+            <a href="/blog/tags/同步异步/" rel="tag">#同步异步</a>
+          
+            <a href="/blog/tags/阻塞非阻塞/" rel="tag">#阻塞非阻塞</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/08/01/cert-cpp-four/" rel="prev">CERT C++编码规范翻译（STR）</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/07/19/cert-cpp-three/" rel="next">CERT C++编码规范翻译（CTR）</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image">
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">78</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">103</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="http://www.dendoink.com" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#从编程角度阐释"><span class="nav-number">1.</span> <span class="nav-text">从编程角度阐释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactor模式和Proactor模式"><span class="nav-number">2.</span> <span class="nav-text">Reactor模式和Proactor模式</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright">
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

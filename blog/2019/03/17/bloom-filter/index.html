@@ -1,0 +1,947 @@
+
+<!doctype html>
+<html class="theme-next use-motion theme-next-mala">
+<head><meta name="generator" content="Hexo 3.8.0">
+  
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+<link rel="stylesheet" type="text/css" href="/blog/css/main.css?v=0.4.5.1">
+
+
+    <meta name="description" content="System Software Engineer">
+
+
+
+  <meta name="keywords" content="Bloom Filter,数据结构与算法,">
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/blog/favicon.ico?v=0.4.5.1">
+
+
+<meta name="description" content="布隆过滤器是什么 它是一个数据结构，而且一般传统的科班的算法书不会讲到。它可以用来判断某个元素是否在集合内，具有执行速度快和内存占用小的特点。 布隆过滤器高效的插入和查询代价就是：Bloom Filter是一个基于概率的数据结构：它只能告诉我们一个元素的以下两种查询结果：  绝对不在集合内 可能在集合内   针对第二点，也就说可能会有false positive。朴素的布隆过滤器一般是不支持删除操">
+<meta name="keywords" content="Bloom Filter,数据结构与算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现一个简单的高性能布隆过滤器">
+<meta property="og:url" content="https://alexiachen.github.io/blog/2019/03/17/bloom-filter/index.html">
+<meta property="og:site_name" content="MathxH">
+<meta property="og:description" content="布隆过滤器是什么 它是一个数据结构，而且一般传统的科班的算法书不会讲到。它可以用来判断某个元素是否在集合内，具有执行速度快和内存占用小的特点。 布隆过滤器高效的插入和查询代价就是：Bloom Filter是一个基于概率的数据结构：它只能告诉我们一个元素的以下两种查询结果：  绝对不在集合内 可能在集合内   针对第二点，也就说可能会有false positive。朴素的布隆过滤器一般是不支持删除操">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://wx1.sinaimg.cn/large/a1ac93f3gy1g15t747vd0j203p01q3ya.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/large/a1ac93f3gy1g15tqjkxm7j209701tglf.jpg">
+<meta property="og:updated_time" content="2019-03-17T09:41:40.609Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="实现一个简单的高性能布隆过滤器">
+<meta name="twitter:description" content="布隆过滤器是什么 它是一个数据结构，而且一般传统的科班的算法书不会讲到。它可以用来判断某个元素是否在集合内，具有执行速度快和内存占用小的特点。 布隆过滤器高效的插入和查询代价就是：Bloom Filter是一个基于概率的数据结构：它只能告诉我们一个元素的以下两种查询结果：  绝对不在集合内 可能在集合内   针对第二点，也就说可能会有false positive。朴素的布隆过滤器一般是不支持删除操">
+<meta name="twitter:image" content="http://wx1.sinaimg.cn/large/a1ac93f3gy1g15t747vd0j203p01q3ya.jpg">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mala',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> 实现一个简单的高性能布隆过滤器 | MathxH </title>
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/blog/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">MathxH</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br>
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br>
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br>
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br>
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/blog/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br>
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resume">
+          <a href="/blog/resume" rel="section">
+            <i class="menu-item-icon icon-next-resume"></i> <br>
+            menu.resume
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    
+      
+
+      
+        <style type="text/css">
+
+    .circle {
+        width: 40px;
+        height: 40px;
+        background: #555 no-repeat;
+        cursor: move;
+    }
+
+    .assist-btn {
+        position: fixed;
+        top: 50％;
+        left: 10px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        outline: none;
+        border: none;
+        color: #87daff;
+    }
+
+</style>
+
+<script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript">
+    // 浮动圆点展开与收缩
+    /*
+    $(function () {
+        var assist_box = $('.assist-box');
+        $('#assist_btn').hover(function () {
+            assist_box.stop().show(300);
+        }, function () {
+            assist_box.stop().hide(150);
+        })
+    });
+    */  
+    //浮动圆点拖动
+    $(function () {
+        var box = document.getElementById('assist_btn');
+        box.onmousedown = function (event) {
+            var e = event || window.event,
+                t = e.target || e.srcElement,
+                // 鼠标按下时的坐标x1,y1
+                x1 = e.clientX,
+                y1 = e.clientY,
+                //鼠标按下时的左右偏移量
+                dragLeft = this.offsetLeft,
+                dragTop = this.offsetTop;
+
+            document.onmousemove = function (event) {
+                var e = event || window.event,
+                    t = e.target || e.srcElement,
+                    // 鼠标移动时的动态坐标
+                    x2 = e.clientX,
+                    y2 = e.clientY,
+                    // 鼠标移动时的坐标的变化量
+                    x = x2 - x1,
+                    y = y2 - y1;
+                box.style.left = (dragLeft + x) + 'px';
+                box.style.top = (dragTop + y) + 'px';
+            }
+
+            document.onmouseup = function () {
+                this.onmousemove = null;
+            }
+        }
+    });
+
+/*
+    $whitesmoke   = #f5f5f5
+    $gainsboro    = #eee
+    $gray-lighter = #ddd
+    $grey-light   = #ccc
+    $grey         = #bbb
+    $grey-dark    = #999
+    $grey-dim     = #666
+    $black-light  = #555
+    $black-deep   = #222
+    $red          = #ff2a2a
+    $blue-bright  = #87daff
+    $blue         = #0684bd
+    $blue-deep    = #262a30
+*/
+    // white theme
+    var body = {color: "#555", background: "white"};
+    var a_tag = {color: "#222"};
+    var header = { background: "#f5f5f5"};
+    var logo_line_i = {background: "#222"};
+    var post_code = {background: "#eee", color: "#222"};
+
+    function switch_theme() {
+        $("body").css(body);
+        $("a:not('.links-of-author-item a, .site-state-item a, .site-state-posts a, .feed-link a, .motion-element a, .post-tags a')").css(a_tag);
+        $(".header, .footer").css(header);
+        $(".logo-line-before i, .logo-line-after i").css(logo_line_i);
+        $(".post code").css(post_code);
+        $("#idhyt-surprise-ball #idhyt-surprise-ball-animation .drag").css(a_tag);
+        $(".post-title-link, .posts-expand .post-meta, .post-comments-count, .disqus-comment-count, .post-category a, .post-nav-next a, .post-nav-item a").css(a_tag);
+        
+        $("#assist_btn").hide();
+    }
+
+    $(function () {
+        $("#assist_btn").dblclick(function() {
+            switch_theme();
+        });
+    });
+
+</script>
+
+<div>
+
+    <button class="assist-btn circle" id="assist_btn">
+        亮
+    </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+      
+
+    
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              实现一个简单的高性能布隆过滤器
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2019-03-17T12:26:00+08:00" content="2019-03-17">
+            2019-03-17
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="布隆过滤器是什么"><a href="#布隆过滤器是什么" class="headerlink" title="布隆过滤器是什么"></a>布隆过滤器是什么</h2><hr>
+<p>它是一个数据结构，而且一般传统的科班的算法书不会讲到。它可以用来判断某个元素是否在集合内，具有执行速度快和内存占用小的特点。</p>
+<p>布隆过滤器高效的插入和查询代价就是：<a href="https://en.wikipedia.org/wiki/Bloom_filter" target="_blank" rel="noopener">Bloom Filter</a>是一个基于概率的数据结构：它只能告诉我们一个元素的以下两种查询结果：</p>
+<ul>
+<li>绝对不在集合内</li>
+<li>可能在集合内 </li>
+</ul>
+<p>针对第二点，也就说可能会有false positive。朴素的布隆过滤器一般是不支持删除操作的，但是也有针对具体应用而产生支持删除操作的布隆过滤器。这个延伸问题我不打算涉及，感兴趣可以查找下相关论文。</p>
+<h2 id="布隆过滤器的简单原理以及实现"><a href="#布隆过滤器的简单原理以及实现" class="headerlink" title="布隆过滤器的简单原理以及实现"></a>布隆过滤器的简单原理以及实现</h2><hr>
+<h3 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h3><p>布隆过滤器的一个基础的数据结构就是一个<a href="https://en.wikipedia.org/wiki/Bit_array" target="_blank" rel="noopener">Bit Vector</a> 。 其原理非常简单，这个bit 数组是带有下标索引的，一个索引对应一个bit状态，实际就是0或1。 一般状态1就是元素存在的标识，状态0就是元素不存在的标识。</p>
+<p>00000000000100010100101010101010101010101010100101010000001111100111</p>
+<p>以上的文本示例就是一个长度为N的比特向量，当然初始状态但是是全为0，但一旦向布隆过滤器插入一个元素的时候，需要对这个元素进行多次hash运算，一次运算的结果为bit vector的一个下标索引，然后把这个索引对应的bit状态设置为1，当多次Hash运算计算下标完成并设置为1，这样元素就算插入完成了。查询的时候也是把元素进行多次hash运算，然后检查对应索引上的bit状态是否为1，如果多次运算后的bit为1就是可能存在，如果其中有一个bit为0，就是绝对不存在。</p>
+<p>以上就是布隆过滤器的最基本原理了。是不是很简单？ 但是要对其进行分析就需要一定难度了，其中需要你懂些基本的数学知识，比如如果你要设计一个布隆过滤器，以下几个方面需要你来取舍：</p>
+<ul>
+<li><p>长度为m的比特向量，这个长度需要多长？m需要多大？也就是说需要几个bit？</p>
+</li>
+<li><p>进行多次hash运算，这个多次是需要不同的k个Hash函数的，那么这k个Hash函数怎么选择？ MD5，SHA256还是其他？这个K的最优值又是什么？</p>
+</li>
+<li><p>已知当前比特向量已经插入n个元素了，那么过滤器判断的误报率(false positive)又是怎样的？毕竟是概率性数据结构。</p>
+</li>
+</ul>
+<p>如果以上三个要点实现过滤器的设计者没有考虑清楚，很可能他设计出来的过滤器根本不可用，误报率上升到一定程度就没有意义了。</p>
+<h3 id="Hash函数的选择"><a href="#Hash函数的选择" class="headerlink" title="Hash函数的选择"></a>Hash函数的选择</h3><p>布隆过滤器里的Hash函数最好是要选择<a href="https://en.wiktionary.org/wiki/independent_function#English" target="_blank" rel="noopener">彼此独立</a>的, 而且是要<a href="https://en.wikipedia.org/wiki/Discrete_uniform_distribution" target="_blank" rel="noopener">离散均匀分布</a>的。也就是说Hash函数的结果要等可能（等概率）的落在一个[a, b]区间任的一点（点是非连续的，离散的），如果概率不等，那么在某个bit下标区间内误报的概率就会上升。当然最后，Hash函数还要尽可能的快，虽然是Hash函数时间复杂度都是常数级别，最好是降低下常数吧。</p>
+<p>所以适合于做布隆过滤器的Hash函数有： </p>
+<ul>
+<li><p><a href="https://en.wikipedia.org/wiki/MurmurHash" target="_blank" rel="noopener">murmur系列</a>Hash函数</p>
+</li>
+<li><p><a href="https://en.wikipedia.org/wiki/Fowler–Noll–Vo_hash_function" target="_blank" rel="noopener">Fowler–Noll–Vo系列</a>Hash函数</p>
+</li>
+</ul>
+<p>当然还有其他的。如果你仔细分析，你会发现以上两个系列的Hash函数都不是为密码学设计的，一般来说不是以密码学为目的设计的Hash函数速度会更快。所以<a href="https://en.wikipedia.org/wiki/MD5" target="_blank" rel="noopener">MD5</a>， <a href="https://en.wikipedia.org/wiki/SHA-1" target="_blank" rel="noopener">SHA-1</a>， <a href="https://en.wikipedia.org/wiki/SHA-2" target="_blank" rel="noopener">SHA-2</a>这些算法就不太合适用来做布隆过滤器的Hash函数。</p>
+<p>如果你有所怀疑的话，那么可以参考一下这个<a href="https://github.com/bitly/dablooms/pull/19" target="_blank" rel="noopener">PR</a>，当把布隆过滤器的实现从MD5切换到murmur时，极大的提高了性能。</p>
+<p>当然，也有其他布隆过滤器采用为密码学设计的Hash算法的，这里暂时先不去研究为什么了。</p>
+<h3 id="比特向量已经设计为多大？"><a href="#比特向量已经设计为多大？" class="headerlink" title="比特向量已经设计为多大？"></a>比特向量已经设计为多大？</h3><p>布隆过滤器的一个优良特性就是可以调整过滤器的误报率。拥有一个大的比特向量的过滤器会拥有比一个相对较小的过滤器有着更低的误报率。</p>
+<p>误报率会近似于以下公式：</p>
+<p> <img src="http://wx1.sinaimg.cn/large/a1ac93f3gy1g15t747vd0j203p01q3ya.jpg" alt=""></p>
+<p> 所以你只需要先确定可能插入的数据集的容量大小n, 然后再调整k和m来为你的场景配置过滤器。</p>
+<p>所以根据以上公式，你不得不带出来另一个问题，就是K的取值是多少？ 也就是说，几个Hash函数才合适？</p>
+<p>布隆过滤器使用的Hash函数越多运行速度就会越慢。但是如果Hash函数过少，又会遇到误报率高的问题。所以这个问题上需要认真考虑权衡。</p>
+<p>在创建布隆过滤器的时候需要确定k的值，也就是说你需要提前规划n的变动范围。而一旦你这样做了，你依然需要确定m（比特向量长度）和 k (Hash函数的个数）的值。</p>
+<p>似乎这是一个十分困难的优化问题，但幸运的是，对于给定的m和n，有一个函数可以帮我们确定最优的k值(公式来自于wiki): </p>
+<p><img src="http://wx1.sinaimg.cn/large/a1ac93f3gy1g15tqjkxm7j209701tglf.jpg" alt=""></p>
+<p>当然，有篇论文叫做<a href="https://www.eecs.harvard.edu/~michaelm/postscripts/tr-02-05.pdf" target="_blank" rel="noopener">Building a better bloom filter（Adam Kirsch）</a>已经证明了，其中布隆过滤器只需要2个Hash函数就可以模拟k个Hash函数，并且不会降低精准度。论文中指出以下公式：</p>
+<p>Gi(x) = H1(x) +iH2(x).</p>
+<p>H1，H2分别是两个互相独立并且离散均匀分布的两个Hash函数，其中 0 &lt;= i &lt;= k - 1 。</p>
+<p>当然对于比特向量的索引下标就是最终Hash的结果对向量大小取模就可以了：</p>
+<p>index = [hash-value] mod [size of vector]  </p>
+<p>所以，可以通过以下4个步骤来确定过滤器的大小：</p>
+<ul>
+<li>1.确定n的变动范围</li>
+<li>2.选定m的值</li>
+<li>3.通过公式计算k的最优值（k可以用2个Hash函数的线性组合代替）</li>
+<li>4.通过m，n，k计算误报率，如果误报率不在你接受的限度，那么你需要重回步骤2，否则就结束</li>
+</ul>
+<h3 id="基本实现"><a href="#基本实现" class="headerlink" title="基本实现"></a>基本实现</h3><p>如果用C++模拟比特向量，可以用std::vector\&lt;bool>来模拟，一般来说别担心bool在vector里面每个元素是占sizeof(bool)个字节。反而这<a href="https://en.cppreference.com/w/cpp/container/vector_bool" target="_blank" rel="noopener">很可能是被优化了</a>，在bool向量中，bool可能被优化成只占一个Bit 。 当然这具体看实现（implementation defined），一般来说占用空间是被优化掉了。</p>
+<p>过滤器的add方法:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// m = size of bit vector</span></span><br><span class="line"><span class="comment">// Gi(x)= H1(x) + i * H2(x)</span></span><br><span class="line"><span class="comment">// index = Gi(x) mod m</span></span><br><span class="line"><span class="keyword">uint64_t</span> indexHash(<span class="keyword">uint8_t</span> i, <span class="keyword">uint64_t</span> hashA, <span class="keyword">uint64_t</span> hashB, <span class="keyword">uint64_t</span> m)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> (hashA + i * hashB) % m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// you need to serialize an object to bytes array</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addObject</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">uint8_t</span>&gt;&amp; data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// you need to choose HashA and HashB</span></span><br><span class="line">    hash_a = HashA(data.data(),data.size());</span><br><span class="line">    hash_b = HashB(data.data(),data.size());</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= k - <span class="number">1</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">uint64_t</span> index = indexHash(i, hash_a, hash_b, bit_vector.size()); </span><br><span class="line">        bit_vector[index] = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>过滤器的contains方法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// you need to serialize an object to bytes array</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">maybe_contains</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">uint8_t</span>&gt;&amp; data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    hash_a = HashA(data.data(),data.size());</span><br><span class="line">    hash_b = HashB(data.data(),data.size());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= k - <span class="number">1</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">uint64_t</span> index = indexHash(i, hash_a, hash_b, bit_vector.size()); </span><br><span class="line">        <span class="keyword">if</span>(!bit_vector[index]) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上实现的过滤，查找在亿级对象数据量中判断某对象是否存在基本平均响应在纳秒时间。</p>
+<p>一般来说，如果不是出什么特别的差错，在大部分场景下误报率几乎可以忍受。</p>
+<p>EOF</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Bloom-Filter/" rel="tag">#Bloom Filter</a>
+          
+            <a href="/blog/tags/数据结构与算法/" rel="tag">#数据结构与算法</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2019/03/10/auto-complete-markov-chain/" rel="next">用马尔科夫链来做自动补全</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div>
+      
+        <style type="text/css">
+
+    .donate_bar {
+        text-align: center;
+        margin-top : 5%;
+    }
+
+    .donate_bar.hidden {
+        display:none;
+    }
+/*
+    .donate_bar a.btn_donate {
+        display: inline-block;
+        width: 82px;
+        height: 82px;
+        margin-left:auto;
+        margin-right:auto;
+
+        background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+        _background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+
+        -webkit-transition: background 0s;
+        -moz-transition: background 0s;
+        -o-transition: background 0s;
+        -ms-transition: background 0s;
+        transition: background 0s;
+    }
+*/
+    .donate_bar a.btn_donate:hover { 
+        // background-position: 0px -82px;
+        color: #87daff
+    }
+
+    .donate_bar .donate_txt {
+        display: block;
+        color: #9d9d9d;
+        font: 14px/2 "Microsoft Yahei";
+    }
+
+    .bold { 
+        font-weight: bold; 
+    }
+
+    .post-donate a {
+        border-bottom: 0px;
+    }
+
+    #donate_guide table {
+        border: none;
+    }
+
+    #donate_guide td {
+        border-bottom: none;
+        border-right: none;
+        background: #333333;
+        valign: top;
+    }
+
+</style>
+
+
+
+      
+    </div>
+
+    <div class="post-spread">
+      
+        <div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+	<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+	<a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/blog/images/default_avatar.jpg" alt="MathxH Chen" itemprop="image">
+          <p class="site-author-name" itemprop="name">MathxH Chen</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">System Software Engineer</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/blog/archives">
+              <span class="site-state-item-count">78</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/blog/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/blog/tags">
+              <span class="site-state-item-count">103</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/AlexiaChen" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/foo_hack/" target="_blank">豆瓣</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.linkedin.com/in/mathxhchen" target="_blank">领英</a>
+              </span>
+            
+          
+        </div>
+
+        <div class="links-of-friendly motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+              <a href="http://www.dendoink.com" target="_blank">老唐的博客</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="https://songtianyi.github.io" target="_blank">songtianyi的博客</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#布隆过滤器是什么"><span class="nav-number">1.</span> <span class="nav-text">布隆过滤器是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#布隆过滤器的简单原理以及实现"><span class="nav-number">2.</span> <span class="nav-text">布隆过滤器的简单原理以及实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本原理"><span class="nav-number">2.1.</span> <span class="nav-text">基本原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hash函数的选择"><span class="nav-number">2.2.</span> <span class="nav-text">Hash函数的选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#比特向量已经设计为多大？"><span class="nav-number">2.3.</span> <span class="nav-text">比特向量已经设计为多大？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本实现"><span class="nav-number">2.4.</span> <span class="nav-text">基本实现</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright">
+  
+  &copy; &nbsp;  2013 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MathxH Chen</span>
+
+  <div class="powered-by"></div>
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme by <a class="theme-link" href="http://mathxh-love.org/blog">MathxH Chen</a>.<a class="theme-link" href="https://github.com/AlexiaChen/MyBlogSrc/tree/master/themes/magiclamp">Mala</a>
+  </div>
+
+  <!-- busuanzi -->
+  
+    <div class="powered-by">
+    <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+    </div>
+  
+
+</div>
+
+<!--
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mala
+  </a>
+</div>
+-->
+
+<!--
+<div class="powered-by"></div>
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+-->
+
+<!-- busuanzi -->
+<!--
+
+  <div class="theme-info">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<a class="theme-link"><span id="busuanzi_value_site_pv"></span></a>次
+    </span>
+</div>
+
+-->
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/blog/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/blog/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/blog/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/blog/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/blog/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/blog/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/blog/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
