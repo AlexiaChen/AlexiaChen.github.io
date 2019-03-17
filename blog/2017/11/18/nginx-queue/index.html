@@ -5,14 +5,14 @@
   
 
   
-  <title>对Nginx队列源码ngx_queue_t的一次分析 | MathxH</title>
+  <title>对Nginx队列源码ngx_queue_t的一次分析 | MathxH&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="前言 前几天公司的群里讨论了Nginx内部实现的一个数据结构，ngx_queue_t。 实质上是一个双向链表，但是当时讨论没有讨论出结果来，原因我自己也被绕晕了，今天本着从问题本身出发，不被别人的想法思路所左右，不看网络上任何文章的分析，好好写测试用例来证明自己的想法，其实那天的问题是围绕着两个C语言的宏展开的，那么这篇文章也会重点讲解这两个宏的意义：offsetof 和 ngx_queue_da">
 <meta name="keywords" content="数据结构与算法,双向链表">
 <meta property="og:type" content="article">
 <meta property="og:title" content="对Nginx队列源码ngx_queue_t的一次分析">
 <meta property="og:url" content="https://alexiachen.github.io/blog/2017/11/18/nginx-queue/index.html">
-<meta property="og:site_name" content="MathxH">
+<meta property="og:site_name" content="MathxH&#39;s Blog">
 <meta property="og:description" content="前言 前几天公司的群里讨论了Nginx内部实现的一个数据结构，ngx_queue_t。 实质上是一个双向链表，但是当时讨论没有讨论出结果来，原因我自己也被绕晕了，今天本着从问题本身出发，不被别人的想法思路所左右，不看网络上任何文章的分析，好好写测试用例来证明自己的想法，其实那天的问题是围绕着两个C语言的宏展开的，那么这篇文章也会重点讲解这两个宏的意义：offsetof 和 ngx_queue_da">
 <meta property="og:locale" content="en">
 <meta property="og:updated_time" content="2019-01-04T15:05:55.861Z">
@@ -20,7 +20,7 @@
 <meta name="twitter:title" content="对Nginx队列源码ngx_queue_t的一次分析">
 <meta name="twitter:description" content="前言 前几天公司的群里讨论了Nginx内部实现的一个数据结构，ngx_queue_t。 实质上是一个双向链表，但是当时讨论没有讨论出结果来，原因我自己也被绕晕了，今天本着从问题本身出发，不被别人的想法思路所左右，不看网络上任何文章的分析，好好写测试用例来证明自己的想法，其实那天的问题是围绕着两个C语言的宏展开的，那么这篇文章也会重点讲解这两个宏的意义：offsetof 和 ngx_queue_da">
   
-    <link rel="alternate" href="/blog/atom.xml" title="MathxH" type="application/atom+xml">
+    <link rel="alternate" href="/blog/atom.xml" title="MathxH&#39;s Blog" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -39,11 +39,11 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/blog/" id="logo">MathxH</a>
+        <a href="/blog/" id="logo">MathxH&#39;s Blog</a>
       </h1>
       
         <h2 id="subtitle-wrap">
-          <a href="/blog/" id="subtitle">MathxH</a>
+          <a href="/blog/" id="subtitle">just life in general</a>
         </h2>
       
     </div>
@@ -129,7 +129,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://alexiachen.github.io/blog/2017/11/18/nginx-queue/" data-id="cjtctmche007aqfqfvgbjl5pb" class="article-share-link">Share</a>
+      <a data-url="https://alexiachen.github.io/blog/2017/11/18/nginx-queue/" data-id="cjtctqoow0079ufqfje28ibl1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/双向链表/">双向链表</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/数据结构与算法/">数据结构与算法</a></li></ul>
