@@ -1,206 +1,112 @@
-<!DOCTYPE html>
 <html>
 <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="utf-8">
-  
+	
+	<title></title>
+	<meta name="keywords" content="fzb.me,冯宗宝,冯宗宝的blog">
 
-  
-  <title>Tag: 线程 | MathxH&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="System Software Engineer">
-<meta property="og:type" content="website">
-<meta property="og:title" content="MathxH&#39;s Blog">
-<meta property="og:url" content="https://alexiachen.github.io/blog/tags/线程/index.html">
-<meta property="og:site_name" content="MathxH&#39;s Blog">
-<meta property="og:description" content="System Software Engineer">
-<meta property="og:locale" content="en">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MathxH&#39;s Blog">
-<meta name="twitter:description" content="System Software Engineer">
-  
-    <link rel="alternate" href="/blog/atom.xml" title="MathxH&#39;s Blog" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/blog/css/style.css">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+	   <link href="/blog/css/main.css?v=3" rel="stylesheet" type="text/css">
+    
+        <script src="/blog/js/util.js"></script>
+        <script>
+            if(isMobile()) {
+                loadjscssfile('../css/mobile.css', 'css');
+            } else {
+                loadjscssfile('../css/desktop.css', 'css');
+            }
+        </script> 
+    
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+
+    
+	<link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=3">
+    
+    
+
 </head>
-</html>
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/blog/" id="logo">MathxH&#39;s Blog</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/blog/" id="subtitle">just life in general</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/blog/">Home</a>
-        
-          <a class="main-nav-link" href="/blog/archives">Archives</a>
-        
-          <a class="main-nav-link" href="/blog/about">About</a>
-        
-          <a class="main-nav-link" href="/blog/resume">Resume</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        <a></a>
-        
-          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://alexiachen.github.io/blog"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/blog/archives/2018" class="archive-year">2018</a>
+<nav class="navbar navbar-default navbar-fixed-top" style="opacity: .9" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">MathxH&#39;s Blog</a>
         </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/blog/2018/03/20/why-threads-bad-idea/" class="archive-article-date">
-  <time datetime="2018-03-20T06:00:00.000Z" itemprop="datePublished">Mar 20</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/blog/2018/03/20/why-threads-bad-idea/">为什么使用多线程在大多数情况下是个坏注意？</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/blog/tags/Bloom-Filter/" style="font-size: 10px;">Bloom Filter</a> <a href="/blog/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/blog/tags/CERT/" style="font-size: 18.33px;">CERT</a> <a href="/blog/tags/CMake/" style="font-size: 10px;">CMake</a> <a href="/blog/tags/DLL/" style="font-size: 10px;">DLL</a> <a href="/blog/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/blog/tags/IM/" style="font-size: 13.33px;">IM</a> <a href="/blog/tags/IO/" style="font-size: 10px;">IO</a> <a href="/blog/tags/Java/" style="font-size: 10px;">Java</a> <a href="/blog/tags/Linux/" style="font-size: 13.33px;">Linux</a> <a href="/blog/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/blog/tags/Oracle/" style="font-size: 10px;">Oracle</a> <a href="/blog/tags/Qos/" style="font-size: 11.67px;">Qos</a> <a href="/blog/tags/RFB协议/" style="font-size: 10px;">RFB协议</a> <a href="/blog/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/blog/tags/Scala/" style="font-size: 10px;">Scala</a> <a href="/blog/tags/TCP-IP/" style="font-size: 10px;">TCP/IP</a> <a href="/blog/tags/VNC协议/" style="font-size: 10px;">VNC协议</a> <a href="/blog/tags/Visual-Studio/" style="font-size: 10px;">Visual Studio</a> <a href="/blog/tags/Win32/" style="font-size: 13.33px;">Win32</a> <a href="/blog/tags/Y组合子/" style="font-size: 10px;">Y组合子</a> <a href="/blog/tags/bat/" style="font-size: 10px;">bat</a> <a href="/blog/tags/ioccc/" style="font-size: 10px;">ioccc</a> <a href="/blog/tags/lambda演算/" style="font-size: 10px;">lambda演算</a> <a href="/blog/tags/windows/" style="font-size: 11.67px;">windows</a> <a href="/blog/tags/上下文无关文法/" style="font-size: 10px;">上下文无关文法</a> <a href="/blog/tags/事业/" style="font-size: 10px;">事业</a> <a href="/blog/tags/互联网/" style="font-size: 10px;">互联网</a> <a href="/blog/tags/人生/" style="font-size: 10px;">人生</a> <a href="/blog/tags/传统行业/" style="font-size: 10px;">传统行业</a> <a href="/blog/tags/信息安全/" style="font-size: 10px;">信息安全</a> <a href="/blog/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/blog/tags/函数式编程/" style="font-size: 11.67px;">函数式编程</a> <a href="/blog/tags/单例模式/" style="font-size: 10px;">单例模式</a> <a href="/blog/tags/双向链表/" style="font-size: 10px;">双向链表</a> <a href="/blog/tags/可计算性/" style="font-size: 10px;">可计算性</a> <a href="/blog/tags/同步异步/" style="font-size: 10px;">同步异步</a> <a href="/blog/tags/团队管理/" style="font-size: 11.67px;">团队管理</a> <a href="/blog/tags/多核编程/" style="font-size: 10px;">多核编程</a> <a href="/blog/tags/多线程编程/" style="font-size: 10px;">多线程编程</a> <a href="/blog/tags/天体物理/" style="font-size: 10px;">天体物理</a> <a href="/blog/tags/套路/" style="font-size: 10px;">套路</a> <a href="/blog/tags/学术/" style="font-size: 10px;">学术</a> <a href="/blog/tags/宇宙学/" style="font-size: 10px;">宇宙学</a> <a href="/blog/tags/性能优化/" style="font-size: 10px;">性能优化</a> <a href="/blog/tags/技术/" style="font-size: 10px;">技术</a> <a href="/blog/tags/指令重排序/" style="font-size: 10px;">指令重排序</a> <a href="/blog/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/blog/tags/敏捷开发/" style="font-size: 10px;">敏捷开发</a> <a href="/blog/tags/数据压缩/" style="font-size: 10px;">数据压缩</a> <a href="/blog/tags/数据库/" style="font-size: 10px;">数据库</a> <a href="/blog/tags/数据恢复/" style="font-size: 10px;">数据恢复</a> <a href="/blog/tags/数据结构与算法/" style="font-size: 11.67px;">数据结构与算法</a> <a href="/blog/tags/旅行/" style="font-size: 10px;">旅行</a> <a href="/blog/tags/无线网卡/" style="font-size: 10px;">无线网卡</a> <a href="/blog/tags/有限自动机/" style="font-size: 10px;">有限自动机</a> <a href="/blog/tags/构建工具/" style="font-size: 10px;">构建工具</a> <a href="/blog/tags/模板元编程/" style="font-size: 10px;">模板元编程</a> <a href="/blog/tags/民主/" style="font-size: 11.67px;">民主</a> <a href="/blog/tags/汇编语言/" style="font-size: 10px;">汇编语言</a> <a href="/blog/tags/消息推送/" style="font-size: 10px;">消息推送</a> <a href="/blog/tags/混乱代码/" style="font-size: 10px;">混乱代码</a> <a href="/blog/tags/物联网/" style="font-size: 10px;">物联网</a> <a href="/blog/tags/猎人/" style="font-size: 10px;">猎人</a> <a href="/blog/tags/理想/" style="font-size: 10px;">理想</a> <a href="/blog/tags/理论计算机/" style="font-size: 10px;">理论计算机</a> <a href="/blog/tags/生活/" style="font-size: 13.33px;">生活</a> <a href="/blog/tags/研究/" style="font-size: 10px;">研究</a> <a href="/blog/tags/程序语言理论/" style="font-size: 15px;">程序语言理论</a> <a href="/blog/tags/类型系统/" style="font-size: 10px;">类型系统</a> <a href="/blog/tags/线程/" style="font-size: 10px;">线程</a> <a href="/blog/tags/线程安全/" style="font-size: 10px;">线程安全</a> <a href="/blog/tags/缓存/" style="font-size: 10px;">缓存</a> <a href="/blog/tags/编程范式/" style="font-size: 10px;">编程范式</a> <a href="/blog/tags/编程语言/" style="font-size: 10px;">编程语言</a> <a href="/blog/tags/编译原理/" style="font-size: 11.67px;">编译原理</a> <a href="/blog/tags/美国/" style="font-size: 10px;">美国</a> <a href="/blog/tags/职业生涯/" style="font-size: 10px;">职业生涯</a> <a href="/blog/tags/自然语言处理/" style="font-size: 10px;">自然语言处理</a> <a href="/blog/tags/自由/" style="font-size: 11.67px;">自由</a> <a href="/blog/tags/英语/" style="font-size: 10px;">英语</a> <a href="/blog/tags/装修/" style="font-size: 10px;">装修</a> <a href="/blog/tags/计算机体系结构/" style="font-size: 10px;">计算机体系结构</a> <a href="/blog/tags/计算机科学/" style="font-size: 10px;">计算机科学</a> <a href="/blog/tags/计算机网络/" style="font-size: 11.67px;">计算机网络</a> <a href="/blog/tags/计算理论/" style="font-size: 11.67px;">计算理论</a> <a href="/blog/tags/词法分析/" style="font-size: 10px;">词法分析</a> <a href="/blog/tags/诗歌/" style="font-size: 10px;">诗歌</a> <a href="/blog/tags/语义学/" style="font-size: 10px;">语义学</a> <a href="/blog/tags/调试/" style="font-size: 11.67px;">调试</a> <a href="/blog/tags/软件工程/" style="font-size: 16.67px;">软件工程</a> <a href="/blog/tags/软件开发/" style="font-size: 10px;">软件开发</a> <a href="/blog/tags/软件调试/" style="font-size: 10px;">软件调试</a> <a href="/blog/tags/远程桌面/" style="font-size: 10px;">远程桌面</a> <a href="/blog/tags/逻辑/" style="font-size: 11.67px;">逻辑</a> <a href="/blog/tags/重构/" style="font-size: 10px;">重构</a> <a href="/blog/tags/错误处理/" style="font-size: 10px;">错误处理</a> <a href="/blog/tags/闭包/" style="font-size: 10px;">闭包</a> <a href="/blog/tags/阻塞非阻塞/" style="font-size: 10px;">阻塞非阻塞</a> <a href="/blog/tags/项目管理/" style="font-size: 11.67px;">项目管理</a> <a href="/blog/tags/马尔科夫链/" style="font-size: 10px;">马尔科夫链</a> <a href="/blog/tags/驱动开发/" style="font-size: 10px;">驱动开发</a> <a href="/blog/tags/黑洞/" style="font-size: 10px;">黑洞</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/11/">November 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/09/">September 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/08/">August 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/07/">July 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/06/">June 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/05/">May 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/03/">March 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/02/">February 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2013/07/">July 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2013/06/">June 2013</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/blog/2019/03/17/bloom-filter/">实现一个简单的高性能布隆过滤器</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2019/03/10/auto-complete-markov-chain/">用马尔科夫链来做自动补全</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/12/15/manjaro-rtl8821ce/">manjaro下安装配置无线网卡驱动</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/11/11/cpp-closure/">C++的闭包</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/10/15/finite-automaton/">最简单的计算机之有限自动机</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2013-2019 MathxH Chen<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/blog/" class="mobile-nav-link">Home</a>
-  
-    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/blog/about" class="mobile-nav-link">About</a>
-  
-    <a href="/blog/resume" class="mobile-nav-link">Resume</a>
-  
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+            
+                
+                    <li class="active">
+                        <a href="/blog/"> Blog</a>
+                    </li>
+                
+                    <li>
+                        <a href="/blog/apollo"> Apollo</a>
+                    </li>
+                
+                    <li>
+                        <a href="/blog/beanstalkd"> Beanstalkd</a>
+                    </li>
+                
+                    <li>
+                        <a href="/blog/about"> About</a>
+                    </li>
+                
+                    <li>
+                        <a href="https:github.com/mickeyouyou"> GitHub</a>
+                    </li>
+                
+            
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
 </nav>
-    
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<div class="row" style="padding-top: 70px">
+    <div class="container center-block">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Blog</h3>
+                </div>
+                <ul class="list-group">
+                    
+                    
+                    
+<li class="list-group-item title">
+    <a target="_blank" href="/blog/2018/03/20/why-threads-bad-idea/">为什么使用多线程在大多数情况下是个坏注意？</a>
+</li>
 
 
-  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
-  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+<div style="display:none">
+<script src="http://s4.cnzz.com/stat.php?id=&web_id=" language="JavaScript"></script>
+</div>
+    </div>
+</div>
 
 
-<script src="/blog/js/script.js"></script>
 
 
-
-  </div>
 </body>
 </html>

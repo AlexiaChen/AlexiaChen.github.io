@@ -1,708 +1,173 @@
-<!DOCTYPE html>
 <html>
 <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="utf-8">
-  
+	
+	<title>MathxH&#39;s Blog</title>
+	<meta name="keywords" content="fzb.me,冯宗宝,冯宗宝的blog">
 
-  
-  <title>MathxH&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="System Software Engineer">
-<meta property="og:type" content="website">
-<meta property="og:title" content="MathxH&#39;s Blog">
-<meta property="og:url" content="https://alexiachen.github.io/blog/page/7/index.html">
-<meta property="og:site_name" content="MathxH&#39;s Blog">
-<meta property="og:description" content="System Software Engineer">
-<meta property="og:locale" content="en">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MathxH&#39;s Blog">
-<meta name="twitter:description" content="System Software Engineer">
-  
-    <link rel="alternate" href="/blog/atom.xml" title="MathxH&#39;s Blog" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/blog/css/style.css">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+        <link href="/blog/css/home.css?v=3" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="/blog/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/blog/css/bootstrap-theme.min.css">
+    
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+
+    
+	<link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=3">
+    
+    
+
 </head>
-</html>
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/blog/" id="logo">MathxH&#39;s Blog</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/blog/" id="subtitle">just life in general</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/blog/">Home</a>
-        
-          <a class="main-nav-link" href="/blog/archives">Archives</a>
-        
-          <a class="main-nav-link" href="/blog/about">About</a>
-        
-          <a class="main-nav-link" href="/blog/resume">Resume</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        <a></a>
-        
-          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://alexiachen.github.io/blog"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-programming-language" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2016/05/19/programming-language/" class="article-date">
-  <time datetime="2016-05-19T01:41:15.000Z" itemprop="datePublished">2016-05-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/05/19/programming-language/">编程语言为何如此众多</a>
-    </h1>
-  
+<nav class="navbar navbar-default navbar-fixed-top" style="opacity: .9" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">MathxH&#39;s Blog</a>
+        </div>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p><em>刚从大学毕业的人可能会说：学校老师说了，编程 = 算法 + 数据结构。多学习其它编程语言没意义，只需要学一种到精通就可以了。语言都是相通的，数据结构和算法才是灵魂。多年以后我才知道这句话的可笑。其实这话本身没有错，但是放在一些特定场景下是在回避问题，并没有正视。</em></p>
-</blockquote>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
-<p>计算机软件领域为了解决一个语言不能解决的问题尝试发明了另一种语言，然后继续引入新的问题，然后继续发明语言，诸如<a href="http://coffee-script.org/" target="_blank" rel="noopener">CoffeeScript</a>,<a href="http://www.typescriptlang.org/" target="_blank" rel="noopener">TypeScript</a>之于JavaScript，C#之于Java, <a href="https://www.rust-lang.org/en-US/" target="_blank" rel="noopener">Rust</a>,<a href="https://golang.org/" target="_blank" rel="noopener">Go</a>之于C/C++。就这样在不断的制造问题和解决问题间徘徊，挣扎，反驳，批评和妥协使得语言的设计者和使用者为自己制造希望，同时又在希望的不确定性或是挫败感中找到前行的乐趣。</p>
-<p>其实这样不同的创造语言本质是想解决一个语言带来的历史包袱，但是这样的包袱只要软件在不停的发展，那么它永远甩不掉，就像不可能把各种用C语言或Fortran写出来的基础软件设施推倒重新用拥有更先进的类型系统的Rust写一样，因为工程量巨大，推倒重写也不可能保证这些基础设施软件的正确性，耗资无法承受。想想世界上那么多科学计算库或底层的图形库，算法库，还有操作系统都是C/C++或者Fortran写的，这显然推倒重写是不可能完成的任务。想想Linux至今用了多少年，多少人力，写了多少行代码才发展到工业级别的操作系统？</p>
-<p>上面说到的例子都是某语言想试图取代另一个语言，所以在大家看来，这些对立竞争的语言至少是平行的。但是还有一些语言的发明是试图用另一种思维角度来解决编程中遇到的问题，并没有形成竞争关系。所以就引出了<a href="https://en.wikipedia.org/wiki/Programming_paradigm" target="_blank" rel="noopener">编程范式(Programming Paradigm)</a>一说。</p>
-<h1 id="编程范式"><a href="#编程范式" class="headerlink" title="编程范式"></a>编程范式</h1><hr>
-<p>如今，编程语言百家争鸣，过程式编程语言，面向对象编程语言，<a href="https://en.wikipedia.org/wiki/Functional_programming" target="_blank" rel="noopener">函数式编程</a>语言，甚至还有很多人接触很少听说的<a href="https://en.wikipedia.org/wiki/Logic_programming" target="_blank" rel="noopener">逻辑式编程</a>语言，最后还有多范式融合的编程语言。过程式的经典语言是大名鼎鼎的C语言。面向对象的经典是Python，Java，C#。函数式的经典是<a href="https://en.wikipedia.org/wiki/Lisp_programming_language" target="_blank" rel="noopener">Lisp</a>，<a href="https://en.wikipedia.org/wiki/Haskell_programming_language" target="_blank" rel="noopener">Haskell</a>。逻辑式语言的经典是<a href="https://en.wikipedia.org/wiki/Prolog" target="_blank" rel="noopener">Prolog</a>(它能以另一种思维角度很方便的解决地图染色问题)。至于多范式融合的编程语言，C++可以算是，本来它的面向对象就不纯，至少与Java和Python相比是这样的。</p>
-<p>当然，有心的人可能会发觉，现在很多主流的编程语言的发展演进都或多或少会借鉴其他范式的编程思想啊。答案，是的。比如啊，Java里面的匿名类，Lambda表达式都是从函数式思想里面继承过来的。现在的主流编程语言也慢慢从单一的范式过渡到多范式，这是好事，能向前看，不抱残守缺了:)</p>
-<p>所以，面对这么多林林种种的语言，该如何学习？首先该学哪门语言？真像论坛上到处撕逼的那样：php是世界上最好的语言，Java才是王道，都是垃圾我Lisp语言才是各种语言的老祖宗？</p>
-<p>那么，该怎么学嘛？我的认为是，取各个不同范式的经典语言学习，最后再选择一门主流编程语言学习做项目实战，这两步没有先后顺序，可以相辅相成。因为在我看来，至少会 OO, functional, imperative, logic 这四种 paradigm 的语言才叫“有基础”（这里的命令式编程语言就相当于冯诺依曼语言，也基本等同于通常所说的面向过程编程。），才有足够底气说“学一种语言就几个星期的事，语言都是相通的”。当然，如果不是跨范式的学习，确实能轻松不少，C++转Java和C#真的简单。</p>
-<p>所以我从来不会笼统的说某个语言好或不好，而且建议多学习各种不同的编程范式，知道的越多，才能有可能对具体问题提出更好的解决方案。而且<a href="https://en.wikipedia.org/wiki/Law_of_the_instrument" target="_blank" rel="noopener">law of the instrument</a> 中说：if all you have is a hammer, everything looks like a nail。另外有个观点大意是，语言（不管是人类还是编程）会限制思考。因为语言的设计和演化都被作者灌输了它自身的设计哲学（理念）。所以当你用某中语言来进行开发时，它（语言）本身就引导（改变）了你的思考方式。如果你不信我说的，去看看<a href="https://book.douban.com/subject/10555435/" target="_blank" rel="noopener">《七周七语言》</a>,这本书是改变了我对编程语言和编程范式认知的第一本启蒙书:)</p>
-<h1 id="领域特定语言"><a href="#领域特定语言" class="headerlink" title="领域特定语言"></a>领域特定语言</h1><hr>
-<p><a href="https://en.wikipedia.org/wiki/Domain-specific_language" target="_blank" rel="noopener">领域特定语言</a>(Domain-specific language,DSL)是在一些特定的专业领域里面处理专业问题而设计出来的语言，这些语言专门是为自身领域服务的，它们往往对自身领域的问题解决和表达更高效，比如Matlab，Mathematica这些软件的语言，Html/CSS也算一种网页的DSL。这种编程语言其实是最多的，编程语言有成千上万种，其中DSL占的比重很大，它们在各自的领域大放异彩，例如：专门处理气象数据和可视化的一种语言<a href="http://www.ncl.ucar.edu/" target="_blank" rel="noopener">NCL</a>等等。</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://www.zhihu.com/question/20104312" target="_blank" rel="noopener">为什么现在会有这么多种编程语言</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://alexiachen.github.io/blog/2016/05/19/programming-language/" data-id="cjtctqona001sufqf2gkco3iw" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/编程范式/">编程范式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/编程语言/">编程语言</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-logic-equivalence" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2016/04/28/logic-equivalence/" class="article-date">
-  <time datetime="2016-04-28T01:29:14.000Z" itemprop="datePublished">2016-04-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/04/28/logic-equivalence/">软件设计中的逻辑等价</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在系统软件设计中，人们常常为了软件(框架)的灵活性，扩展性，实现外部动态可配置。经常会使用配置文件初始化软件的逻辑，随着软件规模的越来越大，配置文件也越来越复杂，当复杂到一定程度，配置文件里面的文法表述甚至成了种奇葩的配置描述语言，如果不用外部配置，那么软件内部必须实现相应的逻辑，如果想让软件内部降低复杂性，那么隐藏的逻辑又会转移到配置文件，这种像极了物理中的能量守恒，同样软件中的逻辑是<font color="red">守恒</font>的，以不同的形式表述，复杂性只能分散，不能消除。当然还可以把逻辑扔给用户输入，不过复杂性又会转移到软件说明手册或者是企业的技术支持上去了。No Silver bullet。书籍<a href="https://book.douban.com/subject/3142280/" target="_blank" rel="noopener">&lt;&lt;梦断代码&gt;&gt;</a>也在讲述这个客观事实，无论多么牛逼的工程师都会被这事实头疼困扰。软件开发就是如此艰难，进展缓慢。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://alexiachen.github.io/blog/2016/04/28/logic-equivalence/" data-id="cjtctqomv0014ufqfwpb1jk7d" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/软件工程/">软件工程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/逻辑/">逻辑</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-web-and-traditional-industries" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2016/02/28/web-and-traditional-industries/" class="article-date">
-  <time datetime="2016-02-28T00:52:10.000Z" itemprop="datePublished">2016-02-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/02/28/web-and-traditional-industries/">互联网显然颠覆不了传统行业</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p><em>知乎上由于程序员居多，互联网火热，被一些小白搞得乌烟瘴气，个别还高喊着互联网颠覆传统行业，把程序员这职业吹上了天，听起来像是那么一回事，不过估计都初入行业的菜鸟，跟国内小编吹牛一个样</em></p>
-</blockquote>
-<p>尽管现在编程越来越日常化，各行各业的技术人员都可能接触编程，但是这并不代表互联网介入并颠覆了它。在传统工业中，显然程序员是种被边缘化的职业，虽然很多重要技术职业需要编写代码，比如自动化控制出身的，需要编写各种控制算法，PID算法等，但是这些人可不自称程序员。计算机科学与自动控制是两码事，两种相差很大的领域，自动化毕业的优秀学生，能进宝马，轮船，电网负载等行业部门，也就是说自动化工程师比程序员分布在更广泛的领域，天上飞的，水里游的，马路上跑的，工厂里动的，你身处周围的绝大部分现代化设备里面都需要算法，包括特斯拉和火箭回收，一个简单的事实，用到这些算法都不是计算机专业学的，计算机专业也不开相关课程，专业都不在一个院，生产他们和写这些主要算法的人都叫xx工程师，但我们一般不叫他们程序员。例如，机械工程师会运用lisp语言作为cad的dsl辅助，但没人管他们叫程序员，他们都不是会像cs专业的程序员一样写代码，在任何国家行业分类上他们是100％的传统行业。如果以后不深入一个领域的知识技能，是不能立足的，互联网这种，都不叫啥领域，反而太泛泛了。一个程序员，会写几段代码，写了几段轮船，电网负载预测，航空遥感，车载系统的代码就敢说这个领域的？你难道没感觉出来你的代码实现和业务需求都是该领域的专家跟你描述指导的么？是不是互联网现在太火了，工资虚高，导致一些互联网程序员有些目中无人的样子，呵呵，去个电网公司写点代码，就敢说颠覆该领域，你开玩笑吧？请问你取代颠覆哪个部门了，你抢了那些领域人才的饭碗了？你真懂这些领域？电力专业的课程有这些，基础课不谈，电磁场与电磁波学三个学期，automatic control两个学期，power supply systems 1, optimization and operation of electricity and gas， components and devices of electicity supply， electrical machine1-2, power electricity 1-2……</p>
-<p>请问你的专业知识能取代颠覆谁啊，你在该领域价值多少？核心相关电控程序时你写的？搞清楚自己位置吧，合作分工才是本质。还有，你不了解那些知识，在相关专业还只是能称作传统行业cs部门的码农。等你真了解了那些知识，也在离cs的道路上越走越远了。</p>
-<p>最后，请问除了没技术门槛的服务业，互联网究竟颠覆哪个传统工业了？你看，不只有滴滴打车，饿了么，这些送饭，拉车，大型餐馆点餐的服务软件才能有颠覆的趋势么？</p>
-<p>互联网从来没有打算颠覆传统行业，只是从旁改善传统行业的业务效率，现如今都在弄企业信息化也是这么个道理，物联网的概念也是慢慢这么出来的。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://alexiachen.github.io/blog/2016/02/28/web-and-traditional-industries/" data-id="cjtctqonk002fufqfmrczshsm" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/互联网/">互联网</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/传统行业/">传统行业</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/物联网/">物联网</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-manager-trap" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2016/01/14/manager-trap/" class="article-date">
-  <time datetime="2016-01-14T06:00:00.000Z" itemprop="datePublished">2016-01-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/01/14/manager-trap/">公司项目管理层的套路</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>技术公司里的所谓“管理层”，是非常容易出问题的人群。根据我的经验来看，超过 90% 的所谓 manager 都是瞎蒙混骗的。很多这种人技术不过关，完全不如他手下的程序员，根本没有能力来带领团队的方向。可是这些人有很多技巧，让他们可以继续在管理层混下去。</p>
-<p>他们必须非常的会演戏，会看形势。当需要对技术做出决定的时候，这些人往往不是根据技术本身，而是根据人。如果有两个人意见不一致，他看不出来哪一个是对的。他选择的方法，不是仔细研究技术，而是看哪一个人有地位，不好对付，或者是他的亲信。他会永远选择那个惹不起的人的方案，或者那个会让他稳坐岗位的人。</p>
-<p>当然，他会假装听取了多方面的意见，看似在仔细听大家说什么。最后，你会惊讶的发现，大部分的人都知道哪一个方案是对的，他却选择了错误的方案，让大部分人屈服于那极少数错误的人。比如，我知道的某位管理，明明写一个http服务器做存储文件用Java就可以办到，而且公司有资历的Java程序员一堆，他偏偏用小众的Go语言（是在三线城市），说Go更简单简洁，因为Go语言正好是公司某位更有地位的管理人员所推崇的。他无非不就是想拍那个人的马屁。年会上他慷慨激昂的表达，自从用了Go语言之后，再也不想用C语言了。我真不知道一个人才学了1个星期Go语言没做过Go语言正经项目的人哪里来的自信敢说出这样的话。</p>
-<p>当然作为程序员每次你有理有据的反驳的时候，他的通常套路都是，“对，你说的非常对，我非常赞同，但是blablabla（说了一堆底下程序员一致不认可的理由），在这种场景下，我这么做是合理的，这种就不要争论了”。  放屁！你赞同我还不选择我的方案？  也就是说，他根本不care你是对是错。</p>
-<p>当公司形式转变，或者换工作的时候，你会发现这些选择错误方案的人，会一直走在一起。一个人去了另外一家公司，接着，那个跟他一起忽悠的人，也跟着去了。</p>
-<p>于是你就发现了技术公司里面存在隐形的帮派。 这种公司一定会劣币驱逐良币。然后老板无人可用（只剩劣币了），老板虽然可能知道一些情况，但是也管不了太多了，也不可能把这些瞎混的管理者给fire掉，毕竟这些瞎混的管理者对于老板来说也不是完全没一丁点价值，不然公司没人了，不得不妥协。然后只能又招一批干实事的程序员，然后又这样离职一批人。这样周而复始，劣币驱逐良币。腐蚀一个又一个的公司。</p>
-<p>为什么劣币自然而然会驱逐良币，因为劣币和良币本质就是冲突的，不可能融合在一起。这是一个有你没我，有我没你的斗争。你把污水倒在清水里还指望融合？ 污水只会无情的污染清水，没有任何理由。要怎么办？要不等着自己被污染，要不倒入更多的清水来净化。但是在公司里，后者情况可能吗？不可能。想啥呢？还不赶紧滚蛋走人，还留着回家过年？</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://alexiachen.github.io/blog/2016/01/14/manager-trap/" data-id="cjtctqomx0017ufqf3e0e6kt8" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/套路/">套路</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-error-code" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2015/11/09/error-code/" class="article-date">
-  <time datetime="2015-11-09T03:04:42.000Z" itemprop="datePublished">2015-11-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2015/11/09/error-code/">C++返回码的定义</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我们平时有这样的需求，可能是C语言用户的老习惯了，在底层的组件中更喜欢用返回错误码的形式来告知函数的调用结果，一般来说，简单用#define 一个宏来包装下返回值。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ERR_SYSTEM_INIT -23 <span class="comment">// system initailized fail</span></span></span><br></pre></td></tr></table></figure></p>
-<p>以上定义了一个错误码返回-23，意味着系统初始化失败。但是宏包含的信息太少，有些时候，用户不能知道错误的详细原因。必须给这错误加以说明。所以就索性写了一个Error类可以定义错误码和相关错误描述信息，并通过类似于Win32 API <strong>GetLastError</strong>这样的函数让错误码返回更详细的说明：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cassert&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Error</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">   Error(<span class="keyword">int</span> value, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; str)</span><br><span class="line">   &#123;</span><br><span class="line">     m_value = value;</span><br><span class="line">     m_message =    str;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG</span></span><br><span class="line">     ErrorMap::iterator found = GetErrorMap().find(value);</span><br><span class="line">     <span class="keyword">if</span> (found != GetErrorMap().end())</span><br><span class="line">     assert(found-&gt;second == m_message);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">     GetErrorMap()[m_value] = m_message;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// auto-cast Error to integer error code</span></span><br><span class="line">   <span class="function"><span class="keyword">operator</span> <span class="title">int</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_value; &#125;</span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> m_value;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> m_message;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="keyword">int</span>, <span class="built_in">std</span>::<span class="built_in">string</span>&gt; ErrorMap;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> ErrorMap&amp; <span class="title">GetErrorMap</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">       <span class="keyword">static</span> ErrorMap errMap;</span><br><span class="line">       <span class="keyword">return</span> errMap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">GetErrorString</span><span class="params">(<span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">       ErrorMap::iterator found = GetErrorMap().find(value);</span><br><span class="line">       <span class="keyword">if</span> (found == GetErrorMap().end())</span><br><span class="line">       &#123;</span><br><span class="line">          assert(<span class="literal">false</span>);</span><br><span class="line">          <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">else</span></span><br><span class="line">       &#123;</span><br><span class="line">          <span class="keyword">return</span> found-&gt;second;</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>以下是该类的使用方法：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;isotream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"ErrorHandle.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> Error <span class="title">SYSTEM_NOT_INIT</span><span class="params">(<span class="number">-23</span>,<span class="string">"system initailized fail,because some reason"</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> SYSTEM_NOT_INIT;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> err_code = foo();</span><br><span class="line">    <span class="comment">// print error details</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; Error::GetErrorString(err_code) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://alexiachen.github.io/blog/2015/11/09/error-code/" data-id="cjtctqoml000iufqfe2igb9di" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/C-C/">C/C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/错误处理/">错误处理</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-dllimport-dllexport" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2014/11/24/dllimport-dllexport/" class="article-date">
-  <time datetime="2014-11-24T09:39:00.000Z" itemprop="datePublished">2014-11-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2014/11/24/dllimport-dllexport/">Visuao Studio下的dllimport和dllexport</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我相信写WIN32程序的人，做过DLL，都会很清楚<strong>declspec(dllexport)的作用，它就是为了省掉在DEF文件中手工定义导出哪些函数的一个方法。当然，如果你的DLL里全是C++的类的话，你无法在DEF里指定导出的函数，只能用</strong>declspec(dllexport)导出类。但是，MSDN文档里面，对于__declspec(dllimport)的说明让人感觉有点奇怪，先来看看MSDN里面是怎么说的：</p>
-<blockquote>
-<p><em>不使用 <strong>declspec(dllimport) 也能正确编译代码，但使用 </strong>declspec(dllimport) 使编译器可以生成更好的代码。编译器之所以能够生成更好的代码，是因为它可以确定函数是否存在于 DLL 中，这使得编译器可以生成跳过间接寻址级别的代码，而这些代码通常会出现在跨 DLL 边界的函数调用中。但是，必须使用 __declspec(dllimport) 才能导入 DLL 中使用的变量。</em></p>
-</blockquote>
-<p>初看起来，这段话前面的意思是，不用它也可以正常使用DLL的导出库，但最后一句话又说，必须使用 __declspec(dllimport) 才能导入 DLL 中使用的变量这个是什么意思？</p>
-<p>那我就来试验一下，假定，你在DLL里只导出一个简单的类，注意，我假定你已经在项目属性中定义了 SIMPLEDLL_EXPORT:</p>
-<p>SimpleDLLClass.h文件:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> SIMPLEDLL_EXPORT</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DLL_EXPORT __declspec(dllexport)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DLL_EXPORT</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DLL_EXPORT</span> <span class="title">SimpleDLLClass</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  SimpleDLLClass();</span><br><span class="line">  <span class="keyword">virtual</span> ~SimpleDLLClass();</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="title">getValue</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_nValue;&#125;;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">int</span> m_nValue;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>SimpleDLLClass.cpp文件:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"SimpleDLLClass.h"</span></span></span><br><span class="line"></span><br><span class="line">SimpleDLLClass::SimpleDLLClass():m_nValue(<span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">SimpleDLLClass::~SimpleDLLClass()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>然后你再使用这个DLL类，在你的APP中include SimpleDLLClass.h时，你的APP的项目不用定义 SIMPLEDLL_EXPORT 所以，DLL_EXPORT 就不会存在了，这个时候，你在APP中，不会遇到问题。这正好对应MSDN上说的__declspec(dllimport)定义与否都可以正常使用。但我们也没有遇到变量不能正常使用呀。那好，我们改一下SimpleDLLClass,把它的m_nValue改成static,然后在cpp文件中加一行</p>
-<p>int SimpleDLLClass::m_nValue=0;<br>如果你不知道为什么要加这一行，那就回去看看C++的基础。 改完之后，再去LINK一下，你的APP，看结果如何，结果是LINK告诉你找不到这个m_nValue。明明已经定义了，为什么又没有了？？肯定是因为我把m_nValue定义为static的原因。但如果我一定要使用Singleton的Design Pattern的话，那这个类肯定是要有一个静态成员，每次LINK都没有，那不是完了？ 如果你有Platform SDK，用里面的Depend程序看一下，DLL中又的确是有这个m_nValue导出的呀。<br>再回去看看我引用MSDN的那段话的最后一句。 那我们再改一下SimpleDLLClass.h，把那段改成下面的样子:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> SIMPLEDLL_EXPORT</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DLL_EXPORT __declspec(dllexport)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DLL_EXPORT __declspec(dllimport)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-<p>再LINK，一切正常。原来dllimport是为了更好的处理类中的静态成员变量的，如果没有静态成员变量，那么这个__declspec(dllimport)无所谓。</p>
-<p>_declspec(dllexport)与_declspec(dllimport)都是DLL内的关键字，即导出与导入。他们是将DLL内部的类与函数以及数据导出与导入时使用的。主要区别在于，dllexport是在这些类、函数以 及数据的申明的时候使用。用过表明这些东西可以被外部函数使用，即（dllexport）是把DLL中的相关代码（类，函数，数据）暴露出来为其他应用程 序使用。使用了（dllexport）关键字，相当于声明了紧接在（dllexport）关键字后面的相关内容是可以为其他程序使用的。而 dllimport关键字是在外部程序需要使用DLL内相关内容时使用的关键字。当一个外部程序要使用DLL内部代码（类，函数，全局变量）时，只需要在 程序内部使用（dllimport）关键字声明需要使用的代码就可以了，即（dllimport）关键字是在外部程序需要使用DLL内部相关内容的时候才 使用。（dllimport）作用是把DLL中的相关代码插入到应用程序中。</p>
-<p>　　 _declspec(dllexport)与_declspec(dllimport)是相互呼应，只有在DLL内部用dllexport作了声明，才能 在外部函数中用dllimport导入相关代码。实际上，在应用程序访问DLL时，实际上就是应用程序中的导入函数与DLL文件中的导出函数进行链接。而 且链接的方式有两种：隐式迎接和显式链接。</p>
-<p>　　隐式链接是指通过编译器提供给应用程序关于DLL的名称和DLL函数的链接地址，面在应用程序中不需要显式地将DLL加载到内存，即在应用程序中使用dllimport即表明使用隐式链接。不过不是所有的隐式链接都使用dllimport。</p>
-<p>显式链接刚同应用程序用语句显式地加载DLL，编译器不需要知道任何关DLL的信息</p>
-<p>以下是一个DLL头文件的正规编写方式：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> DIALOG_MAINMENU_EXPORTS</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DIALOG_MAINMENU_API __declspec(dllexport) </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DIALOG_MAINMENU_API __declspec(dllimport) </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dialog_MainMenu</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">static</span> DIALOG_MAINMENU_API <span class="keyword">enum</span> GAME_STATES &#123;</span><br><span class="line">        MAINMENU, GAME, OPTIONS, CREDITS, QUIT</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">static</span> DIALOG_MAINMENU_API GAME_STATES CurrentGameState;</span><br><span class="line">    <span class="function">DIALOG_MAINMENU_API GAME_STATES <span class="title">GetState</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>一下截取一段老外的解释：</p>
-<blockquote>
-<p><em>OK - when you compile the dll - you are exporting the types. So, you need to define the static member in .cpp file of the dll. You also need to make sure that you have enabled the definition of DIALOG_MAINMENU_EXPORTS in compiler settings. This will make sure types are exported.</em></p>
-</blockquote>
-<blockquote>
-<p><em>Now, when you link the console application with the dll - you will #include dll’s header and dont enable any definition of DIALOG_MAINMENU_EXPORTS in compiler settings (just leave the settings default). This will make the compiler understand that now you are importing the types from your dll into exe application.</em></p>
-</blockquote>
-<p>参考：</p>
-<ul>
-<li><a href="http://stackoverflow.com/questions/2481138/unresolved-external-symbol" target="_blank" rel="noopener">http://stackoverflow.com/questions/2481138/unresolved-external-symbol</a></li>
-<li><a href="http://stackoverflow.com/questions/17901973/unresolved-external-symbol-declspecdllimport" target="_blank" rel="noopener">http://stackoverflow.com/questions/17901973/unresolved-external-symbol-declspecdllimport</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://alexiachen.github.io/blog/2014/11/24/dllimport-dllexport/" data-id="cjtctqomo000nufqfn2dvdr8w" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/C-C/">C/C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/DLL/">DLL</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-none" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2014/09/18/none/" class="article-date">
-  <time datetime="2014-09-18T14:45:56.000Z" itemprop="datePublished">2014-09-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2014/09/18/none/">无题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p><em>那是在黑暗中焦虑地摸索的年月，满怀着强烈的渴望，有过信心，也有过动摇和疲惫，但最后终于看见了光明</em></p>
-</blockquote>
-<p>很多人都是对大脑运转原理理解不够，他们畏惧未知世界的力量，一直把眼光困在狭小而黑暗的世界里，等他们走出那个世界突然觉得也没什么。</p>
-<p>我不介意承认自己曾经有无知的岁月，但愿老去之后还能坚持现在的梦想。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://alexiachen.github.io/blog/2014/09/18/none/" data-id="cjtctqon7001mufqfx002zx7h" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/事业/">事业</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/理想/">理想</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-collectivism-and-individualism" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2014/08/18/collectivism-and-individualism/" class="article-date">
-  <time datetime="2014-08-18T01:26:23.000Z" itemprop="datePublished">2014-08-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2014/08/18/collectivism-and-individualism/">集体是否有权力强制个人牺牲自己的权利</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p><em>阅读本文之前先想想中国奥运拆迁，三峡工程等国家大事在公民面前，人民通通需要为了国家“荣誉”而纷纷让道</em></p>
-</blockquote>
-<p>我觉得这就是古典功利主义的争论，早就被指出有缺陷了，如果集体能够强制牺牲个人来保障集体的更大利益的话，加上资源的稀有性这个永恒的事实，可以推出总是存在一个人可以牺牲掉使得集体的总利益增加。（例如，每一个个体对资源的利用效率不一样，所以牺牲掉利用效率最低者能够使得总体利用率增高，于是能够产生更多利益）所以如果允许集体利益牺牲个人利益，这样会是没有限度和没有止境的。</p>
-<p>另外补偿是没有用的，举个例子，土地，你既不会耕田，也不会做房地产来推动经济，所以干脆把你的土地征收了。那么用其他物质补偿能够起作用吗？如果你残疾了，为了减少你对社会资源的消耗，干脆把你杀了，那么补偿有什么用？这在古典功利主义里即使不补偿也是完全正当。补偿本身的精神是，通过给予现金或者货物来让你买回因为某些原因而失去的财物。例如地震房子塌了政府给你补偿，是为了让你买回失去的房子。但是如果你拥有一物品的权利被剥夺了（并且没有替代），那么补偿有何作用？</p>
-<p>当然了，对于古典功利主义有个补丁，就是划出界限，规定集体可以让个人牺牲哪些东西，哪些不可以（例如生命等），但无论怎么划分，这样的理论也难逃“任意性”的质疑。就举个最简单最少争议的例子，假设这条界线就是生命健康权，就是说无论怎样也不能强制牺牲个人的生命或者身心健康来换取集体利益。这样，问题就出在，如果集体牺牲个人的其他某些东西，将会不可避免地造成对该人生命健康的危害，这样就违反原则了。例如显然不能为了集体利益牺牲掉个人的所有财产，因为这样会导致该人饿死，所以为了维持原有的界限，你必须增加更多的原则，而且更大的问题是，这些原则甚至不是一成不变的，例如在古代，耕地是绝大多数人生存的必要资源，但是在现代，大多数人并不需要靠直接拥有耕地来生存，又或者，现代人如果没有了电力或其他基础设施，将会对身心健康产生严重危害（你试一下不用电能活多久？）这表明为了维持“不能牺牲生命健康权”的这条界线而设立的“不能牺牲其他项目”的名单根本是不能准确定义的，说不定明天就不适用了。</p>
-<p>所以说这种集体利益牺牲个人利益的东西一旦允许了将会成为潘多拉的盒子，一旦允许了就将会被任意滥用。防止滥用就只能够这样：要么完全禁止集体利益牺牲个人利益，要么将“允许牺牲的项目”枚举列出（例如规定个人土地可以充公，但是其他任何个人利益都不能剥夺），这和打了补丁功利主义的区别是，这里列出的是集体对个人“允许”做的事，而功利主义无论怎么修改，还只是列出集体“不允许”做的事。哪一个对强势方（集体）有更大的制衡就不用说了吧？就像美国宪法第十修正案那样，规定了强势方（联邦政府）只能做宪法允许做的事，这样才能防止滥用权力。</p>
-<p>有些人说民主制就是这样，其实是不正确的。即使是民主投票，其决议的内容也不能随意违反个人权利。例如“全民公投决定是否杀掉某个无辜者”，这显然是病态的制度，并不是真正的民主。因为民主本身实行的必要条件就是个人的基本权利受到保障（无论保障者是谁，可以是政府，可以是民众本身（如果他们有这种自觉性），也可以是自己（如果有此能力））。</p>
-<p>按照自由意志主义政府的唯一用处恰好就是要维护个人利益免遭侵害。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://alexiachen.github.io/blog/2014/08/18/collectivism-and-individualism/" data-id="cjtctqomi000dufqfitnpue5y" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/民主/">民主</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/自由/">自由</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-democracy-obstacle" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2014/07/10/democracy-obstacle/" class="article-date">
-  <time datetime="2014-07-10T00:09:44.000Z" itemprop="datePublished">2014-07-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2014/07/10/democracy-obstacle/">民主的障碍</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>目前中国民主的障碍最大就是来源于一部分认为“中国人因为各种各样的原因（国情）不适合民主”的人，稍微问为什么，他们也答不出个所以然来，说简单点，犬儒，特别那些说“中国人民智未开”的，更是如此，如果不让公民进行社会实践，那么如何培养公民素质，难道公民素质是天上掉下来的，或者通过统治者的指导获得的（这本身就是个矛盾）？</p>
-<p>和中国大陆是同一个人种构成的台湾都能实行民主了，深受中华文化影响的韩国日本一样民主了，这些地区在二战前后都是差不多专制。</p>
-<p>另外，所谓“公民素质”，也根本不是随着历史而递增的，相反，如果统治者觉得有必要，完全可以实行手段来让公民素质倒退。例如大学生群体，在坦克节之前都敢于发出呼声，之后就犬儒化了，所以如果还指望统治者，倒不如指望外星人来推翻专制了。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://alexiachen.github.io/blog/2014/07/10/democracy-obstacle/" data-id="cjtctqomk000gufqfxitov3xe" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/民主/">民主</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/自由/">自由</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-logic-judgement" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2014/06/27/logic-judgement/" class="article-date">
-  <time datetime="2014-06-27T03:34:36.000Z" itemprop="datePublished">2014-06-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2014/06/27/logic-judgement/">逻辑判断</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p><em>本人非原始作者，原作者是一个网名为mingda1986的清华物理系毕业生，现在在MIT读PhD，相比已经PhD毕业了</em></p>
-</blockquote>
-<p>在对一件事下定论时，我们离不开推理论证，这需要真实客观的信息，合理的逻辑推理，有时外加人性的考量。然而，目前的教育方式以及社会环境，在这方面比较欠缺，甚至有意误导，常让人获得错误的结论。信息了解不全面，影响判断；因果推理不正确，对无关事物强加因果，或者只是敷衍地给出站不住脚的理由；再或者把谎话重复一千遍，听多了就像是真理。不知不觉的，就在方方面面的损害了人的判断力。</p>
-<p>本文旨在提供一点线索，减少垃圾信息的侵害，用理性和良知武装自己的大脑。本文仅能管中窥豹，望读者举一反三。</p>
-<p>常见破坏逻辑的方式如上所提，即信息不客观，逻辑不合理，或者不考虑人性。</p>
-<p>一、<strong>不客观的信息</strong>： 对于无法辩驳的事实，选择性隐瞒<br>一个更好的做法是，你有权利了解发生过的事实，并且可以看到不同的评价，然后自己去做判断。</p>
-<p>二、<strong>错误推理</strong>： 强行绑定事物，使之发生因果关系</p>
-<p>这种破坏逻辑的方式比第一种更加隐蔽；因为第一种方式里，只要知道足够客观的事实，偏颇的观点自然攻破。然而，有很多事物之间存在关联，但并非因果关系。因此，稍有疏忽，就会相信了这些本来没有因果关系。如果教育过程中，强行让本来不属于直接推出关系的两件事， 对大脑的逻辑能力非常有害。</p>
-<p>因果关系是说，假设A是前因，B是后果，那么它们之间至少有如下特征：</p>
-<ul>
-<li>它们协变。即A的变化引起B朝着某个方向的变化，具有相关性。</li>
-<li>A发生早于B。即符合相对论，信号传递速度有限。</li>
-<li>A与B不是伪关系。所谓伪关系，即A与B表观上有相关性，其实它们都由与其他因素左右才显得相关，而不是因果性。</li>
-</ul>
-<p>前两者比较容易理解，常见的逻辑混乱出在第3点上，即把仅有相关性事物（如，时间/空间相关）说成是因果性。</p>
-<p>三、<strong>不考量人性</strong>： 避重就轻，转移注意力</p>
-<p>这一种损害逻辑的方式，比上一条更加隐蔽。在强加因果关系的过程中，你可能会对一些理由感到很不舒服，好像遇到了”混蛋逻辑“，或者强词夺理。即使因为种种原因（强硬的标准答案威慑），你没能战胜这个错误的因果关系，至少还能意识到它不太对劲。然而，避重就轻转移注意力，是真正隐蔽而有害的。它把你的精力，从对自己有益的关注，扯到没有意义的事情上，自己却浑然不觉，因为不知道到底什么是真正重要的事情。</p>
-<p>我以为，一些事实内容，应当作为常识，让小学生去了解，而不是让他们欢迎领导，或者天天告诉他们要爱这个爱那个。这样建立起来的价值观，才能更好的在一些共同的假设面前做逻辑演绎和辩论，并且有着更人性的考量，而不是遇到不可逾越的交流障碍，驴唇不对马嘴。</p>
-<p>附录 常见逻辑错误以及例子</p>
-<ul>
-<li><strong>神逻辑</strong>： zx委员陈红天说:“各种手段都没把房地产压下去,说明没有泡沫。”</li>
-</ul>
-<p>这真的属于神逻辑，因为常见的逻辑错误都没有这样明显的。如果发生这种情况，就是基本的假设前提都没有共同点，很难找到一个共同的起点进行沟通或者辩论。</p>
-<ul>
-<li><strong>自相矛盾（Inconsistency）</strong>：年仅20岁的国家滑翔伞队队员杨小强在完成一个高难度技术动作时出现失误，结果从百米高空坠落，当120赶到事发地时，杨小强已停止呼。一位国家体育总局工作人员向本报透露：“杨小强无国家队编制，应该不能按工伤处理”。</li>
-</ul>
-<p>在这里，杨小强已经是国家队队员，但是却又说他“无国家队编制”，自相矛盾，让人称奇。实际上，在第六届世界滑翔伞定点锦标赛中，杨小强获得亚军，这是中国选手在该项比赛中取得的最好成绩。杨小强在国家滑翔伞队队员选拔赛中获得第六名，由此入选国家队，所以是正式的国家队队员。什么叫没有编制？</p>
-<ul>
-<li><strong>偷换概念（disguised displacement）</strong>：卫生部医管司副司长孙阳做客人民网。孙阳说，“看病难、看病贵是世界性难题，即使是一些发达国家，这个问题也没有完全解决。”</li>
-</ul>
-<p>这里用“完全解决”偷换“几乎无所作为”。完全解决医疗问题也许是难题，但是现在的状况相差甚远，比如根据世界卫生组织的排名，医疗公平性位居全世界倒数第四。</p>
-<ul>
-<li><strong>混淆相关和起因（confusion of correlation and causation）</strong>： 温州乐清有一个标语，说“上坟引发火灾，坟墓一律拆除”。</li>
-</ul>
-<p>这就是本文提到的把相关性强制因果。况且，“上坟”和“火灾”的相关系数极低，只需禁止明火上坟，相关系数可以降为零。后面一句话，就开始拆除？！</p>
-<ul>
-<li><strong>片面辩护（special pleading）</strong>： 2012年，郑州拆除了全市的所有报刊亭，该市成了全国唯一没有报刊亭的省会级城市。拆除之后，郑州市相关部门解释，”原有报刊亭存在违章占道、阻碍交通、违规经营等问题，清理目的是：退店经营、还路于民。今后，市民可在超市、书店、加油站或门店购买报刊、杂志，报刊销售点比之前的报亭数量将 大幅增加。“</li>
-</ul>
-<p>报刊亭只占用部分人行道，所以不会阻碍交通。报刊亭往往处在客流量很大的地方，给人买报纸带来方便。因为很多人坐公车可以看报，加油站、书店数量少得多。而且开车不能看报。所以是否能增加销售点数量存疑。即使增加销售点数量，客流量也未必会更大。这是片面辩护，只看到了好，没看到最大的弊端：给人们买报这个基本需要带来极大不便。</p>
-<ul>
-<li><strong>稻草人谬误（straw man）</strong>： 人民日报说，因为部分腐败现象就批评国家是极端主义。”因为有消极腐败现象，就把国家说得一无是处；因为有为富不仁，就对所有富人怨、恨、怒。“</li>
-</ul>
-<p>所谓稻草人谬误，就是故意攻击一个不存在的情况。比对于为富不仁，人们恨的是为富不仁本身，不但”不仁“，而且更加邪恶，但不是很所有的富人。仇富仇的是不公平的获得钱财的方式，不是因为一个人有钱就要恨。所以这个情况虚设了一个靶子，然后对其进行攻击。</p>
-<ul>
-<li><strong>小众统计（statistics of small numbers）</strong>： 人大常委郑功成在接受采访时表示，大学生一毕业就想买房，心态不正常，美国也没有这么高的住房自有率。他反问称二三十岁的时候，住着国家提供的房子，有什么不好？</li>
-</ul>
-<p>这里的问题就是小众统计。拿一小部分人的样本，来说明普遍的问题。在发达国家，大学毕业生工作5年即可自有房产。然而20-30岁的时候，住着国家提供的房子的人，是极少数的一部分小众，不具有代表性。</p>
-<ul>
-<li><strong>推不出或不当结论（non sequitur）</strong>： 在黑龙江亚布力论坛上，浙江副省长、温州市委书记陈德荣发表演讲称，自去年七八月开始的金融风波，不能把所有的账算到温州人头上。现在有一点妖魔化温州，对温州是不公平的。他还说，其中有一些企业家，把命都搭上去了，这种方式不可取，但这恰恰是企业家的精神。</li>
-</ul>
-<p>假设跳楼属于某一种企业家精神，那么跳楼又不可取。所以企业家精神至少有一种不可取。所以企业家精神不值得赞扬。这里完全忽视人的生命，况且企业家精神到底是个什么精神？这是很不恰当的言语。从跳楼也根本推不出这个结论。</p>
-<ul>
-<li><strong>转移话题（red herring)</strong>： 针对近期媒体报道“多地小学生被要求加入红十字会并缴会费”的情况，中国红十字会总会10月14日回应称，已向各有关红十字会调查情况，收取会费目的是增强会员意识，所缴会费将全部用于为会员提供服务以及开展与红十字会宗旨相一致的各项活动。</li>
-</ul>
-<p>入会收取会费，也许无可厚非，但是这里的关键不在于收费的目的，也不在于它到底要用这笔钱做多少公益事业，而在于入会的过程是否是强制还是完全自愿。如果背离了自愿入会，而是半强制的集体暴力，统一入会，那就违背了它的初衷，和它到底要拿钱干多少好事无关。这种回应就属于转移话题。</p>
-<p>这一个逻辑错误在官方回应的时候非常常见，常常答非所问，值得注意。</p>
-<ul>
-<li><strong>含糊不清（Ambiguity）</strong> ：吉林大学白求恩第一医院（以下简称吉大一院）在网站上公布新建干部病房大楼图片，被网友冠以“八星级”豪华干部病房头衔，引发热议。一些网民担心这会挤占公共医疗资源。吉大一院回应称，干部病房只占一小部分，且造价并非所谓天价。</li>
-</ul>
-<p>”占一小部分“和”并非天价“都是很模糊的词汇。到底一小部分是多少？非天价又是多少钱？当然，关键在于”这些病房的豪华“这个陈述是否属实。所以不回应豪华反而王顾左右而言他，也是一种转移话题。</p>
-<h1 id="推广思考—中国政治课的洗脑"><a href="#推广思考—中国政治课的洗脑" class="headerlink" title="推广思考—中国政治课的洗脑"></a>推广思考—中国政治课的洗脑</h1><hr>
-<p>其目的根本就不是让你相信马克思主义那一套，当权者也心知肚明，平民骗得了第一代但是第二代就骗不了，他们也不指望有多少人这些光喊口号的东西（相反，如果中国人真的傻到这样，国家早就没救了），特别在信息化时代，这不可能做到。</p>
-<p>他们的真正目的是，通过这些不符合逻辑的教育来消灭学生独立并且理性思考的能力。逻辑和理性其实和数学物理等科目一样，也是需要教育（或者训练）的（例如西方古典教育有专门对逻辑、辩论等进行教育），如果缺少训练，那么日后就难以形成该习惯。当然了，缺乏独立思考能力的人是统治者希望的结果，而且这样就足够了。</p>
-<p>所以中国学生以为看破了洗脑教育这一套，却没想到有更大的一盘棋，例如有些人为了反对而反对，结果又走向另一个极端。例如看一下网上的各种势力，除了被教科书洗脑的五毛党和毛左外，还有不是被教科书洗脑，但却一样不理性的兔粉、皇汉、黄皮纳粹、还有各种无脑黑。这就是缺少逻辑教育的体现。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://alexiachen.github.io/blog/2014/06/27/logic-judgement/" data-id="cjtctqoot0074ufqfrz4vxr1d" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/逻辑/">逻辑</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
-
-  <nav id="page-nav">
-    
-    <a class="extend prev" rel="prev" href="/blog/page/6/">&laquo; Prev</a><a class="page-number" href="/blog/">1</a><span class="space">&hellip;</span><a class="page-number" href="/blog/page/5/">5</a><a class="page-number" href="/blog/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/blog/page/8/">8</a><a class="extend next" rel="next" href="/blog/page/8/">Next &raquo;</a>
-  </nav>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/blog/tags/Bloom-Filter/" style="font-size: 10px;">Bloom Filter</a> <a href="/blog/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/blog/tags/CERT/" style="font-size: 18.33px;">CERT</a> <a href="/blog/tags/CMake/" style="font-size: 10px;">CMake</a> <a href="/blog/tags/DLL/" style="font-size: 10px;">DLL</a> <a href="/blog/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/blog/tags/IM/" style="font-size: 13.33px;">IM</a> <a href="/blog/tags/IO/" style="font-size: 10px;">IO</a> <a href="/blog/tags/Java/" style="font-size: 10px;">Java</a> <a href="/blog/tags/Linux/" style="font-size: 13.33px;">Linux</a> <a href="/blog/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/blog/tags/Oracle/" style="font-size: 10px;">Oracle</a> <a href="/blog/tags/Qos/" style="font-size: 11.67px;">Qos</a> <a href="/blog/tags/RFB协议/" style="font-size: 10px;">RFB协议</a> <a href="/blog/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/blog/tags/Scala/" style="font-size: 10px;">Scala</a> <a href="/blog/tags/TCP-IP/" style="font-size: 10px;">TCP/IP</a> <a href="/blog/tags/VNC协议/" style="font-size: 10px;">VNC协议</a> <a href="/blog/tags/Visual-Studio/" style="font-size: 10px;">Visual Studio</a> <a href="/blog/tags/Win32/" style="font-size: 13.33px;">Win32</a> <a href="/blog/tags/Y组合子/" style="font-size: 10px;">Y组合子</a> <a href="/blog/tags/bat/" style="font-size: 10px;">bat</a> <a href="/blog/tags/ioccc/" style="font-size: 10px;">ioccc</a> <a href="/blog/tags/lambda演算/" style="font-size: 10px;">lambda演算</a> <a href="/blog/tags/windows/" style="font-size: 11.67px;">windows</a> <a href="/blog/tags/上下文无关文法/" style="font-size: 10px;">上下文无关文法</a> <a href="/blog/tags/事业/" style="font-size: 10px;">事业</a> <a href="/blog/tags/互联网/" style="font-size: 10px;">互联网</a> <a href="/blog/tags/人生/" style="font-size: 10px;">人生</a> <a href="/blog/tags/传统行业/" style="font-size: 10px;">传统行业</a> <a href="/blog/tags/信息安全/" style="font-size: 10px;">信息安全</a> <a href="/blog/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/blog/tags/函数式编程/" style="font-size: 11.67px;">函数式编程</a> <a href="/blog/tags/单例模式/" style="font-size: 10px;">单例模式</a> <a href="/blog/tags/双向链表/" style="font-size: 10px;">双向链表</a> <a href="/blog/tags/可计算性/" style="font-size: 10px;">可计算性</a> <a href="/blog/tags/同步异步/" style="font-size: 10px;">同步异步</a> <a href="/blog/tags/团队管理/" style="font-size: 11.67px;">团队管理</a> <a href="/blog/tags/多核编程/" style="font-size: 10px;">多核编程</a> <a href="/blog/tags/多线程编程/" style="font-size: 10px;">多线程编程</a> <a href="/blog/tags/天体物理/" style="font-size: 10px;">天体物理</a> <a href="/blog/tags/套路/" style="font-size: 10px;">套路</a> <a href="/blog/tags/学术/" style="font-size: 10px;">学术</a> <a href="/blog/tags/宇宙学/" style="font-size: 10px;">宇宙学</a> <a href="/blog/tags/性能优化/" style="font-size: 10px;">性能优化</a> <a href="/blog/tags/技术/" style="font-size: 10px;">技术</a> <a href="/blog/tags/指令重排序/" style="font-size: 10px;">指令重排序</a> <a href="/blog/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/blog/tags/敏捷开发/" style="font-size: 10px;">敏捷开发</a> <a href="/blog/tags/数据压缩/" style="font-size: 10px;">数据压缩</a> <a href="/blog/tags/数据库/" style="font-size: 10px;">数据库</a> <a href="/blog/tags/数据恢复/" style="font-size: 10px;">数据恢复</a> <a href="/blog/tags/数据结构与算法/" style="font-size: 11.67px;">数据结构与算法</a> <a href="/blog/tags/旅行/" style="font-size: 10px;">旅行</a> <a href="/blog/tags/无线网卡/" style="font-size: 10px;">无线网卡</a> <a href="/blog/tags/有限自动机/" style="font-size: 10px;">有限自动机</a> <a href="/blog/tags/构建工具/" style="font-size: 10px;">构建工具</a> <a href="/blog/tags/模板元编程/" style="font-size: 10px;">模板元编程</a> <a href="/blog/tags/民主/" style="font-size: 11.67px;">民主</a> <a href="/blog/tags/汇编语言/" style="font-size: 10px;">汇编语言</a> <a href="/blog/tags/消息推送/" style="font-size: 10px;">消息推送</a> <a href="/blog/tags/混乱代码/" style="font-size: 10px;">混乱代码</a> <a href="/blog/tags/物联网/" style="font-size: 10px;">物联网</a> <a href="/blog/tags/猎人/" style="font-size: 10px;">猎人</a> <a href="/blog/tags/理想/" style="font-size: 10px;">理想</a> <a href="/blog/tags/理论计算机/" style="font-size: 10px;">理论计算机</a> <a href="/blog/tags/生活/" style="font-size: 13.33px;">生活</a> <a href="/blog/tags/研究/" style="font-size: 10px;">研究</a> <a href="/blog/tags/程序语言理论/" style="font-size: 15px;">程序语言理论</a> <a href="/blog/tags/类型系统/" style="font-size: 10px;">类型系统</a> <a href="/blog/tags/线程/" style="font-size: 10px;">线程</a> <a href="/blog/tags/线程安全/" style="font-size: 10px;">线程安全</a> <a href="/blog/tags/缓存/" style="font-size: 10px;">缓存</a> <a href="/blog/tags/编程范式/" style="font-size: 10px;">编程范式</a> <a href="/blog/tags/编程语言/" style="font-size: 10px;">编程语言</a> <a href="/blog/tags/编译原理/" style="font-size: 11.67px;">编译原理</a> <a href="/blog/tags/美国/" style="font-size: 10px;">美国</a> <a href="/blog/tags/职业生涯/" style="font-size: 10px;">职业生涯</a> <a href="/blog/tags/自然语言处理/" style="font-size: 10px;">自然语言处理</a> <a href="/blog/tags/自由/" style="font-size: 11.67px;">自由</a> <a href="/blog/tags/英语/" style="font-size: 10px;">英语</a> <a href="/blog/tags/装修/" style="font-size: 10px;">装修</a> <a href="/blog/tags/计算机体系结构/" style="font-size: 10px;">计算机体系结构</a> <a href="/blog/tags/计算机科学/" style="font-size: 10px;">计算机科学</a> <a href="/blog/tags/计算机网络/" style="font-size: 11.67px;">计算机网络</a> <a href="/blog/tags/计算理论/" style="font-size: 11.67px;">计算理论</a> <a href="/blog/tags/词法分析/" style="font-size: 10px;">词法分析</a> <a href="/blog/tags/诗歌/" style="font-size: 10px;">诗歌</a> <a href="/blog/tags/语义学/" style="font-size: 10px;">语义学</a> <a href="/blog/tags/调试/" style="font-size: 11.67px;">调试</a> <a href="/blog/tags/软件工程/" style="font-size: 16.67px;">软件工程</a> <a href="/blog/tags/软件开发/" style="font-size: 10px;">软件开发</a> <a href="/blog/tags/软件调试/" style="font-size: 10px;">软件调试</a> <a href="/blog/tags/远程桌面/" style="font-size: 10px;">远程桌面</a> <a href="/blog/tags/逻辑/" style="font-size: 11.67px;">逻辑</a> <a href="/blog/tags/重构/" style="font-size: 10px;">重构</a> <a href="/blog/tags/错误处理/" style="font-size: 10px;">错误处理</a> <a href="/blog/tags/闭包/" style="font-size: 10px;">闭包</a> <a href="/blog/tags/阻塞非阻塞/" style="font-size: 10px;">阻塞非阻塞</a> <a href="/blog/tags/项目管理/" style="font-size: 11.67px;">项目管理</a> <a href="/blog/tags/马尔科夫链/" style="font-size: 10px;">马尔科夫链</a> <a href="/blog/tags/驱动开发/" style="font-size: 10px;">驱动开发</a> <a href="/blog/tags/黑洞/" style="font-size: 10px;">黑洞</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/11/">November 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/09/">September 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/08/">August 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/07/">July 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/06/">June 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/05/">May 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/03/">March 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2014/02/">February 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2013/07/">July 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2013/06/">June 2013</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/blog/2019/03/17/bloom-filter/">实现一个简单的高性能布隆过滤器</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2019/03/10/auto-complete-markov-chain/">用马尔科夫链来做自动补全</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/12/15/manjaro-rtl8821ce/">manjaro下安装配置无线网卡驱动</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/11/11/cpp-closure/">C++的闭包</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/10/15/finite-automaton/">最简单的计算机之有限自动机</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2013-2019 MathxH Chen<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/blog/" class="mobile-nav-link">Home</a>
-  
-    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/blog/about" class="mobile-nav-link">About</a>
-  
-    <a href="/blog/resume" class="mobile-nav-link">Resume</a>
-  
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+            
+                
+                    <li class="active">
+                        <a href="/blog/"> Blog</a>
+                    </li>
+                
+                    <li>
+                        <a href="/blog/apollo"> Apollo</a>
+                    </li>
+                
+                    <li>
+                        <a href="/blog/beanstalkd"> Beanstalkd</a>
+                    </li>
+                
+                    <li>
+                        <a href="/blog/about"> About</a>
+                    </li>
+                
+                    <li>
+                        <a href="https:github.com/mickeyouyou"> GitHub</a>
+                    </li>
+                
+            
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
 </nav>
-    
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<div class="row" style="padding-top: 70px">
+    <div class="container center-block">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Blog</h3>
+                </div>
+                <ul class="list-group">
+                    
+                    
+                    
+<li class="list-group-item title">
+    <a target="_blank" href="/blog/2016/05/19/programming-language/">编程语言为何如此众多</a>
+</li>
 
 
-  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
-  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+                    
+                    
+<li class="list-group-item title">
+    <a target="_blank" href="/blog/2016/04/28/logic-equivalence/">软件设计中的逻辑等价</a>
+</li>
 
 
-<script src="/blog/js/script.js"></script>
+                    
+                    
+<li class="list-group-item title">
+    <a target="_blank" href="/blog/2016/02/28/web-and-traditional-industries/">互联网显然颠覆不了传统行业</a>
+</li>
+
+
+                    
+                    
+<li class="list-group-item title">
+    <a target="_blank" href="/blog/2016/01/14/manager-trap/">公司项目管理层的套路</a>
+</li>
+
+
+                    
+                    
+<li class="list-group-item title">
+    <a target="_blank" href="/blog/2015/11/09/error-code/">C++返回码的定义</a>
+</li>
+
+
+                    
+                    
+<li class="list-group-item title">
+    <a target="_blank" href="/blog/2014/11/24/dllimport-dllexport/">Visuao Studio下的dllimport和dllexport</a>
+</li>
+
+
+                    
+                    
+<li class="list-group-item title">
+    <a target="_blank" href="/blog/2014/09/18/none/">无题</a>
+</li>
+
+
+                    
+                    
+<li class="list-group-item title">
+    <a target="_blank" href="/blog/2014/08/18/collectivism-and-individualism/">集体是否有权力强制个人牺牲自己的权利</a>
+</li>
+
+
+                    
+                    
+<li class="list-group-item title">
+    <a target="_blank" href="/blog/2014/07/10/democracy-obstacle/">民主的障碍</a>
+</li>
+
+
+                    
+                    
+<li class="list-group-item title">
+    <a target="_blank" href="/blog/2014/06/27/logic-judgement/">逻辑判断</a>
+</li>
+
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+        </div>
+<div style="display:none">
+<script src="http://s4.cnzz.com/stat.php?id=&web_id=" language="JavaScript"></script>
+</div>
+    </div>
+</div>
 
 
 
-  </div>
+<!--加载导航栏所需js文件-->
+<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+
+
 </body>
 </html>
