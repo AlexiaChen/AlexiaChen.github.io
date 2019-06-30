@@ -45,7 +45,7 @@
 --->
 
 
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从集合到群"><span class="toc-text">从集合到群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#阿贝尔群"><span class="toc-text">阿贝尔群</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从群到环"><span class="toc-text">从群到环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#交换环"><span class="toc-text">交换环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#剩余类环"><span class="toc-text">剩余类环</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从环到域"><span class="toc-text">从环到域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#椭圆曲线密码学"><span class="toc-text">椭圆曲线密码学</span></a></li></ol>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从集合到群"><span class="toc-text">从集合到群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#阿贝尔群"><span class="toc-text">阿贝尔群</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从群到环"><span class="toc-text">从群到环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#交换环"><span class="toc-text">交换环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#剩余类环"><span class="toc-text">剩余类环</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从环到域"><span class="toc-text">从环到域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#椭圆曲线密码学"><span class="toc-text">椭圆曲线密码学</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线"><span class="toc-text">椭圆曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线上的运算"><span class="toc-text">椭圆曲线上的运算</span></a></li></ol></li></ol>
 <blockquote>
 <p><em>干了区块链这行当，快一年了，还没有写过有关于区块链相关的密码学呢，之前是没有仔细研究这块内容，再不自己写写总结，总有点对不住自己。如果以后不做这行了，哪敢跟别人说我曾经做过区块链啊</em></p>
 </blockquote>
@@ -232,6 +232,7 @@
 <p>因为 (3 + 4) × 2 = 3 × 2 + 4 × 2 满足分配律 </p>
 <p>（3 + 4 mod 5）× 2 mod 5 = 4 mod 5 = 4</p>
 <p>3 × 2 mod 5 + 4 × 2 mod 5 = 1 + 3 = 4</p>
+<p>(3 + 4) × 2 = 3 × 2 + 4 × 2 = 14 mod 5 = 4</p>
 <p>经过以上运算的结果得知，在m = 5的时候，剩余类环Z/mZ是域，因为满足域公理。</p>
 <p>那么这样说来，对于剩余类环Z/mZ就一定是域吗？不是的，不信你可以用m = 6来做运算看看，最后结果就不是域。慢慢经过你的m测试越来越多，你会发现，居然要m是质数（素数）的情况下，剩余类环Z/mZ才是域。m = 质数的情况下，剩余类环这个域也被称为有限域。记作：</p>
 <p>设p是质数，m = p</p>
@@ -242,7 +243,60 @@
 <p>这时候你就可以想象下，在平滑无限细分的有理数域把它化简到有限域Fp，那么这个离散化的过程最终的成果就是，计算机就可以处理有限并且离散的数据了，因为最开始，计算机是不能精确求光滑无限细分的问题的</p>
 <p>有限域，这个概念，慢慢会出现在椭圆曲线密码学中。接下来我们就开始接触椭圆曲线密码学吧。</p>
 <h2 id="椭圆曲线密码学"><a href="#椭圆曲线密码学" class="headerlink" title="椭圆曲线密码学"></a>椭圆曲线密码学</h2><hr>
-<p>（to be coutinue）</p>
+<h3 id="椭圆曲线"><a href="#椭圆曲线" class="headerlink" title="椭圆曲线"></a>椭圆曲线</h3><hr>
+<p>其实椭圆曲线是非欧几何下引伸出来的一种几何。大家都知道在欧式几何里面平面上的两条平行线不相交吧？如果修改欧几里德第五公设（过直线外一点，有且仅有一条与该直线的平行线），那么就可以导出了非欧几何。非欧几何大概有两种：</p>
+<ul>
+<li>罗氏几何（双曲几何）（修改后的第五公设：过直线外一点至少有两条不同的直线和已知直线平行）</li>
+<li>黎曼几何（椭圆几何） （修改后的第五公设：过直线外一点所作任何直线都与该直线相交，也就是没有任何一条平行线）</li>
+</ul>
+<p><img src="https://img3.doubanio.com/view/photo/l/public/p2561091183.jpg" alt=""></p>
+<p>在非欧几何的研究中，可以导出很多更加有趣的几何性质。</p>
+<p>比如：</p>
+<ul>
+<li>罗氏几何中，在马鞍面（双曲抛物面）上画一个三角形，其内角和就小于180度。</li>
+<li>黎曼几何中，在球面上画一个三角形，其内角和就大于180度。</li>
+</ul>
+<p><img src="https://img3.doubanio.com/view/photo/l/public/p2561091184.webp" alt=""></p>
+<p>理解了黎曼几何，那么就理解了黎曼面上看似平行的平行线其实是会有交点的。可以理解为相交在很远很远的地方，即定义了平行线相交于无穷远点（point at infinity）。</p>
+<p>好了，这样我们假设在欧几里德平面上画一条直线A，我们想像一下，我们为直线A添加一个无穷远点P，那么我们得到一个扩大的直线（直线A的有穷点和无穷远点P构成），这个直线专业点的叫法叫射影直线（projective line），也称一维射影空间。然后我们在该平面上画一条直线B，它平行于A，我们假设这条线B与A相交于无穷远点P。（因为欧几里德平面的平行线是不可能有交点的，所以只能用无限的思维假设AB两条平行线在无穷远处相交于点P）</p>
+<p>这样我们试着导出了以下三个性质：</p>
+<ul>
+<li>一条直线只有一个无穷远点；所有平行线有公共的无穷远点P</li>
+<li>任何两条不平行的直线有不同的无穷远点（否则会造成有两个交点）（P1,P2，P3….. Pn）</li>
+<li>射影平面上所有无穷远点(P1,P2,P3….Pn)构成连接成一条无穷远直线</li>
+</ul>
+<p>那么，根据以上三个性质，我们定义了射影平面：所有的欧式平常直线和那一条无穷远直线构成了射影平面。也可以说，所有平常点与所有无穷远点构成了射影平面，还或者可以说，所有的射影直线构成了射影平面，本质都是一样的</p>
+<p>哈哈，小学大家都知道，点构成线，线构成了面，面构成体，是吧。</p>
+<p>因为在欧式平面上的平行线都有相同的无穷远点，不同的线又有不同的无穷远点，无穷远点又构成一条无穷远直线，所以射影平面上的任何一点都可以用三维的齐次坐标（X，Y，Z）表示，其中X，Y，Z不能全为0。</p>
+<p>其中</p>
+<ul>
+<li>当 Z 不为 0，则该点表示欧氏平面上的点(X/Z,Y/Z)。 （欧式平面的平常点，构成了所有欧式直线）</li>
+<li>当 Z 为0, 则该点表示无穷远点 （无穷个无穷远点构成了无穷远直线）</li>
+</ul>
+<p>这样我们就可以根据以上的坐标表示，把欧式平面上的点投影到射影平面中去。</p>
+<p>例如，把一个欧式平面上的点（x,y）,令 x = X/Z， y = Y/Z, Z != 0, 则投影到射影平面上的点就是（X，Y，Z）。 用具体数字代换进去就是，点（1,2）投影到射影平面的点就是（Z，2Z，Z），所以，诸如(1,2,1),(2,4,2)等这样形式的坐标表示是点，在射影平面内都算同一个点。</p>
+<p>这时候关键的人物上场了，就是我们期待已久的椭圆曲线，它的定义就是：</p>
+<ul>
+<li>在射影平面上满足威尔斯特拉斯椭圆方程（Weierstrass）所有点的集合</li>
+</ul>
+<p>该方程的表示是（注意，是三元方程）：</p>
+<p><img src="https://img3.doubanio.com/view/photo/l/public/p2561103426.webp" alt=""></p>
+<p>该方程可以归整到欧式二维平面的方程表示形式：</p>
+<p><img src="https://img3.doubanio.com/view/photo/m/public/p2561104050.webp" alt=""></p>
+<p>其中a,b为常数系数，以下是a，b不同的取值，表现的椭圆曲线的欧式二维图像：</p>
+<p><img src="https://img3.doubanio.com/view/photo/m/public/p2561104060.webp" alt=""></p>
+<p>所以可以看到，椭圆曲线并不是椭圆形，这个是有历史原因的，因为椭圆曲线方程与求椭圆弧长的椭圆积分的反函数很像。</p>
+<p>到这里大部分网络上会直接把上面的方程写出来，没有讲述过多的来源和发展历史。所以就以为椭圆曲线是一个二维的东西，实际上不是。因为投影的关系，我们可以降维到用二维的图像来研究它。</p>
+<p>还有一个要注意的一点就是，椭圆曲线是非奇异的，也就是是光滑的，也就是各个分量的偏导数不能全为0。而且欧式二维平面的椭圆曲线因为有y^2项，所以一定关于x轴对称的，这个性质之后会用得到。</p>
+<h3 id="椭圆曲线上的运算"><a href="#椭圆曲线上的运算" class="headerlink" title="椭圆曲线上的运算"></a>椭圆曲线上的运算</h3><hr>
+<p>之前我们看到，椭圆曲线那么奇怪，歪瓜咧枣的线条是怎样跟密码学里关联上了？曲线上的这些点有什么联系呢？ 依靠点与点之间的心灵感应吗？ 哈哈，这里开个玩笑。</p>
+<p>回顾下之前我们学的关于群的部分，我们要定义个点与点之间的的二元加法运算，这个运算在曲线上的点的集合上构成一个阿贝尔群。所以就涉及到怎样设计这个二元加法运算满足阿贝尔群公理就是个问题，跟初等代数的加法不一样哈。</p>
+<p>那么设两个在椭圆曲线上的点P，点Q，那么P + Q就是连接PQ两点作直线，相交于椭圆曲线于一个点R’，那么过交点R‘作与x轴的垂线并延长再次与椭圆曲线相交于一个点R，那么P + Q = R。也就是点R’与点R关于曲线的x轴对称。</p>
+<p>以下就是椭圆曲线上P + Q = R的加法运算的图像（网络上很多，随便找的）：</p>
+<p><img src="https://img3.doubanio.com/view/photo/m/public/p2561110156.webp" alt=""></p>
+<p>根据上图，你可以在草稿纸上画，第一眼就可以看出来满足交换律， P + Q = Q + P，</p>
+<p>然后你在设一个点K，然后再画直线，你会发现（P + Q） + k = P + （ Q + K）也满足结合律，</p>
+<p>（to be continue）</p>
 
 
 <!--<a href="https://alexiachen.github.io/blog/2019/06/29/from-group-ring-field-to-ecc/#disqus_thread" class="article-comment-link">Comments</a>
