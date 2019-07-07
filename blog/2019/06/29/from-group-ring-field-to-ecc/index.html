@@ -249,14 +249,14 @@
 <li>罗氏几何（双曲几何）（修改后的第五公设：过直线外一点至少有两条不同的直线和已知直线平行）</li>
 <li>黎曼几何（椭圆几何） （修改后的第五公设：过直线外一点所作任何直线都与该直线相交，也就是没有任何一条平行线）</li>
 </ul>
-<p><img src="https://img3.doubanio.com/view/photo/l/public/p2561091183.jpg" alt=""></p>
+<p><img src="http://wx4.sinaimg.cn/mw690/a1ac93f3gy1g4romaswt8j20dm05d3yt.jpg" alt=""></p>
 <p>在非欧几何的研究中，可以导出很多更加有趣的几何性质。</p>
 <p>比如：</p>
 <ul>
 <li>罗氏几何中，在马鞍面（双曲抛物面）上画一个三角形，其内角和就小于180度。</li>
 <li>黎曼几何中，在球面上画一个三角形，其内角和就大于180度。</li>
 </ul>
-<p><img src="https://img3.doubanio.com/view/photo/l/public/p2561091184.webp" alt=""></p>
+<p><img src="http://wx3.sinaimg.cn/mw690/a1ac93f3gy1g4romabr0fj20go06b3z0.jpg" alt=""></p>
 <p>理解了黎曼几何，那么就理解了黎曼面上看似平行的平行线其实是会有交点的。可以理解为相交在很远很远的地方，即定义了平行线相交于无穷远点（point at infinity）。</p>
 <p>好了，这样我们假设在欧几里德平面上画一条直线A，我们想像一下，我们为直线A添加一个无穷远点P，那么我们得到一个扩大的直线（直线A的有穷点和无穷远点P构成），这个直线专业点的叫法叫射影直线（projective line），也称一维射影空间。然后我们在该平面上画一条直线B，它平行于A，我们假设这条线B与A相交于无穷远点P。（因为欧几里德平面的平行线是不可能有交点的，所以只能用无限的思维假设AB两条平行线在无穷远处相交于点P）</p>
 <p>这样我们试着导出了以下三个性质：</p>
@@ -280,11 +280,11 @@
 <li>在射影平面上满足威尔斯特拉斯椭圆方程（Weierstrass）所有点的集合</li>
 </ul>
 <p>该方程的表示是（注意，是三元方程）：</p>
-<p><img src="https://img3.doubanio.com/view/photo/l/public/p2561103426.webp" alt=""></p>
+<p><img src="http://wx4.sinaimg.cn/mw690/a1ac93f3gy1g4rom94twwj20dg01idfo.jpg" alt=""></p>
 <p>该方程可以归整到欧式二维平面的方程表示形式：</p>
-<p><img src="https://img3.doubanio.com/view/photo/m/public/p2561104050.webp" alt=""></p>
+<p><img src="http://wx3.sinaimg.cn/mw690/a1ac93f3gy1g4rom8opvgj2050017dfl.jpg" alt=""></p>
 <p>其中a,b为常数系数，以下是a，b不同的取值，表现的椭圆曲线的欧式二维图像：</p>
-<p><img src="https://img3.doubanio.com/view/photo/m/public/p2561104060.webp" alt=""></p>
+<p><img src="http://wx1.sinaimg.cn/mw690/a1ac93f3gy1g4rom8aszvj20fg03dt8m.jpg" alt=""></p>
 <p>所以可以看到，椭圆曲线并不是椭圆形，这个是有历史原因的，因为椭圆曲线方程与求椭圆弧长的椭圆积分的反函数很像。</p>
 <p>到这里大部分网络上会直接把上面的方程写出来，没有讲述过多的来源和发展历史。所以就以为椭圆曲线是一个二维的东西，实际上不是。因为投影的关系，我们可以降维到用二维的图像来研究它。</p>
 <p>还有一个要注意的一点就是，椭圆曲线是非奇异的，也就是是光滑的，也就是各个分量的偏导数不能全为0。而且欧式二维平面的椭圆曲线因为有y^2项，所以一定关于x轴对称的，这个性质之后会用得到。</p>
@@ -293,7 +293,7 @@
 <p>回顾下之前我们学的关于群的部分，我们要定义个点与点之间的的二元加法运算，这个运算在曲线上的点的集合上构成一个阿贝尔群。所以就涉及到怎样设计这个二元加法运算满足阿贝尔群公理就是个问题，跟初等代数的加法不一样哈。</p>
 <p>那么设两个在椭圆曲线上的点P，点Q，那么P + Q就是连接PQ两点作直线，相交于椭圆曲线于一个点R’，那么过交点R‘作与x轴的垂线并延长再次与椭圆曲线相交于一个点R，那么P + Q = R。也就是点R’与点R关于曲线的x轴对称。</p>
 <p>以下就是椭圆曲线上P + Q = R的加法运算的图像（网络上很多，随便找的）：</p>
-<p><img src="https://img3.doubanio.com/view/photo/m/public/p2561110156.webp" alt=""></p>
+<p><img src="http://wx3.sinaimg.cn/mw690/a1ac93f3gy1g4rom7r27qj20dt0bj0td.jpg" alt=""></p>
 <p>根据上图，你可以在草稿纸上画，第一眼就可以看出来满足交换律， P + Q = Q + P，</p>
 <p>然后你在设一个点K，然后再画直线，你会发现（P + Q） + k = P + （ Q + K）也满足结合律，</p>
 <p>（to be continue）</p>
