@@ -45,7 +45,7 @@
 --->
 
 
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从集合到群"><span class="toc-text">从集合到群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#阿贝尔群"><span class="toc-text">阿贝尔群</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从群到环"><span class="toc-text">从群到环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#交换环"><span class="toc-text">交换环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#剩余类环"><span class="toc-text">剩余类环</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从环到域"><span class="toc-text">从环到域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#椭圆曲线密码学"><span class="toc-text">椭圆曲线密码学</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线"><span class="toc-text">椭圆曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线上的运算"><span class="toc-text">椭圆曲线上的运算</span></a></li></ol></li></ol>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从集合到群"><span class="toc-text">从集合到群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#阿贝尔群"><span class="toc-text">阿贝尔群</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从群到环"><span class="toc-text">从群到环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#交换环"><span class="toc-text">交换环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#剩余类环"><span class="toc-text">剩余类环</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从环到域"><span class="toc-text">从环到域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#椭圆曲线密码学"><span class="toc-text">椭圆曲线密码学</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线"><span class="toc-text">椭圆曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线上的运算"><span class="toc-text">椭圆曲线上的运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线上的离散对数问题"><span class="toc-text">椭圆曲线上的离散对数问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#利用有限域这个工具对椭圆曲线进行离散化"><span class="toc-text">利用有限域这个工具对椭圆曲线进行离散化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线点的坐标加法运算"><span class="toc-text">椭圆曲线点的坐标加法运算</span></a></li></ol></li></ol>
 <blockquote>
 <p><em>干了区块链这行当，快一年了，还没有写过有关于区块链相关的密码学呢，之前是没有仔细研究这块内容，再不自己写写总结，总有点对不住自己。如果以后不做这行了，哪敢跟别人说我曾经做过区块链啊</em></p>
 </blockquote>
@@ -294,9 +294,50 @@
 <p>那么设两个在椭圆曲线上的点P，点Q，那么P + Q就是连接PQ两点作直线，相交于椭圆曲线于一个点R’，那么过交点R‘作与x轴的垂线并延长再次与椭圆曲线相交于一个点R，那么P + Q = R。也就是点R’与点R关于曲线的x轴对称。</p>
 <p>以下就是椭圆曲线上P + Q = R的加法运算的图像（网络上很多，随便找的）：</p>
 <p><img src="http://wx3.sinaimg.cn/mw690/a1ac93f3gy1g4rom7r27qj20dt0bj0td.jpg" alt=""></p>
-<p>根据上图，你可以在草稿纸上画，第一眼就可以看出来满足交换律， P + Q = Q + P，</p>
-<p>然后你在设一个点K，然后再画直线，你会发现（P + Q） + k = P + （ Q + K）也满足结合律，</p>
-<p>（to be continue）</p>
+<p>根据上图，你可以在草稿纸上画，第一眼就可以看出来满足交换律， P + Q = Q + P = R，</p>
+<p>然后你在设一个点K，然后再画直线，你会发现（P + Q） + K = P + （ Q + K）也满足结合律。</p>
+<p>按照上面的定义，前提假设是P ！= Q，没法解释 P = Q 也就是P，Q两点重合的情况下，无法过两点作一条直线，这时候的加法运算是怎么定义的呢？其实只要过两点的重合点画出该点在椭圆曲线上的切线就可以了，然后规则与上一个图例是一样的：</p>
+<p><img src="http://wx1.sinaimg.cn/mw690/a1ac93f3gy1g4xzcjcdk0j20d80c3q46.jpg" alt=""></p>
+<p>上图就定义了P + P = 2P = R，这样的运算称为椭圆曲线上的二倍运算。</p>
+<p>此外，如果我们将某一点A关于x轴对称位置的点定义为-A，这样的运算称为椭圆曲线上的正负取反运算，如下图：</p>
+<p><img src="http://wx3.sinaimg.cn/mw690/a1ac93f3gy1g4xzor8tj4j20lk0fawep.jpg" alt=""></p>
+<p>上图就定义了类似我们印象中的负数，好了，如果我们将A和-A相加会怎样呢？ 上图也说明了A+（-A）的情况，就是过这两点作一条直线，这条直线是与y轴平行的，唉？不对啊，这条直线与椭圆曲线没有第三个交点了啊？ 其实不是的，因为椭圆曲线实际上并不是欧式二维平面的东西，它来自于非欧几何中的黎曼几何（黎曼球面），二维平面也展示不出来交点，我们就认为过点A和-A的这条直线与椭圆曲线相交在无穷远点，这个无穷远点我们一般记作O。所以就定义了 A + （-A） = O 。 </p>
+<p>好了，至此为止，我们对椭圆曲线上的点（包括无穷远点）的加法运算进行了定义，细心的人会发现，这个在椭圆曲线的点集和无穷远点点集上定义的加法运算满足了之前阿贝尔群（交换群）的公理， 无穷远点O就是单位元，任意一点A的逆元就是-A，并满足交换律，结合律。完美啊，perfect。</p>
+<p>曲线上的运算规则已经清晰，当给定椭圆曲线方程及点的坐标时，我们就可以用坐标进行加，减，倍乘运算。比如，给定曲线上的一个点G（基点，base point），我们可以求2G，3G。其中3G = G + 2G，以此类推。也就是说，当给定G点时，已知标量k，求点kG（G的k倍）的问题并不困难。但反过来，已知点kG求标量k则非常困难。这就是椭圆曲线密码学中所利用的“椭圆曲线上的离散对数问题”，英文简称也就是所谓的ECDLP。</p>
+<p>通过以上解释，已知G点的情况下，其实标量k也可以看作是私钥，kG看作公钥。从私钥计算公钥很简单，但是根据公钥推私钥，几乎不可能。这就是非对称的密钥对。</p>
+<h3 id="椭圆曲线上的离散对数问题"><a href="#椭圆曲线上的离散对数问题" class="headerlink" title="椭圆曲线上的离散对数问题"></a>椭圆曲线上的离散对数问题</h3><hr>
+<p>ECC利用了ECDLP的复杂度，RSA利用了质因数分解的复杂度，其本质都是利用了计算困难的问题，这深入的话题，研究计算理论，计算复杂度的学者会更有了解。</p>
+<h3 id="利用有限域这个工具对椭圆曲线进行离散化"><a href="#利用有限域这个工具对椭圆曲线进行离散化" class="headerlink" title="利用有限域这个工具对椭圆曲线进行离散化"></a>利用有限域这个工具对椭圆曲线进行离散化</h3><hr>
+<p>椭圆曲线要形成光滑的曲线，其点的坐标（x，y）都必须是实数，即实数域R上的椭圆曲线。实数域R的椭圆曲线不合适用在密码学当中，计算机擅长于处理有限，并且离散的整数数据，所以要用在有限域Fp上的椭圆曲线（p为素数）。所以点坐标（x，y）这些都在有限域下了。更直观一点的话，就是在有限域限定的整数下来进行点的坐标运算，并且将结果除以p求余数。</p>
+<p>例如： y^2 = x^3 + x + 1 (mod 23) 就是位于有限域F（23）上。也就是说对于在有限域F（23）下的任意一点（x，y），对于方程左侧的y^2的结果mod 23 与右侧的x^3 + x + 1的结果mod 23的结果相等。</p>
+<p>上面的例子给定的素数p是23,这个素数很小，构成的椭圆曲线在有限域上的离散点的数量太少，所以在这个有限域上的ECDLP不难解，但是当素数p非常大的时候，要解这个问题就非常困难了，通常工业级的椭圆曲线的密码算法库给定的素数p都非常大。</p>
+<p>以NIST推荐的一种椭圆曲线Curve P-521为例，其质数p就是下面这个长达157位（十进制位）的数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span> ** <span class="number">521</span> - <span class="number">1</span></span><br><span class="line"><span class="number">6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057151</span></span><br></pre></td></tr></table></figure>
+<p>当然，为了提高计算效率，NIST推荐p的值使用梅森素数（或伪梅森素数），例如，在椭圆曲线P-256中，p = 2^156 - 2^224 + 2^192 + 2^96 - 1。</p>
+<p>梅森素数目前仅发现51个。梅森数是指2^p - 1这类形式的数，其中p是素数，如果2^p - 1刚好也是素数，那么2^p - 1这个数就是梅森素数。梅森素数很少，梅森数越大，梅森素数就越难出现。</p>
+<p>到现在，终于知道为什么人类一直在致力于发现新的素数了吧，其实素数是很有价值的，对科学。当然，也不尽然，因为我看了相关专业的人士评价，其实素数的发现，也仅仅集中在密码学领域有用途，其他方面素数价值并不是很大，人类致力于探寻也只是好奇驱使而已。有兴趣的可以看一看这个世界性的分布式网格计算项目<a href="https://www.mersenne.org/" target="_blank" rel="noopener">GIMPS</a>，该项目就是利用世界上计算机的闲置资源来计算并发现更大的素数。</p>
+<h3 id="椭圆曲线点的坐标加法运算"><a href="#椭圆曲线点的坐标加法运算" class="headerlink" title="椭圆曲线点的坐标加法运算"></a>椭圆曲线点的坐标加法运算</h3><hr>
+<p>设点P（x1,y1）,点Q(x2,y2)的坐标，点R（x3,y3），那么计算R点的代换公式分以下几种情况：</p>
+<ul>
+<li><p>若P为无穷点（单位元），即P = O，此时R = P + Q = O + Q = Q；若Q为无穷点，即Q = O，此时R = P + Q = P + O = P；若P和Q都为无穷点，即 P= Q = O，则 R= P + Q = O + O = O。</p>
+</li>
+<li><p>若 x1 = x2而 y1 = -y2，此时称Q点为P点的逆元，记为P = -Q = -P，且R = P + Q = O。（也就是P，Q两点关于x轴对称）</p>
+</li>
+<li><p>若x1 = x2且y1 = y2，即P = Q，此时R = P + Q = 2P = 2Q，其中</p>
+</li>
+</ul>
+<p><img src="http://wx1.sinaimg.cn/mw690/a1ac93f3gy1g4ycfedu0yj20ag06it8o.jpg" alt=""></p>
+<p>上图的lambda是值是椭圆方程等式两边同时求导，这样就是当前切点的斜率</p>
+<ul>
+<li>除上述特殊情况之外的一般情况，即P ！= ±Q时，R = P + Q，其中</li>
+</ul>
+<p><img src="http://wx3.sinaimg.cn/mw690/a1ac93f3gy1g4yckt86v1j20ak05ymx5.jpg" alt=""></p>
+<p>上图的lambda就是过两点求直线斜率的公式了。</p>
+<p>以上公式给出来了，代码应该会写了吧，这里就不写了，因为椭圆曲线的坐标加法运算要在有限域Fp下进行，所以上面的公式后面都得mod p。</p>
+<p>比如:</p>
+<p>lambda = ((3*x1^2 + a) / 2*y1) mod p</p>
+<p>x3 = (lambda^2 - 2*x1) mod p</p>
+<p>y3 = (lambda*(x1 - x3) - y1) mod p</p>
 
 
 <!--<a href="https://alexiachen.github.io/blog/2019/06/29/from-group-ring-field-to-ecc/#disqus_thread" class="article-comment-link">Comments</a>
