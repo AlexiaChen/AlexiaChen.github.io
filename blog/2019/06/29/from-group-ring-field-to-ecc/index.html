@@ -45,7 +45,7 @@
 --->
 
 
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从集合到群"><span class="toc-text">从集合到群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#阿贝尔群"><span class="toc-text">阿贝尔群</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从群到环"><span class="toc-text">从群到环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#交换环"><span class="toc-text">交换环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#剩余类环"><span class="toc-text">剩余类环</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从环到域"><span class="toc-text">从环到域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#椭圆曲线密码学"><span class="toc-text">椭圆曲线密码学</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线"><span class="toc-text">椭圆曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线上的运算"><span class="toc-text">椭圆曲线上的运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线上的离散对数问题"><span class="toc-text">椭圆曲线上的离散对数问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#利用有限域这个工具对椭圆曲线进行离散化"><span class="toc-text">利用有限域这个工具对椭圆曲线进行离散化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线点的坐标加法运算"><span class="toc-text">椭圆曲线点的坐标加法运算</span></a></li></ol></li></ol>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从集合到群"><span class="toc-text">从集合到群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#阿贝尔群"><span class="toc-text">阿贝尔群</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从群到环"><span class="toc-text">从群到环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#交换环"><span class="toc-text">交换环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#剩余类环"><span class="toc-text">剩余类环</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从环到域"><span class="toc-text">从环到域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#椭圆曲线密码学"><span class="toc-text">椭圆曲线密码学</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线"><span class="toc-text">椭圆曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线上的运算"><span class="toc-text">椭圆曲线上的运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线上的离散对数问题"><span class="toc-text">椭圆曲线上的离散对数问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#利用有限域这个工具对椭圆曲线进行离散化"><span class="toc-text">利用有限域这个工具对椭圆曲线进行离散化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线点的坐标运算"><span class="toc-text">椭圆曲线点的坐标运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线的Diffie-Hellman密钥交换"><span class="toc-text">椭圆曲线的Diffie-Hellman密钥交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#椭圆曲线的数字签名算法（ECDSA）"><span class="toc-text">椭圆曲线的数字签名算法（ECDSA）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
 <blockquote>
 <p><em>干了区块链这行当，快一年了，还没有写过有关于区块链相关的密码学呢，之前是没有仔细研究这块内容，再不自己写写总结，总有点对不住自己。如果以后不做这行了，哪敢跟别人说我曾经做过区块链啊</em></p>
 </blockquote>
@@ -316,7 +316,7 @@
 <p>当然，为了提高计算效率，NIST推荐p的值使用梅森素数（或伪梅森素数），例如，在椭圆曲线P-256中，p = 2^156 - 2^224 + 2^192 + 2^96 - 1。</p>
 <p>梅森素数目前仅发现51个。梅森数是指2^p - 1这类形式的数，其中p是素数，如果2^p - 1刚好也是素数，那么2^p - 1这个数就是梅森素数。梅森素数很少，梅森数越大，梅森素数就越难出现。</p>
 <p>到现在，终于知道为什么人类一直在致力于发现新的素数了吧，其实素数是很有价值的，对科学。当然，也不尽然，因为我看了相关专业的人士评价，其实素数的发现，也仅仅集中在密码学领域有用途，其他方面素数价值并不是很大，人类致力于探寻也只是好奇驱使而已。有兴趣的可以看一看这个世界性的分布式网格计算项目<a href="https://www.mersenne.org/" target="_blank" rel="noopener">GIMPS</a>，该项目就是利用世界上计算机的闲置资源来计算并发现更大的素数。</p>
-<h3 id="椭圆曲线点的坐标加法运算"><a href="#椭圆曲线点的坐标加法运算" class="headerlink" title="椭圆曲线点的坐标加法运算"></a>椭圆曲线点的坐标加法运算</h3><hr>
+<h3 id="椭圆曲线点的坐标运算"><a href="#椭圆曲线点的坐标运算" class="headerlink" title="椭圆曲线点的坐标运算"></a>椭圆曲线点的坐标运算</h3><hr>
 <p>设点P（x1,y1）,点Q(x2,y2)的坐标，点R（x3,y3），那么计算R点的代换公式分以下几种情况：</p>
 <ul>
 <li><p>若P为无穷点（单位元），即P = O，此时R = P + Q = O + Q = Q；若Q为无穷点，即Q = O，此时R = P + Q = P + O = P；若P和Q都为无穷点，即 P= Q = O，则 R= P + Q = O + O = O。</p>
@@ -338,6 +338,21 @@
 <p>lambda = ((3*x1^2 + a) / 2*y1) mod p</p>
 <p>x3 = (lambda^2 - 2*x1) mod p</p>
 <p>y3 = (lambda*(x1 - x3) - y1) mod p</p>
+<p>如果你细心观察上面的运算公式，你会发现lambda的值可能在计算机下会有错误，这种错误就是除数和被除数之前可能并不是一个整除关系的时候，得到的可能是0,或者小数，而有限域下，是不可能有小数存在的，这样计算会有错误。</p>
+<p>比如 a = 3, b = 4, p = 7, lambda = （3 / 4） mod 7的计算结果就会有问题，3/4并不是一个整除关系，如果这样计算，计算机最后计算的lambda结果就是0。所以需要把除发转化到乘法逆元，（3 / 4） mod 7 = （3 * 4的逆元） mod 7。</p>
+<p>在mod运算下，计算乘法逆元最朴素的方案是用扩展欧几里德算法去求。但是求逆运算性能贼慢，优化方法有很多， 主要思路都是尽量避免求逆，一个是降低总计算步骤中的求逆次数，一个是转换椭圆曲线的坐标系直接避免求逆。这里深入的暂时不介绍，网上论文很多，比如： <a href="https://image.hanspub.org/pdf/CSA20120100000_70975142.pdf" target="_blank" rel="noopener">《GF（3^n）下的椭圆曲线快速算法研究》</a>,这篇论文是北航的，主要是降低求逆次数，对于kG点，其中标量k需要满足3^n的形式，并且对于椭圆方程y^2 = x^3 + a*x + b中的a,b系数也限定在有限域F（3^n）的形式。</p>
+<p>就拿普通的点加运算来说，注意看P ！= Q的点加公式，lambda计算上是1次逆运算，1次乘法运算，x3的计算上又是1次平方运算，y3的计算上是1次乘法运算，当然，公式中的加减法的运算开销可以忽略不计，关键就是以上的三种运算，逆运算，平方运算，乘法运算开销最大，其中1次逆运算更是相当于1次乘法运算开销的10倍。</p>
+<p>下面来举个例子就知道了，为了方面直观,直接a，b满足整除关系就好了：</p>
+<p>（4 / 2） mod 7 = 2</p>
+<p>上式可以转换为 (4 <em> inverse(2，7)) mod 7 = (4 </em> 4) mod 7 = 16 mod 7 = 2</p>
+<p>其中inverse(2，7)是求2在模7运算下的乘法逆元，我用python计算的，结果为4。可以看出，转化为乘法逆元，其结果是一样的，最终都是等于2。</p>
+<p>至此为止，不考虑运算性能的话，只要求逆搞定了，那么椭圆曲线上的所有运算都可以根据公式搞定了。P + Q， kP = P + （k - 1）P， 2P = P + P，3P = 2P + P。反正点的标量乘法，最终都可以退化成点加法。</p>
+<h3 id="椭圆曲线的Diffie-Hellman密钥交换"><a href="#椭圆曲线的Diffie-Hellman密钥交换" class="headerlink" title="椭圆曲线的Diffie-Hellman密钥交换"></a>椭圆曲线的Diffie-Hellman密钥交换</h3><hr>
+<p>（to be continued）</p>
+<h3 id="椭圆曲线的数字签名算法（ECDSA）"><a href="#椭圆曲线的数字签名算法（ECDSA）" class="headerlink" title="椭圆曲线的数字签名算法（ECDSA）"></a>椭圆曲线的数字签名算法（ECDSA）</h3><hr>
+<p>（to be continued）</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><hr>
+<p>本文只给出了ECC的线性知识的思路，包括从哪里到哪里，但是没有涉及算法优化等细节。有机会我再研究研究，并再写个文章分享出来吧。：）</p>
 
 
 <!--<a href="https://alexiachen.github.io/blog/2019/06/29/from-group-ring-field-to-ecc/#disqus_thread" class="article-comment-link">Comments</a>
