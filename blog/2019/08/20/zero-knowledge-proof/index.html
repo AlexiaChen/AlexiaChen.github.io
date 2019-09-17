@@ -1,0 +1,129 @@
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+	
+	<title>给小白看的零知识证明</title>
+	<meta name="keywords" content="MathxH Blog">
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+	   <link href="/blog/css/main.css?v=3" rel="stylesheet" type="text/css">
+    
+        <script src="/blog/js/util.js"></script>
+        <script>
+            if(isMobile()) {
+                loadjscssfile('../css/mobile.css', 'css');
+            } else {
+                loadjscssfile('../css/desktop.css', 'css');
+            }
+        </script> 
+    
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+
+    
+	<link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=3">
+    
+    
+
+</head>
+
+<body>
+
+
+<h2 class="title">给小白看的零知识证明</h2>
+<!---
+<div style="text-align:center;margin-top: -10px;">
+<div class="article-category">
+发表于2019年8月20日
+
+
+
+
+ </div>
+--->
+
+
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#研究背景"><span class="toc-text">研究背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ZKP中的参与者"><span class="toc-text">ZKP中的参与者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一个简单的例子"><span class="toc-text">一个简单的例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZKP的特性"><span class="toc-text">ZKP的特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#互交式证明系统"><span class="toc-text">互交式证明系统</span></a></li></ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>零知识证明看样子是很复杂的一个过程，其实不是，网络上对这个概念的讲解杂七杂八，质量参差不齐，今天我就打算讲一讲有关话题，我会循序渐进，每个小节我会逐渐加深理解难度，然后最后导出工业界的做法。所以读者最终要的是，首先要做到不要畏惧。实在想不明白可以用手稿纸画一画，推一推。我写文章通常的做法会在专业的名词用括号注释英文，目的是让读者不混淆，并且英文搜索到的资料更准确。</p>
+<h2 id="研究背景"><a href="#研究背景" class="headerlink" title="研究背景"></a>研究背景</h2><p>传统的通信协议中的一个共同弱点就是容易遭遇到信道的窃听，所以零知识证明（又叫零知识协议Zero Knownledge protocol，ZKP）就这样诞生了。目的是构造这样一个系统，该系统中的证明人（Prover）可以在不暴露任何信息（Zero Knowledge）的情况下，让验证者（Verifer）进行验证。简而言之，对于监听者，就是你监听了，也没用，你监听到的信息也推导不出来任何有用的东西。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>这里要注意下，虽说到这里反复提到了证明（Proof）这个词，但是这个证明不是数学上的证明，数学证明是严格的，使用自证陈述或从预先建立好的证明中获得陈述。ZKP更类似于人类在信息交换过程中建立一个陈述的动态过程，所以它是互交式的（当然，也有非互交式的，这个到后面会提到，而工业界的zk-SNARK用的就是非互交式的）。</p>
+<p>简而言之，在ZKP中，所谓互交式就是证明者（Prover）不为它持有的秘密（Secret）直接提供证据，而是双方在一个互交来回“对话”的过程中证明者（Prover）逐渐的说服验证者（Verfier）他持有某个秘密是真实的。Prover也不用暴露秘密就可以说服对方，这样太好了。比如，我可以宣称对外界粉丝说，刘亦菲是我老婆，也不用把结婚证（Secret）拿出来，就能向粉丝们证明我说的是真的（刘亦菲是我老婆），即真命题。哈哈，结婚证是我的秘密隐私啊，怎么可能拿出来给粉丝看。</p>
+<h3 id="ZKP中的参与者"><a href="#ZKP中的参与者" class="headerlink" title="ZKP中的参与者"></a>ZKP中的参与者</h3><p>在ZKP中，参与者也就是2方：</p>
+<ul>
+<li><p>Alice （Prover） Alice想向Bob传达某种知识的证明，但是同时又不想暴露她的秘密</p>
+</li>
+<li><p>Bob （Verifier） Bob向Alice提出一些问题，这有助于让Bob确认Alice是否知道她声称知道的某些东西， Bob无法从这些互动中学到有用的任何东西，即使Bob在欺骗或从事ZKP以外的活动。</p>
+</li>
+</ul>
+<h3 id="一个简单的例子"><a href="#一个简单的例子" class="headerlink" title="一个简单的例子"></a>一个简单的例子</h3><p>为了举例，考虑一个由圆形隧道组成的洞穴。与这个洞穴的入口正好相反，有一扇门只能通过密码打开。尽管这种情况可能不是真实的场景，但这个场景演示基本涵盖了ZKP的基本特性，现在Alice知道了这扇门的密码，她想向Bob证明这一点，但又不想把门的密码暴露出来。他们两个人要互动地完成以下任务：</p>
+<ul>
+<li><p>Alice随机选择一个洞穴的分支进去（左或者右都行），这个不能让Bob知道她选择了哪一个分支</p>
+</li>
+<li><p>站在洞穴入口处的Bob，他随机选择一个分支，然后让Alice从他选择的那个分支出来</p>
+</li>
+<li><p>如果Alice真的知道门的密码，没有撒谎的话，她就可以每次做到从Bob选择的分支出来。如果她不知道门的密码，那她在最开始就有百分之50的概率蒙骗过关，随着这样次数的逐渐增加，Alice蒙骗过关的概率越来越低，在达到一个特定的次数的时候，她蒙骗过关的概率可以小到忽略不计了，比中彩票的概率还要小。</p>
+</li>
+</ul>
+<p>这一个例子也展示了ZKP的另一个特性，Bob确信了Alice有门的密码，但是Bob不能使别人相信Alice有门的密码，这个过程只有他两知道，把过程录下来也无济于事，因为录像带可以造假。所有没有任何有用的信息可以暴露给Bob，更不可能流向协议系统之外，只有Alice自己知道门的密码。</p>
+<h3 id="ZKP的特性"><a href="#ZKP的特性" class="headerlink" title="ZKP的特性"></a>ZKP的特性</h3><p>所以ZKP的特性可以总结如下：</p>
+<ul>
+<li><p>验证者（Verifier）无法从协议中学习到任何有用的知识。这是ZKP的核心特性，也就是说零数量的知识被暴露出来。当然有个类似的协议叫最小披露协议（Minimum Disclosure Protocol），它适当放宽了这个特性要求，试图暴露一个尽可能最小的知识出去。</p>
+</li>
+<li><p>证明者（Prover）无法欺骗验证者（Verifier）。随着协议互交轮次的数量提高，Prover欺骗Verifier的概率急剧降低，慢慢小到可以忽略不计。</p>
+</li>
+<li><p>验证者（Verifier）也无法欺骗证明者（Prover）。即使验证者不遵守协议规则，验证者也无法从协议中获取任何信息，验证者只能慢慢确信证明者陈述的某个命题是真的。</p>
+</li>
+<li><p>验证者（Verifier）无法向外界证明证明者（Prover）所说的是真的。比如，我（Prover）通过ZKP向某个刘亦菲的粉丝（Verifier）证明了刘亦菲是我老婆，但是这个粉丝（Verifier）不能向其他粉丝证明刘亦菲是我老婆。只有天知地知，你知我知。</p>
+</li>
+</ul>
+<p>好的，接下来在引出ZKP的定义之前，我们需要讨论一些诸如此类证明系统一些必要属性，这些属性包括正确性和完备性。</p>
+<h2 id="互交式证明系统"><a href="#互交式证明系统" class="headerlink" title="互交式证明系统"></a>互交式证明系统</h2><p>零知识协议是交互式证明系统的实例之一，其中证明者和验证者互相交换挑战，然后响应，通常依赖于允许他们保密的随机数（理想情况下，公平投币的结果）。正如我们前面所说，在这种情况下，证明是概率的，而不是数学意义上那种绝对的。这些证明只需要在一定的有界概率下才是正确的（尽管这个概率可以任意接近100%）。交互证明有时被称为协议证明。</p>
+<p>用于识别的交互证明可以被表述为知识的证明。Prover有一个秘密（记为s），他希望通过正确地回答出需要秘密s作为依据推导而出的知识才能回答Verifier的提问，使Verifier相信Prover他知道s。值得注意的是，证明s的知识与证明s的存在性是完全不同的，例如，证明某个x是模n的二次剩余与证明x的平方根模n的知识是不同的，表示出来就是 k^2 = x mod n 给定x和n，如果k在该二次同余方程下有解，那么则得出 k = square(x) mod n。（实在不明白搜二次剩余，数论的东西）</p>
+<p>如果一个交互式的证明具有完备性和可靠性，那么它就是知识证明。</p>
+<ul>
+<li>完备性的定义</li>
+</ul>
+<p>如果给定一个诚实的Prover和一个诚实的Verifier，协议以几乎100%的概率成功（即，Verifier接受Prover的声明），则交互式证明协议是完备的。当然，几乎100%的定义取决于应用，但通常意味着失败的概率在这个场景下并不具有实际意义。（也就是低到可以忽略了）</p>
+<p>当然，还可以用形式化点的方式来描述，设Prover和Verifier是一对互交的概率图灵机，随机变量&lt;P(i),V(j)&gt;(x)表示图灵机Verifier与Prover完成互交问答后的输出（这个输出是一个概率值），&lt;&gt;其中x为它们的公共输入，所以可以化简为&lt;P(i),V(j)&gt;(x) = 1表示V接受P给出的证明，&lt;P(i),V(j)&gt;(x) = 0表示V拒绝P给出的证明。其中i，j都是P和V各自的随机输入变量（均匀独立的）。&lt;P,V&gt;这对互交图灵机表示语言L的互交证明系统。</p>
+<p>Probability（&lt;P(i),V(j)&gt;(x) = 1） &gt; 1 - c(|x|) 其中函数c表示完备性错误概率，可忽略。 x属于语言L</p>
+<p>以上式子表示完备性成功的概率极大。</p>
+<ul>
+<li>可靠性的定义</li>
+</ul>
+<p>如果存在具有以下性质的期望多项式时间算法m，则交互式证明协议是可靠的：如果不诚实的Prover能够以不可忽略的概率与Verfier成功执行协议（成功概率极大，反过来就是说失败率极小），则m可用于从该Prover中提取知识（本质上等同于Prover的秘密）以几乎100%的概率允许随后（下一轮，依次递推）的协议执行</p>
+<p>用形式化的方式来说就是：</p>
+<p>B代表任意的Prover，也就是可以认为是不诚实的Prover</p>
+<p>Probability（&lt;B(i),V(j)&gt;(x) = 1） &lt; s(|x|) 其中函数s为可靠性错误概率，可忽略。x不属于语言L</p>
+<p>以上式子表示可靠性失败的概率极小。</p>
+<p>所以总而言之，可以这么说，对于任意的Verifier，存在一个多项式时间的算法m（x）（通常成为模拟器），使得Verifier在互交过程中得到的所有信息都可以直接利用算法m（x）模拟出来，也就是说Verifier从Prover那里得到的所有信息都可以用算法m计算得到。简而言之就是，Verifier没有从Prover那里获得任何额外的信息。</p>
+<p>（To be continued）</p>
+
+
+<!--<a href="https://alexiachen.github.io/blog/2019/08/20/zero-knowledge-proof/#disqus_thread" class="article-comment-link">Comments</a>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = ''; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+-->
+<div style="display:none">
+<script src="http://s4.cnzz.com/stat.php?id=&web_id=" language="JavaScript"></script>script>
+</div>
+
+
+
+
+
+
+</body>
+</html>

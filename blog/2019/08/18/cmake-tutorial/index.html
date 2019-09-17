@@ -1,0 +1,357 @@
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+	
+	<title></title>
+	<meta name="keywords" content="MathxH Blog">
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+	   <link href="/blog/css/main.css?v=3" rel="stylesheet" type="text/css">
+    
+        <script src="/blog/js/util.js"></script>
+        <script>
+            if(isMobile()) {
+                loadjscssfile('../css/mobile.css', 'css');
+            } else {
+                loadjscssfile('../css/desktop.css', 'css');
+            }
+        </script> 
+    
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+
+    
+	<link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=3">
+    
+    
+
+</head>
+
+<body>
+
+
+<h2 class="title"></h2>
+<!---
+<div style="text-align:center;margin-top: -10px;">
+<div class="article-category">
+发表于2019年8月18日
+
+
+
+
+ </div>
+--->
+
+
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">## 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#正文"><span class="toc-text">## 正文</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#cmake"><span class="toc-text">CMake</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#tests"><span class="toc-text">Tests</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#libraries"><span class="toc-text">libraries</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#变量和缓存变量"><span class="toc-text">变量和缓存变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#环境变量"><span class="toc-text">环境变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#属性"><span class="toc-text">属性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cmake编程"><span class="toc-text">Cmake编程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#控制流"><span class="toc-text">控制流</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#宏和函数"><span class="toc-text">宏和函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#与源码文件通信"><span class="toc-text">与源码文件“通信”</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#怎样规划你的工程结构"><span class="toc-text">怎样规划你的工程结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行其他的程序"><span class="toc-text">运行其他的程序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#配置时运行一个命令"><span class="toc-text">配置时运行一个命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#编译时运行一个命令"><span class="toc-text">编译时运行一个命令</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cmake其他的一些特性"><span class="toc-text">Cmake其他的一些特性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#查找库"><span class="toc-text">查找库</span></a></li></ol></li></ol>
+<h2 id="前言">## 前言</h2>
+<p>主要最近的换工作，完全在Linux下开发，虽然以前都接触过CMake，不过体系也是零散的，遂做了一个简短的CMake教程，以供后续快速入门。</p>
+<p>另外，好久也没有写文章了，这份工作还是有一定的技术性，之前的那家公司是开发/维护，大部分工作都是维护，没有什么写文章的激情。</p>
+<p>所以，今天是硬凑一篇文章。</p>
+<h2 id="正文">## 正文</h2>
+<h4 id="cmake">CMake</h4>
+<p>CMake是跨平台的元构建系统，也就是说，它不实际产生构建行为，它只是生成给其他构建系统使用的文件，比如Makefile，MSBuild的solution file。</p>
+<p>CMake根据读取名为CMakeLists.txt的文件，然后生成平台特定的构建文件，但是一个很大的问题是，CMake官方提供的教程特别复杂，对于新手的个坑，很难快速入门。</p>
+<p>这个教程会通过例子来学习怎么用CMake。以下我们提供几个C++源代码供例子使用：</p>
+<ul>
+<li>main.cpp</li>
+<li>vector.h</li>
+<li>vector.cpp</li>
+<li>array.h</li>
+<li>array.cpp</li>
+</ul>
+<p>那么描述构建的CMakeLists.txt内容会是以下:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">cmake_minimum_required</span>(<span class="ot">VERSION</span> 2.8)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">project</span>(pjc-lab5)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_FLAGS</span> <span class="st">&quot;-std=c++14 -Wall </span><span class="dv">${CMAKE_CXX_FLAGS}</span><span class="st">&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="kw">include</span>_directories(<span class="dv">${CMAKE_CURRENT_SOURCE_DIR}</span>)</span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="kw">add_executable</span>(vector-test</span>
+<span id="cb1-9"><a href="#cb1-9"></a>    array.cpp</span>
+<span id="cb1-10"><a href="#cb1-10"></a>    vector.cpp</span>
+<span id="cb1-11"><a href="#cb1-11"></a>    main.cpp</span>
+<span id="cb1-12"><a href="#cb1-12"></a>)</span></code></pre></div>
+<p>以上代码很简单，但是第一个问题是，它是不可移植的，因为它没有任何逻辑判断就设置了GCC/Clang的特定编译参数。</p>
+<p>第二个问题是，它全局改变了include的搜索路径。</p>
+<p>CMake也要有好的书写习惯，采用更加现代的方式来写CMake文件:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">cmake_minimum_required</span>(<span class="ot">VERSION</span> 3.5)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">project</span>(pjc-lab5 <span class="ot">LANGUAGES</span> <span class="ot">CXX</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD</span> 14)</span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD_REQUIRED</span> ON)</span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_EXTENSIONS</span> OFF)</span>
+<span id="cb2-7"><a href="#cb2-7"></a></span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="kw">add_executable</span>(vector-test</span>
+<span id="cb2-10"><a href="#cb2-10"></a>    array.cpp</span>
+<span id="cb2-11"><a href="#cb2-11"></a>    vector.cpp</span>
+<span id="cb2-12"><a href="#cb2-12"></a>    main.cpp</span>
+<span id="cb2-13"><a href="#cb2-13"></a>)</span></code></pre></div>
+<p>注意了，以上代码有几点改变了：</p>
+<ul>
+<li>强制要求了CMake的版本不得小于3.5，因为要使用CMake的一些新功能</li>
+<li>直接指定该工程为C++工程。这样可以减少CMake查找tool chain的时间，它就不会去查找其他编译器了，也不会检查其他编译器是否正常了。</li>
+<li>直接采用可跨平台的方式来指定采用的C++标准为C++ 14</li>
+<li>打开CMAKE_CXX_STANDARD_REQUIRED开关，如果C++ 14标准不被支持，CMake会直接终止构建过程。反之，会采用老的标准来构建</li>
+<li>CMAKE_CXX_EXTENSIONS开关是告诉CMake采用更加通用的编译参数，比如这个开关打开，传递给GCC的参数就会是-std=c++14 而不是-std=gnu++14</li>
+</ul>
+<p>然后在构建过程中，你会发现没有警告，因为CMake不会设定编译器的警告级别，需要你根据不同平台来指定相应的编译器警告参数:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">if</span> ( <span class="dv">CMAKE_CXX_COMPILER_ID</span> <span class="ot">MATCHES</span> <span class="st">&quot;Clang|AppleClang|GNU&quot;</span> )</span>
+<span id="cb3-2"><a href="#cb3-2"></a>    <span class="kw">target_compile_options</span>( vector-test <span class="ot">PRIVATE</span> -Wall -Wextra -Wunreachable-code -Wpedantic)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">endif</span>()</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="kw">if</span> ( <span class="dv">CMAKE_CXX_COMPILER_ID</span> <span class="ot">MATCHES</span> <span class="st">&quot;Clang&quot;</span> )</span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="kw">target_compile_options</span>( vector-test <span class="ot">PRIVATE</span> -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )</span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="kw">endif</span>()</span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="kw">if</span> ( <span class="dv">CMAKE_CXX_COMPILER_ID</span> <span class="ot">MATCHES</span> <span class="st">&quot;MSVC&quot;</span> )</span>
+<span id="cb3-8"><a href="#cb3-8"></a>    <span class="kw">target_compile_options</span>( vector-test <span class="ot">PRIVATE</span> /W4 /w44265 /w44061 /w44062 )</span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="kw">endif</span>()</span></code></pre></div>
+<p>如果就采用上述的CMake文件，那么它生成的工程文件并不好，没有预期，你会发现如果生成VS的solution，你打开工程，你会发现没有包含头文件（vector.h array.h）。因为CMake不理解C++语言，它只是构建工具。</p>
+<p>所以CMake文件中要改变下:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">add_executable</span>(vector-test</span>
+<span id="cb4-2"><a href="#cb4-2"></a>    array.cpp</span>
+<span id="cb4-3"><a href="#cb4-3"></a>    vector.cpp</span>
+<span id="cb4-4"><a href="#cb4-4"></a>    main.cpp</span>
+<span id="cb4-5"><a href="#cb4-5"></a>    array.h</span>
+<span id="cb4-6"><a href="#cb4-6"></a>    vector.h</span>
+<span id="cb4-7"><a href="#cb4-7"></a>)</span></code></pre></div>
+<p>当然，也可以通过CMake的source_group命令给文件归类:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">source_group</span>(<span class="st">&quot;Tests&quot;</span> <span class="ot">FILES</span> main.cpp)</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">source_group</span>(<span class="st">&quot;Implementation&quot;</span> <span class="ot">FILES</span> array.cpp vector.cpp)</span></code></pre></div>
+<p>这样VS工程下就可以看到对C++源文件分类的文件夹图标了。</p>
+<h4 id="tests">Tests</h4>
+<p>CMake是一堆工具的集合，所以它有一个test runner，叫<a href="https://cmake.org/cmake/help/latest/manual/ctest.1.html" target="_blank" rel="noopener">CTest</a>。</p>
+<p>要使用它，你需要显式指定它：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">add_test</span>(<span class="ot">NAME</span> test-name <span class="ot">COMMAND</span> how-to-run-it)</span></code></pre></div>
+<p>测试返回0表示成功，返回其他值表示失败。</p>
+<p>还可以自定义，通过<a href="https://cmake.org/cmake/help/latest/command/set_tests_properties.html?highlight=set_tests_properties" target="_blank" rel="noopener">set_tests_properties</a>来设置其<a href="https://cmake.org/cmake/help/v3.11/manual/cmake-properties.7.html#test-properties" target="_blank" rel="noopener">相关属性</a>。</p>
+<p>对于我们的例子工程，我们仅仅是运行bin文件，并不做额外检查:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">include</span>(CTest)</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">add_test</span>(<span class="ot">NAME</span> plain-run <span class="ot">COMMAND</span> <span class="ot">$&lt;</span><span class="kw">TARGET_FILE</span><span class="ot">:vector-test&gt;</span>)</span></code></pre></div>
+<p>COMMAND后面的表达式是<a href="https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html" target="_blank" rel="noopener">generator-expression</a>。</p>
+<p>最后，我们的CMakeLists.txt的内容会是:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">cmake_minimum_required</span>(<span class="ot">VERSION</span> 3.5)</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="kw">project</span>(pjc-lab5 </span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="ot">DESCRIPTION</span> <span class="st">&quot;Very nice project&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="ot">LANGUAGES</span> <span class="ot">CXX</span>)</span>
+<span id="cb8-5"><a href="#cb8-5"></a></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD</span> 14)</span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD_REQUIRED</span> ON)</span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_EXTENSIONS</span> OFF)</span>
+<span id="cb8-9"><a href="#cb8-9"></a></span>
+<span id="cb8-10"><a href="#cb8-10"></a></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="kw">add_executable</span>(vector-test</span>
+<span id="cb8-12"><a href="#cb8-12"></a>    array.cpp</span>
+<span id="cb8-13"><a href="#cb8-13"></a>    vector.cpp</span>
+<span id="cb8-14"><a href="#cb8-14"></a>    main.cpp</span>
+<span id="cb8-15"><a href="#cb8-15"></a>    array.h</span>
+<span id="cb8-16"><a href="#cb8-16"></a>    vector.h</span>
+<span id="cb8-17"><a href="#cb8-17"></a>)</span>
+<span id="cb8-18"><a href="#cb8-18"></a></span>
+<span id="cb8-19"><a href="#cb8-19"></a><span class="kw">source_group</span>(<span class="st">&quot;Tests&quot;</span> <span class="ot">FILES</span> main.cpp)</span>
+<span id="cb8-20"><a href="#cb8-20"></a><span class="kw">source_group</span>(<span class="st">&quot;Implementation&quot;</span> <span class="ot">FILES</span> array.cpp vector.cpp)</span>
+<span id="cb8-21"><a href="#cb8-21"></a></span>
+<span id="cb8-22"><a href="#cb8-22"></a></span>
+<span id="cb8-23"><a href="#cb8-23"></a><span class="kw">if</span> ( <span class="dv">CMAKE_CXX_COMPILER_ID</span> <span class="ot">MATCHES</span> <span class="st">&quot;Clang|AppleClang|GNU&quot;</span> )</span>
+<span id="cb8-24"><a href="#cb8-24"></a>    <span class="kw">target_compile_options</span>( vector-test <span class="ot">PRIVATE</span> -Wall -Wextra -Wunreachable-code -Wpedantic)</span>
+<span id="cb8-25"><a href="#cb8-25"></a><span class="kw">endif</span>()</span>
+<span id="cb8-26"><a href="#cb8-26"></a><span class="kw">if</span> ( <span class="dv">CMAKE_CXX_COMPILER_ID</span> <span class="ot">MATCHES</span> <span class="st">&quot;Clang&quot;</span> )</span>
+<span id="cb8-27"><a href="#cb8-27"></a>    <span class="kw">target_compile_options</span>( vector-test <span class="ot">PRIVATE</span> -Wweak-vtables -Wexit-time-destructors -Wglobal-constructors -Wmissing-noreturn )</span>
+<span id="cb8-28"><a href="#cb8-28"></a><span class="kw">endif</span>()</span>
+<span id="cb8-29"><a href="#cb8-29"></a><span class="kw">if</span> ( <span class="dv">CMAKE_CXX_COMPILER_ID</span> <span class="ot">MATCHES</span> <span class="st">&quot;MSVC&quot;</span> )</span>
+<span id="cb8-30"><a href="#cb8-30"></a>    <span class="kw">target_compile_options</span>( vector-test <span class="ot">PRIVATE</span> /W4 /w44265 /w44061 /w44062 )</span>
+<span id="cb8-31"><a href="#cb8-31"></a><span class="kw">endif</span>()</span>
+<span id="cb8-32"><a href="#cb8-32"></a></span>
+<span id="cb8-33"><a href="#cb8-33"></a><span class="kw">include</span>(CTest)</span>
+<span id="cb8-34"><a href="#cb8-34"></a><span class="kw">add_test</span>(<span class="ot">NAME</span> plain-run <span class="ot">COMMAND</span> <span class="ot">$&lt;</span><span class="kw">TARGET_FILE</span><span class="ot">:vector-test&gt;</span>)</span></code></pre></div>
+<h4 id="libraries">libraries</h4>
+<p>之前的教程都是很简单的例子，但是现实中的项目往往要拆分模块，链接外部的第三方库或者链接工程内的库。</p>
+<p>如果不想阅读此章节，可以参考JetBrain的CLion提供的一个简明的<a href="https://www.jetbrains.com/help/clion/quick-cmake-tutorial.html" target="_blank" rel="noopener">CMake教程</a>。</p>
+<p>里面记录如何包含链接外部的library。</p>
+<p>构建生成一个library的cmake指令如下:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">add_library</span>(libname [<span class="ot">STATIC</span> | <span class="ot">SHARED</span>] two.cpp three.h)</span></code></pre></div>
+<p>下面我们来写一个计算器程序的cmake,bin文件依赖了lib文件，这样看起来就像一个小工程了:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">cmake_minimum_required</span>(<span class="ot">VERSION</span> 3.8)</span>
+<span id="cb10-2"><a href="#cb10-2"></a></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="kw">project</span>(Calculator <span class="ot">LANGUAGES</span> <span class="ot">CXX</span>)</span>
+<span id="cb10-4"><a href="#cb10-4"></a></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="kw">add_library</span>(calclib <span class="ot">STATIC</span> src/calclib.cpp include/calc/lib.hpp)</span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="kw">target_include_directories</span>(calclib <span class="ot">PUBLIC</span> include)</span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="kw">target_compile_features</span>(calclib <span class="ot">PUBLIC</span> <span class="ot">cxx_std_11</span>)</span>
+<span id="cb10-8"><a href="#cb10-8"></a></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="kw">add_executable</span>(calc apps/calc.cpp)</span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="kw">target_link_libraries</span>(calc <span class="ot">PUBLIC</span> calclib)</span></code></pre></div>
+<h4 id="变量和缓存变量">变量和缓存变量</h4>
+<p>为什么要说这个？因为如果cmake维护一个很大的工程，会有各种编译策略参数，这个就需要逻辑判断，变量这些就随之诞生了。</p>
+<p>给一个局部变量设置一个值:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">set</span>(MY_VARIABLE <span class="st">&quot;value&quot;</span>)</span></code></pre></div>
+<p>当然，cmake也有list类型的变量,有2种表达方式：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">set</span>(MY_LIST <span class="st">&quot;one&quot;</span> <span class="st">&quot;two&quot;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="kw">set</span>(MY_LIST <span class="st">&quot;one;two&quot;</span>)</span></code></pre></div>
+<p>以上变量如果离开作用域就无效了。</p>
+<p>下面来说下缓存变量，如果你要从命令行来设置cmake的变量，那么就需要声明缓存变量。类似于CMAKE_BUILD_TYPE这样的变量都是缓存变量：</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">set</span>(MY_CACHE_VARIABLE <span class="st">&quot;VALUE&quot;</span> <span class="ot">CACHE</span> <span class="ot">STRING</span> <span class="st">&quot;Description&quot;</span>)</span></code></pre></div>
+<p>但是以上不会替换已经存在的值，需要按照以下这样：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">set</span>(MY_CACHE_VARIABLE <span class="st">&quot;VALUE&quot;</span> <span class="ot">CACHE</span> <span class="ot">STRING</span> <span class="st">&quot;&quot;</span> <span class="ot">FORCE</span>)</span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="kw">mark_as_advanced</span>(MY_CACHE_VARIABLE)</span></code></pre></div>
+<h4 id="环境变量">环境变量</h4>
+<p>cmake可以访问环境变量：</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">set</span>(ENV{variable_name} value)</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="kw">set</span>(MY_VAR <span class="fl">$ENV{variable_name}</span>)</span></code></pre></div>
+<h4 id="属性">属性</h4>
+<p>cmake也会在属性中保存一些信息，这些属性有点像变量，但是这些属性的作用一般是针对一个target或者目录什么的。cmake的属性变量是以CMAKE_打头的，类似CMAKE_BUILD_TYPE，CMAKE_CXX_STANDARD这些。</p>
+<p>比如使用CXX标准可以用设置属性的方式办到，有两种表达：</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">set_property</span>(<span class="ot">TARGET</span> TargetName</span>
+<span id="cb16-2"><a href="#cb16-2"></a>             <span class="ot">PROPERTY</span> <span class="ot">CXX_STANDARD</span> 11)</span>
+<span id="cb16-3"><a href="#cb16-3"></a></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="kw">set</span>_target_properties(TargetName PROPERTIES</span>
+<span id="cb16-5"><a href="#cb16-5"></a>                      CXX_STANDARD 11)</span></code></pre></div>
+<p>当然既然有set，当然有get:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">get_property</span>(ResultVariable <span class="ot">TARGET</span> TargetName <span class="ot">PROPERTY</span> <span class="ot">CXX_STANDARD</span>)</span></code></pre></div>
+<h3 id="cmake编程">Cmake编程</h3>
+<h4 id="控制流">控制流</h4>
+<div class="sourceCode" id="cb18"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">if</span>(variable)</span>
+<span id="cb18-2"><a href="#cb18-2"></a>    <span class="co"># If variable is `ON`, `YES`, `TRUE`, `Y`, or non zero number</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="kw">else</span>()</span>
+<span id="cb18-4"><a href="#cb18-4"></a>    <span class="co"># If variable is `0`, `OFF`, `NO`, `FALSE`, `N`, `IGNORE`, `NOTFOUND`, `&quot;&quot;`, or ends in `-NOTFOUND`</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="kw">endif</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">if</span>(<span class="st">&quot;</span><span class="dv">${</span>variable<span class="dv">}</span><span class="st">&quot;</span>)</span>
+<span id="cb19-2"><a href="#cb19-2"></a>    <span class="co"># True if variable is not false-like</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="kw">else</span>()</span>
+<span id="cb19-4"><a href="#cb19-4"></a>    <span class="co"># Note that undefined variables would be `&quot;&quot;` thus false</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="kw">endif</span>()</span></code></pre></div>
+<h4 id="宏和函数">宏和函数</h4>
+<div class="sourceCode" id="cb20"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">function</span>(SIMPLE REQUIRED_ARG)</span>
+<span id="cb20-2"><a href="#cb20-2"></a>    <span class="kw">message</span>(<span class="ot">STATUS</span> <span class="st">&quot;Simple arguments: </span><span class="dv">${</span>REQUIRED_ARG<span class="dv">}</span><span class="st">, followed by </span><span class="dv">${</span>ARGV<span class="dv">}</span><span class="st">&quot;</span>)</span>
+<span id="cb20-3"><a href="#cb20-3"></a>    <span class="kw">set</span>(<span class="dv">${</span>REQUIRED_ARG<span class="dv">}</span> <span class="st">&quot;From SIMPLE&quot;</span> <span class="ot">PARENT_SCOPE</span>)</span>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="kw">endfunction</span>()</span>
+<span id="cb20-5"><a href="#cb20-5"></a></span>
+<span id="cb20-6"><a href="#cb20-6"></a><span class="fu">simple</span>(This)</span>
+<span id="cb20-7"><a href="#cb20-7"></a><span class="kw">message</span>(<span class="st">&quot;Output: </span><span class="dv">${</span>This<span class="dv">}</span><span class="st">&quot;</span>)</span></code></pre></div>
+<h4 id="与源码文件通信">与源码文件“通信”</h4>
+<p>Cmake允许源代码访问cmake的变量，这个指令就是configure_file。</p>
+<p>这样的功能在版本管理上经常使用：</p>
+<p>Version.h.in</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb21-1"><a href="#cb21-1"></a><span class="pp">#pragma once</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a></span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="pp">#define MY_VERSION_MAJOR </span><span class="er">@</span>PROJECT_VERSION_MAJOR<span class="er">@</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="pp">#define MY_VERSION_MINOR </span><span class="er">@</span>PROJECT_VERSION_MINOR<span class="er">@</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a><span class="pp">#define MY_VERSION_PATCH </span><span class="er">@</span>PROJECT_VERSION_PATCH<span class="er">@</span></span>
+<span id="cb21-6"><a href="#cb21-6"></a><span class="pp">#define MY_VERSION_TWEAK </span><span class="er">@</span>PROJECT_VERSION_TWEAK<span class="er">@</span></span>
+<span id="cb21-7"><a href="#cb21-7"></a><span class="pp">#define MY_VERSION </span><span class="st">&quot;@PROJECT_VERSION@&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb22-1"><a href="#cb22-1"></a><span class="kw">configure_file</span> (</span>
+<span id="cb22-2"><a href="#cb22-2"></a>    <span class="st">&quot;</span><span class="dv">${PROJECT_SOURCE_DIR}</span><span class="st">/include/My/Version.h.in&quot;</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a>    <span class="st">&quot;</span><span class="dv">${PROJECT_BINARY_DIR}</span><span class="st">/include/My/Version.h&quot;</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a>)</span></code></pre></div>
+<p>可以从上面的配置看出来，本质上cmake只是把后缀in的文件，进行变量标记替换，然后再拷贝到指定目录的文件名。没有什么神奇的。</p>
+<p>当然，cmake也可以反过来，cmake代码访问源码文件的内容：</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Assuming the canonical version is listed in a single line</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="co"># This would be in several parts if picking up from MAJOR, MINOR, etc.</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="kw">set</span>(VERSION_REGEX <span class="st">&quot;#define MY_VERSION[ </span><span class="ch">\t</span><span class="st">]+</span><span class="ch">\&quot;</span><span class="st">(.+)</span><span class="ch">\&quot;</span><span class="st">&quot;</span>)</span>
+<span id="cb23-4"><a href="#cb23-4"></a></span>
+<span id="cb23-5"><a href="#cb23-5"></a><span class="co"># Read in the line containing the version</span></span>
+<span id="cb23-6"><a href="#cb23-6"></a><span class="kw">file</span>(<span class="ot">STRINGS</span> <span class="st">&quot;</span><span class="dv">${CMAKE_CURRENT_SOURCE_DIR}</span><span class="st">/include/My/Version.hpp&quot;</span></span>
+<span id="cb23-7"><a href="#cb23-7"></a>    VERSION_STRING <span class="ot">REGEX</span> <span class="dv">${</span>VERSION_REGEX<span class="dv">}</span>)</span>
+<span id="cb23-8"><a href="#cb23-8"></a></span>
+<span id="cb23-9"><a href="#cb23-9"></a><span class="co"># Pick out just the version</span></span>
+<span id="cb23-10"><a href="#cb23-10"></a><span class="kw">string</span>(<span class="ot">REGEX</span> <span class="ot">REPLACE</span> <span class="dv">${</span>VERSION_REGEX<span class="dv">}</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">1&quot;</span> VERSION_STRING <span class="st">&quot;</span><span class="dv">${</span>VERSION_STRING<span class="dv">}</span><span class="st">&quot;</span>)</span>
+<span id="cb23-11"><a href="#cb23-11"></a></span>
+<span id="cb23-12"><a href="#cb23-12"></a><span class="co"># Automatically getting PROJECT_VERSION_MAJOR, My_VERSION_MAJOR, etc.</span></span>
+<span id="cb23-13"><a href="#cb23-13"></a><span class="kw">project</span>(My <span class="ot">LANGUAGES</span> <span class="ot">CXX</span> <span class="ot">VERSION</span> <span class="dv">${</span>VERSION_STRING<span class="dv">}</span>)</span></code></pre></div>
+<h3 id="怎样规划你的工程结构">怎样规划你的工程结构</h3>
+<p>基本如下:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode txt"><code class="sourceCode default"><span id="cb24-1"><a href="#cb24-1"></a>- project</span>
+<span id="cb24-2"><a href="#cb24-2"></a>  - .gitignore</span>
+<span id="cb24-3"><a href="#cb24-3"></a>  - README.md</span>
+<span id="cb24-4"><a href="#cb24-4"></a>  - LICENCE.md</span>
+<span id="cb24-5"><a href="#cb24-5"></a>  - CMakeLists.txt</span>
+<span id="cb24-6"><a href="#cb24-6"></a>  - cmake</span>
+<span id="cb24-7"><a href="#cb24-7"></a>    - FindSomeLib.cmake</span>
+<span id="cb24-8"><a href="#cb24-8"></a>  - include</span>
+<span id="cb24-9"><a href="#cb24-9"></a>    - project</span>
+<span id="cb24-10"><a href="#cb24-10"></a>      - lib.hpp</span>
+<span id="cb24-11"><a href="#cb24-11"></a>  - src</span>
+<span id="cb24-12"><a href="#cb24-12"></a>    - CMakeLists.txt</span>
+<span id="cb24-13"><a href="#cb24-13"></a>    - lib.cpp</span>
+<span id="cb24-14"><a href="#cb24-14"></a>  - apps</span>
+<span id="cb24-15"><a href="#cb24-15"></a>    - CMakeLists.txt</span>
+<span id="cb24-16"><a href="#cb24-16"></a>    - app.cpp</span>
+<span id="cb24-17"><a href="#cb24-17"></a>  - tests</span>
+<span id="cb24-18"><a href="#cb24-18"></a>    - testlib.cpp</span>
+<span id="cb24-19"><a href="#cb24-19"></a>  - docs</span>
+<span id="cb24-20"><a href="#cb24-20"></a>    - Doxyfile.in</span>
+<span id="cb24-21"><a href="#cb24-21"></a>  - extern</span>
+<span id="cb24-22"><a href="#cb24-22"></a>    - googletest</span>
+<span id="cb24-23"><a href="#cb24-23"></a>  - scripts</span>
+<span id="cb24-24"><a href="#cb24-24"></a>    - helper.py</span></code></pre></div>
+<h3 id="运行其他的程序">运行其他的程序</h3>
+<p>编译的时候要做很多事情，比如你构建完毕要用nsis进行打包等等，有些时候不得不调用其他命令行。</p>
+<h4 id="配置时运行一个命令">配置时运行一个命令</h4>
+<div class="sourceCode" id="cb25"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">find_package</span>(Git <span class="ot">QUIET</span>)</span>
+<span id="cb25-2"><a href="#cb25-2"></a></span>
+<span id="cb25-3"><a href="#cb25-3"></a><span class="kw">if</span>(<span class="dv">GIT_FOUND</span> <span class="ot">AND</span> <span class="ot">EXISTS</span> <span class="st">&quot;</span><span class="dv">${PROJECT_SOURCE_DIR}</span><span class="st">/.git&quot;</span>)</span>
+<span id="cb25-4"><a href="#cb25-4"></a>    <span class="kw">execute_process</span>(<span class="ot">COMMAND</span> <span class="dv">${</span>GIT_EXECUTABLE<span class="dv">}</span> submodule update --init --recursive</span>
+<span id="cb25-5"><a href="#cb25-5"></a>                    <span class="ot">WORKING_DIRECTORY</span> <span class="dv">${CMAKE_CURRENT_SOURCE_DIR}</span></span>
+<span id="cb25-6"><a href="#cb25-6"></a>                    <span class="ot">RESULT_VARIABLE</span> GIT_SUBMOD_RESULT)</span>
+<span id="cb25-7"><a href="#cb25-7"></a>    <span class="kw">if</span>(<span class="ot">NOT</span> GIT_SUBMOD_RESULT <span class="ot">EQUAL</span> <span class="st">&quot;0&quot;</span>)</span>
+<span id="cb25-8"><a href="#cb25-8"></a>        <span class="kw">message</span>(<span class="ot">FATAL_ERROR</span> <span class="st">&quot;git submodule update --init failed with </span><span class="dv">${</span>GIT_SUBMOD_RESULT<span class="dv">}</span><span class="st">, please checkout submodules&quot;</span>)</span>
+<span id="cb25-9"><a href="#cb25-9"></a>    <span class="kw">endif</span>()</span>
+<span id="cb25-10"><a href="#cb25-10"></a><span class="kw">endif</span>()</span></code></pre></div>
+<h4 id="编译时运行一个命令">编译时运行一个命令</h4>
+<div class="sourceCode" id="cb26"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">find_package</span>(PythonInterp <span class="ot">REQUIRED</span>)</span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="kw">add_custom_command</span>(<span class="ot">OUTPUT</span> <span class="st">&quot;</span><span class="dv">${CMAKE_CURRENT_BINARY_DIR}</span><span class="st">/include/Generated.hpp&quot;</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a>    <span class="ot">COMMAND</span> <span class="st">&quot;</span><span class="dv">${</span>PYTHON_EXECUTABLE<span class="dv">}</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="dv">${CMAKE_CURRENT_SOURCE_DIR}</span><span class="st">/scripts/GenerateHeader.py&quot;</span> --argument</span>
+<span id="cb26-4"><a href="#cb26-4"></a>    <span class="ot">DEPENDS</span> some_target)</span>
+<span id="cb26-5"><a href="#cb26-5"></a></span>
+<span id="cb26-6"><a href="#cb26-6"></a><span class="kw">add_custom_target</span>(generate_header <span class="ot">ALL</span></span>
+<span id="cb26-7"><a href="#cb26-7"></a>    <span class="ot">DEPENDS</span> <span class="st">&quot;</span><span class="dv">${CMAKE_CURRENT_BINARY_DIR}</span><span class="st">/include/Generated.hpp&quot;</span>)</span>
+<span id="cb26-8"><a href="#cb26-8"></a></span>
+<span id="cb26-9"><a href="#cb26-9"></a><span class="kw">install</span>(<span class="ot">FILES</span> <span class="dv">${CMAKE_CURRENT_BINARY_DIR}</span>/include/Generated.hpp <span class="ot">DESTINATION</span> include)</span></code></pre></div>
+<h3 id="cmake其他的一些特性">Cmake其他的一些特性</h3>
+<p>CMAKE_BUILD_TYPE变量默认既不是Debug也不是Release。必须指定。</p>
+<p>关于C++ 11等一些新标准，有以下配置:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD</span> 11)</span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_STANDARD_REQUIRED</span> ON)</span>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="kw">set</span>(<span class="dv">CMAKE_CXX_EXTENSIONS</span> OFF)</span>
+<span id="cb27-4"><a href="#cb27-4"></a></span>
+<span id="cb27-5"><a href="#cb27-5"></a><span class="kw">set</span>_target_properties(myTarget PROPERTIES</span>
+<span id="cb27-6"><a href="#cb27-6"></a>    CXX_STANDARD 11</span>
+<span id="cb27-7"><a href="#cb27-7"></a>    CXX_STANDARD_REQUIRED YES</span>
+<span id="cb27-8"><a href="#cb27-8"></a>    CXX_EXTENSIONS NO</span>
+<span id="cb27-9"><a href="#cb27-9"></a>)</span></code></pre></div>
+<h4 id="查找库">查找库</h4>
+<div class="sourceCode" id="cb28"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb28-1"><a href="#cb28-1"></a><span class="kw">find_library</span>(MATH_LIBRARY m)</span>
+<span id="cb28-2"><a href="#cb28-2"></a><span class="kw">if</span>(MATH_LIBRARY)</span>
+<span id="cb28-3"><a href="#cb28-3"></a>    <span class="kw">target_link_libraries</span>(MyTarget <span class="ot">PUBLIC</span> <span class="dv">${</span>MATH_LIBRARY<span class="dv">}</span>)</span>
+<span id="cb28-4"><a href="#cb28-4"></a><span class="kw">endif</span>()</span></code></pre></div>
+
+
+<!--<a href="https://alexiachen.github.io/blog/2019/08/18/cmake-tutorial/#disqus_thread" class="article-comment-link">Comments</a>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = ''; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+-->
+<div style="display:none">
+<script src="http://s4.cnzz.com/stat.php?id=&web_id=" language="JavaScript"></script>script>
+</div>
+
+
+
+
+
+
+</body>
+</html>
