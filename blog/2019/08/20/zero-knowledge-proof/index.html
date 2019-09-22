@@ -45,7 +45,7 @@
 --->
 
 
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#研究背景"><span class="toc-text">研究背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ZKP中的参与者"><span class="toc-text">ZKP中的参与者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一个简单的例子"><span class="toc-text">一个简单的例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZKP的特性"><span class="toc-text">ZKP的特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#互交式证明系统"><span class="toc-text">互交式证明系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#模拟器"><span class="toc-text">模拟器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#零知识证明的基本定义外延"><span class="toc-text">零知识证明的基本定义外延</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对互交式证明系统的总结评论"><span class="toc-text">对互交式证明系统的总结评论</span></a></li></ol></li></ol>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#研究背景"><span class="toc-text">研究背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ZKP中的参与者"><span class="toc-text">ZKP中的参与者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一个简单的例子"><span class="toc-text">一个简单的例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZKP的特性"><span class="toc-text">ZKP的特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#互交式证明系统"><span class="toc-text">互交式证明系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#模拟器"><span class="toc-text">模拟器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#零知识证明的基本定义外延"><span class="toc-text">零知识证明的基本定义外延</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对互交式证明系统的总结评论"><span class="toc-text">对互交式证明系统的总结评论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NP-∈-ZKP"><span class="toc-text">NP ∈ ZKP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NPC问题介绍"><span class="toc-text">NPC问题介绍</span></a></li></ol></li></ol>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>零知识证明看样子是很复杂的一个过程，其实不是，网络上对这个概念的讲解杂七杂八，质量参差不齐，今天我就打算讲一讲有关话题，我会循序渐进，每个小节我会逐渐加深理解难度，然后最后导出工业界的做法。所以读者最终要的是，首先要做到不要畏惧。实在想不明白可以用手稿纸画一画，推一推。我写文章通常的做法会在专业的名词用括号注释英文，目的是让读者不混淆，并且英文搜索到的资料更准确。</p>
 <h2 id="研究背景"><a href="#研究背景" class="headerlink" title="研究背景"></a>研究背景</h2><p>传统的通信协议中的一个共同弱点就是容易遭遇到信道的窃听，所以零知识证明（又叫零知识协议Zero Knownledge protocol，ZKP）就这样诞生了。目的是构造这样一个系统，该系统中的证明人（Prover）可以在不暴露任何信息（Zero Knowledge）的情况下，让验证者（Verifer）进行验证。简而言之，对于监听者，就是你监听了，也没用，你监听到的信息也推导不出来任何有用的东西。</p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>这里要注意下，虽说到这里反复提到了证明（Proof）这个词，但是这个证明不是数学上的证明，数学证明是严格的，使用自证陈述或从预先建立好的证明中获得陈述。ZKP更类似于人类在信息交换过程中建立一个陈述的动态过程，所以它是互交式的（当然，也有非互交式的，这个到后面会提到，而工业界的zk-SNARK用的就是非互交式的）。</p>
@@ -84,14 +84,14 @@
 <p>用于识别的交互证明可以被表述为知识的证明。Prover有一个秘密（记为s），他希望通过正确地回答出需要秘密s作为依据推导而出的知识才能回答Verifier的提问，使Verifier相信Prover他知道s。值得注意的是，证明s的知识与证明s的存在性是完全不同的，例如，证明某个x是模n的二次剩余与证明x的平方根模n的知识是不同的，表示出来就是 k^2 = x mod n 给定x和n，如果k在该二次同余方程下有解，那么则得出 k = square(x) mod n。（实在不明白搜二次剩余，数论的东西）</p>
 <p>如果一个交互式的证明具有完备性和可靠性，那么它就是知识证明。</p>
 <ul>
-<li>完备性的定义</li>
+<li>完备性的定义(Completeness Property)</li>
 </ul>
 <p>如果给定一个诚实的Prover和一个诚实的Verifier，协议以几乎100%的概率成功（即，Verifier接受Prover的声明），则交互式证明协议是完备的。当然，几乎100%的定义取决于应用，但通常意味着失败的概率在这个场景下并不具有实际意义。（也就是低到可以忽略了）</p>
 <p>当然，还可以用形式化点的方式来描述，设Prover和Verifier是一对互交的概率图灵机，随机变量&lt;P(i),V(j)&gt;(x)表示图灵机Verifier与Prover完成互交问答后的输出（这个输出是一个概率值），&lt;&gt;其中x为它们的公共输入，所以可以化简为&lt;P(i),V(j)&gt;(x) = 1表示V接受P给出的证明，&lt;P(i),V(j)&gt;(x) = 0表示V拒绝P给出的证明。其中i，j都是P和V各自的随机输入变量（均匀独立的）。&lt;P,V&gt;这对互交图灵机表示语言L的互交证明系统。</p>
 <p>Probability（&lt;P(i),V(j)&gt;(x) = 1） &gt; 1 - c(|x|) 其中函数c表示完备性错误概率，可忽略。 x属于语言L</p>
 <p>以上式子表示完备性成功的概率极大。</p>
 <ul>
-<li>可靠性的定义</li>
+<li>可靠性的定义(Soundness Property)</li>
 </ul>
 <p>如果存在具有以下性质的期望多项式时间算法m，则交互式证明协议是可靠的：如果不诚实的Prover能够以不可忽略的概率与Verfier成功执行协议（成功概率极大，反过来就是说失败率极小），则m可用于从该Prover中提取知识（本质上等同于Prover的秘密）以几乎100%的概率允许随后（下一轮，依次递推）的协议执行</p>
 <p>用形式化的方式来说就是：</p>
@@ -134,7 +134,40 @@
 <p>所以， 完全零知识强于 &gt; 统计零知识强于 &gt; 计算零知识</p>
 <p>显然，计算零知识是对基本概念的采取的是一个最宽松的限制。尽管如此，它仍然是非常有用的，因为在实践中，“攻击者”通常被认为拥有对我们的系统进行攻击的多项式时间能力。已经定义了其他外延，例如非交互式零知识协议，其中Prover不必在场以使Verifier相信其知识。本文将不讨论这些外延。</p>
 <p>还有其他类型的证明虽然不是零知识的，但是也不是没用到零知识和最小披露协议。这些证明中与零知识证明的区别变化仅仅是在协议执行过程中，允许从Prover流向Verifier的信息量和信息类型在可控或很小的范围内。</p>
-<h3 id="对互交式证明系统的总结评论"><a href="#对互交式证明系统的总结评论" class="headerlink" title="对互交式证明系统的总结评论"></a>对互交式证明系统的总结评论</h3><p>（To be continued）</p>
+<h3 id="对互交式证明系统的总结评论"><a href="#对互交式证明系统的总结评论" class="headerlink" title="对互交式证明系统的总结评论"></a>对互交式证明系统的总结评论</h3><p>很明显，零知识性和可靠性在系统所呈现的安全级别上是不稳定的。对于一个给定的协议来说，依赖于计算困难的问题对其安全性至关重要。对于最见的问题（如大整数分解、背包问题、离散对数等）没有证明，因此使用它们的系统的安全性直接取决于计算复杂性领域的未来发展。这种类型的系统通常被称为可证明安全的。</p>
+<p>在零知识技术（ZKP）和公钥（PKP）技术之间的差异可以得到一些优劣比较，这些是：</p>
+<ul>
+<li><p>使用时没有降级：重复使用ZKP不会出现降级。ZKP也能抵抗选定的文本攻击。这导致了一个不可证明安全的ZKP被认为是取代可证明安全的Public Key Protocol的。 </p>
+</li>
+<li><p>效率：ZKP通常比PKP效率低。在某些需要确保（硬或软）实时计算的应用环境中，这是需要考虑的一个重要因素</p>
+</li>
+<li><p>未经验证的假设：大多数ZKP和PKP依赖于相同的假设（二次剩余、因子分解、离散对数等）</p>
+</li>
+</ul>
+<h2 id="NP-∈-ZKP"><a href="#NP-∈-ZKP" class="headerlink" title="NP ∈ ZKP"></a>NP ∈ ZKP</h2><p>本节简要介绍了计算复杂性类的P问题和NP问题。这对于理解每一个NP问题都有与之相关的零知识证明这一结论是很有必要性的。这一结论的证明将在本节末尾通过证明NP完全问题（NPC）的解的知识的简单协议来概述。简单来说就是，每一个NP问题都可以用来构造零知识证明协议。</p>
+<h3 id="NPC问题介绍"><a href="#NPC问题介绍" class="headerlink" title="NPC问题介绍"></a>NPC问题介绍</h3><p>还是先来回顾下P问题，NP问题，NP-Complete问题，NP-hard问题这四个概念的关系吧。</p>
+<p>如下图，每个概念会逐一讲解：</p>
+<p><img src="https://wx1.sinaimg.cn/mw690/a1ac93f3gy1g7837x7y3oj208o04dgmt.jpg" alt=""></p>
+<p>首先，P问题中的P是指多项式时间复杂度（Polynomial time）。时间复杂度并不是表示一个程序解决问题需要花多少时间，而是当程序所处理的问题规模扩大后，程序需要的时间长度对应增长得有多快。也就是说，对于某一个程序，其处理某一个特定数据的效率不能衡量该程序的好坏，而应该看当这个数据的规模变大到数百倍后，程序运行时间是否还是一样，或者也跟着慢了数百倍，或者变慢了数万倍。</p>
+<p>多项式就不用解释了，学习过微积分的都会讲这个概念，像O(1),O(ln(n)),O(n^a)等，我们把它叫做多项式级复杂度，因为它的规模n出现在底数的位置；另一种像是O(a^n)和O(n!)等，它是非多项式级的复杂度，其复杂度计算机往往不能承受。当我们在解决一个问题时，我们选择的算法通常都需要是多项式级的复杂度，非多项式级的复杂度需要的时间太多，往往会超时，除非是数据规模非常非常小（没有实用性）。</p>
+<ul>
+<li><p>P问题，能在多项式时间内找到解的问题。一般我们在LeetCode上刷的题通常都是P问题，都能在多项式时间内找到正解。所有P问题都是NP问题，能多项式地解决一个问题，必然能多项式地验证一个问题的解。</p>
+</li>
+<li><p>NP问题，在多项式时间内“可验证”的问题。也就是说，不能判定这个问题到底有没有解，而是猜出一个解来在多项式时间内证明这个解是否正确。即该问题的猜测过程是不确定的，而对其某一个解的验证则能够在多项式时间内完成。P类问题属于NP问题，但NP类问题不一定属于P类问题。比如，哈密顿回路（Hamilton Cycle）就是NP问题，当然，它也是NPC问题。</p>
+</li>
+<li><p>NPC问题，NP问题中的特殊存在，所有的NP问题都可以归约（归约就是做一次或多次多项式时间的变换）到它。没有人能够找出求解NPC问题的多项式时间的算法，同时也没有人能够证明对于这类问题不存在多项式时间算法。正是由于NPC的存在，才使大多数人相信 P ！= NP。</p>
+</li>
+</ul>
+<ol>
+<li>NPC问题首先要是一个NP问题。</li>
+<li>其次，所有NP问题都能归约到它</li>
+</ol>
+<p>之前说到归约，比如问题A能归约到问题B，那么用问题B的解法，一定能解决问题A，虽然解决问题B的时间复杂度 &gt;= 解决A的时间复杂度。这样不停的从小的NP问题归约上去，最终会归约到NPC问题，相当与树结构的根节点（终极存在）。所以，NPC问题的时间复杂度 &gt;= NP问题的复杂度。NPC问题是最难的。</p>
+<p>比如，哈密顿回路也可以归约到旅行商问题（Travelling Salesman Problem），所以旅行商问题也被证明是NPC问题了。所以，NPC问题只有暴力搜索了，一般是图论相关的问题，动不动就会搞出这么个事儿来。所以涉及到图相关的问题一般比较复杂。</p>
+<ul>
+<li>NP-Hard问题，NP-Hard问题是这样一种问题，它满足NPC问题定义的第二条但不一定要满足第一条。NP-Hard问题同样难以找到多项式的算法，但它不列入我们的研究范围，因为它不一定是NP问题。即使NPC问题发现了多项式级的算法，NP-Hard问题有可能仍然无法得到多项式级的算法。NPC问题一定是NP-Hard的问题。</li>
+</ul>
+<p>（To be continued）</p>
 
 
 <!--<a href="https://alexiachen.github.io/blog/2019/08/20/zero-knowledge-proof/#disqus_thread" class="article-comment-link">Comments</a>
