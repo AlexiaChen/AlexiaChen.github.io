@@ -45,7 +45,7 @@
 --->
 
 
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#研究背景"><span class="toc-text">研究背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ZKP中的参与者"><span class="toc-text">ZKP中的参与者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一个简单的例子"><span class="toc-text">一个简单的例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZKP的特性"><span class="toc-text">ZKP的特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#互交式证明系统"><span class="toc-text">互交式证明系统</span></a></li></ol>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#研究背景"><span class="toc-text">研究背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ZKP中的参与者"><span class="toc-text">ZKP中的参与者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一个简单的例子"><span class="toc-text">一个简单的例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZKP的特性"><span class="toc-text">ZKP的特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#互交式证明系统"><span class="toc-text">互交式证明系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#模拟器"><span class="toc-text">模拟器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#零知识证明的基本定义外延"><span class="toc-text">零知识证明的基本定义外延</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对互交式证明系统的总结评论"><span class="toc-text">对互交式证明系统的总结评论</span></a></li></ol></li></ol>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>零知识证明看样子是很复杂的一个过程，其实不是，网络上对这个概念的讲解杂七杂八，质量参差不齐，今天我就打算讲一讲有关话题，我会循序渐进，每个小节我会逐渐加深理解难度，然后最后导出工业界的做法。所以读者最终要的是，首先要做到不要畏惧。实在想不明白可以用手稿纸画一画，推一推。我写文章通常的做法会在专业的名词用括号注释英文，目的是让读者不混淆，并且英文搜索到的资料更准确。</p>
 <h2 id="研究背景"><a href="#研究背景" class="headerlink" title="研究背景"></a>研究背景</h2><p>传统的通信协议中的一个共同弱点就是容易遭遇到信道的窃听，所以零知识证明（又叫零知识协议Zero Knownledge protocol，ZKP）就这样诞生了。目的是构造这样一个系统，该系统中的证明人（Prover）可以在不暴露任何信息（Zero Knowledge）的情况下，让验证者（Verifer）进行验证。简而言之，对于监听者，就是你监听了，也没用，你监听到的信息也推导不出来任何有用的东西。</p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>这里要注意下，虽说到这里反复提到了证明（Proof）这个词，但是这个证明不是数学上的证明，数学证明是严格的，使用自证陈述或从预先建立好的证明中获得陈述。ZKP更类似于人类在信息交换过程中建立一个陈述的动态过程，所以它是互交式的（当然，也有非互交式的，这个到后面会提到，而工业界的zk-SNARK用的就是非互交式的）。</p>
@@ -57,13 +57,14 @@
 <li><p>Bob （Verifier） Bob向Alice提出一些问题，这有助于让Bob确认Alice是否知道她声称知道的某些东西， Bob无法从这些互动中学到有用的任何东西，即使Bob在欺骗或从事ZKP以外的活动。</p>
 </li>
 </ul>
-<h3 id="一个简单的例子"><a href="#一个简单的例子" class="headerlink" title="一个简单的例子"></a>一个简单的例子</h3><p>为了举例，考虑一个由圆形隧道组成的洞穴。与这个洞穴的入口正好相反，有一扇门只能通过密码打开。尽管这种情况可能不是真实的场景，但这个场景演示基本涵盖了ZKP的基本特性，现在Alice知道了这扇门的密码，她想向Bob证明这一点，但又不想把门的密码暴露出来。他们两个人要互动地完成以下任务：</p>
+<h3 id="一个简单的例子"><a href="#一个简单的例子" class="headerlink" title="一个简单的例子"></a>一个简单的例子</h3><p><img src="https://wx4.sinaimg.cn/mw690/a1ac93f3gy1g779gv51ldj20e60cdjta.jpg" alt=""></p>
+<p>为了举例，考虑一个由圆形隧道组成的洞穴。与这个洞穴的入口正好相反，有一扇门只能通过密码打开。尽管这种情况可能不是真实的场景，但这个场景演示基本涵盖了ZKP的基本特性，现在Alice知道了这扇门的密码，她想向Bob证明这一点，但又不想把门的密码暴露出来。他们两个人要互动地完成以下任务：</p>
 <ul>
-<li><p>Alice随机选择一个洞穴的分支进去（左或者右都行），这个不能让Bob知道她选择了哪一个分支</p>
+<li><p>Alice(绿脸)随机选择一个洞穴的分支进去（左或者右都行），这个不能让Bob（黑脸）知道她选择了哪一个分支</p>
 </li>
 <li><p>站在洞穴入口处的Bob，他随机选择一个分支，然后让Alice从他选择的那个分支出来</p>
 </li>
-<li><p>如果Alice真的知道门的密码，没有撒谎的话，她就可以每次做到从Bob选择的分支出来。如果她不知道门的密码，那她在最开始就有百分之50的概率蒙骗过关，随着这样次数的逐渐增加，Alice蒙骗过关的概率越来越低，在达到一个特定的次数的时候，她蒙骗过关的概率可以小到忽略不计了，比中彩票的概率还要小。</p>
+<li><p>如果Alice真的知道门（红色的线条）的密码，没有撒谎的话，她就可以每次做到从Bob选择的分支出来。如果她不知道门的密码，那她在最开始就有百分之50的概率蒙骗过关，随着这样次数的逐渐增加，Alice蒙骗过关的概率越来越低，在达到一个特定的次数的时候，她蒙骗过关的概率可以小到忽略不计了，比中彩票的概率还要小。</p>
 </li>
 </ul>
 <p>这一个例子也展示了ZKP的另一个特性，Bob确信了Alice有门的密码，但是Bob不能使别人相信Alice有门的密码，这个过程只有他两知道，把过程录下来也无济于事，因为录像带可以造假。所有没有任何有用的信息可以暴露给Bob，更不可能流向协议系统之外，只有Alice自己知道门的密码。</p>
@@ -98,7 +99,42 @@
 <p>Probability（&lt;B(i),V(j)&gt;(x) = 1） &lt; s(|x|) 其中函数s为可靠性错误概率，可忽略。x不属于语言L</p>
 <p>以上式子表示可靠性失败的概率极小。</p>
 <p>所以总而言之，可以这么说，对于任意的Verifier，存在一个多项式时间的算法m（x）（通常成为模拟器），使得Verifier在互交过程中得到的所有信息都可以直接利用算法m（x）模拟出来，也就是说Verifier从Prover那里得到的所有信息都可以用算法m计算得到。简而言之就是，Verifier没有从Prover那里获得任何额外的信息。</p>
-<p>（To be continued）</p>
+<p>因为想冒充Prover就必须拥有这个secret，所以协议的可靠性就是靠提供与secret的等价的知识证明来保证的，这个属性条件保证了不诚实（作恶，假冒）的Prover成功。所以又可以反向得出一个方法，就是，证明某个协议是正确的标准方法就是是假设有一个不诚实（作恶，假冒）的Prover能够成功地执行该协议，并说明他是如何在多项式时间内计算出secret的。</p>
+<p>这种“知识证明”思想是零知识证明的基础。然而，很明显，这两个属性都没有提到零知识本身。此外，ZKP还应该具有这样的属性，即在Prover和Verifier之间不应该传递Verifier没有Prover的帮助来识别的知识量。换句话说就是，Prover和Verifier之间传播的知识都是经过Prover认同的。此属性简单地称为零知识属性，将在引入模拟器的概念后定义，如下所述。</p>
+<h3 id="模拟器"><a href="#模拟器" class="headerlink" title="模拟器"></a>模拟器</h3><p>让我们再考虑一下之前Alice和Bob洞穴例子。假设Bob给他的朋友Jack发了一盘录像带，上面是他和Alice一起证明所采取的一系列步骤。我们将这种磁带称为证据的一个视图（或记录本）。Jack指Bob伯伪造录音带，很明显Bob不能做任何事情来说服Jack。Bob没有任何不可伪造的、不可否认的证据，来证明Alice确实知道门的密码。Bob所能做的就是让Alice再次为Jack演示一遍，Jack将为Alice挑选她出来的分支序列，比如左右左右左（这保证了随机性）。如果有一种方法可以伪造一个与真实的证据不可区分的证据（比如录像带），我们就说有一个模拟器可以模拟所讨论的证据。</p>
+<p>相当于模拟器就是那个录像机，录像机就是那个多项式算法m。多项式算法m生成的结果就是那个录像带，录像带就是视图。</p>
+<ul>
+<li>模拟器（simulator）</li>
+</ul>
+<p>模拟器是一种方法或算法过程（多项式算法m，），它生成的假（生成不需要Prover参与）视图与证明的真（生成时需要Prover参与）视图是不可区分的。也就是说，无论录像带真假，反正Jack是看不出来真假的，只能一股脑认为是假的，没办法，只有他自己与Alice跑协议去，自己去验证。</p>
+<p>所以模拟器这个概念是上述零知识属性定义的关键。</p>
+<ul>
+<li>零知识属性（zero knowledge property）</li>
+</ul>
+<p>如果存在证明的模拟器，则知识证明具有零知识属性。</p>
+<p>这使得文章前面几节所描述的内容都用上了，意思是说，在zkp的上下文中，Verifier除了获得secret的有效性之外，不会获得有关该secret的更多信息。此外，这类协议的一个非常理想的特性是，Prover参与协议的次数不会改变模拟攻击成功的机会。这样零知识属性使我们可以得到如下零知识证明的定义。</p>
+<ul>
+<li>零知识证明</li>
+</ul>
+<p>零知识证明是同时具有零知识属性的知识证明。</p>
+<h3 id="零知识证明的基本定义外延"><a href="#零知识证明的基本定义外延" class="headerlink" title="零知识证明的基本定义外延"></a>零知识证明的基本定义外延</h3><p>还有一些基本定义的外延是比较重要的，需要了解。</p>
+<p>说如果一个交互式证明是零知识的，那么存在一个simulator（算法m），使得Verifier与真正的Prover交互产生的证明副本（录像带）的整体分布（ensemble distribution）和与一个simulator交互产生的证明副本（录像带）的整体分布等价。</p>
+<ul>
+<li>完全零知识（Perfect Zero knowledge）</li>
+</ul>
+<p>如果真实和模拟的记录本（录像带）彼此之间完全不可区分，则协议称为完全零知识。即两个分布完全等价，这个定义是好理解的，但却是最苛刻的。</p>
+<ul>
+<li>统计零知识（Statistical Zero Knowledge）</li>
+</ul>
+<p>如果真实和模拟的记录本（录像带）的概率分布之间存在可忽略的差异，则协议是统计零知识。两个分布是统计闭合的（statistical close）。统计闭这个名词，它是说两个分布本身相差很小很小（可忽略）</p>
+<ul>
+<li>计算零知识（Computational Zero Knowledge）</li>
+</ul>
+<p>如果受限于概率多项式时间测试的观察者不能区分真实和模拟的记录本（录像带），则协议的计算零知识。即两个分布多项式不可区分。</p>
+<p>所以， 完全零知识强于 &gt; 统计零知识强于 &gt; 计算零知识</p>
+<p>显然，计算零知识是对基本概念的采取的是一个最宽松的限制。尽管如此，它仍然是非常有用的，因为在实践中，“攻击者”通常被认为拥有对我们的系统进行攻击的多项式时间能力。已经定义了其他外延，例如非交互式零知识协议，其中Prover不必在场以使Verifier相信其知识。本文将不讨论这些外延。</p>
+<p>还有其他类型的证明虽然不是零知识的，但是也不是没用到零知识和最小披露协议。这些证明中与零知识证明的区别变化仅仅是在协议执行过程中，允许从Prover流向Verifier的信息量和信息类型在可控或很小的范围内。</p>
+<h3 id="对互交式证明系统的总结评论"><a href="#对互交式证明系统的总结评论" class="headerlink" title="对互交式证明系统的总结评论"></a>对互交式证明系统的总结评论</h3><p>（To be continued）</p>
 
 
 <!--<a href="https://alexiachen.github.io/blog/2019/08/20/zero-knowledge-proof/#disqus_thread" class="article-comment-link">Comments</a>
