@@ -45,7 +45,7 @@
 --->
 
 
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#研究背景"><span class="toc-text">研究背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ZKP中的参与者"><span class="toc-text">ZKP中的参与者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一个简单的例子"><span class="toc-text">一个简单的例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZKP的特性"><span class="toc-text">ZKP的特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#互交式证明系统"><span class="toc-text">互交式证明系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#模拟器"><span class="toc-text">模拟器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#零知识证明的基本定义外延"><span class="toc-text">零知识证明的基本定义外延</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对互交式证明系统的总结评论"><span class="toc-text">对互交式证明系统的总结评论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NP-∈-ZKP"><span class="toc-text">NP ∈ ZKP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NPC问题介绍"><span class="toc-text">NPC问题介绍</span></a></li></ol></li></ol>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#研究背景"><span class="toc-text">研究背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ZKP中的参与者"><span class="toc-text">ZKP中的参与者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一个简单的例子"><span class="toc-text">一个简单的例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZKP的特性"><span class="toc-text">ZKP的特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#互交式证明系统"><span class="toc-text">互交式证明系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#模拟器"><span class="toc-text">模拟器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#零知识证明的基本定义外延"><span class="toc-text">零知识证明的基本定义外延</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对互交式证明系统的总结评论"><span class="toc-text">对互交式证明系统的总结评论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NP-∈-ZKP"><span class="toc-text">NP ∈ ZKP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NPC问题介绍"><span class="toc-text">NPC问题介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#G3C-∈-ZKP"><span class="toc-text">G3C ∈ ZKP</span></a></li></ol></li></ol>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>零知识证明看样子是很复杂的一个过程，其实不是，网络上对这个概念的讲解杂七杂八，质量参差不齐，今天我就打算讲一讲有关话题，我会循序渐进，每个小节我会逐渐加深理解难度，然后最后导出工业界的做法。所以读者最终要的是，首先要做到不要畏惧。实在想不明白可以用手稿纸画一画，推一推。我写文章通常的做法会在专业的名词用括号注释英文，目的是让读者不混淆，并且英文搜索到的资料更准确。</p>
 <h2 id="研究背景"><a href="#研究背景" class="headerlink" title="研究背景"></a>研究背景</h2><p>传统的通信协议中的一个共同弱点就是容易遭遇到信道的窃听，所以零知识证明（又叫零知识协议Zero Knownledge protocol，ZKP）就这样诞生了。目的是构造这样一个系统，该系统中的证明人（Prover）可以在不暴露任何信息（Zero Knowledge）的情况下，让验证者（Verifer）进行验证。简而言之，对于监听者，就是你监听了，也没用，你监听到的信息也推导不出来任何有用的东西。</p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>这里要注意下，虽说到这里反复提到了证明（Proof）这个词，但是这个证明不是数学上的证明，数学证明是严格的，使用自证陈述或从预先建立好的证明中获得陈述。ZKP更类似于人类在信息交换过程中建立一个陈述的动态过程，所以它是互交式的（当然，也有非互交式的，这个到后面会提到，而工业界的zk-SNARK用的就是非互交式的）。</p>
@@ -168,6 +168,21 @@
 <li>NP-Hard问题，NP-Hard问题是这样一种问题，它满足NPC问题定义的第二条但不一定要满足第一条。</li>
 </ul>
 <p>NP-Hard问题同样难以找到多项式的算法，但它不列入我们的研究范围，因为它不一定是NP问题。即使NPC问题发现了多项式级的算法，NP-Hard问题有可能仍然无法得到多项式级的算法。NPC问题一定是NP-Hard的问题。NP-hard一般是属于不在研究范畴内，但是它可能比NPC问题更难，它放宽了限制。比如，<a href="https://arxiv.org/pdf/1201.4995v1.pdf" target="_blank" rel="noopener">这篇论文</a>的证明，星际争霸可能是NP-Hard的。具体地说，给定一个初始布局（包括地图、双方已有资源、双方已有建筑、双方已有兵力），判断其中一方是否能获胜，这个问题是 NP-hard 的。</p>
+<p>如果存在非均匀的多项式加密方案，那么每个NP语言都有一个互交式的计算零知识证明系统。因为NPC语言都有一个零知识证明系统，比如地图3着色（G3C）。因为G3C是个NPC问题，所以任何NP问题都可以归约到G3C问题，最后得出，所有的NP问题，都有一个与之关联的零知识证明系统。</p>
+<h3 id="G3C-∈-ZKP"><a href="#G3C-∈-ZKP" class="headerlink" title="G3C ∈ ZKP"></a>G3C ∈ ZKP</h3><p>注，下面提到的“图”是指数据结构所说的图，边也是图的边（edge）。</p>
+<p>G3C所谓的着色也是给不同的图的节点（node）着色，不是给边（edge）着色，这点要明确。</p>
+<p>假设Prover希望说服一个Verifier知道他对某一图（graph）是用三种不同的颜色着色的，而且不能直接完全暴露出整个图的着色状态。Prover可以按照|E^n|个阶段（其中E是图的边的个数）的顺序执行操作，每个阶段包含以下步骤：</p>
+<ul>
+<li>1.Prover随意（随机）排列三种颜色，这使得Prover能够在重复这些步骤的过程中隐藏真实的色彩。</li>
+<li>2.Prover的着色色彩对Verifier是不可见的，是隐藏的。（需要用到一些加密手段）</li>
+<li>3.Verifier随意（随机）选择图（graph）的一条边（edge）。</li>
+<li>4.Prover把选中的边连接的两个节点的颜色暴露出来给Verifier查看。</li>
+<li>5.Verifier确定两个节点的颜色是否合法，比如节点颜色是否不同。</li>
+<li>重复步骤1</li>
+</ul>
+<p>其中，|E^n|中的n是，进行所有步骤的轮次，当n进行的足够多的时候，Verifier确信Prover所说的是真命题的概率会越来越大。概率是 1 - （1 / E）^n。当跟足够大时， 概率就很接近100%了。</p>
+<p>反过来说，（1 / E）^n就是Prover欺骗Verifier的概率随着n的变大会逐渐变小，哪有这么好的运气每次都欺骗成功？如果地图不是三种颜色的，而是四种，那么每一轮Prover欺骗Verifier的概率就是（1 / E）。</p>
+<p>如果还看不明白以上步骤，那么<a href="http://web.mit.edu/~ezyang/Public/graph/svg.html" target="_blank" rel="noopener">MIT某个网页上有地图三着色的Demo演示</a>，可以鼠标操作，你扮演一个Verifier，这样会让你理解更直观些。如果网页挂了，请搜索Interactive zero knowledge 3-colorability demonstration。</p>
 <p>（To be continued）</p>
 
 
