@@ -1,382 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>resume.md</title>
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-
-<style>
-/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
-
-body {
-	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
-	font-size: var(--vscode-markdown-font-size, 14px);
-	padding: 0 26px;
-	line-height: var(--vscode-markdown-line-height, 22px);
-	word-wrap: break-word;
-}
-
-#code-csp-warning {
-	position: fixed;
-	top: 0;
-	right: 0;
-	color: white;
-	margin: 16px;
-	text-align: center;
-	font-size: 12px;
-	font-family: sans-serif;
-	background-color:#444444;
-	cursor: pointer;
-	padding: 6px;
-	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
-}
-
-#code-csp-warning:hover {
-	text-decoration: none;
-	background-color:#007acc;
-	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
-}
-
-body.scrollBeyondLastLine {
-	margin-bottom: calc(100vh - 22px);
-}
-
-body.showEditorSelection .code-line {
-	position: relative;
-}
-
-body.showEditorSelection .code-active-line:before,
-body.showEditorSelection .code-line:hover:before {
-	content: "";
-	display: block;
-	position: absolute;
-	top: 0;
-	left: -12px;
-	height: 100%;
-}
-
-body.showEditorSelection li.code-active-line:before,
-body.showEditorSelection li.code-line:hover:before {
-	left: -30px;
-}
-
-.vscode-light.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(0, 0, 0, 0.15);
-}
-
-.vscode-light.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(0, 0, 0, 0.40);
-}
-
-.vscode-light.showEditorSelection .code-line .code-line:hover:before {
-	border-left: none;
-}
-
-.vscode-dark.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(255, 255, 255, 0.4);
-}
-
-.vscode-dark.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(255, 255, 255, 0.60);
-}
-
-.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
-	border-left: none;
-}
-
-.vscode-high-contrast.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(255, 160, 0, 0.7);
-}
-
-.vscode-high-contrast.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(255, 160, 0, 1);
-}
-
-.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
-	border-left: none;
-}
-
-img {
-	max-width: 100%;
-	max-height: 100%;
-}
-
-a {
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: underline;
-}
-
-a:focus,
-input:focus,
-select:focus,
-textarea:focus {
-	outline: 1px solid -webkit-focus-ring-color;
-	outline-offset: -1px;
-}
-
-hr {
-	border: 0;
-	height: 2px;
-	border-bottom: 2px solid;
-}
-
-h1 {
-	padding-bottom: 0.3em;
-	line-height: 1.2;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-}
-
-h1, h2, h3 {
-	font-weight: normal;
-}
-
-table {
-	border-collapse: collapse;
-}
-
-table > thead > tr > th {
-	text-align: left;
-	border-bottom: 1px solid;
-}
-
-table > thead > tr > th,
-table > thead > tr > td,
-table > tbody > tr > th,
-table > tbody > tr > td {
-	padding: 5px 10px;
-}
-
-table > tbody > tr + tr > td {
-	border-top: 1px solid;
-}
-
-blockquote {
-	margin: 0 7px 0 5px;
-	padding: 0 16px 0 10px;
-	border-left-width: 5px;
-	border-left-style: solid;
-}
-
-code {
-	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
-	font-size: 1em;
-	line-height: 1.357em;
-}
-
-body.wordWrap pre {
-	white-space: pre-wrap;
-}
-
-pre:not(.hljs),
-pre.hljs code > div {
-	padding: 16px;
-	border-radius: 3px;
-	overflow: auto;
-}
-
-pre code {
-	color: var(--vscode-editor-foreground);
-	tab-size: 4;
-}
-
-/** Theming */
-
-.vscode-light pre {
-	background-color: rgba(220, 220, 220, 0.4);
-}
-
-.vscode-dark pre {
-	background-color: rgba(10, 10, 10, 0.4);
-}
-
-.vscode-high-contrast pre {
-	background-color: rgb(0, 0, 0);
-}
-
-.vscode-high-contrast h1 {
-	border-color: rgb(0, 0, 0);
-}
-
-.vscode-light table > thead > tr > th {
-	border-color: rgba(0, 0, 0, 0.69);
-}
-
-.vscode-dark table > thead > tr > th {
-	border-color: rgba(255, 255, 255, 0.69);
-}
-
-.vscode-light h1,
-.vscode-light hr,
-.vscode-light table > tbody > tr + tr > td {
-	border-color: rgba(0, 0, 0, 0.18);
-}
-
-.vscode-dark h1,
-.vscode-dark hr,
-.vscode-dark table > tbody > tr + tr > td {
-	border-color: rgba(255, 255, 255, 0.18);
-}
-
-</style>
-
-<style>
-/* Tomorrow Theme */
-/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
-/* Original theme - https://github.com/chriskempson/tomorrow-theme */
-
-/* Tomorrow Comment */
-.hljs-comment,
-.hljs-quote {
-	color: #8e908c;
-}
-
-/* Tomorrow Red */
-.hljs-variable,
-.hljs-template-variable,
-.hljs-tag,
-.hljs-name,
-.hljs-selector-id,
-.hljs-selector-class,
-.hljs-regexp,
-.hljs-deletion {
-	color: #c82829;
-}
-
-/* Tomorrow Orange */
-.hljs-number,
-.hljs-built_in,
-.hljs-builtin-name,
-.hljs-literal,
-.hljs-type,
-.hljs-params,
-.hljs-meta,
-.hljs-link {
-	color: #f5871f;
-}
-
-/* Tomorrow Yellow */
-.hljs-attribute {
-	color: #eab700;
-}
-
-/* Tomorrow Green */
-.hljs-string,
-.hljs-symbol,
-.hljs-bullet,
-.hljs-addition {
-	color: #718c00;
-}
-
-/* Tomorrow Blue */
-.hljs-title,
-.hljs-section {
-	color: #4271ae;
-}
-
-/* Tomorrow Purple */
-.hljs-keyword,
-.hljs-selector-tag {
-	color: #8959a8;
-}
-
-.hljs {
-	display: block;
-	overflow-x: auto;
-	color: #4d4d4c;
-	padding: 0.5em;
-}
-
-.hljs-emphasis {
-	font-style: italic;
-}
-
-.hljs-strong {
-	font-weight: bold;
-}
-</style>
-
-<style>
-/*
- * Markdown PDF CSS
- */
-
- body {
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
-	padding: 0 12px;
-}
-
-pre {
-	background-color: #f8f8f8;
-	border: 1px solid #cccccc;
-	border-radius: 3px;
-	overflow-x: auto;
-	white-space: pre-wrap;
-	overflow-wrap: break-word;
-}
-
-pre:not(.hljs) {
-	padding: 23px;
-	line-height: 19px;
-}
-
-blockquote {
-	background: rgba(127, 127, 127, 0.1);
-	border-color: rgba(0, 122, 204, 0.5);
-}
-
-.emoji {
-	height: 1.4em;
-}
-
-code {
-	font-size: 14px;
-	line-height: 19px;
-}
-
-/* for inline code */
-:not(pre):not(.hljs) > code {
-	color: #C9AE75; /* Change the old color so it seems less like an error */
-	font-size: inherit;
-}
-
-/* Page Break : use <div class="page"/> to insert page break
--------------------------------------------------------- */
-.page {
-	page-break-after: always;
-}
-
-</style>
-
-<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
-</head>
-<body>
-  <script>
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
-          ? 'dark'
-          : 'default'
-    });
-  </script>
-<h1 id="%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF">个人信息</h1>
+<h1 id="-">个人信息</h1>
 <hr>
 <ul>
 <li><strong>陈绍涵</strong>/男/1992.03.16</li>
 <li><strong>居住地</strong>：云南昆明</li>
 <li><strong>本科</strong>/大连民族大学/计算机科学与技术系/2010.7至2014.7</li>
-<li><strong>工作年限</strong>: 9年/ 2014-07 至 今</li>
+<li><strong>工作年限</strong>: 10+年/ 2014-07 至 今</li>
 <li><strong>个人技术博客</strong>：<a href="https://github.com/AlexiaChen/AlexiaChen.github.io/issues"> https://github.com/AlexiaChen/AlexiaChen.github.io/issues </a></li>
 <li><strong>GitHub</strong>: <a href="https://github.com/AlexiaChen"> https://github.com/AlexiaChen </a></li>
 <li><strong>期望薪资</strong>： 8k - 15K</li>
 </ul>
-<h1 id="%E8%81%94%E7%B3%BB%E6%96%B9%E5%BC%8F">联系方式</h1>
+<h1 id="-">联系方式</h1>
 <hr>
 <ul>
 <li><strong>邮箱</strong>: <a href="mailto:brainfvck@foxmail.com?subject=Hello&body=Ask Me Some Questions">brainfvck@foxmail.com</a></li>
@@ -384,7 +17,7 @@ code {
 <li><strong>QQ</strong>：442499771</li>
 <li><strong>手机</strong>：15198904362</li>
 </ul>
-<h1 id="%E8%87%AA%E6%88%91%E6%8F%8F%E8%BF%B0%E5%8F%8A%E4%B8%AA%E4%BA%BA%E4%BC%98%E5%8A%BF">自我描述及个人优势</h1>
+<h1 id="-">自我描述及个人优势</h1>
 <hr>
 <ul>
 <li>服从领导安排。</li>
@@ -393,44 +26,53 @@ code {
 <li>细心认真，拥抱新的技术和新的变化</li>
 <li>不排斥学习或深入工作岗位上涉及的数学。</li>
 <li>通过项目实战过的C/C++技术栈(8年经验),包括Qt, Win32-SDK, VisualStudio/Cmake/Windows, Linux/Bash/GCC, Boost, Protobuf，区块链底层研发等</li>
-<li>通过项目实战过的Golang技术栈(1年经验), 包括Gin, Gorm, Docker, Docker-swarm, Docker-compose, Traefik, Nginx, Linux/Bash, Postgres, MySQL, Redis, 区块链底层研发等</li>
+<li>通过项目实战过的Golang技术栈(3年经验), 包括Gin, Gorm, Docker, Docker-swarm, Docker-compose, Traefik, Nginx, Linux/Bash, Postgres, MySQL, Redis, 区块链底层研发等</li>
 <li>通过项目实战过的Python技术栈(6个月经验, 平时的编写脚本代码不在其中), 包括Flash, Docker, RESTfulAPI, Linux/Bash, Postgres等</li>
 <li>通过项目实战过的Rust技术栈(3个月经验), 包括Axum等</li>
 </ul>
-<h1 id="%E4%B8%AA%E4%BA%BA%E4%B8%9A%E4%BD%99%E5%AD%A6%E4%B9%A0%E7%A0%94%E7%A9%B6%E5%9E%8B%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D">个人业余学习研究型项目介绍</h1>
+<h1 id="-">个人业余学习研究型项目介绍</h1>
 <hr>
 <ul>
-<li>
-<p><a href="https://github.com/AlexiaChen/stm32-rs-learning-by-doing"> https://github.com/AlexiaChen/stm32-rs-learning-by-doing </a> Keil MDK的C语言项目和Rust编写的STM32项目，为了学习STM32，用Rust编写，是因为当前的STM32的C语言资料太多了，换一种语言编写，移植的过程中遇到问题需要不断地调试和分析，这样可以加深理解。涉及的范围包括，流水灯，蜂鸣器，按钮，中断，通用定时器的PWM波形控制LED呼吸灯，SG90舵机，直流电机，I2C控制OLED显示屏等。</p>
+<li><p><a href="https://github.com/AlexiaChen/stm32-rs-learning-by-doing"> https://github.com/AlexiaChen/stm32-rs-learning-by-doing </a> Keil MDK的C语言项目和Rust编写的STM32项目，为了学习STM32，用Rust编写，是因为当前的STM32的C语言资料太多了，换一种语言编写，移植的过程中遇到问题需要不断地调试和分析，这样可以加深理解。涉及的范围包括，流水灯，蜂鸣器，按钮，中断，通用定时器的PWM波形控制LED呼吸灯，SG90舵机，直流电机，I2C控制OLED显示屏等。</p>
 </li>
-<li>
-<p><a href="https://github.com/AlexiaChen/nn-rs"> https://github.com/AlexiaChen/nn-rs </a>  Rust语言项目，由于AI领域最近的井喷式发展，自己业余学了下神经网络的原理以及数学推导，用Rust写了一个简单的三层神经网络，目前可以识别自己的手写阿拉伯数字</p>
+<li><p><a href="https://github.com/AlexiaChen/nn-rs"> https://github.com/AlexiaChen/nn-rs </a>  Rust语言项目，由于AI领域最近的井喷式发展，自己业余学了下神经网络的原理以及数学推导，用Rust写了一个简单的三层神经网络，目前可以识别自己的手写阿拉伯数字</p>
 </li>
-<li>
-<p><a href="https://github.com/AlexiaChen/MikoOS"> https://github.com/AlexiaChen/MikoOS </a> C语言项目，实现一个64位的操作系统，代码架构以及细节主要是参考《一个64位操作系统的设计与实现》。这方面积累不够，不能凭自己写出来，所以大部分代码算是边理解边边手动抄边调试的，没写完，太多了，慢慢写。</p>
+<li><p><a href="https://github.com/AlexiaChen/MikoOS"> https://github.com/AlexiaChen/MikoOS </a> C语言项目，实现一个64位的操作系统，代码架构以及细节主要是参考《一个64位操作系统的设计与实现》。这方面积累不够，不能凭自己写出来，所以大部分代码算是边理解边边手动抄边调试的，没写完，太多了，慢慢写。</p>
 </li>
-<li>
-<p><a href="https://github.com/AlexiaChen/RtspMonitor"> https://github.com/AlexiaChen/RtspMonitor </a> C++项目，通过Live555读取Rtsp流，然后拿到里面的时间戳，用Qt显示出来，一个Demo，但是星星和fork比较多，估计是对很多人入门有帮助吧，不少人加我联系方式来问这个项目。</p>
+<li><p><a href="https://github.com/AlexiaChen/RtspMonitor"> https://github.com/AlexiaChen/RtspMonitor </a> C++项目，通过Live555读取Rtsp流，然后拿到里面的时间戳，用Qt显示出来，一个Demo，但是星星和fork比较多，估计是对很多人入门有帮助吧，不少人加我联系方式来问这个项目。</p>
 </li>
-<li>
-<p><a href="https://github.com/AlexiaChen/rocker"> https://github.com/AlexiaChen/rocker </a> Rust语言项目，容器运行时，参考了一些开源的容器运行时代码，目前只实现了namespace隔离和cgroup的memory limit的限制功能（可以隔离进程），image和overlayFS相关的还没有实现，项目才开始起步。也是为了了解容器运行时底层原理的学习探索型项目</p>
+<li><p><a href="https://github.com/AlexiaChen/rocker"> https://github.com/AlexiaChen/rocker </a> Rust语言项目，容器运行时，参考了一些开源的容器运行时代码，目前只实现了namespace隔离和cgroup的memory limit的限制功能（可以隔离进程），image和overlayFS相关的还没有实现，项目才开始起步。也是为了了解容器运行时底层原理的学习探索型项目</p>
 </li>
-<li>
-<p><a href="https://github.com/AlexiaChen/mpvss-rs"> https://github.com/AlexiaChen/mpvss-rs </a>  Rust语言项目，第一个与与区块链相关的PVSS密码学库，有技术含量，参考一篇论文的实现，自己第一个Rust作品，之前在Rust中文社区打过广告（有介绍），<a href="https://rustcc.cn/article?id=f43b1eb0-6b3d-456a-b609-b1cdb5be689f"> https://rustcc.cn/article?id=f43b1eb0-6b3d-456a-b609-b1cdb5be689f </a> ，加上测试与例子，大概1000+行Rust，后续考虑继续迭代优化。</p>
+<li><p><a href="https://github.com/AlexiaChen/mpvss-rs"> https://github.com/AlexiaChen/mpvss-rs </a>  Rust语言项目，第一个与与区块链相关的PVSS密码学库，有技术含量，参考一篇论文的实现，自己第一个Rust作品，之前在Rust中文社区打过广告（有介绍），<a href="https://rustcc.cn/article?id=f43b1eb0-6b3d-456a-b609-b1cdb5be689f"> https://rustcc.cn/article?id=f43b1eb0-6b3d-456a-b609-b1cdb5be689f </a> ，加上测试与例子，大概1000+行Rust，后续考虑继续迭代优化。</p>
 </li>
-<li>
-<p><a href="https://github.com/AlexiaChen/paillier-rs "> https://github.com/AlexiaChen/paillier-rs </a> Paillier公钥加密库，Rust语言项目。支持加法同态运算。这个算法在Threshold ECDSA中可能会用到，也是区块链领域中常用的密码学算法之一。</p>
+<li><p><a href="https://github.com/AlexiaChen/paillier-rs "> https://github.com/AlexiaChen/paillier-rs </a> Paillier公钥加密库，Rust语言项目。支持加法同态运算。这个算法在Threshold ECDSA中可能会用到，也是区块链领域中常用的密码学算法之一。</p>
 </li>
-<li>
-<p><a href="https://github.com/AlexiaChen/tiny-rdb"> https://github.com/AlexiaChen/tiny-rdb </a>   Go语言项目，参考 <a href="https://cstack.github.io/db_tutorial/"> https://cstack.github.io/db_tutorial/ </a>  的C语言版本（最终停更了），写了一个简单的Go版的数据库。B-tree的叶子节点分裂没有写完。</p>
+<li><p><a href="https://github.com/AlexiaChen/tiny-rdb"> https://github.com/AlexiaChen/tiny-rdb </a>   Go语言项目，参考 <a href="https://cstack.github.io/db_tutorial/"> https://cstack.github.io/db_tutorial/ </a>  的C语言版本（最终停更了），写了一个简单的Go版的数据库。B-tree的叶子节点分裂没有写完。</p>
 </li>
-<li>
-<p><a href="https://github.com/AlexiaChen/computation-theory"> https://github.com/AlexiaChen/computation-theory </a> Ruby语言，比较小众，主要就是实现一些计算理论相关的Demo，比如NFA,DFA还有语义方面，很久没去研究PL本身了，可能后续会捡起来继续写。</p>
+<li><p><a href="https://github.com/AlexiaChen/computation-theory"> https://github.com/AlexiaChen/computation-theory </a> Ruby语言，比较小众，主要就是实现一些计算理论相关的Demo，比如NFA,DFA还有语义方面，很久没去研究PL本身了，可能后续会捡起来继续写。</p>
 </li>
 </ul>
-<h1 id="%E5%B7%A5%E4%BD%9C%E7%BB%8F%E5%8E%86">工作经历</h1>
+<h1 id="-">工作经历</h1>
 <hr>
-<h2 id="bitizen-mpc-wallet-20236-%E8%87%B3-%E8%87%B3%E4%BB%8A-%E5%85%BC%E8%81%8C">Bitizen MPC Wallet (2023.6 至 至今) (兼职)</h2>
+<h2 id="-2023-10-">云南蓝队云计算有限公司(2023.10 至 今)</h2>
+<ul>
+<li><strong>行业</strong>：云计算</li>
+<li><strong>职位</strong> 高级golang开发工程师</li>
+<li><strong>部门</strong>：研发部</li>
+<li><strong>待遇</strong>  11K</li>
+</ul>
+<h4 id="-">新云产品研发和老产品系统维护</h4>
+<p><strong>技术栈</strong>: Golang  Redis RabbitMQ MySQL PHP</p>
+<ul>
+<li>独立设计并开发了云缓存 Redis  Memcached。</li>
+<li>主要设计并重写开发了蓝队云的整个用户中心，老的PHP写的用户中心弃用，因为老的PHP用户中心不是独立服务，是与主站的代码完全耦合在一起的，期间带了一名更懂PHP的成员一起合作。</li>
+<li>独立设计并开发了云对象存储OSS（基于MinIO）。</li>
+<li>独立设计并开发蓝队云报警系统，主要是把蓝队云后台服务，受控Agent单独向钉钉发送的报警群消息，统一抽象成一个API接口服务，并且支持人员，以及推送渠道的配置管理（钉钉，企业微信，邮件，短信）</li>
+<li>维护云服务器的Agent受控端和云服务器的探针受控采集端，并实现了一些信创ARM64系统的私有云适配，包括相关的KVM虚拟化技术探索和实验整合。</li>
+<li>在云服务器的云探针受控端整合百度的OpenRASP WAF的安装功能，让客户在云服务器上可以享受Open RASP带来的安全防护能力。</li>
+<li>实现对网卡的http/https流量采集，基于gopacket，提取http/https的请求和响应的元数据，URL，源IP，目标IP，源端口，目标端口等推送到MQ中。</li>
+</ul>
+<h2 id="bitizen-mpc-wallet-2023-6-2023-9-">Bitizen MPC Wallet (2023.6 至 2023.9) (兼职)</h2>
 <ul>
 <li><strong>行业</strong>：区块链钱包</li>
 <li><strong>职位</strong> 后端开发工程师</li>
@@ -438,7 +80,7 @@ code {
 <li><strong>待遇</strong>  15K</li>
 </ul>
 <h4 id="bitizen-mpc-wallet">Bitizen MPC Wallet</h4>
-<p><strong>项目描述</strong>: 是一个区块链行业基于多方安全计算(MPC)的区块链资产管理钱包，钱包的前后端核心是基于前沿的MPC密码学协议技术，用DKG等手段实现安全的无私钥管理资产。https://github.com/BitizenWallet</p>
+<p><strong>项目描述</strong>: 是一个区块链行业基于多方安全计算(MPC)的区块链资产管理钱包，钱包的前后端核心是基于前沿的MPC密码学协议技术，用DKG等手段实现安全的无私钥管理资产。<a href="https://github.com/BitizenWallet">https://github.com/BitizenWallet</a></p>
 <p><strong>技术栈</strong>: Rust Golang Gin Gorm Traefik Docker-compose MySQL Redis</p>
 <ul>
 <li>实现运维人员自助取数分析CSV文件数据的后端服务，优化增量数据的处理。</li>
@@ -446,15 +88,15 @@ code {
 <li>实现手机消息推送服务和链上交易监控服务，通知手机终端用户所关心的交易状态，收款提示等。</li>
 <li>编写脚本测试涉及金融账务后端服务的接口，测试平账，测试转账，测试提现等。</li>
 </ul>
-<h2 id="%E6%B7%B1%E5%9C%B3%E5%B8%82%E6%B7%B7%E5%85%83%E6%95%B0%E7%A7%91%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8202205-%E8%87%B3-202305-%E5%85%BC%E8%81%8C">深圳市混元数科有限公司(2022.05 至  2023.05) (兼职)</h2>
+<h2 id="-2022-05-2023-05-">深圳市混元数科有限公司(2022.05 至  2023.05) (兼职)</h2>
 <ul>
 <li><strong>行业</strong>：区块链+AI</li>
 <li><strong>职位</strong> 后端开发工程师</li>
 <li><strong>部门</strong>：技术部</li>
 <li><strong>待遇</strong>：10K</li>
 </ul>
-<h4 id="gabby-world%E9%A1%B9%E7%9B%AE">Gabby World项目</h4>
-<p><strong>项目描述</strong>: 一个Web3+AI的外包项目。主要是用来做一些社交的，比如基于gpt的聊天，还有社交发推互动。Link3的页面 <a href="https://link3.to/gabby_world"> https://link3.to/gabby_world </a> 有5万关注的Twitter官方账号  <a href="https://twitter.com/gabby_world_"> https://twitter.com/gabby_world_ </a></p>
+<h4 id="gabby-world-">Gabby World项目</h4>
+<p><strong>项目描述</strong>: 一个Web3+AI的外包项目。主要是用来做一些社交的，比如基于gpt的聊天，还有社交发推互动。Link3的页面 <a href="https://link3.to/gabby_world"> https://link3.to/gabby_world </a> 有5万关注的Twitter官方账号  <a href="https://twitter.com/gabby_world_"> https://twitter.com/gabby<em>world</em> </a> </p>
 <p><strong>技术栈</strong>: Python Flask Gunicorn Nginx AWS-ALB AWS-RDS Solidity Hardhat OpenZeppelin Postgres</p>
 <ul>
 <li>负责Gabby world的整个后端设计以及CRUD的实现, 包括一部分AWS上的运维工作。</li>
@@ -466,60 +108,60 @@ code {
 <li>用Twitter的embed API来实现Tweet在我方Web页面的内嵌Tweet展示。</li>
 <li>ERC721的NFT合约实现，可以在OpenSea上展示。</li>
 </ul>
-<h4 id="phala%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9A%84%E8%B0%83%E7%A0%94">Phala区块链的调研</h4>
+<h4 id="phala-">Phala区块链的调研</h4>
 <p><strong>项目描述</strong>: 最初公司高层想法比较多，最初可能是关注隐私，并且是打算采用substrate技术栈，让我调研TEE相关的区块链。</p>
 <p><strong>技术栈</strong>： Substrate Rust</p>
 <ul>
-<li>调研Phala了，阅读代码的过程中，顺便给Phala发了一个PR，修了一个BUG成功合并 <a href="https://github.com/Phala-Network/phala-blockchain/pull/986"> https://github.com/Phala-Network/phala-blockchain/pull/986 </a>  并且拿到了小费奖励。<a href="https://khala.subsquare.io/treasury/tip/2485855_0xe0383cc29a716d100dc15c733b7cdb09f9f44243baa4061427bd87521154b74a">  https://khala.subsquare.io/treasury/tip/2485855_0xe0383cc29a716d100dc15c733b7cdb09f9f44243baa4061427bd87521154b74a </a></li>
+<li>调研Phala了，阅读代码的过程中，顺便给Phala发了一个PR，修了一个BUG成功合并 <a href="https://github.com/Phala-Network/phala-blockchain/pull/986"> https://github.com/Phala-Network/phala-blockchain/pull/986 </a>  并且拿到了小费奖励。<a href="https://khala.subsquare.io/treasury/tip/2485855_0xe0383cc29a716d100dc15c733b7cdb09f9f44243baa4061427bd87521154b74a">  https://khala.subsquare.io/treasury/tip/2485855_0xe0383cc29a716d100dc15c733b7cdb09f9f44243baa4061427bd87521154b74a </a> </li>
 </ul>
-<h4 id="sportan%E9%A1%B9%E7%9B%AE">Sportan项目</h4>
+<h4 id="sportan-">Sportan项目</h4>
 <p><strong>项目描述</strong>: 以太坊上的世界杯项目（外包）。</p>
 <p><strong>技术栈</strong>： Solidity Hardhat Goerli-testnet Tenderly</p>
 <ul>
-<li>我负责其中一个流动性挖矿的功能合约开发，这是我第一次写solidity合约，用hardhat来开发和编写单元测试。流动性挖矿模块，参考的是uniswap v2的流动性挖矿代码。https://github.com/AlexiaChen/v2-staker</li>
+<li>我负责其中一个流动性挖矿的功能合约开发，这是我第一次写solidity合约，用hardhat来开发和编写单元测试。流动性挖矿模块，参考的是uniswap v2的流动性挖矿代码。<a href="https://github.com/AlexiaChen/v2-staker">https://github.com/AlexiaChen/v2-staker</a> </li>
 </ul>
-<h4 id="irita%E8%81%94%E7%9B%9F%E9%93%BE">Irita联盟链</h4>
+<h4 id="irita-">Irita联盟链</h4>
 <p><strong>项目描述</strong>: 基于Irira联盟链做一些定制（外包）<a href="https://github.com/FiiLabs/irita"> https://github.com/FiiLabs/irita </a> 该联盟链基于Cosmos SDK 。</p>
 <p><strong>技术栈</strong>： Cosmos-SDK Golang</p>
 <ul>
-<li>我主要是调试一些分配给我的BUG问题。部署Validators到生产环境。在WSL2下cosmos 被卡主的问题，我写了一篇分析和解决的博客 <a href="https://github.com/AlexiaChen/AlexiaChen.github.io/issues/170"> https://github.com/AlexiaChen/AlexiaChen.github.io/issues/170 </a></li>
+<li>我主要是调试一些分配给我的BUG问题。部署Validators到生产环境。在WSL2下cosmos 被卡主的问题，我写了一篇分析和解决的博客 <a href="https://github.com/AlexiaChen/AlexiaChen.github.io/issues/170"> https://github.com/AlexiaChen/AlexiaChen.github.io/issues/170 </a> </li>
 </ul>
-<h4 id="publicai%E9%A1%B9%E7%9B%AE">PublicAI项目</h4>
-<p><strong>项目描述</strong>: 这是公司要自己打造的产品，因为那段时间chatGPT技术突然火爆，OpenAI又依赖高质量的数据标注，所以这个项目就出来了，AI数据标注与Web3去中心化相结合的劳动力众包平台 https://www.publicai.io/</p>
+<h4 id="publicai-">PublicAI项目</h4>
+<p><strong>项目描述</strong>: 这是公司要自己打造的产品，因为那段时间chatGPT技术突然火爆，OpenAI又依赖高质量的数据标注，所以这个项目就出来了，AI数据标注与Web3去中心化相结合的劳动力众包平台 <a href="https://www.publicai.io/">https://www.publicai.io/</a></p>
 <p><strong>技术栈</strong>： Python Telegram-API Latex</p>
 <ul>
 <li>编写MarkerDAO白皮书的技术实现部分。白皮书用Latex编写，在overleaf上协作。<a href="https://github.com/PublicAI01/homepage/blob/master/public/whitepaper.pdf"> https://github.com/PublicAI01/homepage/blob/master/public/whitepaper.pdf </a></li>
-<li>给在Telegram上的MarkerDAO社区群编写一个基于chatGPT的问答客服机器人，我用的是gpt-3.5-turbo的接口。<a href="https://github.com/PublicAI01/markerdao-telegram-bot">https://github.com/PublicAI01/markerdao-telegram-bot </a></li>
+<li>给在Telegram上的MarkerDAO社区群编写一个基于chatGPT的问答客服机器人，我用的是gpt-3.5-turbo的接口。<a href="https://github.com/PublicAI01/markerdao-telegram-bot">https://github.com/PublicAI01/markerdao-telegram-bot </a> </li>
 </ul>
-<h2 id="harmony-one-%E5%85%AC%E5%8F%B8202104-%E8%87%B3-202202">Harmony One 公司（2021.04 至 2022.02）</h2>
+<h2 id="harmony-one-2021-04-2022-02-">Harmony One 公司（2021.04 至 2022.02）</h2>
 <ul>
 <li><strong>行业</strong>：互联网</li>
 <li><strong>职位</strong>： 区块链研发工程师(Golang)</li>
 <li><strong>部门</strong>：研发部</li>
 <li><strong>待遇</strong> 35K</li>
 </ul>
-<h3 id="harmony%E5%8C%BA%E5%9D%97%E9%93%BE">Harmony区块链</h3>
+<h3 id="harmony-">Harmony区块链</h3>
 <p><strong>项目描述</strong>：Github热门区块链开源项目，Go语言编写 <a href="https://github.com/harmony-one/harmony"> https://github.com/harmony-one/harmony </a> 兼容以太坊EVM的公链。</p>
 <p><strong>技术栈</strong>： Golang</p>
 <ul>
 <li>全职远程办公，负责维护harmony区块链的底层代码</li>
 <li>我的Github PRs:  <a href="https://github.com/harmony-one/harmony/pulls?q=+is%3Apr+author%3AAlexiaChen+"> https://github.com/harmony-one/harmony/pulls?q=+is%3Apr+author%3AAlexiaChen+ </a></li>
 </ul>
-<h2 id="%E6%98%86%E6%98%8E%E4%BA%91%E9%93%BE%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8-201808-%E8%87%B3-202103">昆明云链科技有限公司 （2018.08 至 2021.03）</h2>
+<h2 id="-2018-08-2021-03-">昆明云链科技有限公司 （2018.08 至 2021.03）</h2>
 <ul>
 <li><strong>行业</strong>：互联网</li>
 <li><strong>职位</strong>： 区块链研发工程师（C/C++, Golang）</li>
 <li><strong>部门</strong>：研发部</li>
 <li><strong>待遇</strong>: 15K</li>
 </ul>
-<h3 id="%E5%8C%BA%E5%9D%97%E9%93%BE">区块链</h3>
+<h3 id="-">区块链</h3>
 <p><strong>项目描述</strong>： FnFn公链， BigBangCore公链，这两条公链都是一个Code base，改了个名字。公链是公司自主研发，没有fork其他的链代码</p>
 <h4 id="fnfn">FnFn</h4>
 <p><strong>技术栈</strong>： C C++ Golang Protobuf Python</p>
 <ul>
 <li>区块链底层开发和bug修复 <a href="https://github.com/FissionAndFusion/FnFnCoreWallet/pulls"> https://github.com/FissionAndFusion/FnFnCoreWallet/pulls </a></li>
 <li>开发了超级节点功能，树形网络拓扑结构管理各个分支出块 （多个PR）</li>
-<li>通过protobuf实现Dbp协议（参考），对接light wallet server,以便LWS可以获取链上数据 <a href="https://github.com/FissionAndFusion/FnFnCoreWallet/pull/49"> https://github.com/FissionAndFusion/FnFnCoreWallet/pull/49 </a></li>
+<li>通过protobuf实现Dbp协议（参考），对接light wallet server,以便LWS可以获取链上数据 <a href="https://github.com/FissionAndFusion/FnFnCoreWallet/pull/49"> https://github.com/FissionAndFusion/FnFnCoreWallet/pull/49 </a> </li>
 <li>支持IPv6协议  <a href="https://github.com/FissionAndFusion/FnFnCoreWallet/pull/213"> https://github.com/FissionAndFusion/FnFnCoreWallet/pull/213 </a></li>
 <li>优化P2P网络的Ban策略 <a href="https://github.com/FissionAndFusion/FnFnCoreWallet/pull/228"> https://github.com/FissionAndFusion/FnFnCoreWallet/pull/228 </a></li>
 <li>P2P网络通道的并行消息处理性能优化 <a href="https://github.com/FissionAndFusion/FnFnCoreWallet/pull/229">  https://github.com/FissionAndFusion/FnFnCoreWallet/pull/229 </a></li>
@@ -535,13 +177,13 @@ code {
 <li>优化libsodium分配的安全内存占用，采用延迟加载的思想，原来的节点钱包私钥全部从LevelDB读取出来放在安全内存中，现在需要unlock的私钥（已解密）才会用到安全内存，locked的私钥（已加密）用普通内存 <a href="https://github.com/BigBang-Foundation/BigBang/pull/34"> https://github.com/BigBang-Foundation/BigBang/pull/34 </a></li>
 <li>向Alpine Linux的Aports仓库中提了一个PR，把我们的链合并进Alpine Linux的test源中  <a href="https://gitlab.alpinelinux.org/alpine/aports/-/merge_requests/16271"> https://gitlab.alpinelinux.org/alpine/aports/-/merge_requests/16271 </a></li>
 </ul>
-<h3 id="baas%E5%B9%B3%E5%8F%B0">BaaS平台</h3>
+<h3 id="baas-">BaaS平台</h3>
 <p><strong>项目描述</strong>： FnFn公链产品的BaaS（BlockChain as a Service）平台</p>
 <p><strong>技术栈</strong>： Golang Gin Docker-Swarm</p>
 <ul>
 <li>用Golang的Gin框架实现JSON-RPC对接FnFn链的RPC接口的服务</li>
 </ul>
-<h2 id="%E4%BA%91%E5%8D%97%E7%8A%80%E9%B8%9F%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8-201611-%E8%87%B3-201807">云南犀鸟科技有限公司 (2016.11 至 2018.07)</h2>
+<h2 id="-2016-11-2018-07-">云南犀鸟科技有限公司 (2016.11 至 2018.07)</h2>
 <ul>
 <li><strong>行业</strong>:计算机软件</li>
 <li><strong>职位</strong>：高级软件研发工程师(C/C++)</li>
@@ -549,7 +191,7 @@ code {
 <li><strong>岗位职责</strong> : 技术负责人，基础架构研发和技术架构选型</li>
 <li><strong>待遇</strong>: 8K</li>
 </ul>
-<h3 id="%E6%A1%8C%E9%9D%A2%E7%BB%88%E7%AB%AF%E5%AE%89%E5%85%A8%E7%AE%A1%E6%8E%A7%E9%A1%B9%E7%9B%AE">桌面终端安全管控项目</h3>
+<h3 id="-">桌面终端安全管控项目</h3>
 <p><strong>项目描述</strong>: 桌面终端安全管控软件（TRMS），是主要为云南省各地州市县南方电网供电局研发的企业内网侧重安全的管控软件。</p>
 <p><strong>技术栈</strong>： C C++ Qt Win32-SDK</p>
 <ul>
@@ -558,7 +200,7 @@ code {
 <li>把控客户端的技术风险，指导并协助项目组成员完成有技术难度的任务</li>
 </ul>
 <hr>
-<h2 id="%E5%8C%97%E4%BA%AC%E7%A5%9E%E5%B7%9E%E6%B3%B0%E5%B2%B3%E4%BF%A1%E6%81%AF%E5%B7%A5%E7%A8%8B%E6%8A%80%E6%9C%AF%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8-201307-%E8%87%B3-201609-%E5%AE%9E%E4%B9%A0--%E6%AD%A3%E5%BC%8F">北京神州泰岳信息工程技术有限公司 （2013.07 至 2016.09  实习 + 正式）</h2>
+<h2 id="-2013-07-2016-09-">北京神州泰岳信息工程技术有限公司 （2013.07 至 2016.09  实习 + 正式）</h2>
 <ul>
 <li><strong>行业</strong>：计算机软件</li>
 <li><strong>职位</strong>：数据处理基础平台研发工程师(C/C++,Java)</li>
@@ -566,7 +208,7 @@ code {
 <li><strong>岗位职责</strong>：为中国气象科学研究院研发气象数据处理基础平台软件，为气象局其他部门提供基础服务，研发C++上位机软件</li>
 <li><strong>待遇</strong>: 12K</li>
 </ul>
-<h3 id="nwfdlwfd%E9%A1%B9%E7%9B%AE">Nwfd/Lwfd项目</h3>
+<h3 id="nwfd-lwfd-">Nwfd/Lwfd项目</h3>
 <p><strong>项目描述</strong>：Nwfd系统是为中国国家气象局（国家级）研发的基础数据处理平台，Lwfd系统是为国家各省（省级）部署配套的数据处理分发平台，与Nwfd系统配合对接完成气象预报数据的分发，预报修改，上传，处理，入库工作流程。</p>
 <p><strong>技术栈</strong>： C C++ Qt Linux</p>
 <ul>
@@ -575,14 +217,14 @@ code {
 <li>编写整个系统的内部测试工具，配置工具（命令行，GUI）</li>
 <li>维护该系统，修正线上系统BUG</li>
 </ul>
-<h3 id="nwfdlwfd%E7%9B%91%E6%8E%A7%E9%A1%B9%E7%9B%AE">Nwfd/Lwfd监控项目</h3>
+<h3 id="nwfd-lwfd-">Nwfd/Lwfd监控项目</h3>
 <p><strong>项目描述</strong>：为了方便相关气象工作人员实时了解数据处理平台处理产品的情况，特别针对Nwfd/Lwfd系统配套开发了一个对内部的独立的Web页面监控软件。</p>
 <p><strong>技术栈</strong>： C C++ Qt Linux</p>
 <ul>
 <li>调整前端Web互交显示，在前端Web加入针对产品的基本操作指令，通过Ajax请求访问后端</li>
 <li>独立实现该项目的后台整个业务逻辑，实现数据库连接池</li>
 </ul>
-<h3 id="ncl%E9%A1%B9%E7%9B%AE">NCL项目</h3>
+<h3 id="ncl-">NCL项目</h3>
 <p><strong>项目描述</strong>：与Nwfd和Lwfd系统无关，另一个独立项目。方便气象局工作人员查看气象产品数据，数据以Web前端可视化的方式展示，数据展示主要是箱线图和降水量柱状图，概率气象色斑图。</p>
 <p><strong>技术栈</strong>： Java SpringMVC Bootstrap Highchart jQuery Linux</p>
 <ul>
@@ -590,7 +232,7 @@ code {
 <li>前端增加新产品的数据显示图表，使用highchart画出气象数据图</li>
 <li>前端采用Ajax请求访问后端的RESTful API对各类型数据产品进行请求处理</li>
 </ul>
-<h3 id="bsdp%E9%A1%B9%E7%9B%AE">BSDP项目</h3>
+<h3 id="bsdp-">BSDP项目</h3>
 <p><strong>项目描述</strong>：BSDP项目是为Cortex系列的遥测设备编写的数据处理软件。</p>
 <p><strong>技术栈</strong>： C C++ Qt boost.asio Python Win32-SDK</p>
 <ul>
@@ -598,7 +240,7 @@ code {
 <li>使用boost.asio作为网络通信I/O库，为Cortex遥测设备编写访问控制协议，该协议基于TCP。</li>
 <li>使用Python编写PCM遥测包的序列检测程序提供给测试部门使用</li>
 </ul>
-<h3 id="novella%E9%A1%B9%E7%9B%AE">Novella项目</h3>
+<h3 id="novella-">Novella项目</h3>
 <p><strong>项目描述</strong>：Novella是英国挪维拉卫星通讯公司，该项目为其中的一个系列的变频器编写访问控制SDK。</p>
 <p><strong>技术栈</strong>： C C++ Qt boost.asio</p>
 <ul>
@@ -606,7 +248,7 @@ code {
 <li>完全独立实现该设备基于RS232串口的通信协议，SDK中包含基本的getter，setter方法为变频器设置基本参数</li>
 <li>使用DoxyGen生成SDK的API文档</li>
 </ul>
-<h3 id="v6%E9%A1%B9%E7%9B%AE%E5%AE%9E%E4%B9%A0">V6项目（实习）</h3>
+<h3 id="v6-">V6项目（实习）</h3>
 <p><strong>项目描述</strong>：V6是参照TI公司自己订制的板子，软件，硬件开发（FPGA）都有涉及。软件层面编写SDK与V6板子通信。最终提供给客户进行二次开发。</p>
 <p><strong>技术栈</strong>： C C++</p>
 <ul>
@@ -617,19 +259,16 @@ code {
 <li>使用ImageMagick图像处理库进行16位灰度图的提取</li>
 <li>编写V6项目软件的UI界面，使用Qt开发</li>
 </ul>
-<h3 id="3d%E6%89%93%E5%8D%B0%E6%9C%BA%E9%A1%B9%E7%9B%AE%E5%AE%9E%E4%B9%A0">3D打印机项目（实习）</h3>
+<h3 id="3d-">3D打印机项目（实习）</h3>
 <p><strong>项目描述</strong>：3D模型打印</p>
 <p><strong>技术栈</strong>： C C++</p>
 <ul>
 <li>研究3D打印机软件的切片算法，将3D打印机的STL文件切片为图片序列，提供给3D打印机打印（因为打印机的原理是一层一层的打印上去形成模型的）。</li>
 <li>为了移植切片算法到该项目，独自阅读B9Creator开源3D打印软件其中的切片模块源码，并完成移植，最终做成库供上层软件调用。</li>
 </ul>
-<h3 id="3d%E6%B5%8B%E9%87%8F%E7%B3%BB%E7%BB%9F%E5%AE%9E%E4%B9%A0">3D测量系统（实习）</h3>
+<h3 id="3d-">3D测量系统（实习）</h3>
 <p><strong>项目描述</strong>：采用TI（德州仪器）公司的3D测量系统解决方案，使用高清摄像头扫描实物并得到3D点云图像模型，再对点云模型进行处理（复原，染色，渲染）。最终提供给3D打印机使用。</p>
 <p><strong>技术栈</strong>： C C++ 点云</p>
 <ul>
 <li>独立搭建该系统的硬件环境和软件环境</li>
 </ul>
-
-</body>
-</html>
